@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
-@RequestMapping("/mypage")
+@RequestMapping("/statistic")
 public class StatisticController {
 
 	private static final Logger logger = LoggerFactory.getLogger(StatisticController.class);
@@ -26,10 +26,9 @@ public class StatisticController {
 		
 		logger.info("마이페이지 - 예약 통계");
 		
-		model.addAttribute("pageName", "userStatistic");
-		
-		return "user/mypage/statistic";
+		return "admin/statistic/statistic";
 	}
+	
 
 	
 }

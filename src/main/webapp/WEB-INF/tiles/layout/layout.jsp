@@ -54,6 +54,12 @@
 <script src="/resources/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="/resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
+<!-- Bar Chart -->
+<script src="/resources/js/demo/chart-bar-demo.js"></script>
+
+<!-- Page level plugins -->
+<script src="/resources/vendor/chart.js/Chart.min.js"></script>
+
 <!-- Page table custom scripts -->
 <script src="/resources/js/demo/datatables-demo.js"></script>
 
