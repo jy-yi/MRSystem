@@ -78,4 +78,15 @@ public class ResevationController {
 		return "admin/reservation/reservationCancelList";
 	}
 	
+	@RequestMapping(value = "/statistic", method = RequestMethod.GET)
+	public String statistic() {
+		
+		logger.info("(관리자) 예약 통계");
+		
+		return "admin/reservation/statistic";
+	}
+
+	
+	
+	
 }

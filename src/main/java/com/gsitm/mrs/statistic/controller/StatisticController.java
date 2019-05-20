@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
-@RequestMapping("/statistic")
+@RequestMapping("/mypage")
 public class StatisticController {
 
 	private static final Logger logger = LoggerFactory.getLogger(StatisticController.class);
 	
-	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	@RequestMapping(value = "/statistic", method = RequestMethod.GET)
 	public String statusCalendar(Model model) {
 		
 		logger.info("마이페이지 - 예약 통계");
@@ -30,5 +30,6 @@ public class StatisticController {
 		
 		return "user/mypage/statistic";
 	}
+
 	
 }
