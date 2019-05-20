@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- MyBatis XML 설정 파일(MyBatis설정의 중앙 허브 역할) -->
+<configuration>
+	<typeAliases>
+		<!-- 사원 및 부서 -->
+		<typeAlias type="com.gsitm.mrs.user.dto.EmployeeDTO" alias="Employee"/>
+		<typeAlias type="com.gsitm.mrs.user.dto.DepartmentDTO" alias="Department"/>
+			
+		<!-- 자원 -->
+		<typeAlias type="com.gsitm.mrs.resource.dto.WorkplaceDTO" alias="Workplace"/>
+		<typeAlias type="com.gsitm.mrs.resource.dto.RoomDTO" alias="Room"/>
+		<typeAlias type="com.gsitm.mrs.resource.dto.EquipmentDTO" alias="Equipment"/>
+		
+		<!-- 예약 -->
+		<typeAlias type="com.gsitm.mrs.reservation.dto.ReservationDTO" alias="Reservation"/>
+		<typeAlias type="com.gsitm.mrs.reservation.dto.ParticipationDTO" alias="Participation"/>
+		<typeAlias type="com.gsitm.mrs.reservation.dto.LeadDepartmentDTO" alias="LeadDepartment"/>
+		<typeAlias type="com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO" alias="BorrowedEquipment"/>
+	</typeAliases>
+</configuration> 
