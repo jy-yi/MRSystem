@@ -138,7 +138,7 @@ $(function(){
 		
 		<div id="collapseStatistic" class="collapse" aria-labelledby="collapseStatistic" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="utilities-color.html">예약 통계</a>
+				<a class="collapse-item" href="/statistic/statistic">예약 통계</a>
 			</div>
 		</div>
 	</li>
