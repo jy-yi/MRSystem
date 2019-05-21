@@ -3,5 +3,12 @@
 
 <!-- 게시판 네임스페이스(사용영역) 설정 -->
 <mapper namespace="com.gsitm.mrs.mappers.UserMapper">
-	
+
+<!-- 로그인 -->
+<select id="login" resultType="Employee">
+	SELECT emp_no as empolyeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
+	FROM Employee
+	WHERE emp_no=#{empolyeeNo} and password=#{password}
+</select>
+
 </mapper>

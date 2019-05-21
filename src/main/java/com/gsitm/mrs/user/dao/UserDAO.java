@@ -1,5 +1,7 @@
 package com.gsitm.mrs.user.dao;
 
+import com.gsitm.mrs.user.dto.EmployeeDTO;
+
 /**
  * 사원 및 부서 DB에서 데이터를 가져와 모델 생성
  * 
@@ -9,4 +11,6 @@ package com.gsitm.mrs.user.dao;
  */
 public interface UserDAO {
 
+	/** 로그인 */
+	public EmployeeDTO login (EmployeeDTO employee);
 }
