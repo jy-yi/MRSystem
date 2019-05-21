@@ -25,13 +25,18 @@
 		</h1>
 	</div>
 
-	<!-- Page Heading -->
-	<h1 class="h3 mb-2 text-gray-800">Charts</h1>
 	<p class="mb-4">관리자 통계 페이지의 차트 그래프입니다.</p>
+	
+	<ul class="nav nav-tabs">
+				<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#qwe">본사</a></li>
+				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#asd">삼환빌딩</a></li>
+				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#zxc">GS 강남타워</a></li>
+				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#zxc">GS 강서타워</a></li>
+	</ul>
 
 	<!-- Content Row -->
 	<div class="row">
-
+		
 		<div class="col-xl-8 col-lg-7">
 
 			<!-- Bar Chart -->
