@@ -24,7 +24,7 @@ public class StatisticController {
 	@RequestMapping(value = "/statistic", method = RequestMethod.GET)
 	public String statusCalendar(Model model) {
 		
-		logger.info("마이페이지 - 예약 통계");
+		logger.info("관리자 - 예약 통계");
 		
 		return "admin/statistic/statistic";
 	}
