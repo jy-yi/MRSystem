@@ -23,6 +23,22 @@
 		<beans:property name="contentType" value="text/html; charset=UTF-8" />
 	</beans:bean>
 	
+	<!-- 로그인을 위한 인터셉터 설정 -->
+	<beans:bean id="authInterceptor" class="com.gsitm.mrs.interceptor.AuthInterceptor"></beans:bean>
+	<beans:bean id="loginInterceptor" class="com.gsitm.mrs.interceptor.LoginInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/user/login"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/reservation/*"/>
+			<mapping path="/resource/*"/>
+			<mapping path="/statistic/*"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
     <!-- Tiles -->
     <beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
         <beans:property name="definitions">

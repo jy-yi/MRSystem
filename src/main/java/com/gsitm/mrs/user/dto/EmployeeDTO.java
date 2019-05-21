@@ -9,7 +9,7 @@ package com.gsitm.mrs.user.dto;
  */
 public class EmployeeDTO {
 
-	private String empolyeeNo;
+	private String employeeNo;
 	private String managerNo;
 	private int departmentNo;
 	private String name;
@@ -19,8 +19,8 @@ public class EmployeeDTO {
 
 	public EmployeeDTO() {}
 
-	public EmployeeDTO(String empolyeeNo, String managerNo, int departmentNo, String name, String password, String email, String phone) {
-		this.empolyeeNo = empolyeeNo;
+	public EmployeeDTO(String employeeNo, String managerNo, int departmentNo, String name, String password, String email, String phone) {
+		this.employeeNo = employeeNo;
 		this.managerNo = managerNo;
 		this.departmentNo = departmentNo;
 		this.name = name;
@@ -29,12 +29,12 @@ public class EmployeeDTO {
 		this.phone = phone;
 	}
 
-	public String getEmpolyeeNo() {
-		return empolyeeNo;
+	public String getEmployeeNo() {
+		return employeeNo;
 	}
 
-	public void setEmpolyeeNo(String empolyeeNo) {
-		this.empolyeeNo = empolyeeNo;
+	public void setEmployeeNo(String employeeNo) {
+		this.employeeNo = employeeNo;
 	}
 
 	public String getManagerNo() {
@@ -87,7 +87,7 @@ public class EmployeeDTO {
 
 	@Override
 	public String toString() {
-		return "EmployeeDTO [empolyeeNo=" + empolyeeNo + ", managerNo=" + managerNo + ", departmentNo=" + departmentNo
+		return "EmployeeDTO [employeeNo=" + employeeNo + ", managerNo=" + managerNo + ", departmentNo=" + departmentNo
 				+ ", name=" + name + ", password=" + password + ", email=" + email + ", phone=" + phone + "]";
 	}
 

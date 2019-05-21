@@ -6,9 +6,9 @@
 
 <!-- 로그인 -->
 <select id="login" resultType="Employee">
-	SELECT emp_no as empolyeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
+	SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
 	FROM Employee
-	WHERE emp_no=#{empolyeeNo} and password=#{password}
+	WHERE emp_no=#{employeeNo} and password=#{password}
 </select>
 
 </mapper>

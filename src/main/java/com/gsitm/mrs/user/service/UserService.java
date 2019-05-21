@@ -1,5 +1,7 @@
 package com.gsitm.mrs.user.service;
 
+import com.gsitm.mrs.user.dto.EmployeeDTO;
+
 /**
  * 회원 관련 인터페이스 정의
  * 
@@ -8,5 +10,8 @@ package com.gsitm.mrs.user.service;
  * @author : 이종윤
  */
 public interface UserService {
-
+	
+	/** 로그인 */
+	public EmployeeDTO login (EmployeeDTO employee);
+	
 }
