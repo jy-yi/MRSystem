@@ -31,14 +31,16 @@ public class UserController {
 	private UserService service;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(EmployeeDTO employee,HttpSession session, Model model) throws Exception {
+	public String login(EmployeeDTO employee,HttpSession session, Model model) throws Exception {
 		
 		EmployeeDTO isUser = service.login(employee);
 		
 		if (isUser == null) {
-			return;
+			return "login";
 		}
 		model.addAttribute("user", isUser);
+		
+		return "login";
 	}
 
 }

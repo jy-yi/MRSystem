@@ -20,12 +20,10 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		if (session.getAttribute("login") == null) {
 			logger.info("현재 유저는 로그인하지 않았습니다.");
-			
 			response.sendRedirect("/");
 			
 			return false;
 		}
-		
 		
 		return true;
 	}
