@@ -43,8 +43,11 @@
 <!-- Custom scripts for all pages-->
 <script src="/resources/js/sb-admin-2.min.js"></script>
 
-<!-- Sweet Alert2 -->
-<script src="/resources/js/sweetalert2.js"></script>
+<!-- SweetAlert JavaScript -->
+<script src="/resources/js/sweetalert2.min.js"></script>
+<script src="/resources/js/sweetalert2.all.js"></script>
+<script src="/resources/js/sweetalert2.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
 	
 <style type="text/css">
 @font-face { 

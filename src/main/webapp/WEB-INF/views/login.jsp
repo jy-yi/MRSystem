@@ -15,14 +15,6 @@ $(function(){
           });
 	}
 	
-	if(result == "delete") {
-		swal({
-            title: '',
-            text: '탈퇴한 회원입니다.',
-            type: 'warning',
-            confirmButtonText: 'OK'
-          });
-	}
 });
 function getUrlParams() {
     var params = {};

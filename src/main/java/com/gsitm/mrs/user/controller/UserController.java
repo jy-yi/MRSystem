@@ -1,6 +1,7 @@
 package com.gsitm.mrs.user.controller;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +31,13 @@ public class UserController {
 	private UserService service;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login(EmployeeDTO employee, Model model) throws Exception {
+	public void login(EmployeeDTO employee,HttpSession session, Model model) throws Exception {
 		
 		EmployeeDTO isUser = service.login(employee);
 		
 		if (isUser == null) {
 			return;
 		}
-		
 		model.addAttribute("user", isUser);
 	}
 
