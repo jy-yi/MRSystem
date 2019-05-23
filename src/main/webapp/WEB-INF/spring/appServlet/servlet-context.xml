@@ -24,9 +24,14 @@
 	</beans:bean>
 	
 	<!-- 로그인을 위한 인터셉터 설정 -->
+	<beans:bean id="homeInterceptor" class="com.gsitm.mrs.interceptor.HomeInterceptor"></beans:bean>
 	<beans:bean id="authInterceptor" class="com.gsitm.mrs.interceptor.AuthInterceptor"></beans:bean>
 	<beans:bean id="loginInterceptor" class="com.gsitm.mrs.interceptor.LoginInterceptor"></beans:bean>
 	<interceptors>
+		<interceptor>
+			<mapping path="/"/>
+			<beans:ref bean="homeInterceptor"/>
+		</interceptor>
 		<interceptor>
 			<mapping path="/user/login"/>
 			<beans:ref bean="loginInterceptor"/>

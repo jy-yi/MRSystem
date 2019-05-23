@@ -25,6 +25,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			return false;
 		}
 		
+		// 로그인 한 유저가 "/" (로그인 페이지)으로 강제 이동할 경우를 대비하여 현재 URL 주소 저장
+		session.setAttribute("prevURL", request.getRequestURI());
+		
 		return true;
 	}
 }

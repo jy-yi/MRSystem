@@ -33,10 +33,20 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 
 		HttpSession session = request.getSession();
+		
+		Object user = session.getAttribute(LOGIN);
+		Cookie empNoCookie = WebUtils.getCookie(request, "empNoCookie");
 
-		if (session.getAttribute(LOGIN) != null) {
-			logger.info("이전 로그인 정보 삭제");
-			session.removeAttribute(LOGIN);
+		if (user != null) {
+			EmployeeDTO employee = (EmployeeDTO) user;
+			
+			if (empNoCookie != null) {
+				empNoCookie.setPath("/");
+				empNoCookie.setMaxAge(0);
+				response.addCookie(empNoCookie);
+//				service.keepLogin(user.getId(), session.getId(), new Date(0));
+			}
+			return false;
 		}
 
 		return true;
@@ -56,6 +66,28 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		} else {
 			logger.info("새로운 로그인! >> " + user.toString());
 			session.setAttribute(LOGIN, user);
+			
+			if (request.getParameter("useCookie") != null) {
+
+				Cookie loginCookie = new Cookie("loginCookie", session.getId());
+				loginCookie.setPath("/");
+				loginCookie.setMaxAge(60 * 60 * 24 * 7);
+				response.addCookie(loginCookie);
+			}
+			
+			/* 쿠키에 아이디 저장 */
+			EmployeeDTO userCookie = (EmployeeDTO) user;
+			Cookie empNoCookie = new Cookie("empNoCookie", userCookie.getEmployeeNo());
+			empNoCookie.setPath("/");
+			empNoCookie.setMaxAge(60 * 60 * 24 * 7);
+			response.addCookie(empNoCookie);
+
+			/* 쿠키에 이름 저장 */
+			Cookie empNameCookie = new Cookie("empNameCookie", URLEncoder.encode(userCookie.getName(), "utf-8"));
+			empNameCookie.setPath("/");
+			empNameCookie.setMaxAge(60 * 60 * 24 * 7);
+			response.addCookie(empNameCookie);
+
 			response.sendRedirect("/reservation/statusCalendar");
 		}
 
