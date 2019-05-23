@@ -21,6 +21,14 @@ public class StatisticController {
 
 	private static final Logger logger = LoggerFactory.getLogger(StatisticController.class);
 	
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	public String mypage(Model model) {
+		
+		logger.info("사용자 - 예약 통계");
+		
+		return "user/mypage/statistic";
+	}
+	
 	@RequestMapping(value = "/statistic", method = RequestMethod.GET)
 	public String statusCalendar(Model model) {
 		

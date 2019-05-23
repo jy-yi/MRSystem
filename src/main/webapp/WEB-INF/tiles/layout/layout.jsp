@@ -15,6 +15,9 @@
 
 <title>GS ITM 회의실 예약 시스템</title>
 
+<!-- 파비콘 설정 -->
+<link rel="shortcut icon" href="/resources/img/calendar.ico">
+
 <!-- Custom fonts for this template-->
 <link href="/resources/vendor/fontawesome-free/css/all.min.css"
 	rel="stylesheet" type="text/css">
