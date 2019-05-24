@@ -124,6 +124,7 @@
 		</div>
 
 		<!-- Content Row -->
+		
 		<div class="row">
 
 			<!-- Earnings (Monthly) Card Example -->
@@ -170,9 +171,14 @@
 	</div>
 
 	<br>
+	
 
-	<!-- Content Row -->
-	<div id='calendar'></div>
+	<!-- Begin Page Content -->
+	<div class="container-fluid">
+
+		<!-- Content Row -->
+		<div id='calendar'></div>
+	</div>
 
 </div>
 <!-- /.container-fluid -->

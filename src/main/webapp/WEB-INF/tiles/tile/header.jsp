@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib  prefix="m" uri="urlDecode"%> 
 
 <body>
 	<!-- Topbar -->
@@ -20,7 +21,7 @@
 			<!-- Nav Item - User Information -->
 			<li class="nav-item dropdown no-arrow">
 				<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-					<span class="mr-2 d-none d-lg-inline text-gray-600 small"> 이종윤 </span> 
+					<span class="mr-2 d-none d-lg-inline text-gray-600 small"> ${login.name} (${login.employeeNo}) </span> 
 					<img class="img-profile rounded-circle" src="/resources/img/profile.png">
 				</a> 
 				
