@@ -67,8 +67,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			logger.info("새로운 로그인! >> " + user.toString());
 			session.setAttribute(LOGIN, user);
 			
+			//TODO : 자동 로그인 (useCookie) 기능 구현하기!
 			if (request.getParameter("useCookie") != null) {
-
+				
 				Cookie loginCookie = new Cookie("loginCookie", session.getId());
 				loginCookie.setPath("/");
 				loginCookie.setMaxAge(60 * 60 * 24 * 7);

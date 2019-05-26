@@ -28,7 +28,7 @@
 				<!-- Dropdown - User Information -->
 				<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 					<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal"> 
-						<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
+						<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> 로그아웃
 					</a>
 				</div>
 			</li>
@@ -45,15 +45,15 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+						<h5 class="modal-title" id="exampleModalLabel"> 로그아웃 하시겠습니까? </h5>
 						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">Ã</span>
+							<span aria-hidden="true"> &times; </span>
 						</button>
 					</div>
-					<div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+					<div class="modal-body"> 회의실 예약 관리 시스템을 종료하려면, <br> 아래에서 "로그아웃"  버튼을 클릭하세요. </div>
 					<div class="modal-footer">
-						<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-						<a class="btn btn-primary" href="/">Logout</a>
+						<button class="btn btn-secondary" type="button" data-dismiss="modal"> 취소 </button>
+						<a class="btn btn-primary" href="/user/logout"> 로그아웃 </a>
 					</div>
 				</div>
 			</div>
