@@ -11,4 +11,11 @@
 	WHERE emp_no=#{employeeNo} and password=#{password}
 </select>
 
+<!-- 사원 번호로 회원 정보 받아오기 -->
+<select id="getInfo" resultType="Employee">
+	SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
+	FROM Employee
+	WHERE emp_no=#{employeeNo}
+</select>
+
 </mapper>

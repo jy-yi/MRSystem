@@ -13,4 +13,8 @@ public interface UserDAO {
 
 	/** 로그인 */
 	public EmployeeDTO login (EmployeeDTO employee);
+
+	/** 회원번호로 회원 정보 받아오기 */
+	public EmployeeDTO getInfo (String employeeNo);
+	
 }

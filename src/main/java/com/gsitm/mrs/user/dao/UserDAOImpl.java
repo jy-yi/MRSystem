@@ -27,5 +27,11 @@ public class UserDAOImpl implements UserDAO {
 	public EmployeeDTO login(EmployeeDTO employee) {
 		return sqlSession.selectOne(namespace +".login", employee); 
 	}
+
+	/** 회원번호로 회원 정보 받아오기 */
+	@Override
+	public EmployeeDTO getInfo(String employeeNo) {
+		return sqlSession.selectOne(namespace +".getInfo", employeeNo);
+	}
 	
 }

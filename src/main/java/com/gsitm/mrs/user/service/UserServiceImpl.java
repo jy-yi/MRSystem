@@ -26,4 +26,10 @@ public class UserServiceImpl implements UserService {
 		return dao.login(employee);
 	}
 
+	/** 회원번호로 회원 정보 받아오기 */
+	@Override
+	public EmployeeDTO getInfo(String employeeNo) {
+		return dao.getInfo(employeeNo);
+	}
+
 }

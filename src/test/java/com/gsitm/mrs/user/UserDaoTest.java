@@ -29,4 +29,12 @@ public class UserDaoTest {
 		logger.info(dao.login(employee).toString());
 		
 	}
+	
+	/** 회원 정보 검색 테스트 */
+	@Test
+	public void TestGetInfo() {
+		
+		logger.info(dao.getInfo("it1232"));
+		
+	}
 }

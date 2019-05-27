@@ -28,14 +28,14 @@ import com.gsitm.mrs.user.service.UserService;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-	
+
 	@Inject
 	private UserService service;
-	
+
 	/**
-	 * 로그인 
+	 * 로그인
 	 * 
 	 * @Method Name : login
 	 * @param employee
@@ -45,18 +45,18 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(EmployeeDTO employee,HttpSession session, Model model) throws Exception {
-		
+	public String login(EmployeeDTO employee, HttpSession session, Model model) throws Exception {
+
 		EmployeeDTO isUser = service.login(employee);
-		
+
 		if (isUser == null) {
 			return "login";
 		}
 		model.addAttribute("user", isUser);
-		
+
 		return "login";
 	}
-	
+
 	/**
 	 * 로그아웃
 	 *
@@ -68,33 +68,37 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout (HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-		
+	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+
 		Object obj = session.getAttribute("login");
-		
+
 		if (obj != null) {
-			
+
 			session.removeAttribute("login");
 			session.invalidate();
-			
+
 			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 			Cookie empNoCookie = WebUtils.getCookie(request, "empNoCookie");
-			
+			Cookie empNameCookie = WebUtils.getCookie(request, "empNameCookie");
+
 			if (loginCookie != null) {
 				loginCookie.setPath("/");
 				loginCookie.setMaxAge(0);
 				response.addCookie(loginCookie);
 			}
+
+			empNoCookie.setPath("/");
+			empNoCookie.setMaxAge(0);
+
+			empNameCookie.setPath("/");
+			empNameCookie.setMaxAge(0);
 			
-			if (empNoCookie != null) {
-				empNoCookie.setPath("/");
-				empNoCookie.setMaxAge(0);
-				response.addCookie(empNoCookie);
-			}
+			response.addCookie(empNoCookie);
+			response.addCookie(empNameCookie);
+			
 		}
-		
+
 		return "redirect:/";
 	}
-
 
 }
