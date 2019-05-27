@@ -1,0 +1,61 @@
+/*//////////////////////////////////////////////////////////////////
+[ Table ]*/
+
+.table {
+  width: 100%;
+  display: table;
+  margin: 0;
+  padding-bottom: 100px;
+}
+
+.row {
+  display: table-row;
+  background: #fff;
+} 
+
+.row.header {
+  color: #ffffff;
+  background: #6c7ae0;
+}
+
+.cell {
+  display: table-cell;
+}
+
+.row .cell {
+  font-size: 15px;
+  color: #666666;
+  line-height: 1.2;
+  font-weight: unset !important;
+
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.row.header .cell {
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset !important;
+
+  padding-top: 19px;
+  padding-bottom: 19px;
+}
+
+.row .cell:nth-child(1) {
+  width: 50px;
+  padding-left: 40px;
+}
+
+.row .cell:nth-child(2) {
+  width: 50px;
+}
+
+.row .cell:nth-child(3) {
+  width: 50px;
+}
+
+.row .cell:nth-child(4) {
+  width: 50px;
+}
