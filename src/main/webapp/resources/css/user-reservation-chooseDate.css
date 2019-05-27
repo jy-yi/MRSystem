@@ -1,0 +1,59 @@
+@charset "EUC-KR";
+#room_img{
+	max-width: 100%;
+}
+
+#room_info_div{
+	line-height: upset;
+	margin-top: 20px;
+}
+
+.left-padding-zero{
+	padding-left: 0;
+}
+
+.align-center{
+	text-align: center;
+}
+
+#option_div{
+	margin-top: 20px;
+}
+
+.background-lightgrey{
+	background-color:rgb(255,255,255);
+}
+
+.btn-disabled{
+	margin-top: 20px;
+	width: 100%;
+	border: 2px solid rgb(54,93,205);
+	color: lightgrey;
+}
+
+.btn-active{
+	margin-top: 20px;
+	width: 100%;
+	background-color: rgb(54,93,205);
+	color: white;
+}
+
+.padding-content{
+	padding: 20px;
+}
+
+.color-title{
+	color: #464646;
+}
+
+.font-checkbox{
+	margin-left: 5px;
+}
+
+.fc-left>h2{
+	color: #464646;
+}
+
+#option_form{
+    line-height: 250%;
+}

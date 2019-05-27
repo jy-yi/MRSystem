@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @date : 2019. 5. 2.
  * @author : 이종윤
  * 
+ * @date : 2019. 5. 24.
+ * @author : 김나윤
  */
 
 @Controller
@@ -87,6 +89,19 @@ public class ResevationController {
 	}
 
 	
+	@RequestMapping(value = "/room", method = RequestMethod.GET)
+	public String room() {
+		
+		logger.info("(사용자) 회의실 정보");
+		
+		return "user/reservation/room";
+	}
 	
-	
+	@RequestMapping(value = "/chooseDate", method = RequestMethod.GET)
+	public String chooseDate() {
+		
+		logger.info("(관리자) 예약-일자 선택");
+		
+		return "user/reservation/chooseDate";
+	}
 }

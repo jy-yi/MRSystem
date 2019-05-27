@@ -1,0 +1,13 @@
+@charset "EUC-KR";
+#room_img{
+	max-width: 100%;
+}
+
+#room_info.div{
+	line-height: 200%;
+}
+
+#btn-li{
+	padding-top: 20px;
+	list-style: none;
+}
