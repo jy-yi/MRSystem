@@ -96,33 +96,18 @@
 				<div class="row">
 
 					<ul class="nav nav-tabs">
-						<li class="nav-item"><a class="nav-link " id="wp1"
+						<li class="nav-item"><a class="nav-link active" id="wp1"
 							data-toggle="tab" href="#workplace1">재동 본사</a></li>
 						<li class="nav-item"><a class="nav-link" id="wp2"
 							data-toggle="tab" href="#workplace2">삼환빌딩</a></li>
-						<li class="nav-item"><a class="nav-link active" id="wp3"
-							data-toggle="tab" href="#workplace3">GS 강남타워</a></li> 
+						<li class="nav-item"><a class="nav-link" id="wp3"
+							data-toggle="tab" href="#workplace3">GS 강남타워</a></li>
 						<li class="nav-item"><a class="nav-link" id="wp4"
-							data-toggle="tab" href="#workplace3">GS 강서타워</a></li>
+							data-toggle="tab" href="#workplace4">GS 강서타워</a></li>
 					</ul>
 
 					<div class="tab-content">
-						<div class="tab-pane fade"  id="workplace1">
-							<div id="calendar"></div>
-						</div>
-						
-						<div class="tab-pane fade" id="workplace2">
-							<div id="calendar"></div>
-						</div>
-						
-						<div class="tab-pane fade show active" id="workplace3">
-							<div id="calendar"></div>
-						</div>
-						
-						<div class="tab-pane fade" id="workplace4">
-							<div id="calendar"></div>
-						</div>
-
+						<div id="calendar"></div>
 					</div>
 				</div>
 
@@ -135,7 +120,7 @@
 <!-- End of Main Content -->
 
 
-<script type="text/javascript">	
+<script type="text/javascript">
 	$(function() {
 		$("#wp1").click(function() {
 			$("#name").text(" 대시보드 > 재동 본사 ");
