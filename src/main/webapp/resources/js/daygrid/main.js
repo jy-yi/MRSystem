@@ -892,7 +892,7 @@ Docs & License: https://fullcalendar.io/
                 (isDateValid ?
                     ' data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
                     '') +
-                '>';
+                ' data-toggle="modal" data-target="#chooseTimeModal">';
             if (this.renderProps.cellWeekNumbersVisible && (date.getUTCDay() === weekCalcFirstDow)) {
                 html += core.buildGotoAnchorHtml(view, { date: date, type: 'week' }, { 'class': 'fc-week-number' }, dateEnv.format(date, WEEK_NUM_FORMAT) // inner HTML
                 );

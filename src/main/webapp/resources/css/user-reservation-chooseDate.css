@@ -4,7 +4,7 @@
 }
 
 #room_info_div{
-	line-height: upset;
+	line-height: 150%;
 	margin-top: 20px;
 }
 
@@ -46,6 +46,10 @@
 	color: #464646;
 }
 
+.div-border{
+   border: 1px solid #efefef;
+}
+
 .font-checkbox{
 	margin-left: 5px;
 }
@@ -57,3 +61,19 @@
 #option_form{
     line-height: 250%;
 }
+
+.reserved-time{
+	background-color: lightgrey;
+	color: gray;
+}
+
+#amTimeScheduleList span, #pmTimeScheduleList span{
+    width: 70px; 
+    height: 40px;	    
+  	padding-top: 8px;
+    margin-top: 20px;
+    background-color: lightgrey;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid darkgray;
+ }

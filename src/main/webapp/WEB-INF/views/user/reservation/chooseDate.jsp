@@ -57,13 +57,13 @@
 			<div class="row">
 				<div class="col-sm-6 left-padding-zero" >
 					<img id="room_img" alt="본사 몰디브 회의실의 사진" src="${pageContext.request.contextPath}/resources/img/maldives.jpg">	
-					<div id="room_info_div" class="background-lightgrey font-black padding-content">
+					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
 						<h1 class="align-center color-title">몰디브</h1>
 						<p class="align-center">4. 18. (목), 시간을 선택하세요</p>
 						<hr>
 						<ul>
-							<li>회의실 이름 : 대회의실
-							<li>회의실 구분 : 대회의실
+							<li>회의실 이름 : 몰디브
+							<li>회의실 구분 : 회의실
 							<li>회의실 위치 : GS ITM 본사 2층
 							<li>수용인원 수 : 20명
 							<li>비치물품 : 빔, 노트북
@@ -76,11 +76,11 @@
 				</div>
 				<div class="col-sm-6">
 					<!-- calendar -->
-					<div id="calendar_div" class="background-lightgrey font-black padding-content">
+					<div id="calendar_div" class="background-lightgrey font-black padding-content div-border">
 						<div id='calendar'></div>
 					</div>
 					
-					<div id="option_div" class="background-lightgrey font-black padding-content">
+					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">옵션 선택</h4>
 						<hr>
 						<form action="" id="option_form">
@@ -89,7 +89,7 @@
 							<input type="checkbox" name="" value=""><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
 					</div>
-					<button class="btn btn-disabled" id="nextBtn">다음 단계</button>
+					<button class="btn btn-disabled" id="nextBtn" data-toggle="modal" data-target="#chooseTimeModal">다음 단계</button>
 				</div>
 			</div>
 		</div>
@@ -98,6 +98,10 @@
 	</div>
 
 </div>
+
+<!-- Modal -->
+<jsp:include page="include/chooseTime.jsp" />
+
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script>
 
@@ -111,11 +115,15 @@
         calendar.render();
       });
       
-      // 회의실 예약 내역을 다 입력하면 active로 전환(임의로 클릭시 active)
+      // 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
       $("#nextBtn").on("mouseover",function(){
     	 $(this).removeClass('btn-disabled').addClass('btn-active'); 
       });
 
+      // Calendar 날짜 선택 시 Modal 띄우기
+      $(".fc-day-number").on("click",function(){
+    	  console.log("클릭!");
+      })
 </script>
 </html>
 
