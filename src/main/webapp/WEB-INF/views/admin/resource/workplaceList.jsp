@@ -39,7 +39,7 @@
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+							<table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
 								<thead>
 									<tr>
 										<th>No</th>
@@ -51,34 +51,23 @@
 								</thead>
 
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td>$320,800</td>
-										<td>$320,800</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>$320,800</td>
-										<td>$320,800</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>$320,800</td>
-										<td>$320,800</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
-									<tr>
-										<td>4</td>
-										<td>$320,800</td>
-										<td>$320,800</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
+									<c:choose>
+										<c:when test="${empty workplaceList}">
+											<td colspan="9" class="text-center"> 지사가 존재하지 않습니다.</td>
+										</c:when>
+										<c:otherwise>
+											<c:forEach items="${workplaceList}" var="list" varStatus="status">
+												<tr>
+													<td> ${status.count} </td>
+													<td> ${list.name}</td>
+													<td> ${list.address}</td>
+													<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
+													<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
+									
 								</tbody>
 							</table>
 						</div>

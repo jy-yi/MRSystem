@@ -45,6 +45,8 @@
 									<tr>
 										<th>No</th>
 										<th>이름</th>
+										<th>구매일</th>
+										<th>비치 장소</th>
 										<th>수정</th>
 										<th>삭제</th>
 									</tr>
@@ -54,18 +56,22 @@
 									<tr>
 										<td>1</td>
 										<td>빔 프로젝트</td>
+										<td>2019-05-28</td>
+										<td>몰디브 어쩌고 저쩌고 ㄴ</td>
 										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
 										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
 									</tr>
 									<tr>
 										<td>2</td>
 										<td>노트북</td>
+										<td>2019-05-28</td>
 										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
 										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
 									</tr>
 									<tr>
 										<td>3</td>
 										<td>화이트보드</td>
+										<td>2019-05-28</td>
 										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
 										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
 									</tr>

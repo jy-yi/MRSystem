@@ -1,10 +1,18 @@
 package com.gsitm.mrs.resource.controller;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.gsitm.mrs.resource.dto.WorkplaceDTO;
+import com.gsitm.mrs.resource.service.ResourceService;
 
 /**
  * 자원 관련 프로젝트 Controller @RequestMapping("/reservation") URI 매칭
@@ -18,12 +26,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/resource")
 public class ResourceController {
 	
-private static final Logger logger = LoggerFactory.getLogger(ResourceController.class);
+	private static final Logger logger = LoggerFactory.getLogger(ResourceController.class);
+
+	@Inject
+	private ResourceService service;
 	
 	@RequestMapping(value = "/workplaceList", method = RequestMethod.GET)
-	public String workplaceList() {
+	public String workplaceList(Model model) {
 		
 		logger.info("(관리자) 지사 관리");
+		
+		List<WorkplaceDTO> workplaceList = service.getWorkplaceList();
+		
+		model.addAttribute("workplaceList", workplaceList);
 		
 		return "admin/resource/workplaceList";
 	}

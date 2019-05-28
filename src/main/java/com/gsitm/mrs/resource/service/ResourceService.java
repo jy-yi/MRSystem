@@ -1,5 +1,9 @@
 package com.gsitm.mrs.resource.service;
 
+import java.util.List;
+
+import com.gsitm.mrs.resource.dto.WorkplaceDTO;
+
 /**
  * 자원 관련 인터페이스 정의
  * 
@@ -8,5 +12,8 @@ package com.gsitm.mrs.resource.service;
  * @author : 이종윤
  */
 public interface ResourceService {
+	
+	/** 지사 목록 조회 */
+	public List<WorkplaceDTO> getWorkplaceList();
 
 }
