@@ -1,11 +1,19 @@
 package com.gsitm.mrs.reservation.controller;
 
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.gsitm.mrs.reservation.service.ReservationService;
 
 /**
  * 예약 관련 프로젝트 Controller @RequestMapping("/reservation") URI 매칭
@@ -23,6 +31,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ResevationController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ResevationController.class);
+	
+	@Inject
+	private ReservationService service;
 	
 	@RequestMapping(value = "/statusCalendar", method = RequestMethod.GET)
 	public String statusCalendar(Model model) {
@@ -49,9 +60,13 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/approvalWaitingList", method = RequestMethod.GET)
-	public String approvalWaitingList() {
+	public String approvalWaitingList(Model model) {
 		
 		logger.info("(관리자) 승인 대기 목록");
+		
+		List<Map<String, Object>> waitingList = service.getWaitingList();
+		
+		model.addAttribute("waitingList", waitingList);
 		
 		return "admin/reservation/approvalWatingList";
 	}
