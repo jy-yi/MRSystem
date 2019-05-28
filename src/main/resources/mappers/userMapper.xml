@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 게시판 네임스페이스(사용영역) 설정 -->
+<!-- 회원 네임스페이스(사용영역) 설정 -->
 <mapper namespace="com.gsitm.mrs.mappers.UserMapper">
 
-<!-- 로그인 -->
-<select id="login" resultType="Employee">
-	SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
-	FROM Employee
-	WHERE emp_no=#{employeeNo} and password=#{password}
-</select>
-
-<!-- 사원 번호로 회원 정보 받아오기 -->
-<select id="getInfo" resultType="Employee">
-	SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
-	FROM Employee
-	WHERE emp_no=#{employeeNo}
-</select>
+	<!-- 로그인 -->
+	<select id="login" resultType="Employee">
+		SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
+		FROM Employee
+		WHERE emp_no=#{employeeNo} and password=#{password}
+	</select>
+	
+	<!-- 사원 번호로 회원 정보 받아오기 -->
+	<select id="getInfo" resultType="Employee">
+		SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone
+		FROM Employee
+		WHERE emp_no=#{employeeNo}
+	</select>
 
 </mapper>
