@@ -60,6 +60,10 @@
 	 #pmTimeSchedule{
 	 	margin-top: 20px;
 	 }
+	 
+	 .modal-body{
+	 	margin-bottom: 15px;
+	 }
 </style>
 
 <!-- Add Work place Modal-->

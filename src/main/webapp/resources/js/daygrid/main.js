@@ -25,6 +25,9 @@ Docs & License: https://fullcalendar.io/
     ***************************************************************************** */
     /* global Reflect, Promise */
 
+
+	var DAY_IDS = ['일', '월', '화', '수', '목', '금', '토'];
+
     var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -703,7 +706,7 @@ Docs & License: https://fullcalendar.io/
         classes.unshift('fc-day', theme.getClass('widgetContent'));
         return '<td class="' + classes.join(' ') + '"' +
             (isDateValid ?
-                ' data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
+                '  data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
                 '') +
             (otherAttrs ?
                 ' ' + otherAttrs :
@@ -731,6 +734,7 @@ Docs & License: https://fullcalendar.io/
             _this.renderEventDrag = core.memoizeRendering(_this._renderEventDrag, _this._unrenderEventDrag, [renderCells]);
             _this.renderEventResize = core.memoizeRendering(_this._renderEventResize, _this._unrenderEventResize, [renderCells]);
             _this.renderProps = renderProps;
+            //;;;;;;;;
             return _this;
         }
         DayGrid.prototype.render = function (props) {
@@ -890,9 +894,8 @@ Docs & License: https://fullcalendar.io/
             }
             html += '<td class="' + classes.join(' ') + '"' +
                 (isDateValid ?
-                    ' data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
-                    '') +
-                ' data-toggle="modal" data-target="#chooseTimeModal">';
+                    ' data-day="'+DAY_IDS[date.getUTCDay()]+'" data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
+                    '') +' data-toggle="modal" data-target="#chooseTimeModal">';
             if (this.renderProps.cellWeekNumbersVisible && (date.getUTCDay() === weekCalcFirstDow)) {
                 html += core.buildGotoAnchorHtml(view, { date: date, type: 'week' }, { 'class': 'fc-week-number' }, dateEnv.format(date, WEEK_NUM_FORMAT) // inner HTML
                 );

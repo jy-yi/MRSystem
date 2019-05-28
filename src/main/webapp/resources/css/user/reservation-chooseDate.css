@@ -67,13 +67,6 @@
 	color: gray;
 }
 
-#amTimeScheduleList span, #pmTimeScheduleList span{
-    width: 70px; 
-    height: 40px;	    
-  	padding-top: 8px;
-    margin-top: 20px;
-    background-color: lightgrey;
-    display: inline-block;
-    text-align: center;
-    border: 1px solid darkgray;
- }
+.chosenTime{
+	background-color: rgb(54,93,205) !important;
+}

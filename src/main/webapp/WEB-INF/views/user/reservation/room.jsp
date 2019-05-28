@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 
-<link rel= "stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/user-reservation-room.css">
+<link rel= "stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/user/reservation-room.css">
 
 <!-- Main Content -->
 <!-- 이 안에 내용 채우시면 됩니당 -->
