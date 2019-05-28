@@ -67,7 +67,7 @@ $(function(){
 			
 				<h6 class="collapse-header">근무지별 예약 현황:</h6>
 				
-				<a id="dashboard" class="collapse-item low-menu" href="/reservation/dashboard">재동 본사</a> 
+				<a class="collapse-item low-menu" href="/reservation/dashboard">재동 본사</a> 
 				<a class="collapse-item low-menu" href="/reservation/dashboard">삼환빌딩</a> 
 				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강남타워</a> 
 				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강서타워</a>
@@ -84,10 +84,10 @@ $(function(){
 		<div id="collapseReservation" class="collapse" aria-labelledby="collapseReservation" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">회의실 확인 및 예약:</h6>
-				<a class="collapse-item" href="/reservation/room">재동 본사</a> 
-				<a class="collapse-item" href="/reservation/room">삼환빌딩</a> 
-				<a class="collapse-item" href="/reservation/room">GS 강남타워</a> 
-				<a class="collapse-item" href="/reservation/room">GS 강서타워</a>
+				<a class="collapse-item low-menu" href="/reservation/room">재동 본사</a> 
+				<a class="collapse-item low-menu" href="/reservation/room">삼환빌딩</a> 
+				<a class="collapse-item low-menu" href="/reservation/room">GS 강남타워</a> 
+				<a class="collapse-item low-menu" href="/reservation/room">GS 강서타워</a>
 			</div>
 		</div>
 	</li>
@@ -97,20 +97,35 @@ $(function(){
 
 	<!-- Heading -->
 	<div class="sidebar-heading">Administrator</div>
+	
+	<!-- Nav Item - My Page -->
+	<li id="adminReservation" class="menu nav-item">
+		<a class="nav-link collapsed" href="/" data-toggle="collapse" data-target="#collapseAdminCal" aria-expanded="true" aria-controls="collapseAdminCal"> 
+			<i class="far fa-calendar-alt"></i> <span>예약 현황</span>
+		</a>
+		
+		<div id="collapseAdminCal" class="collapse" aria-labelledby="collapseAdminCal" data-parent="#accordionSidebar">
+			<div class="bg-white py-2 collapse-inner rounded">
+				<a class="collapse-item low-menu" href="/reservation/dashboard">재동 본사</a> 
+				<a class="collapse-item low-menu" href="/reservation/dashboard">삼환빌딩</a> 
+				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강남타워</a> 
+				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강서타워</a>
+			</div>
+		</div>
+	</li>
 
 	<!-- Nav Item - My Page -->
 	<li id="adminReservation" class="menu nav-item">
 		<a class="nav-link collapsed" href="/" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin"> 
-			<i class="far fa-calendar-alt"></i> <span>예약 관리</span>
+			<i class="fas fa-cogs"></i> <span>예약 관리</span>
 		</a>
 		
 		<div id="collapseAdmin" class="collapse" aria-labelledby="collapseAdmin" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item" href="#">예약 현황</a> 
-				<a class="collapse-item" href="/reservation/approvalWaitingList">승인 대기 목록</a> 
-				<a class="collapse-item" href="/reservation/approvalCancelList">승인 반려 목록</a> 
-				<a class="collapse-item" href="/reservation/reservationSuccessList">예약 완료 목록</a> 
-				<a class="collapse-item" href="/reservation/reservationCancelList">예약 취소 목록</a>
+				<a class="collapse-item low-menu" href="/reservation/approvalWaitingList">승인 대기 목록</a> 
+				<a class="collapse-item low-menu" href="/reservation/approvalCancelList">승인 반려 목록</a> 
+				<a class="collapse-item low-menu" href="/reservation/reservationSuccessList">예약 완료 목록</a> 
+				<a class="collapse-item low-menu" href="/reservation/reservationCancelList">예약 취소 목록</a>
 			</div>
 		</div>
 	</li>

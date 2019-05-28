@@ -61,9 +61,10 @@
 		});
 
 		calendar.render();
-		calendar.setOption('locale', 'ko');	// 달력 한국어 설정
+		calendar.setOption('locale', 'ko'); // 달력 한국어 설정
 	});
 </script>
+
 <style>
 #calendar {
 	max-width: 1300px;
@@ -78,63 +79,41 @@
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-	<div class="row">
+		<div class="row">
 
-		<!-- Begin Page Content -->
-		<div class="container-fluid">
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
 
-			<!-- Page Heading -->
-			<div class="d-sm-flex align-items-center justify-content-between mb-4">
-				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 대시보드 > 재동 본사 </h1>
-			</div>
-
-			<div class="row">
-				<div class="card-body py-2 text-right">
-					<span class="pull-right text-lg"> 본사 </span>
-
+				<!-- Page Heading -->
+				<div
+					class="d-sm-flex align-items-center justify-content-between mb-4">
+					<h1 id="name" class="h5 mb-0 text-gray-800">
+						<i class="fas fa-user"></i> 대시보드 > 재동 본사
+					</h1>
 				</div>
-			</div>
 
-			<!-- Content Row -->
-			<div class="row">
+				<!-- Content Row -->
+				<div class="row">
 
-				<ul class="nav nav-tabs">
-					<li class="nav-item">
-						<a class="nav-link active" data-toggle="tab" href="#workplace1">본사</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#workplace2">삼환빌딩</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab"  href="#workplace3">GS 강남타워</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-toggle="tab" href="#workplace3">GS 강서타워</a>
-					</li>
-				</ul>
+					<ul class="nav nav-tabs">
+						<li class="nav-item"><a class="nav-link active" id="wp1"
+							data-toggle="tab" href="#workplace1">재동 본사</a></li>
+						<li class="nav-item"><a class="nav-link" id="wp2"
+							data-toggle="tab" href="#workplace2">삼환빌딩</a></li>
+						<li class="nav-item"><a class="nav-link" id="wp3"
+							data-toggle="tab" href="#workplace3">GS 강남타워</a></li>
+						<li class="nav-item"><a class="nav-link" id="wp4"
+							data-toggle="tab" href="#workplace4">GS 강서타워</a></li>
+					</ul>
 
-				<div class="tab-content">
-					<div class="tab-pane fade show active" id="workplace1">
-						
-						<!-- 달력 -->
-						<div id='calendar'></div>
-						
+					<div class="tab-content">
+						<div id="calendar"></div>
 					</div>
-					<div class="tab-pane fade" id="workplace2">
-						<!-- 달력 -->
-						<div id='calendar'></div>
-					</div>
-					<div class="tab-pane fade" id="workplace3">
-						<!-- 달력 -->
-						<div id='calendar'></div>
-					</div>
-
 				</div>
-			</div>
 
+			</div>
+			<!-- /.container-fluid -->
 		</div>
-		<!-- /.container-fluid -->
-	</div>
 	</div>
 
 </div>
@@ -142,9 +121,20 @@
 
 
 <script type="text/javascript">
-	// 	$(function() {
-	// 		swal('Good job!', 'You clicked the button!', 'success')
-	// 	});
+	$(function() {
+		$("#wp1").click(function() {
+			$("#name").text(" 대시보드 > 재동 본사 ");
+		});
+		$("#wp2").click(function() {
+			$("#name").text(" 대시보드 > 삼환빌딩 ");
+		});
+		$("#wp3").click(function() {
+			$("#name").text(" 대시보드 > GS 강남타워 ");
+		});
+		$("#wp4").click(function() {
+			$("#name").text(" 대시보드 > GS 강서타워 ");
+		});
+	});
 </script>
 </body>
 

@@ -4,9 +4,10 @@
 <!-- MyBatis XML 설정 파일(MyBatis설정의 중앙 허브 역할) -->
 <configuration>
 	<typeAliases>
-		<!-- 사원 및 부서 -->
+		<!-- 사원(사용자, 관리자) 및 부서 -->
 		<typeAlias type="com.gsitm.mrs.user.dto.EmployeeDTO" alias="Employee"/>
 		<typeAlias type="com.gsitm.mrs.user.dto.DepartmentDTO" alias="Department"/>
+		<typeAlias type="com.gsitm.mrs.user.dto.AdminDTO" alias="Admin"/>
 			
 		<!-- 자원 -->
 		<typeAlias type="com.gsitm.mrs.resource.dto.WorkplaceDTO" alias="Workplace"/>
@@ -18,5 +19,9 @@
 		<typeAlias type="com.gsitm.mrs.reservation.dto.ParticipationDTO" alias="Participation"/>
 		<typeAlias type="com.gsitm.mrs.reservation.dto.LeadDepartmentDTO" alias="LeadDepartment"/>
 		<typeAlias type="com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO" alias="BorrowedEquipment"/>
+		<typeAlias type="com.gsitm.mrs.reservation.dto.RefuseDTO" alias="Refuse"/>
+		<typeAlias type="com.gsitm.mrs.reservation.dto.WaitingDTO" alias="Waiting"/>
+		
+		<typeAlias type="java.util.Map" alias="Map"/>
 	</typeAliases>
 </configuration> 
