@@ -65,17 +65,10 @@
 													<c:choose>
 														<c:when test="${list.MANAGERAPPROVAL eq 'W'}">
 															<td> 승인 대기</td>
-														</c:when>	
-														<c:otherwise>
-															<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">승인</span></a></td>
-														</c:otherwise>
-													</c:choose>
-													
-													<c:choose>
-														<c:when test="${list.MANAGERAPPROVAL eq 'W'}">
 															<td> 승인 대기</td>
 														</c:when>	
 														<c:otherwise>
+															<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">승인</span></a></td>
 															<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">반려</span></a></td>
 														</c:otherwise>
 													</c:choose>
