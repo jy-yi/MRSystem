@@ -19,4 +19,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	private SqlSession sqlSession;
 
 	private static String namespace = "com.gsitm.mrs.mappers.ReservationMapper";
+
 }

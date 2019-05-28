@@ -1,5 +1,6 @@
 package com.gsitm.mrs.reservation.service;
 
+
 /**
  * 예약 관련 인터페이스 정의
  * 
@@ -8,5 +9,5 @@ package com.gsitm.mrs.reservation.service;
  * @author : 이종윤
  */
 public interface ReservationService {
-
+	
 }
