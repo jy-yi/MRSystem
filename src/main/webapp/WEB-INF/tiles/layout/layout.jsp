@@ -26,7 +26,7 @@
 	rel="stylesheet">
 
 <!-- Custom styles for this template-->
-<link href="/resources/css/sb-admin-2.min.css" rel="stylesheet">
+<link href="/resources/css/sb-admin-2.css" rel="stylesheet">
 
 <!-- Custom styles for table page -->
 <link href="/resources/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">

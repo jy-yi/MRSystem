@@ -41,7 +41,7 @@ function getUrlParams() {
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-4">GS ITM 회의실 예약 시스템</h1>
                   </div>
                   <form class="user" action="/user/login" method="post">
                     <div class="form-group">
@@ -57,7 +57,7 @@ function getUrlParams() {
                       </div>
                     </div>
                      <hr>
-                    <input type="submit" value="Login" class="btn btn-primary btn-user btn-block">
+                    <input type="submit" value="로그인" class="btn btn-primary btn-user btn-block">
                     <hr>
                   </form>
                 </div>
