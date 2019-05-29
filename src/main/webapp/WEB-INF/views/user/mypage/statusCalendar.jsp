@@ -5,14 +5,17 @@
 
 <!DOCTYPE html>
 <html>
-
+<c:forEach var="resList" items="${reservationInfo}">
+	${resList.name }
+</c:forEach>
 <script>
 	document
 			.addEventListener(
 					'DOMContentLoaded',
 					function() {
+						
 						var calendarEl = document.getElementById('calendar');
-
+						
 						var calendar = new FullCalendar.Calendar(
 								calendarEl,
 								{
@@ -20,8 +23,9 @@
 									defaultDate : '2019-04-12',
 									editable : true,
 									eventLimit : true, // allow "more" link when too many events
+
 									events : [ {
-										title : 'All Day Event',
+										title : 'dddd',
 										start : '2019-04-01'
 									}, {
 										title : 'Long Event',
@@ -124,7 +128,7 @@
 		</div>
 
 		<!-- Content Row -->
-		
+
 		<div class="row">
 
 			<!-- Earnings (Monthly) Card Example -->
@@ -133,7 +137,9 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의 일정</div>
+								<div
+									class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의
+									일정</div>
 
 								<!-- 프로그레스 바 -->
 								<div id="bar" style="display: none">
@@ -152,7 +158,7 @@
 									</div>
 								</div>
 								<!-- 프로그레스 바 끝 -->
-								
+
 							</div>
 
 							<button id="startBtn" class="btn btn-secondary btn-icon-split">
@@ -171,7 +177,7 @@
 	</div>
 
 	<br>
-	
+
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
@@ -191,16 +197,16 @@
 <script type="text/javascript">
 	$("#startBtn").click(function() {
 		var bar = document.getElementById("bar");
-		
-	    if(bar.style.display=='none'){
-	        bar.style.display = 'block';
-	        $("#spanText").text('종료');
-	        
-	    }else{
-	        bar.style.display = 'none';
-	        $("#spanText").text('시작');
-	    }
-		
+
+		if (bar.style.display == 'none') {
+			bar.style.display = 'block';
+			$("#spanText").text('종료');
+
+		} else {
+			bar.style.display = 'none';
+			$("#spanText").text('시작');
+		}
+
 		//$("#bar").toggle('show');
 	});
 </script>

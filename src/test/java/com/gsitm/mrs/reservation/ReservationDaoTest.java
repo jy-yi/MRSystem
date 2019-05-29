@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
+import com.gsitm.mrs.reservation.dto.ReservationDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
@@ -21,6 +22,17 @@ public class ReservationDaoTest {
 	private ReservationDAO dao;
 	
 	Logger logger = Logger.getLogger(ReservationDaoTest.class);
+	
+	/** 승인 대기 목록 조회 테스트 */
+	@Test
+	public void TestReservationInfo() {
+		
+		List<ReservationDTO> list = dao.getReservationInfo("it1228");
+		
+		for (ReservationDTO reservationDTO : list) {
+			logger.info(reservationDTO);
+		}
+	}
 	
 	/** 승인 대기 목록 조회 테스트 */
 	@Test

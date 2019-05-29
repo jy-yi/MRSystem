@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
  * 예약 관련 프로젝트 Controller @RequestMapping("/reservation") URI 매칭
@@ -36,9 +39,22 @@ public class ResevationController {
 	private ReservationService service;
 	
 	@RequestMapping(value = "/statusCalendar", method = RequestMethod.GET)
-	public String statusCalendar(Model model) {
+	public String statusCalendar(HttpSession session, String employeeNo, Model model) {
 		
 		logger.info("(사용자) 마이페이지 - 예약 현황 달력");
+		
+		Object user = session.getAttribute("login");
+		EmployeeDTO employee = (EmployeeDTO) user;
+		
+		employeeNo = employee.getEmployeeNo();
+		logger.info(employeeNo);
+		
+		List<ReservationDTO> reservationInfo = service.getReservationInfo(employeeNo);
+		
+		logger.info(reservationInfo+"");
+		logger.info(reservationInfo.toString());
+		
+		model.addAttribute("reservationInfo", reservationInfo);
 		
 		return "user/mypage/statusCalendar";
 	}
