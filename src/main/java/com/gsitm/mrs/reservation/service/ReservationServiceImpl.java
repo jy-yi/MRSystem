@@ -23,12 +23,17 @@ public class ReservationServiceImpl implements ReservationService {
 	@Inject
 	private ReservationDAO dao;
 	
+	/* ------------- 사용자 ------------- */
+	
 	/** 마이페이지 예약현황 조회 */
 	@Override
 	public List<ReservationDTO> getReservationInfo(String employeeNo) {
 		return dao.getReservationInfo(employeeNo);
 	}
 
+	
+	/* ------------- 관리자 ------------- */
+	
 	/** 승인 대기 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getWaitingList() {

@@ -14,11 +14,11 @@ public class EquipmentDTO {
 	private int equipmentNo;
 	private int roomNo;
 	private String name;
-	private Date buyDate;
+	private String buyDate;
 
 	public EquipmentDTO() {}
 
-	public EquipmentDTO(int equipmentNo, int roomNo, String name, Date buyDate) {
+	public EquipmentDTO(int equipmentNo, int roomNo, String name, String buyDate) {
 		this.equipmentNo = equipmentNo;
 		this.roomNo = roomNo;
 		this.name = name;
@@ -49,11 +49,11 @@ public class EquipmentDTO {
 		this.name = name;
 	}
 
-	public Date getBuyDate() {
+	public String getBuyDate() {
 		return buyDate;
 	}
 
-	public void setBuyDate(Date buyDate) {
+	public void setBuyDate(String buyDate) {
 		this.buyDate = buyDate;
 	}
 
