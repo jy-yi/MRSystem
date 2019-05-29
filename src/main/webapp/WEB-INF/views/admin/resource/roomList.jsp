@@ -19,13 +19,6 @@
 			</h1>
 		</div>
 
-		<div class="row">
-			<div class="card-body py-2 text-right">
-				<span class="pull-right text-lg"> 본사 </span>
-
-			</div>
-		</div>
-
 		<!-- Content Row -->
 		<div class="row">
 
@@ -52,42 +45,184 @@
 						<div class="col-xl-4 col-md-4 mb-4">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
 								</div>
-								<div class="card-body">The styling for this basic card
-									example is created by using default Bootstrap utility classes.
-									By using utility classes, the style of the card component can
-									be easily modified with no need for any custom CSS!</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
 							</div>
 						</div>
 						<div class="col-xl-4 col-md-4 mb-4">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
 								</div>
-								<div class="card-body">The styling for this basic card
-									example is created by using default Bootstrap utility classes.
-									By using utility classes, the style of the card component can
-									be easily modified with no need for any custom CSS!</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
 							</div>
 						</div>
 						<div class="col-xl-4 col-md-4 mb-4">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">Basic Card Example</h6>
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
 								</div>
-								<div class="card-body">The styling for this basic card
-									example is created by using default Bootstrap utility classes.
-									By using utility classes, the style of the card component can
-									be easily modified with no need for any custom CSS!</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 mb-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
+								</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="tab-pane fade" id="asd">
-					<p>Nunc vitae turpis id nibh sodales commodo et non augue.
-						Proin fringilla ex nunc. Integer tincidunt risus ut facilisis
-						tristique.</p>
+					<div class="row">
+						<div class="col-xl-4 col-md-4 mb-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
+								</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 mb-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
+								</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 mb-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
+								</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xl-4 col-md-4 mb-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
+										<span style="float:right"> 
+											<i class="fas fa-edit"></i>
+											<i class="fas fa-trash-alt"></i> 
+										</span> 
+									</h5>
+									
+								</div>
+								<div class="card-body">
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<p>
+									
+									<div>위치 : 본사 2층</div>
+									<div>수용 인원 : 20명</div>
+									<div>비치 물품 : 빔프로젝터 노트북</div>
+									<div>네트워크 : 사용 가능</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="tab-pane fade" id="zxc">
 					<p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis
@@ -107,12 +242,36 @@
 
 <!-- Modal -->
 <jsp:include page="include/addRoom.jsp" />
-
+<jsp:include page="include/editRoom.jsp" />
 
 <script type="text/javascript">
-	// 	$(function() {
-	// 		swal('Good job!', 'You clicked the button!', 'success')
-	// 	});
+		$(function() {
+			$('.fa-edit').click(function(){
+				$('#editRoomModal').modal("show");
+			});
+			
+			/* 휴지통 아이콘 클릭 */
+			$(".fa-trash-alt").click(function() {
+				Swal.fire({
+					  title: 'Are you sure?',
+					  text: "You won't be able to revert this!",
+					  type: 'warning',
+					  showCancelButton: true,
+					  confirmButtonColor: '#3085d6',
+					  cancelButtonColor: '#d33',
+					  confirmButtonText: 'Yes, delete it!'
+					}).then((result) => {
+					  if (result.value) {
+					    Swal.fire(
+					      'Deleted!',
+					      'Your file has been deleted.',
+					      'success'
+					    )
+					  }
+					});
+				
+			});
+		});
 </script>
 </body>
 

@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
-<!-- Add Work place Modal-->
-<div class="modal fade" id="addRoomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Edit Work place Modal-->
+<div class="modal fade" id="editRoomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">회의실 추가</h5>
+				<h5 class="modal-title" id="exampleModalLabel">회의실 수정</h5>
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>
 			
@@ -97,7 +97,7 @@
 			
 			<div class="modal-footer">
 				<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-				<a class="btn btn-primary" href="#">추가</a>
+				<a class="btn btn-primary" href="#">수정</a>
 			</div>
 		</div>
 	</div>
