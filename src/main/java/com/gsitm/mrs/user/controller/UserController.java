@@ -87,15 +87,17 @@ public class UserController {
 				response.addCookie(loginCookie);
 			}
 
-			empNoCookie.setPath("/");
-			empNoCookie.setMaxAge(0);
+			if (empNoCookie != null) {
+				empNoCookie.setPath("/");
+				empNoCookie.setMaxAge(0);
+				response.addCookie(empNoCookie);
+			}
 
-			empNameCookie.setPath("/");
-			empNameCookie.setMaxAge(0);
-			
-			response.addCookie(empNoCookie);
-			response.addCookie(empNameCookie);
-			
+			if (empNameCookie != null) {
+				empNameCookie.setPath("/");
+				empNameCookie.setMaxAge(0);
+				response.addCookie(empNameCookie);
+			}	
 		}
 
 		return "redirect:/";
