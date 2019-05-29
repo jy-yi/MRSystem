@@ -37,4 +37,16 @@ public class ResourceDAOImpl implements ResourceDAO {
 	public List<Map<String, Object>> getEquipmentList() {
 		return sqlSession.selectList(namespace + ".getEquipmentList");
 	}
+
+	/** 지사 추가 */
+	@Override
+	public void addWorkplace(WorkplaceDTO workplaceDTO) {
+		sqlSession.insert(namespace + ".addWorkplace", workplaceDTO);		
+	}
+
+	/** 지사 수정 */
+	@Override
+	public void editWorkplace(WorkplaceDTO workplaceDTO) {
+		sqlSession.update(namespace + ".editWorkplace", workplaceDTO);
+	}
 }

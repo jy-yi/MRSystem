@@ -47,6 +47,24 @@ public class ResourceDaoTest {
 		}
 		
 	}
+	
+	/** 지사 추가 테스트 */
+	@Test
+	public void TestAddWorkplace() {
 
+		dao.addWorkplace(new WorkplaceDTO(1, "GS SHOP", "서울특별시 영등포구 문래동6가 선유로 75"));
+		
+		logger.info("지사 추가 완료!");
+		
+	}
 
+	/** 지사 수정 테스트 */
+	@Test
+	public void TestEditWorkplace() {
+
+		dao.editWorkplace(new WorkplaceDTO(7, "수정수정", "수정"));
+		
+		logger.info("지사 수정 완료!");
+		
+	}
 }

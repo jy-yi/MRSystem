@@ -22,11 +22,11 @@ public class WorkplaceDTO {
 		this.address = address;
 	}
 
-	public int getWorkplace() {
+	public int getWorkplaceNo() {
 		return workplaceNo;
 	}
 
-	public void setWorkplace(int workplaceNo) {
+	public void setWorkplaceNo(int workplaceNo) {
 		this.workplaceNo = workplaceNo;
 	}
 

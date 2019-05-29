@@ -58,11 +58,12 @@
 										<c:otherwise>
 											<c:forEach items="${workplaceList}" var="list" varStatus="status">
 												<tr>
-													<td> ${status.count} </td>
-													<td> ${list.name}</td>
+													<td> ${status.count}</td>
+													<td> ${list.name} </td>
 													<td> ${list.address}</td>
-													<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-													<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
+													<td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editWorkplaceModal" id="editBtn" 
+															data-workplaceNo="${list.workplaceNo}" data-workplaceName="${list.name}" data-workplaceAddress="${list.address}"> <span class="text">수정</span> </a></td>
+													<td><a href="#" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
 												</tr>
 											</c:forEach>
 										</c:otherwise>
@@ -88,13 +89,8 @@
 
 <!-- Modal -->
 <jsp:include page="include/addWorkplace.jsp" />
+<jsp:include page="include/editWorkplace.jsp" />
 
-
-<script type="text/javascript">
-// 	$(function() {
-// 		swal('Good job!', 'You clicked the button!', 'success')
-// 	});
-</script>
 </body>
 
 </html>

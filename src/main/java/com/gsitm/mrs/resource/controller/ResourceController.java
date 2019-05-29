@@ -32,6 +32,12 @@ public class ResourceController {
 	@Inject
 	private ResourceService service;
 	
+	/**
+	 * 지사 관리 페이지 
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/workplaceList", method = RequestMethod.GET)
 	public String workplaceList(Model model) {
 		
@@ -44,6 +50,36 @@ public class ResourceController {
 		return "admin/resource/workplaceList";
 	}
 	
+	/**
+	 * 지사 추가
+	 * 
+	 * @param workplaceDTO 추가할 지사 객체
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/addWorkplace", method = RequestMethod.POST)
+	public String addWorkplace(WorkplaceDTO workplaceDTO) throws Exception {
+		
+		service.addWorkplace(workplaceDTO);
+		
+		return "redirect:/resource/workplaceList";
+	}
+	
+	/**
+	 * 지사 수정 
+	 * 
+	 * @param workplaceDTO
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/editWorkplace", method = RequestMethod.POST)
+	public String editWorkplace(WorkplaceDTO workplaceDTO) throws Exception {
+		
+		service.editWorkplace(workplaceDTO);
+		
+		return "redirect:/resource/workplaceList";
+	}
+
 	@RequestMapping(value = "/roomList", method = RequestMethod.GET)
 	public String roomList() {
 		
@@ -52,6 +88,12 @@ public class ResourceController {
 		return "admin/resource/roomList";
 	}
 
+	/**
+	 * 비품 관리 페이지
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/equipmentList", method = RequestMethod.GET)
 	public String equipmentList(Model model) {
 		

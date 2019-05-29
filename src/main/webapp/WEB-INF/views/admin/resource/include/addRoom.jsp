@@ -102,3 +102,10 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	/* 모달 사라졌을 때 입력 값 초기화 */
+	$('.modal').on('hidden.bs.modal', function (e) {
+	  $(this).find('form')[0].reset()
+	});
+</script>

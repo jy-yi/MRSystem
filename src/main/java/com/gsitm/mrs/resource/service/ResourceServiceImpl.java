@@ -35,4 +35,16 @@ public class ResourceServiceImpl implements ResourceService {
 		return dao.getEquipmentList();
 	}
 
+	/** 지사 추가 */
+	@Override
+	public void addWorkplace(WorkplaceDTO workplaceDTO) {
+		dao.addWorkplace(workplaceDTO);
+	}
+
+	/** 지사 수정 */
+	@Override
+	public void editWorkplace(WorkplaceDTO workplaceDTO) {
+		dao.editWorkplace(workplaceDTO);
+	}
+
 }

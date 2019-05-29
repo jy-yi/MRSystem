@@ -20,5 +20,11 @@ public interface ResourceDAO {
 	
 	/** 비품 목록 조회 */
 	public List<Map<String, Object>> getEquipmentList();
+	
+	/** 지사 추가 */
+	public void addWorkplace(WorkplaceDTO workplaceDTO);
+	
+	/** 지사 수정 */
+	public void editWorkplace(WorkplaceDTO workplaceDTO);
 
 }
