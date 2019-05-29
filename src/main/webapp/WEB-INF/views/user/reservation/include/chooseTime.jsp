@@ -64,6 +64,25 @@
 	 .modal-body{
 	 	margin-bottom: 15px;
 	 }
+	 
+	 .modal{
+	 	text-align: center;
+	 }
+	 
+	 @media screen and (min-width: 768px) { 
+        .modal:before {
+                display: inline-block;
+                vertical-align: middle;
+                content: " ";
+                height: 100%;
+        }
+	}
+	 
+	.modal-dialog {
+	        display: inline-block;
+	        text-align: left;
+	        vertical-align: middle;
+	}
 </style>
 
 <!-- Add Work place Modal-->
@@ -79,35 +98,35 @@
 		        <div id="amTimeSchedule">
 		        	<span>오전</span>
 		        	<ul id="amTimeScheduleList">
-		        		<li><a><span class="can-reserve-time">9:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">9:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">10:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">10:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">11:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">11:30</span></a></li>
+		        		<li><span class="can-reserve-time">9:00</span></li>
+		        		<li><span class="can-reserve-time">9:30</span></li>
+		        		<li><span class="can-reserve-time">10:00</span></li>
+		        		<li><span class="can-reserve-time">10:30</span></li>
+		        		<li><span class="can-reserve-time">11:00</span></li>
+		        		<li><span class="can-reserve-time">11:30</span></li>
 		        	</ul>
 		        </div>
 		        <div id="pmTimeSchedule">
 		        	<span>오후</span>
 		        	<ul id="pmTimeScheduleList">
-		        		<li><a><span class="can-reserve-time">12:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">12:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">13:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">13:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">14:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">14:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">15:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">15:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">16:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">16:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">17:00</span></a></li>
-		        		<li><a><span class="can-reserve-time">17:30</span></a></li>
-		        		<li><a><span class="can-reserve-time">18:00</span></a></li>
+		        		<li><span class="can-reserve-time">12:00</span></li>
+		        		<li><span class="can-reserve-time">12:30</span></li>
+		        		<li><span class="can-reserve-time">13:00</span></li>
+		        		<li><span class="can-reserve-time">13:30</span></li>
+		        		<li><span class="can-reserve-time">14:00</span></li>
+		        		<li><span class="can-reserve-time">14:30</span></li>
+		        		<li><span class="can-reserve-time">15:00</span></li>
+		        		<li><span class="can-reserve-time">15:30</span></li>
+		        		<li><span class="can-reserve-time">16:00</span></li>
+		        		<li><span class="can-reserve-time">16:30</span></li>
+		        		<li><span class="can-reserve-time">17:00</span></li>
+		        		<li><span class="can-reserve-time">17:30</span></li>
+		        		<li><span class="can-reserve-time">18:00</span></li>
 		        	</ul>
 		        </div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-secondary btn-md" id="choose-complete-btn" type="button" data-dismiss="modal">예약시간 선택</button>
+				<button class="btn btn-secondary btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled>예약시간 선택</button>
 			</div>
 		</div>
 	</div>

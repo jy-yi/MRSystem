@@ -706,7 +706,7 @@ Docs & License: https://fullcalendar.io/
         classes.unshift('fc-day', theme.getClass('widgetContent'));
         return '<td class="' + classes.join(' ') + '"' +
             (isDateValid ?
-                '  data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '"' :
+                '  data-date="' + dateEnv.formatIso(date, { omitTime: true }) + '" " data-day="'+DAY_IDS[date.getUTCDay()]+'"' :
                 '') +
             (otherAttrs ?
                 ' ' + otherAttrs :

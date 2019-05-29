@@ -71,3 +71,11 @@ Docs & License: https://fullcalendar.io/
  .fc-day-number:hover{
  	cursor: pointer;
  }
+ 
+ .fc-past{
+ 	color: lightgrey;
+ }
+ 
+ .fc-past:hover{
+ 	cursor: none;
+ }
