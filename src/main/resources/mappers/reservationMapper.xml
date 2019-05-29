@@ -10,6 +10,8 @@
 		FROM Reservation
 		WHERE emp_no=#{employeeNo}
 	</select>
+	
+	<!-- TO_CHAR("start", 'YYYY-MM-DD') as startDate,  TO_CHAR("end", 'YYYY-MM-DD') as endDate-->
 
 	<!-- 승인 대기 목록 조회 -->
 	<select id="getWaitingList" resultType="Map">

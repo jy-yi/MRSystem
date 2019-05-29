@@ -52,7 +52,6 @@ public class ResevationController {
 		List<ReservationDTO> reservationInfo = service.getReservationInfo(employeeNo);
 		
 		logger.info(reservationInfo+"");
-		logger.info(reservationInfo.toString());
 		
 		model.addAttribute("reservationInfo", reservationInfo);
 		

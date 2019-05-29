@@ -5,82 +5,53 @@
 
 <!DOCTYPE html>
 <html>
-<c:forEach var="resList" items="${reservationInfo}">
-	${resList.name }
+
+<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+	${status.count }
+	<p>
+	<c:if test="${status.count eq 1}">
+		${list.name }<p>
+		${list.start }<p>
+		${list.end }<p>
+	</c:if>
+<p><p>
+	<c:if test="${status.count eq 2}">
+		${list.name }<p>
+		${list.start }<p>
+		${list.end }<p>
+	</c:if> 
 </c:forEach>
 <script>
-	document
-			.addEventListener(
-					'DOMContentLoaded',
-					function() {
-						
+	document.addEventListener('DOMContentLoaded',function() {
+					 
 						var calendarEl = document.getElementById('calendar');
-						
+
 						var calendar = new FullCalendar.Calendar(
 								calendarEl,
 								{
 									plugins : [ 'interaction', 'dayGrid' ],
-									defaultDate : '2019-04-12',
+									defaultDate : new Date(),
 									editable : true,
 									eventLimit : true, // allow "more" link when too many events
 
-									events : [ {
-										title : 'dddd',
-										start : '2019-04-01'
-									}, {
-										title : 'Long Event',
-										start : '2019-04-07',
-										end : '2019-04-10'
-									}, {
-										groupId : 999,
-										title : 'Repeating Event',
-										start : '2019-04-09T16:00:00'
-									}, {
-										groupId : 999,
-										title : 'Repeating Event',
-										start : '2019-04-16T16:00:00',
-										end : '2019-04-16T18:00:00'
-									}, {
-										title : 'Conference',
+									events : [
+										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+											{ 
+												title : '${list.name }',
+												start : '${list.start }',
+												end : '${list.end}'
+											},
+										</c:forEach>
+									{
+										title : 'aa',
 										start : '2019-04-11',
 										end : '2019-04-13'
-									}, {
-										title : 'Meeting',
-										start : '2019-04-12T10:30:00',
-										end : '2019-04-12T12:30:00'
 									}, {
 										title : 'Lunch',
 										start : '2019-04-12T12:00:00'
 									}, {
 										title : 'Meeting',
 										start : '2019-04-12T14:30:00'
-									}, {
-										title : 'Happy Hour',
-										start : '2019-04-12T17:30:00'
-									}, {
-										title : 'Dinner',
-										start : '2019-04-12T20:00:00'
-									}, {
-										title : 'Birthday Party',
-										start : '2019-04-13T07:00:00'
-									}, {
-										title : 'Birthday Party',
-										start : '2019-04-13T10:00:00'
-									}, {
-										title : 'Birthday Party2',
-										start : '2019-04-13T09:30:00'
-									}, {
-										title : 'Birthday Party',
-										start : '2019-04-13T08:00:00'
-									}, {
-										title : 'Birthday Party',
-										start : '2019-04-13T11:00:00'
-									}, {
-										title : 'Birthday Party',
-										start : '2019-04-13T18:00:00'
-									}, {
-										title : 'Birthday Party22224',
-										start : '2019-04-13T21:00:00'
 									}, {
 										title : 'Click for Google',
 										url : 'http://google.com/',
