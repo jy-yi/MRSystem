@@ -1,7 +1,9 @@
 package com.gsitm.mrs.resource.dao;
 
 import java.util.List;
+import java.util.Map;
 
+import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -15,5 +17,8 @@ public interface ResourceDAO {
 	
 	/** 지사 목록 조회 */
 	public List<WorkplaceDTO> getWorkplaceList();
+	
+	/** 비품 목록 조회 */
+	public List<Map<String, Object>> getEquipmentList();
 
 }

@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gsitm.mrs.resource.dao.ResourceDAO;
+import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -23,9 +24,9 @@ public class ResourceDaoTest {
 	
 	Logger logger = Logger.getLogger(ResourceDaoTest.class);
 	
-	/** 승인 대기 목록 조회 테스트 */
+	/** 지사 목록 조회 테스트 */
 	@Test
-	public void TestWaitingList() {
+	public void TestWorkplaceList() {
 		
 		List<WorkplaceDTO> list = dao.getWorkplaceList();
 		
@@ -34,5 +35,18 @@ public class ResourceDaoTest {
 		}
 		
 	}
+	
+	/** 비품 목록 조회 테스트 */
+	@Test
+	public void TestEquipmentList() {
+		
+		List<Map<String, Object>> list = dao.getEquipmentList();
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+		
+	}
+
 
 }

@@ -1,6 +1,7 @@
 package com.gsitm.mrs.resource.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -52,9 +53,13 @@ public class ResourceController {
 	}
 
 	@RequestMapping(value = "/equipmentList", method = RequestMethod.GET)
-	public String equipmentList() {
+	public String equipmentList(Model model) {
 		
 		logger.info("(관리자) 비품 관리");
+		
+		List<Map<String, Object>> equipmentList = service.getEquipmentList();
+		
+		model.addAttribute("equipmentList", equipmentList);
 		
 		return "admin/resource/equipmentList";
 	}

@@ -1,6 +1,7 @@
 package com.gsitm.mrs.resource.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,12 @@ public class ResourceServiceImpl implements ResourceService {
 	@Override
 	public List<WorkplaceDTO> getWorkplaceList() {
 		return dao.getWorkplaceList();
+	}
+
+	/** 비품 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEquipmentList() {
+		return dao.getEquipmentList();
 	}
 
 }

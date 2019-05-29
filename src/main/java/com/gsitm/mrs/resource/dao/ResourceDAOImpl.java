@@ -1,12 +1,14 @@
 package com.gsitm.mrs.resource.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -28,5 +30,11 @@ public class ResourceDAOImpl implements ResourceDAO {
 	@Override
 	public List<WorkplaceDTO> getWorkplaceList() {
 		return sqlSession.selectList(namespace + ".getWorkplaceList");
+	}
+
+	/** 비품 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEquipmentList() {
+		return sqlSession.selectList(namespace + ".getEquipmentList");
 	}
 }

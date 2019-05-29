@@ -11,9 +11,11 @@
 	</select>
 	
 	<!-- 비품 목록 조회 -->
-	<select id="getEquipmentList" resultType="Equipment">
-		SELECT equip_no as equipmentNo, room_no as roomNo, name, buy_date as buyDate 
-		FROM Equipment
+	<select id="getEquipmentList" resultType="Map">
+		SELECT e.equip_no as equipNo, r.name as roomName, e.name as equipName, TO_CHAR(e.buy_date, 'YYYY-MM-DD') as buyDate 
+		FROM Equipment e, Room r
+		WHERE e.room_no = r.room_no
+		ORDER BY e.name, r.room_no
 	</select>
 	
 </mapper>

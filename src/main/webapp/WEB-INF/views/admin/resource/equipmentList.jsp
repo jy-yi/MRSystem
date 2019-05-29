@@ -40,7 +40,7 @@
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+							<table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
 								<thead>
 									<tr>
 										<th>No</th>
@@ -53,28 +53,23 @@
 								</thead>
 
 								<tbody>
-									<tr>
-										<td>1</td>
-										<td>빔 프로젝트</td>
-										<td>2019-05-28</td>
-										<td>몰디브 어쩌고 저쩌고 ㄴ</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
-									<tr>
-										<td>2</td>
-										<td>노트북</td>
-										<td>2019-05-28</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
-									<tr>
-										<td>3</td>
-										<td>화이트보드</td>
-										<td>2019-05-28</td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-										<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
-									</tr>
+									<c:choose>
+										<c:when test="${empty equipmentList}">
+											<td colspan="9" class="text-center"> 승인 대기 중인 예약이 존재하지 않습니다.</td>
+										</c:when>
+										<c:otherwise>
+											<c:forEach items="${equipmentList}" var="list" varStatus="status">
+												<tr>
+													<td>${status.count }</td>
+													<td>${list.EQUIPNAME }</td>
+													<td>${list.BUYDATE }</td>
+													<td>${list.ROOMNAME }</td>
+													<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
+													<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
 								</tbody>
 							</table>
 						</div>
