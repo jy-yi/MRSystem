@@ -37,7 +37,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 	/** 회의실 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getRoomList(int workplaceNo) {
-		return sqlSession.selectOne(namespace + ".getRoomList", workplaceNo);
+		return sqlSession.selectList(namespace + ".getRoomList", workplaceNo);
 	}
 	
 	/** 회의실 정보 조회 */
@@ -45,7 +45,13 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public Map<String, Object> getRoomInfo(int roomNo) {
 		return sqlSession.selectOne(namespace + ".getRoomInfo", roomNo);
 	}
-	
+
+	/** 회의실 비품 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEquipmentList(int roomNo) {
+		return sqlSession.selectList(namespace + ".getEquipmentList", roomNo);
+	}
+
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

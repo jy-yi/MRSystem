@@ -46,4 +46,24 @@ public class ReservationDaoTest {
 		
 	}
 
+	/** 회의실 정보 조회 테스트 */
+	@Test
+	public void TestRoomInfo() {
+		
+		Map<String, Object> room=dao.getRoomInfo(1);
+		
+		logger.info(room);
+		
+	}
+	
+	/** 회의실 목록 조회 테스트 */
+	@Test
+	public void TestRoomList() {
+		
+		List<Map<String, Object>> list=dao.getRoomList(1);
+		
+		logger.info(dao.getRoomInfo(1));
+		
+	}
+	
 }

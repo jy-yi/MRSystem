@@ -40,7 +40,7 @@
 								<div class="card-header py-3">
 									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
 										<span style="float:right"> 
-											<a href="/reservation/shortTerm_chooseDate/${roomNo}" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
+											<a href="/reservation/shortTerm_chooseDate/1" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
 											<a href="#" class="btn btn-primary"> <span class="text">장기 예약</span> </a>
 										</span> 
 									</h5>

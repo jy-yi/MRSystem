@@ -132,9 +132,13 @@ public class ResevationController {
 	@RequestMapping(value = "/shortTerm_chooseDate/{roomNo}", method = RequestMethod.GET)
 	public String chooseDate(@PathVariable int roomNo, Model model) {
 		
-		logger.info("(사용자) 예약-단기 예약 일자 선택");
+		//l/ogger.info("(사용자) 예약-단기 예약 일자 선택");
 		
-		model.addAttribute("roomInfo", service.getRoomInfo(roomNo));
+		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
+		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
+		
+		model.addAttribute("roomInfo", roomInfo);
+		model.addAttribute("equipmentList", equipmentList);
 		
 		return "user/reservation/shortTerm_chooseDate";
 	}
