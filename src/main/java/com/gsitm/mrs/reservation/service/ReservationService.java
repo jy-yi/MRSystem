@@ -14,13 +14,19 @@ import com.gsitm.mrs.reservation.dto.ReservationDTO;
  */
 public interface ReservationService {
 	
+	/* ------------- 사용자 ------------- */
+	
 	/** 마이페이지 예약현황 조회 */
 	public List<ReservationDTO> getReservationInfo(String employeeNo);
+	
+	
+	/** 회의실 정보 조회 */
+	public ReservationDTO getRoomInfo(int roomNo);
+
+	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
 	public List<Map<String, Object>> getWaitingList();
 	
-	/** 회의실 정보 조회 */
-	public ReservationDTO getRoomInfo(int roomNo);
 
 }

@@ -16,6 +16,9 @@ import com.gsitm.mrs.reservation.dto.ReservationDTO;
  * @Package : com.gsitm.mrs.reservation.dao
  * @date : 2019. 5. 8.
  * @author : 이종윤
+ * 
+ * @date : 2019. 5. 29.
+ * @author : 김재율
  */
 @Repository
 public class ReservationDAOImpl implements ReservationDAO {
@@ -31,6 +34,13 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace +".getReservationInfo", employeeNo);
 	}
 	
+	/** 회의실 정보 조회 */
+	@Override
+	public ReservationDTO getRoomInfo(int roomNo) {
+		return sqlSession.selectOne(namespace + ".getRoomInfo", roomNo);
+	}
+	
+	/* ------------- 관리자 ------------- */
 
 	/** 승인 대기 목록 조회 */
 	@Override
@@ -38,9 +48,4 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getWaitingList");
 	}
 
-	/** 회의실 정보 조회 */
-	@Override
-	public ReservationDTO getRoomInfo(int roomNo) {
-		return sqlSession.selectOne(namespace + ".getRoomInfo", roomNo);
-	}
 }

@@ -5,22 +5,6 @@
 
 <!DOCTYPE html>
 <html>
-
-<c:forEach items="${reservationInfo}" var="list" varStatus="status">
-	${status.count }
-	<p>
-	<c:if test="${status.count eq 1}">
-		${list.name }<p>
-		${list.start }<p>
-		${list.end }<p>
-	</c:if>
-<p><p>
-	<c:if test="${status.count eq 2}">
-		${list.name }<p>
-		${list.start }<p>
-		${list.end }<p>
-	</c:if> 
-</c:forEach>
 <script>
 	document.addEventListener('DOMContentLoaded',function() {
 					 
@@ -38,8 +22,8 @@
 										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
 											{ 
 												title : '${list.name }',
-												start : '2019-05-28',
-												end : '2019-05-29'
+												start : '${list.startDate }',
+												end : '${list.endDate}'
 											},
 										</c:forEach>
 									{

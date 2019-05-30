@@ -6,7 +6,7 @@
 
 	<!-- 마이페이지 예약현황 조회 -->
 	<select id="getReservationInfo" resultType="Reservation">
-		SELECT res_no as reservationNo, emp_no as employeeNo, room_no as roomNo, name, purpose, "start", "end", snack_want as snackWant, status
+		SELECT res_no as reservationNo, emp_no as employeeNo, room_no as roomNo, name, purpose, TO_CHAR(start_date, 'YYYY-MM-DD') as startDate, TO_CHAR(end_date, 'YYYY-MM-DD') as endDate, snack_want as snackWant, status
 		FROM Reservation
 		WHERE emp_no=#{employeeNo}
 	</select>
