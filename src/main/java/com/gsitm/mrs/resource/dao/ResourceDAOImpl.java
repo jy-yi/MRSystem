@@ -49,4 +49,10 @@ public class ResourceDAOImpl implements ResourceDAO {
 	public void editWorkplace(WorkplaceDTO workplaceDTO) {
 		sqlSession.update(namespace + ".editWorkplace", workplaceDTO);
 	}
+
+	/** 비품 추가*/
+	@Override
+	public void addEquipment(EquipmentDTO equipmentDTO) {
+		sqlSession.insert(namespace + ".addEquipment", equipmentDTO);		
+	}
 }

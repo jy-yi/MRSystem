@@ -70,4 +70,14 @@ public class ResourceDaoTest {
 		logger.info("지사 수정 완료!");
 		
 	}
+	
+	/** 비품 추가 테스트 */
+	@Test
+	public void TestAddEquipment() {
+
+		dao.addEquipment(new EquipmentDTO(1, 1, "에어컨", "2019-05-24"));
+		
+		logger.info("비품 추가 완료!");
+		
+	}
 }

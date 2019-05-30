@@ -32,4 +32,10 @@
 		ORDER BY e.name, r.room_no
 	</select>
 	
+	<!-- 비품 추가 -->
+	<insert id="addEquipment">
+		INSERT INTO Equipment(equip_no, room_no, name, buy_date) 
+		VALUES (Equipment_Seq.nextVal, 1, #{name}, #{buyDate})
+	</insert>
+	
 </mapper>
