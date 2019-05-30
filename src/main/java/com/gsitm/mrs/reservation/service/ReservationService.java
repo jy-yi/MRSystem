@@ -20,9 +20,14 @@ public interface ReservationService {
 	public List<ReservationDTO> getReservationInfo(String employeeNo);
 	
 	
+	/** 회의실 정보 조회 */
+	public ReservationDTO getRoomInfo(int roomNo);
+
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
 	public List<Map<String, Object>> getWaitingList();
+	
 
 }

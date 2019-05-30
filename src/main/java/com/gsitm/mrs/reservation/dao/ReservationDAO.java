@@ -20,6 +20,9 @@ public interface ReservationDAO {
 	/** 마이페이지 예약현황 조회 */
 	public List<ReservationDTO> getReservationInfo(String employeeNo);
 	
+	/** 회의실 정보 조회 */
+	public ReservationDTO getRoomInfo(int roomNo);
+	
 	
 	/* ------------- 관리자 ------------- */
 	

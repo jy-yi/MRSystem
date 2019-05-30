@@ -31,15 +31,19 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getReservationInfo(employeeNo);
 	}
 
+	/** 회의실 정보 조회 */
+	@Override
+	public ReservationDTO getRoomInfo(int roomNo) {
+		return dao.getRoomInfo(roomNo);
+	}
 	
 	/* ------------- 관리자 ------------- */
+	
 	
 	/** 승인 대기 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getWaitingList() {
 		return dao.getWaitingList();
 	}
-
-	
 
 }

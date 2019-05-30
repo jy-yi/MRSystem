@@ -38,4 +38,10 @@
 		              OR w.admin_approval = 'W' ) 
 	</select>
 	
+	<!-- 회의실 정보 조회 -->
+	<select id="getRoomInfo" parameterType="int" resultType="Room">
+		SELECT *
+		FROM room
+		WHERE room_no=#{roomNo}
+	</select>
 </mapper>
