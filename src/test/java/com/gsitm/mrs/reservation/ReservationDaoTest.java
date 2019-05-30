@@ -23,7 +23,7 @@ public class ReservationDaoTest {
 	
 	Logger logger = Logger.getLogger(ReservationDaoTest.class);
 	
-	/** 승인 대기 목록 조회 테스트 */
+	/** 예약 목록 조회 테스트 */
 	@Test
 	public void TestReservationInfo() {
 		
