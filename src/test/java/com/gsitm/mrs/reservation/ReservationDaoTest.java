@@ -27,7 +27,7 @@ public class ReservationDaoTest {
 	@Test
 	public void TestReservationInfo() {
 		
-		List<ReservationDTO> list = dao.getReservationInfo("it1228");
+		List<ReservationDTO> list = dao.getReservationInfo("it1226");
 		
 		for (ReservationDTO reservationDTO : list) {
 			logger.info(reservationDTO);

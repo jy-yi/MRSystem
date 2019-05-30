@@ -21,8 +21,10 @@ public interface ReservationService {
 	
 	
 	/** 회의실 정보 조회 */
-	public List<Map<String, Object>> getRoomInfo(int roomNo);
+	public Map<String, Object> getRoomInfo(int roomNo);
 
+	/** 회의실 목록 조회 */
+	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	
 	/* ------------- 관리자 ------------- */
 	

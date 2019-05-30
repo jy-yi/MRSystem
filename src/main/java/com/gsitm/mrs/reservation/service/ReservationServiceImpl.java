@@ -33,10 +33,17 @@ public class ReservationServiceImpl implements ReservationService {
 
 	/** 회의실 정보 조회 */
 	@Override
-	public List<Map<String, Object>> getRoomInfo(int roomNo) {
+	public Map<String, Object> getRoomInfo(int roomNo) {
 		return dao.getRoomInfo(roomNo);
 	}
 	
+
+	/** 회의실 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getRoomList(int workplaceNo) {
+		return dao.getRoomList(workplaceNo);
+	}
+
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
