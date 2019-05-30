@@ -73,12 +73,14 @@
 					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">옵션 선택</h4>
 						<hr>
-						<form action="${pageContext.request.contextPath}/reservation/shortTerm_chooseDate" id="option_form">
-							<!-- <input type="text" name="name" value=""/>-->
+						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form">
+							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
+							<input type="hidden" name="startDate" value="1">
+							<input type="hidden" name="endDate" value="">
 							<c:forEach var="equip" items="${equipmentList}" >
 								<input type="checkbox" name="equip_${equip.EQUIP_NO}" value="${equip.EQUIP_NO}"><span class="font-checkbox">${equip.NAME} 대여</span><br>
 							</c:forEach>
-							
+								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
 					</div>
 					<button class="btn btn-disabled" id="nextBtn" data-toggle="modal" data-target="#chooseTimeModal" disabled>다음 단계</button>
@@ -259,8 +261,12 @@
 	});
 	
 	// 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
-	$("#nextBtn").on("mouseover",function(){
-		location.href="/";
+	$("#nextBtn").on("click",function(){
+		// startDate와 endDate 값을 넘겨줌
+		$("input[name='startDate']").val(startDate+startTime);
+		$("input[name='endDate']").val(startDate+endTime);
+		$("#option_form").submit();
+		location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
 	$(this).removeClass('btn-disabled').addClass('btn-active'); 
 	});
 </script>

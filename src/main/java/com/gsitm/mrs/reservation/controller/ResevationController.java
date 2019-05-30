@@ -11,7 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -132,7 +134,7 @@ public class ResevationController {
 	@RequestMapping(value = "/shortTerm_chooseDate/{roomNo}", method = RequestMethod.GET)
 	public String chooseDate(@PathVariable int roomNo, Model model) {
 		
-		//l/ogger.info("(사용자) 예약-단기 예약 일자 선택");
+		//logger.info("(사용자) 예약-단기 예약 일자 선택");
 		
 		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
 		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
@@ -141,5 +143,20 @@ public class ResevationController {
 		model.addAttribute("equipmentList", equipmentList);
 		
 		return "user/reservation/shortTerm_chooseDate";
+	}
+	
+	@RequestMapping(value = "/InputReservationInfo", method = RequestMethod.GET)
+	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto) {
+		
+		//logger.info("(사용자) 예약-단기 예약 정보 입력");
+		
+//		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
+//		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
+//		
+//		model.addAttribute("roomInfo", roomInfo);
+//		model.addAttribute("equipmentList", equipmentList);
+//		
+		System.out.println(reservationDto.toString());
+		return "/";
 	}
 }
