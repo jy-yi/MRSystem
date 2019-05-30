@@ -36,7 +36,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 회의실 정보 조회 */
 	@Override
-	public ReservationDTO getRoomInfo(int roomNo) {
+	public List<Map<String, Object>> getRoomInfo(int roomNo) {
 		return sqlSession.selectOne(namespace + ".getRoomInfo", roomNo);
 	}
 	

@@ -21,8 +21,8 @@
 		       r.name           AS resName, 
 		       r.purpose, 
 		       room.name        AS roomName, 
-		       r."start", 
-		       r."end", 
+		       r.start_date,	AS startDate 
+		       r.end_date, 		AS endDate
 		       e.name           AS empName, 
 		       e2.name          AS mgrName 
 		FROM   waiting w, 
@@ -39,9 +39,21 @@
 	</select>
 	
 	<!-- 회의실 정보 조회 -->
-	<select id="getRoomInfo" parameterType="int" resultType="Room">
-		SELECT *
-		FROM room
+	<select id="getRoomInfo" parameterType="int" resultType="Map">
+		SELECT  room_no 		AS roomNo 
+				room.name		AS roomName
+				workplace.name	AS workplaceName
+				capacity
+				nw_available	AS nwAvailable
+				image
+				admin_name		AS adminName
+		FROM room,
+			 workplace
+			 employee,
+			 admin
 		WHERE room_no=#{roomNo}
+			  AND room.workplace_no=workplace.workplace_no
+			  AND room.admin_id=admin.admin_id
+			  AND admin_emp_no=employee.emp_no
 	</select>
 </mapper>
