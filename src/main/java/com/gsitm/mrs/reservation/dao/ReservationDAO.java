@@ -23,6 +23,7 @@ public interface ReservationDAO {
 	/** 회의실 정보 조회 */
 	public ReservationDTO getRoomInfo(int roomNo);
 	
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
