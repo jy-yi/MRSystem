@@ -25,6 +25,9 @@ public interface ReservationService {
 
 	/* ------------- 관리자 ------------- */
 	
+	
+	/* ------------- 관리자 ------------- */
+	
 	/** 승인 대기 목록 조회 */
 	public List<Map<String, Object>> getWaitingList();
 	
