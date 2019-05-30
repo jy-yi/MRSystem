@@ -43,7 +43,7 @@
 		       r.start_date		AS startDate, 
 		       r.end_date 		AS endDate,
 		       e.name           AS empName, 
-		       e2.name          AS mgrName, 
+		       e2.name          AS mgrName
 		FROM   waiting w, 
 		       reservation r, 
 		       room room, 
