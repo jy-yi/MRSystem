@@ -59,10 +59,14 @@
 									} ],
 									eventClick : function(event) {
 										swal({
-											title : '선택한 예약의 상세정보',
-											html : '예약번호 : <br/> 사원번호 : <br/> 회의실번호 : <br/> 회의명 : <br/> 목적 : <br/> 시작시각 : <br/> 종료시각 : <br/> 간식준비여부 : <br/> 상태 : <br/>',
-											type : '',
-											confirmButtonText : 'OK'
+											
+											<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+											{ 
+												title : '선택한 예약의 상세정보',
+												html : '예약번호 : <br/> 사원번호 : <br/> 회의실번호 : <br/> 회의명 : <br/> 목적 : <br/> 시작시각 : <br/> 종료시각 : <br/> 간식준비여부 : <br/> 상태 : <br/>',
+												confirmButtonText : 'OK'
+											},
+											</c:forEach>
 										});
 									}
 								});
