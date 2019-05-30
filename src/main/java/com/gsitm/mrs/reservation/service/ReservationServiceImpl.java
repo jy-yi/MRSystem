@@ -35,6 +35,10 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getWaitingList();
 	}
 
-	
-
+	/** 회의실 정보 조회 */
+	@Override
+	public ReservationDTO getRoomInfo(int roomNo) {
+		// TODO Auto-generated method stub
+		return dao.getRoomInfo(roomNo);
+	}
 }

@@ -42,7 +42,7 @@
 				<div class="col-sm-6 left-padding-zero" >
 					<img id="room_img" alt="본사 몰디브 회의실의 사진" src="${pageContext.request.contextPath}/resources/img/maldives.jpg">	
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
-						<h1 class="align-center color-title">몰디브</h1>
+						<h1 class="align-center color-title">이름 : ${roomDto.name }</h1>
 						<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>
 						<hr>
 						<ul>
@@ -67,7 +67,8 @@
 					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">옵션 선택</h4>
 						<hr>
-						<form action="" id="option_form">
+						<form action="${pageContext.request.contextPath}/reservation/shortTerm_chooseDate" id="option_form">
+							<input type="text" name="name" value=""/>
 							<input type="checkbox" name="" value=""><span class="font-checkbox">노트북 대여</span><br>
 							<input type="checkbox" name="" value=""><span class="font-checkbox">빔프로젝트 대여</span><br>
 							<input type="checkbox" name="" value=""><span class="font-checkbox">간식준비 여부</span><br>

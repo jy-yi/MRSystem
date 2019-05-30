@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
@@ -127,11 +128,13 @@ public class ResevationController {
 		return "user/reservation/room";
 	}
 	
-	@RequestMapping(value = "/chooseDate", method = RequestMethod.GET)
-	public String chooseDate() {
+	@RequestMapping(value = "/shortTerm_chooseDate", method = RequestMethod.GET)
+	public String chooseDate(@RequestParam int roomNo, Model model) {
 		
-		logger.info("(관리자) 예약-일자 선택");
+		logger.info("(관리자) 예약-장기 예약 일자 선택");
 		
-		return "user/reservation/chooseDate";
+		model.addAttribute("roomDto", service.getRoomInfo(roomNo));
+		
+		return "user/reservation/shortTerm_chooseDate";
 	}
 }

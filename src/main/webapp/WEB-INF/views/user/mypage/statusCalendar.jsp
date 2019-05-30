@@ -38,8 +38,8 @@
 										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
 											{ 
 												title : '${list.name }',
-												start : '${list.start }',
-												end : '${list.end}'
+												start : '2019-05-28',
+												end : '2019-05-29'
 											},
 										</c:forEach>
 									{

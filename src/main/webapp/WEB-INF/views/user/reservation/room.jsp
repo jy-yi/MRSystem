@@ -64,7 +64,7 @@
 						<li>사용요금 : 1시간 당 10000원
 						<li>관리자 : 인사지원실 이예지 대리
 						<li id="btn-li"><button class="btn btn-primary btn-lg" 
-						onclick="location.href='${pageContext.request.contextPath}/reservation/chooseDate'">예약하기</button>
+						onclick="location.href='${pageContext.request.contextPath}/reservation/shortTerm_chooseDate?roomNo=1'">단기 예약하기</button>
 					</ul>
 				</div>	
 			</div>
