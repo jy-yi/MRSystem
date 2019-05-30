@@ -58,7 +58,7 @@
 													<td> ${list.RESNAME}</td>
 													<td> ${list.PURPOSE}</td>
 													<td> ${list.ROOMNAME}</td>
-													<td> ${list.start} - ${list.end}</td>
+													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
 													<td> ${list.EMPNAME}</td>
 													<td> ${list.MGRNAME}</td>
 													
