@@ -26,5 +26,7 @@ public interface ResourceDAO {
 	
 	/** 지사 수정 */
 	public void editWorkplace(WorkplaceDTO workplaceDTO);
-
+	
+	/** 비품 추가*/
+	public void addEquipment(EquipmentDTO equipmentDTO);
 }

@@ -1,10 +1,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false"%>
 
-<!DOCTYPE html>
-<html>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.min.css" />
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
 <!-- Main Content -->
 <div id="content">
@@ -31,7 +31,7 @@
 						<h6 class="m-0 font-weight-bold text-primary">비품 목록</h6>
 					</div>
 					<div class="card-body py-2 text-right">
-						<a href="#" class="btn btn-secondary btn-icon-split"  data-toggle="modal" data-target="#addStuffModal">
+						<a href="#" class="btn btn-secondary btn-icon-split"  data-toggle="modal" data-target="#addEquipModal">
 						  <span class="icon text-white-50 pull-right">
 						    <i class="fas fa-plus-circle"></i>
 						  </span>
@@ -55,7 +55,7 @@
 								<tbody>
 									<c:choose>
 										<c:when test="${empty equipmentList}">
-											<td colspan="9" class="text-center"> 승인 대기 중인 예약이 존재하지 않습니다.</td>
+											<td colspan="9" class="text-center"> 비품이 존재하지 않습니다.</td>
 										</c:when>
 										<c:otherwise>
 											<c:forEach items="${equipmentList}" var="list" varStatus="status">
@@ -89,8 +89,3 @@
 
 <!-- Modal -->
 <jsp:include page="include/addEquipment.jsp" />
-
-
-</body>
-
-</html>
