@@ -24,30 +24,26 @@
 												title : '${list.name }',
 												start : '${list.startDate }',
 												end : '${list.endDate}'
+												
 											},
 										</c:forEach>
 									{
 										title : 'aa',
-										start : '2019-04-11',
-										end : '2019-04-13'
+										start : '2019-05-09',
+										end : '2019-05-11'
 									}, {
 										title : 'Lunch',
-										start : '2019-04-12T12:00:00'
+										start : '2019-05-12T12:00:00'
 									}, {
 										title : 'Meeting',
-										start : '2019-04-12T14:30:00'
+										start : '2019-05-12T14:30:00'
 									}, {
 										title : 'Click for Google',
 										url : 'http://google.com/',
-										start : '2019-04-28'
+										start : '2019-05-05'
 									} ],
 									eventClick : function(event) {
-										swal({
-											title : '선택한 예약의 상세정보',
-											html : '예약번호 : <br/> 사원번호 : <br/> 회의실번호 : <br/> 회의명 : <br/> 목적 : <br/> 시작시각 : <br/> 종료시각 : <br/> 간식준비여부 : <br/> 상태 : <br/>',
-											type : '',
-											confirmButtonText : 'OK'
-										});
+										/* <a href="#" data-toggle="modal" data-target="#infoReservation"></a> */
 									}
 								});
 
@@ -55,7 +51,7 @@
 
 						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
 
-					});
+					});	
 	$("#startBtn").on("click", function() {
 		alert("asd");
 	});
@@ -81,14 +77,38 @@
 				<i class="fas fa-user"></i> 마이페이지 > 예약 현황
 			</h1>
 		</div>
+<!-- <a href="#" data-toggle="modal" data-target="#infoReservation">모달</a> -->
+<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+	${list.reservationNo}
+	${list.employeeNo}
+	${list.roomNo}
+	${list.name}
+	${list.purpose}
+	${list.startDate}
+	${list.endDate}
+	${list.snackWant }
+	${list.status}
 
+
+	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#infoReservationModal"
+		data-reservationNo="${list.reservationNo}" 
+		data-employeeNo="${list.employeeNo}"
+		data-roomNo="${list.roomNo}"
+		data-name="${list.name}" 
+		data-purpose="${list.purpose}"
+		data-startDate="${list.startDate}"
+		data-endDate="${list.endDate}"
+		data-snackWant="${list.snackWant }"
+		data-status="${list.status}">
+	모달</a>
+</c:forEach>
 		<!-- Content Row -->
 
 		<div class="row">
 
 			<!-- Earnings (Monthly) Card Example -->
 			<div class="col-xl-12 col-md-12 mb-6">
-				<div class="card border-left-info shadow h-100 py-2">
+				<div class="card border-left-info shadow h-100 py-2">	
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
@@ -146,6 +166,8 @@
 
 <!-- End of Main Content -->
 
+<!-- Modal -->
+<jsp:include page="include/infoReservation.jsp" />
 
 </body>
 
@@ -162,7 +184,6 @@
 			$("#spanText").text('시작');
 		}
 
-		//$("#bar").toggle('show');
 	});
 </script>
 
