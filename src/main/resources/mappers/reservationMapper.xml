@@ -40,10 +40,10 @@
 		       r.name           AS resName, 
 		       r.purpose, 
 		       room.name        AS roomName, 
-		       r.start_date,	AS startDate 
-		       r.end_date, 		AS endDate
+		       r.start_date		AS startDate, 
+		       r.end_date 		AS endDate,
 		       e.name           AS empName, 
-		       e2.name          AS mgrName 
+		       e2.name          AS mgrName, 
 		FROM   waiting w, 
 		       reservation r, 
 		       room room, 
@@ -57,24 +57,5 @@
 		              OR w.admin_approval = 'W' ) 
 	</select>
 	
-	<!-- 회의실 정보 조회 -->
-	<select id="getRoomInfo" parameterType="int" resultType="Map">
-		CREATE VIEW AS
-		<include refid="createRoomInfoView"/>
-			AND workplace.workplace_no=#{workplaceNo}
-			
-		select <include refid="roomInfo_columns"/>, LISTAGG(equipmentName,', ') WITHIN GROUP(ORDER BY roomNo)
-		from room_info
-		group by <include refid="roomInfo_columns"/>;
-	</select>
 	
-	<select id="getRoomList" parameterType="int" resultType="Map">
-		CREATE VIEW AS
-		<include refid="createRoomInfoView"/>
-			AND room.room_no=#{roomNo} 
-			
-		select <include refid="roomInfo_columns"/>, LISTAGG(equipmentName,', ') WITHIN GROUP(ORDER BY roomNo)
-		from room_info
-		group by <include refid="roomInfo_columns"/>;
-	</select>
 </mapper>
