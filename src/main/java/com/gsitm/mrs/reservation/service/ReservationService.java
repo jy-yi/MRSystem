@@ -23,8 +23,6 @@ public interface ReservationService {
 	/** 회의실 정보 조회 */
 	public ReservationDTO getRoomInfo(int roomNo);
 
-	/* ------------- 관리자 ------------- */
-	
 	
 	/* ------------- 관리자 ------------- */
 	

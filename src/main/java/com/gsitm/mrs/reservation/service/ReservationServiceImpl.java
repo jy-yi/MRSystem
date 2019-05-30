@@ -40,8 +40,6 @@ public class ReservationServiceImpl implements ReservationService {
 	/* ------------- 관리자 ------------- */
 	
 	
-	/* ------------- 관리자 ------------- */
-	
 	/** 승인 대기 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getWaitingList() {
