@@ -84,10 +84,7 @@ $(function(){
 		<div id="collapseReservation" class="collapse" aria-labelledby="collapseReservation" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
 				<h6 class="collapse-header">회의실 확인 및 예약:</h6>
-				<a class="collapse-item low-menu" href="/reservation/room">재동 본사</a> 
-				<a class="collapse-item low-menu" href="/reservation/room">삼환빌딩</a> 
-				<a class="collapse-item low-menu" href="/reservation/room">GS 강남타워</a> 
-				<a class="collapse-item low-menu" href="/reservation/room">GS 강서타워</a>
+				<a class="collapse-item low-menu" href="/reservation/room">회의실 예약</a> 
 			</div>
 		</div>
 	</li>

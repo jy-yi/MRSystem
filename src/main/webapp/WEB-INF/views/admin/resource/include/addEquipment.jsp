@@ -18,7 +18,7 @@
 							<label> 비품명 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="nameForId" name="name" placeholder="비품 이름을 입력하세요" />
+							<input type="text" class="form-control" id="name" name="name" placeholder="비품 이름을 입력하세요" />
 						</div>
 					
 						<div class="clearfix"></div>
@@ -31,7 +31,7 @@
 							<label> 구매일 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
-							<input type="date" class="form-control" id="nameForId" name="name" placeholder="위치를 입력하세요" />
+							<input type="date" class="form-control" id="date" name="buyDate" />
 						</div>
 					
 						<div class="clearfix"></div>
@@ -52,4 +52,5 @@
 	$('.modal').on('hidden.bs.modal', function (e) {
 	  $(this).find('form')[0].reset()
 	});
+	
 </script>

@@ -3,7 +3,26 @@
 
 <!-- 예약 네임스페이스(사용영역) 설정 -->
 <mapper namespace="com.gsitm.mrs.mappers.ReservationMapper">
-
+	<sql id="RoomInfoSelect">
+		SELECT room.room_no 		AS roomNo, 
+						room.name		AS roomName,
+						workplace.name	AS workplaceName,
+		                workplace.address AS workplaceAddress,
+						room.capacity,
+						room.nw_available	AS nwAvailable,
+						room.image,
+						employee.name		AS adminName,
+		                equipment.name   AS equipmentName
+				FROM room,  workplace, employee, admin, equipment
+				WHERE room.workplace_no=workplace.workplace_no
+					  AND room.admin_id=admin.admin_id
+					  AND admin.emp_no=employee.emp_no
+		              AND room.room_no=equipment.room_no(+)		        
+	</sql>
+	<sql id="roomInfo_comlumns">
+		roomNo, roomName, roomName, workplaceName, workplaceAddress, capacity, nwAvailable, image, adminName
+	</sql>
+	
 	<!-- 마이페이지 예약현황 조회 -->
 	<select id="getReservationInfo" resultType="Reservation">
 		SELECT res_no as reservationNo, emp_no as employeeNo, room_no as roomNo, name, purpose, TO_CHAR(start_date, 'YYYY-MM-DD') as startDate, TO_CHAR(end_date, 'YYYY-MM-DD') as endDate, snack_want as snackWant, status
@@ -21,8 +40,8 @@
 		       r.name           AS resName, 
 		       r.purpose, 
 		       room.name        AS roomName, 
-		       r."start", 
-		       r."end", 
+		       r.start_date,	AS startDate 
+		       r.end_date, 		AS endDate
 		       e.name           AS empName, 
 		       e2.name          AS mgrName 
 		FROM   waiting w, 
@@ -39,9 +58,23 @@
 	</select>
 	
 	<!-- 회의실 정보 조회 -->
-	<select id="getRoomInfo" parameterType="int" resultType="Room">
-		SELECT *
-		FROM room
-		WHERE room_no=#{roomNo}
+	<select id="getRoomInfo" parameterType="int" resultType="Map">
+		CREATE VIEW AS
+		<include refid="createRoomInfoView"/>
+			AND workplace.workplace_no=#{workplaceNo}
+			
+		select <include refid="roomInfo_columns"/>, LISTAGG(equipmentName,', ') WITHIN GROUP(ORDER BY roomNo)
+		from room_info
+		group by <include refid="roomInfo_columns"/>;
+	</select>
+	
+	<select id="getRoomList" parameterType="int" resultType="Map">
+		CREATE VIEW AS
+		<include refid="createRoomInfoView"/>
+			AND room.room_no=#{roomNo} 
+			
+		select <include refid="roomInfo_columns"/>, LISTAGG(equipmentName,', ') WITHIN GROUP(ORDER BY roomNo)
+		from room_info
+		group by <include refid="roomInfo_columns"/>;
 	</select>
 </mapper>
