@@ -42,19 +42,25 @@
 				<div class="col-sm-6 left-padding-zero" >
 					<img id="room_img" alt="본사 몰디브 회의실의 사진" src="${pageContext.request.contextPath}/resources/img/maldives.jpg">	
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
-						<h1 class="align-center color-title">이름 : ${roomInfo.name }</h1>
+						<h1 class="align-center color-title">${roomInfo.ROOMNAME }</h1>
 						<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>
 						<hr>
 						<ul>
-							<li>회의실 이름 : 몰디브
-							<li>회의실 구분 : 회의실
-							<li>회의실 위치 : GS ITM 본사 2층
-							<li>수용인원 수 : 20명
-							<li>비치물품 : 빔, 노트북
-							<li>네트워크 : 사용가능
+							<li>회의실 이름 : ${roomInfo.ROOMNAME}
+							<li>회의실 위치 : ${roomInfo.WORKPLACEADDRESS}
+							<li>수용인원 수 : ${roomInfo.CAPACITY}명
+							<li>비치물품 : ${roomInfo.EQUIPMENTS}
+							<li>네트워크 : 
+								<c:choose>
+									<c:when test="${roomInfo.NWAVAILABLE eq 'Y'}">
+										사용가능
+									</c:when>
+									<c:otherwise>
+										사용불가능
+									</c:otherwise>
+								</c:choose>
 							<li>사용요금 : 1시간 당 10000원
-							<li>관리자 : 인사지원실 이예지 대리
-							
+							<li>관리자 : ${roomInfo.ADMINNAME}
 						</ul>	
 					</div>
 				</div>
@@ -67,11 +73,14 @@
 					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">옵션 선택</h4>
 						<hr>
-						<form action="${pageContext.request.contextPath}/reservation/shortTerm_chooseDate" id="option_form">
-							<input type="text" name="name" value=""/>
-							<input type="checkbox" name="" value=""><span class="font-checkbox">노트북 대여</span><br>
-							<input type="checkbox" name="" value=""><span class="font-checkbox">빔프로젝트 대여</span><br>
-							<input type="checkbox" name="" value=""><span class="font-checkbox">간식준비 여부</span><br>
+						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form">
+							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
+							<input type="hidden" name="startDate" value="1">
+							<input type="hidden" name="endDate" value="">
+							<c:forEach var="equip" items="${equipmentList}" >
+								<input type="checkbox" name="equip_${equip.EQUIP_NO}" value="${equip.EQUIP_NO}"><span class="font-checkbox">${equip.NAME} 대여</span><br>
+							</c:forEach>
+								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
 					</div>
 					<button class="btn btn-disabled" id="nextBtn" data-toggle="modal" data-target="#chooseTimeModal" disabled>다음 단계</button>
@@ -252,8 +261,12 @@
 	});
 	
 	// 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
-	$("#nextBtn").on("mouseover",function(){
-		location.href="/";
+	$("#nextBtn").on("click",function(){
+		// startDate와 endDate 값을 넘겨줌
+		$("input[name='startDate']").val(startDate+startTime);
+		$("input[name='endDate']").val(startDate+endTime);
+		$("#option_form").submit();
+		location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
 	$(this).removeClass('btn-disabled').addClass('btn-active'); 
 	});
 </script>

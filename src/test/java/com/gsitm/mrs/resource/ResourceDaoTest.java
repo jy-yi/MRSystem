@@ -2,9 +2,13 @@ package com.gsitm.mrs.resource;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 
@@ -16,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gsitm.mrs.resource.dao.ResourceDAO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -69,5 +74,61 @@ public class ResourceDaoTest {
 		
 		logger.info("지사 수정 완료!");
 		
+	}
+	
+	/** 비품 추가 테스트 */
+	@Test
+	public void TestAddEquipment() {
+
+		dao.addEquipment(new EquipmentDTO(1, 1, "에어컨", "2019-05-24"));
+		
+		logger.info("비품 추가 완료!");
+		
+	}
+	
+	/** 비품 추가를 위한 지사 및 회의실 정보 조회 테스트 */
+	@Test
+	public void TestRoomListForEquipment() {
+		
+		List<Map<String, Object>> list = dao.getRoomListForEquipment();
+		List<Object> workplaceNameList = new ArrayList<>();
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+			
+			Set<Map.Entry<String, Object>> entries = map.entrySet();
+
+			for (Map.Entry<String, Object> entry : entries) {
+			  System.out.print("key: "+ entry.getKey());
+			  System.out.println(", Value: "+ entry.getValue());
+			  
+			  /* 지사 이름 중복 제거 */
+			  if (entry.getKey().equals("WORKPLACENAME")) {
+				  if (!workplaceNameList.contains(entry.getValue()))
+					  workplaceNameList.add(entry.getValue());
+			  }
+			}
+		}
+		System.out.println("----------------------------------");
+		
+		for (Object object : workplaceNameList) {
+			System.out.println(object);
+		}
+		
+		System.out.println("----------------------------------");
+		
+		Map <String, List<Map<String, Object>>> roomSelectBox = new HashMap<>();
+		for (int i = 0; i < list.size(); i++) {
+			Map<String, Object> map = list.get(i);
+			
+			Set<Map.Entry<String, Object>> entries = map.entrySet();
+
+			for (Map.Entry<String, Object> entry : entries) {
+				if (entry.getValue().equals("본사")) {
+					System.out.println(map.toString());
+				}
+					
+			}
+		}
 	}
 }

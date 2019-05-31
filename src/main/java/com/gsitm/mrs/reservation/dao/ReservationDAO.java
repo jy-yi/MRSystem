@@ -26,6 +26,9 @@ public interface ReservationDAO {
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);
 	
+	/** 회의실 비품 목록 조회 */
+	public List<Map<String, Object>> getEquipmentList(int roomNo);
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

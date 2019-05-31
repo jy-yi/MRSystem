@@ -3,23 +3,7 @@
 
 <!-- 예약 네임스페이스(사용영역) 설정 -->
 <mapper namespace="com.gsitm.mrs.mappers.ReservationMapper">
-	<sql id="RoomInfoSelect">
-		SELECT room.room_no 		AS roomNo, 
-						room.name		AS roomName,
-						workplace.name	AS workplaceName,
-		                workplace.address AS workplaceAddress,
-						room.capacity,
-						room.nw_available	AS nwAvailable,
-						room.image,
-						employee.name		AS adminName,
-		                equipment.name   AS equipmentName
-				FROM room,  workplace, employee, admin, equipment
-				WHERE room.workplace_no=workplace.workplace_no
-					  AND room.admin_id=admin.admin_id
-					  AND admin.emp_no=employee.emp_no
-		              AND room.room_no=equipment.room_no(+)		        
-	</sql>
-	<sql id="roomInfo_comlumns">
+	<sql id="roomInfo_columns">
 		roomNo, roomName, roomName, workplaceName, workplaceAddress, capacity, nwAvailable, image, adminName
 	</sql>
 	
@@ -57,5 +41,63 @@
 		              OR w.admin_approval = 'W' ) 
 	</select>
 	
+	<!-- 회의실 정보 조회 -->
+	<select id="getRoomInfo" parameterType="int" resultType="Map">
+		SELECT <include refid="roomInfo_columns"/>, 
+       			LISTAGG(equipmentName,', ') WITHIN GROUP(ORDER BY roomNo) AS equipments       		
+		FROM  (SELECT room.room_no      AS roomNo, 
+		              room.name         AS roomName, 
+		              workplace.name    AS workplaceName, 
+		              workplace.address AS workplaceAddress, 
+		              room.capacity, 
+		              room.nw_available AS nwAvailable, 
+		              room.image, 
+		              employee.name     AS adminName, 
+		              equipment.name    AS equipmentName 
+		       FROM   room, 
+		              workplace, 
+		              employee, 
+		              ADMIN, 
+		              equipment 
+		       WHERE  room.workplace_no = workplace.workplace_no 
+		              AND room.admin_id = ADMIN.admin_id 
+		              AND ADMIN.emp_no = employee.emp_no 
+		              AND room.room_no = equipment.room_no(+) 
+		              AND room.room_no = #{roomNo}) 
+		GROUP  BY <include refid="roomInfo_columns"/>
+	</select>
 	
+	<select id="getRoomList" parameterType="int" resultType="Map">
+		SELECT <include refid="roomInfo_columns"/>, 
+       			LISTAGG(equipmentName,', ') WITHIN GROUP(ORDER BY roomNo)        		
+		FROM  (SELECT room.room_no      AS roomNo, 
+		              room.name         AS roomName, 
+		              workplace.name    AS workplaceName, 
+		              workplace.address AS workplaceAddress, 
+		              room.capacity, 
+		              room.nw_available AS nwAvailable, 
+		              room.image, 
+		              employee.name     AS adminName, 
+		              equipment.name    AS equipmentName 
+		       FROM   room, 
+		              workplace, 
+		              employee, 
+		              ADMIN, 
+		              equipment 
+		       WHERE  room.workplace_no = workplace.workplace_no 
+		              AND room.admin_id = ADMIN.admin_id 
+		              AND ADMIN.emp_no = employee.emp_no 
+		              AND room.room_no = equipment.room_no(+) 
+		              AND room.workplace_no = #{workplaceNo}) 
+		GROUP  BY <include refid="roomInfo_columns"/>
+	</select>
+	
+	<!-- 회의실 비품 목록 조회 -->
+	<select id="getEquipmentList" parameterType="int" resultType="Map">
+		SELECT *
+		FROM equipment
+		JOIN room
+		USING(room_no)
+		WHERE room_no=#{roomNo}
+	</select>
 </mapper>

@@ -32,4 +32,17 @@
 		ORDER BY e.name, r.room_no
 	</select>
 	
+	<!-- 비품 추가 -->
+	<insert id="addEquipment">
+		INSERT INTO Equipment(equip_no, room_no, name, buy_date) 
+		VALUES (Equipment_Seq.nextVal, #{roomNo}, #{name}, #{buyDate})
+	</insert>
+	
+	<!-- 비품 추가를 위한 지사 및 회의실 정보 조회 -->
+	<select id="getRoomListForEquipment" resultType="Map">
+		SELECT r.room_no as roomNo, w.name as workplaceName, r.name as roomName
+		FROM Room r, workplace w
+		WHERE r.workplace_no = w.workplace_no
+	</select>
+	
 </mapper>

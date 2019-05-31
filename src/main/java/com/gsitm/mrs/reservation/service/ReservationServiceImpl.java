@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 
+import freemarker.log.Logger;
+
 /**
  * ReservationService 인터페이스 구현 클래스
  * 
@@ -34,6 +36,8 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 회의실 정보 조회 */
 	@Override
 	public Map<String, Object> getRoomInfo(int roomNo) {
+		//return dao.getRoomInfo(roomNo);
+		//System.out.println(dao.getRoomInfo(roomNo).get("roomname"));
 		return dao.getRoomInfo(roomNo);
 	}
 	
@@ -43,7 +47,15 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getRoomList(int workplaceNo) {
 		return dao.getRoomList(workplaceNo);
 	}
+	
+	/** 회의실 비품 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEquipmentList(int roomNo) {
+		// TODO Auto-generated method stub
+		return dao.getEquipmentList(roomNo);
+	}
 
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -52,4 +64,5 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getWaitingList();
 	}
 
+	
 }
