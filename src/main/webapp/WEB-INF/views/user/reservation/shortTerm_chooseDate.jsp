@@ -280,7 +280,7 @@
 		
 		// 폼 제출
 		$("#option_form").submit();
-		//location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
+		location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
 	});
 </script>
 </html>

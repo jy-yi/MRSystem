@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -149,10 +150,10 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/InputReservationInfo", method = RequestMethod.GET)
-	public String InputReservationInfo(ReservationDTO reservationDto, 
-			@RequestParam int roomNo, HttpServletRequest request, String equipments) {
+	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto, 
+			@RequestParam int roomNo, HttpServletRequest request, @RequestParam String equipments) {
 		
-		logger.info("(사용자) 예약-예약 정보 입력");
+		//logger.info("(사용자) 예약-예약 정보 입력");
 		
 		//Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
 		System.out.println(reservationDto.toString());
