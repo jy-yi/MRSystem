@@ -3,6 +3,7 @@ package com.gsitm.mrs.resource.service;
 import java.util.List;
 import java.util.Map;
 
+import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -25,4 +26,10 @@ public interface ResourceService {
 	
 	/** 지사 수정 */
 	public void editWorkplace(WorkplaceDTO workplaceDTO);
+	
+	/** 비품 추가*/
+	public void addEquipment(EquipmentDTO equipmentDTO);
+	
+	/** 비품 추가를 위한 지사 및 회의실 정보 조회 */
+	public List<Map<String, Object>> getRoomListForEquipment();
 }

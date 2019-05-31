@@ -38,6 +38,7 @@
 						  <span class="text">비품 추가</span>
 						</a>
 					</div>
+					
 					<div class="card-body">
 						<div class="table-responsive">
 							<table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">

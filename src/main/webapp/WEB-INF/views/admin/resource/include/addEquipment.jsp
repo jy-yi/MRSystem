@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
@@ -51,21 +52,16 @@
 							</div>
 							<div class="col-xs-9 col-sm-9">
 								<select id="option-droup-demo" multiple="multiple" class="form-control">
-							        <optgroup label="본사">
-							            <option value="jQuery">몰디브</option>
-							            <option value="Bootstrap">하와이</option>
-							            <option value="HTML">교육실</option>
-							        </optgroup>
-							        <optgroup label="삼환빌딩">
-							            <option value="Java">회의실1</option>
-							            <option value="csharp">회의실2</option>
-							            <option value="Python">회의실3</option>
-							        </optgroup>
-							        <optgroup label="GS 칼텍스">
-							            <option value="MySQL">회의실A</option>
-							            <option value="Oracle">회의실B</option>
-							            <option value="MSSQL">회의실C</option>
-							        </optgroup>        
+									<c:forEach items="${workplaceNameList}" var="workpalceList">
+										<optgroup label="${workpalceList}">
+											
+										<c:forEach items="${roomList}" var="roomList" varStatus="status">
+											<c:if test="${workpalceList eq  roomList.WORKPLACENAME}">
+												<option value="${roomList.ROOMNO}">${roomList.ROOMNAME }</option>
+											</c:if>
+										</c:forEach>
+							        	</optgroup>
+									</c:forEach>
 							    </select>
 							</div>
 						

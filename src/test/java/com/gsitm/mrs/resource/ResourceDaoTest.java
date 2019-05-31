@@ -1,7 +1,5 @@
 package com.gsitm.mrs.resource;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -117,7 +115,6 @@ public class ResourceDaoTest {
 		
 		System.out.println("----------------------------------");
 		
-		Map <String, List<Map<String, Object>>> roomSelectBox = new HashMap<>();
 		for (int i = 0; i < list.size(); i++) {
 			Map<String, Object> map = list.get(i);
 			

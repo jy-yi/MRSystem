@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.gsitm.mrs.resource.dao.ResourceDAO;
+import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -46,5 +47,18 @@ public class ResourceServiceImpl implements ResourceService {
 	public void editWorkplace(WorkplaceDTO workplaceDTO) {
 		dao.editWorkplace(workplaceDTO);
 	}
+
+	/** 비품 추가*/
+	@Override
+	public void addEquipment(EquipmentDTO equipmentDTO) {
+		dao.addEquipment(equipmentDTO);
+	}
+	
+	/** 비품 추가를 위한 지사 및 회의실 정보 조회 */
+	@Override
+	public List<Map<String, Object>> getRoomListForEquipment() {
+		return dao.getRoomListForEquipment();
+	}
+
 
 }
