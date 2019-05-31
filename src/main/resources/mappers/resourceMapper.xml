@@ -45,4 +45,10 @@
 		WHERE r.workplace_no = w.workplace_no
 	</select>
 	
+	<!-- 비품 삭제 -->
+	<insert id="deleteEquipment">
+		DELETE FROM Equipment 
+		WHERE equip_no = #{equipmentNo}
+	</insert>
+	
 </mapper>

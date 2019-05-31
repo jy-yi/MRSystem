@@ -60,5 +60,11 @@ public class ResourceServiceImpl implements ResourceService {
 		return dao.getRoomListForEquipment();
 	}
 
+	/** 비품 삭제 */
+	@Override
+	public void deleteEquipment(int equipmentNo) {
+		dao.deleteEquipment(equipmentNo);
+	}
+
 
 }

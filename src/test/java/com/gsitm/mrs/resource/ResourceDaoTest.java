@@ -128,4 +128,14 @@ public class ResourceDaoTest {
 			}
 		}
 	}
+	
+	/** 지사 삭제 테스트 */
+	@Test
+	public void TestDeleteEquipment() {
+
+		dao.deleteEquipment(41);
+		
+		logger.info("비품 삭제 완료!");
+	}
+		
 }

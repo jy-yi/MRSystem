@@ -32,4 +32,7 @@ public interface ResourceService {
 	
 	/** 비품 추가를 위한 지사 및 회의실 정보 조회 */
 	public List<Map<String, Object>> getRoomListForEquipment();
+	
+	/** 비품 삭제 */
+	public void deleteEquipment(int equipmentNo);
 }

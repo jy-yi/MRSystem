@@ -61,4 +61,10 @@ public class ResourceDAOImpl implements ResourceDAO {
 	public List<Map<String, Object>> getRoomListForEquipment() {
 		return sqlSession.selectList(namespace + ".getRoomListForEquipment");
 	}
+
+	/** 비품 삭제 */
+	@Override
+	public void deleteEquipment(int equipmentNo) {
+		sqlSession.delete(namespace + ".deleteEquipment", equipmentNo);		
+	}
 }
