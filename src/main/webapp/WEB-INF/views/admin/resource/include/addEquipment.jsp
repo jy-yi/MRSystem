@@ -13,7 +13,7 @@
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>
 			
-			<form action="#" method="post">
+			<form action="/resource/addEquipment" method="post">
 				<div class="modal-body">
 					
 					<div class="form-group">
@@ -63,18 +63,19 @@
 							        	</optgroup>
 									</c:forEach>
 							    </select>
+							    <input type="hidden" id="roomNo" name="roomNoList" value="">
 							</div>
 						
 							<div class="clearfix"></div>
 						</div>
 					</div>
 				</div>
-			</form>
 			
-			<div class="modal-footer">
-				<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-				<a class="btn btn-primary" href="#">추가</a>
-			</div>
+				<div class="modal-footer">
+					<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+					<input type="submit" class="btn btn-primary" value="추가" >
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
@@ -91,6 +92,16 @@
 	/* 모달 사라졌을 때 입력 값 초기화 */
 	$('.modal').on('hidden.bs.modal', function (e) {
 	  $(this).find('form')[0].reset()
+	});
+	
+	var arrSelected = [];
+	$('#option-droup-demo').on('change', function(){
+	    var selected = $(this).find("option:selected");
+	    arrSelected = [];
+	    selected.each(function(){
+	       arrSelected.push($(this).val());
+	    });
+	    $('#roomNo').val(arrSelected);
 	});
 	
 </script>

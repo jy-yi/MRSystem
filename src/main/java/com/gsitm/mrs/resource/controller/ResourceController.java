@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,9 +138,13 @@ public class ResourceController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/addEquipment", method = RequestMethod.POST)
-	public String addEquipment(EquipmentDTO equipmentDTO) throws Exception {
+	public String addEquipment(EquipmentDTO equipmentDTO, String roomNoList) throws Exception {
 
-		service.addEquipment(equipmentDTO);
+		 StringTokenizer token = new StringTokenizer(roomNoList , ",");
+		 while(token.hasMoreTokens()) {
+			 equipmentDTO.setRoomNo(Integer.parseInt(token.nextToken()));
+			 service.addEquipment(equipmentDTO);
+		 }
 
 		return "redirect:/resource/equipmentList";
 	}
