@@ -3,7 +3,10 @@ package com.gsitm.mrs.reservation.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
+import com.gsitm.mrs.resource.dto.EquipmentDTO;
 
 /**
  * 예약 관련 인터페이스 정의
@@ -28,6 +31,9 @@ public interface ReservationService {
 	
 	/** 회의실 비품 목록 조회 */
 	public List<Map<String, Object>> getEquipmentList(int roomNo);
+	
+	/** 사용자가 선택한 비품 목록 EquipmentDto에 담기 */
+	public EquipmentDTO putIntoEuipmentDto(HttpServletRequest request);
 	
 	/* ------------- 관리자 ------------- */
 	

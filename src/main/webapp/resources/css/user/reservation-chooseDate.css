@@ -24,11 +24,19 @@
 	background-color:rgb(255,255,255);
 }
 
-.btn-disabled{
+.btn-disabled.btn-active{
 	margin-top: 20px;
 	width: 100%;
 	border: 2px solid rgb(54,93,205);
+	
+}
+
+.btn-disabled{
 	color: lightgrey;
+}
+
+.btn-active{
+	color: rgb(54,93,205);
 }
 
 .btn-active{

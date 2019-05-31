@@ -1,9 +1,12 @@
 package com.gsitm.mrs.reservation.controller;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -146,17 +149,17 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/InputReservationInfo", method = RequestMethod.GET)
-	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto) {
+	public String InputReservationInfo(ReservationDTO reservationDto, 
+			@RequestParam int roomNo, HttpServletRequest request, String equipments) {
 		
-		//logger.info("(사용자) 예약-단기 예약 정보 입력");
+		logger.info("(사용자) 예약-예약 정보 입력");
 		
-//		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
-//		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
-//		
-//		model.addAttribute("roomInfo", roomInfo);
-//		model.addAttribute("equipmentList", equipmentList);
-//		
+		//Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
 		System.out.println(reservationDto.toString());
-		return "/";
+		
+		System.out.println(request.getParameter("equipments"));
+		System.out.println("비품 목록  : "+equipments);
+		//model.addAttribute("roomInfo", roomInfo);
+		return "";
 	}
 }

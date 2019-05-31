@@ -73,12 +73,13 @@
 					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">옵션 선택</h4>
 						<hr>
-						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form">
+						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
-							<input type="hidden" name="startDate" value="1">
+							<input type="hidden" name="startDate" value="">
 							<input type="hidden" name="endDate" value="">
+							<input type="hidden" name="equipments" value="">
 							<c:forEach var="equip" items="${equipmentList}" >
-								<input type="checkbox" name="equip_${equip.EQUIP_NO}" value="${equip.EQUIP_NO}"><span class="font-checkbox">${equip.NAME} 대여</span><br>
+								<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment"><span class="font-checkbox">${equip.NAME} 대여</span><br>
 							</c:forEach>
 								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
@@ -143,9 +144,7 @@
 		$("#chosen-date").text(today[0]+". "+today[1]+". "+ today[2]+". "+"("+$(".fc-today").data("day")+") ");
 		
 	  //calendar.setOption('locale','ko');
-	});
-    
-	// 모달-날짜 선택
+	});// 모달-날짜 선택
 	$(".can-reserve-time").on("click",function(){
 		// 선택한 일자 색상 변경
 		if(!clickedStartTime){ // 시작시간 선택
@@ -157,6 +156,8 @@
 		}
 	});
      
+    
+	
 	// 시작시간을 처리하는 함수
 	function setStartTime(startTime_object){
 		clickedStartTime=true;
@@ -253,21 +254,33 @@
 		}
 		return true;
 	}
-	
+	var checkedEquipmentList=$("input[name='checkbox-equipment']:checked").val();
 	// 시간 선택 완료 버튼 클릭 이벤트
 	$("#choose-complete-btn").on("click",function(){
+		console.log(checkedEquipmentList);
 		// 다음 단계 버튼 disabled 해제
-		$("#nextBtn").attr("disabled",false);
+		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+	});
+	
+	$("input[name='checkbox-equipment']").change(function(){
+		console.log($(this).val())
+		as
 	});
 	
 	// 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
 	$("#nextBtn").on("click",function(){
 		// startDate와 endDate 값을 넘겨줌
-		$("input[name='startDate']").val(startDate+startTime);
-		$("input[name='endDate']").val(startDate+endTime);
+		$("input[name='startDate']").val(startDate+" "+startTime);
+		$("input[name='endDate']").val(startDate+" "+endTime);
+		
+		// 선택된 equipment 목록을 equipments input에 넣어줌
+		var checkedEquipmentList=$("input[name='checkbox-equipment']:checked").val();
+		console.log(checkedEquipmentList);
+		$("input[name=equipments]").val(checkedEquipmentList);
+		
+		// 폼 제출
 		$("#option_form").submit();
-		location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
-	$(this).removeClass('btn-disabled').addClass('btn-active'); 
+		//location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
 	});
 </script>
 </html>
