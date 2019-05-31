@@ -18,7 +18,7 @@ public interface ReservationDAO {
 	/* ------------- 사용자 ------------- */
 	
 	/** 마이페이지 예약현황 조회 */
-	public List<ReservationDTO> getReservationInfo(String employeeNo);
+	public List<Map<String, Object>> getReservationInfo(String employeeNo);
 	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);

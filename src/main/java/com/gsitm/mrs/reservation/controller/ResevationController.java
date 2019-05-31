@@ -54,9 +54,8 @@ public class ResevationController {
 		EmployeeDTO employee = (EmployeeDTO) user;
 		
 		employeeNo = employee.getEmployeeNo();
-		logger.info(employeeNo);
 		
-		List<ReservationDTO> reservationInfo = service.getReservationInfo(employeeNo);
+		List<Map<String, Object>> reservationInfo = service.getReservationInfo(employeeNo);
 		
 		logger.info(reservationInfo+"");
 		

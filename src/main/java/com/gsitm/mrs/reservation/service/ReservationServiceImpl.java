@@ -31,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 마이페이지 예약현황 조회 */
 	@Override
-	public List<ReservationDTO> getReservationInfo(String employeeNo) {
+	public List<Map<String, Object>> getReservationInfo(String employeeNo) {
 		return dao.getReservationInfo(employeeNo);
 	}
 

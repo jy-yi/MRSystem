@@ -144,38 +144,4 @@
 	$('.modal').on('hidden.bs.modal', function (e) {
 	  $(this).find('form')[0].reset()
 	});
-
-	var reservationNo = "";
-	var employeeNo = "";
-	var roomNo = "";
-	var name = "";
-	var purpose = "";
-    var startDate = "";
-    var endDate = "";
-    var snackWant = "";
-    var status = "";
-	
-	$(function() {     
-        $('#infoReservationModal').on('show.bs.modal', function(event) {          
-        	reservationNo = $(event.relatedTarget).data('reservationno');
-        	employeeNo = $(event.relatedTarget).data('employeeno');
-        	roomNo = $(event.relatedTarget).data('roomno');
-        	name = $(event.relatedTarget).data('name');
-        	purpose = $(event.relatedTarget).data('purpose');
-        	startDate = $(event.relatedTarget).data('startdate');
-        	endDate = $(event.relatedTarget).data('enddate');
-        	snackWant = $(event.relatedTarget).data('snackwant');
-        	status = $(event.relatedTarget).data('status');
-        	
-        	 $("#reservationNo").val(reservationNo);
-        	 $("#employeeNo").val(employeeNo);
-        	 $("#roomNo").val(roomNo);
-        	 $("#name").val(name);
-    	     $("#purpose").val(purpose);
-    	     $("#startDate").val(startDate);
-    	     $("#endDate").val(endDate);
-    	     $("#snackWant").val(snackWant);
-    	     $("#status").val(status);
-        });
-    });
 </script>
