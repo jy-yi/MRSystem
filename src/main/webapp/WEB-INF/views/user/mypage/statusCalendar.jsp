@@ -45,7 +45,7 @@
 									eventClick: function(calEvent, jsEvent, view, resourceObj) {
 										//$("#infoModal").modal("show");
 										/* $("#infoModal .modal-body p”).text(‘Resource ID: ‘ + resourceObj.title); */
-
+										// .
 									}
 								});
 
