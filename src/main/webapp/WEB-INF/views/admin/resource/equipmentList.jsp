@@ -91,6 +91,7 @@
 
 <!-- Modal -->
 <jsp:include page="include/addEquipment.jsp" />
+<jsp:include page="include/editEquipment.jsp" />
 
 <script type="text/javascript">
 	
