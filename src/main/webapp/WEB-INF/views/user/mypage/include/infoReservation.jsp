@@ -57,7 +57,7 @@
 							<label> 회의명 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
-							<input type="number" class="form-control" id="name" />
+							<input type="text" class="form-control" id="name" />
 						</div>
 					
 						<div class="clearfix"></div>
@@ -133,8 +133,7 @@
 			</div>
 			
 			<div class="modal-footer">
-				<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-				<a class="btn btn-primary" href="#">수정</a>
+				<button class="btn btn-primary" type="button" data-dismiss="modal">확인</button>
 			</div>
 		</div>
 	</div>
@@ -158,14 +157,14 @@
 	
 	$(function() {     
         $('#infoReservationModal').on('show.bs.modal', function(event) {          
-        	reservationNo = $(event.relatedTarget).data('reservationNo');
-        	employeeNo = $(event.relatedTarget).data('employeeNo');
-        	roomNo = $(event.relatedTarget).data('roomNo');
+        	reservationNo = $(event.relatedTarget).data('reservationno');
+        	employeeNo = $(event.relatedTarget).data('employeeno');
+        	roomNo = $(event.relatedTarget).data('roomno');
         	name = $(event.relatedTarget).data('name');
         	purpose = $(event.relatedTarget).data('purpose');
-        	startDate = $(event.relatedTarget).data('startDate');
-        	endDate = $(event.relatedTarget).data('endDate');
-        	snackWant = $(event.relatedTarget).data('snackWant');
+        	startDate = $(event.relatedTarget).data('startdate');
+        	endDate = $(event.relatedTarget).data('enddate');
+        	snackWant = $(event.relatedTarget).data('snackwant');
         	status = $(event.relatedTarget).data('status');
         	
         	 $("#reservationNo").val(reservationNo);
