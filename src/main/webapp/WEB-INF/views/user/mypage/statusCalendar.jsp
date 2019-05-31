@@ -5,56 +5,7 @@
 
 <!DOCTYPE html>
 <html>
-<script>
-	document.addEventListener('DOMContentLoaded',function() {
-					 
-						var calendarEl = document.getElementById('calendar');
 
-						var calendar = new FullCalendar.Calendar(
-								calendarEl,
-								{
-									plugins : [ 'interaction', 'dayGrid' ],
-									defaultDate : new Date(),
-									editable : true,
-									eventLimit : true, // allow "more" link when too many events
-
-									events : [
-										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
-											{ 
-												title : '${list.name }',
-												start : '${list.startDate }',
-												end : '${list.endDate}'
-												
-											},
-										</c:forEach>
-									{
-										title : 'aa',
-										start : '2019-05-09',
-										end : '2019-05-11'
-									}, {
-										title : 'Lunch',
-										start : '2019-05-12T12:00:00'
-									}, {
-										title : 'Meeting',
-										start : '2019-05-12T14:30:00'
-									}, {
-										title : 'Click for Google',
-										url : 'http://google.com/',
-										start : '2019-05-05'
-									} ],
-									eventClick: function(calEvent, jsEvent, view, resourceObj) {
-										//$("#infoModal").modal("show");
-										/* $("#infoModal .modal-body p”).text(‘Resource ID: ‘ + resourceObj.title); */
-										// .
-									}
-								});
-
-						calendar.render();
-
-						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
-
-					});	
-</script>
 
 <style>
 #calendar {
@@ -76,7 +27,7 @@
 				<i class="fas fa-user"></i> 마이페이지 > 예약 현황
 			</h1>
 		</div>
-<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+		<%-- <c:forEach items="${reservationInfo}" var="list" varStatus="status">
 	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#infoReservationModal" id="infoModal"
 		data-reservationNo="${list.reservationNo}" 
 		data-employeeNo="${list.employeeNo}"
@@ -88,14 +39,14 @@
 		data-snackWant="${list.snackWant}"
 		data-status="${list.status}">
 	${list.name }</a>
-</c:forEach>
+</c:forEach> --%>
 		<!-- Content Row -->
 
 		<div class="row">
 
 			<!-- Earnings (Monthly) Card Example -->
 			<div class="col-xl-12 col-md-12 mb-6">
-				<div class="card border-left-info shadow h-100 py-2">	
+				<div class="card border-left-info shadow h-100 py-2">
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
@@ -157,6 +108,62 @@
 <jsp:include page="include/infoReservation.jsp" />
 
 </body>
+<script>
+	document.addEventListener('DOMContentLoaded',function() {
+					 
+						var calendarEl = document.getElementById('calendar');
+
+						var calendar = new FullCalendar.Calendar(
+								calendarEl,
+								{
+									plugins : [ 'interaction', 'dayGrid' ],
+									defaultDate : new Date(),
+									editable : true,
+									eventLimit : true, // allow "more" link when too many events
+
+									events : [
+										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+											{ 
+												id : '${list.reservationNo}',
+												title : '${list.name}',
+												start : '${list.startDate}',
+												end : '${list.endDate}'
+											},
+										</c:forEach>
+									], eventClick: function(info) {
+										
+										var reservationNo = info.event.id;
+										var name = info.event.title;
+										var start = info.event.start;
+										var end = info.event.end;
+										
+										console.log(name);
+										console.log(start);
+										console.log(end);
+										
+										alert(reservationNo);
+										
+										$("#reservationNo").val(name);
+						        		$("#employeeNo").val(name); 	
+						        	 	$("#roomNo").val(name);
+							        	$("#name").val(name);
+							    	 	$("#purpose").val(name);
+							    	    $("#startDate").val(start);
+							    	    $("#endDate").val(end);
+							    	    $("#snackWant").val(name);
+							    	    $("#status").val(name);
+						        	 	
+						        	 	$("#infoReservationModal").modal('show');
+									}									
+								});
+
+						calendar.render();
+
+						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
+
+					});	
+</script>
+
 
 <script type="text/javascript">
 	$("#startBtn").click(function() {
