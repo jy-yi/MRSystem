@@ -42,8 +42,10 @@
 										url : 'http://google.com/',
 										start : '2019-05-05'
 									} ],
-									eventClick : function(event) {
-										/* <a href="#" data-toggle="modal" data-target="#infoReservation"></a> */
+									eventClick: function(calEvent, jsEvent, view, resourceObj) {
+										//$("#infoModal").modal("show");
+										/* $("#infoModal .modal-body p”).text(‘Resource ID: ‘ + resourceObj.title); */
+
 									}
 								});
 
@@ -52,9 +54,6 @@
 						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
 
 					});	
-	$("#startBtn").on("click", function() {
-		alert("asd");
-	});
 </script>
 
 <style>
@@ -77,20 +76,8 @@
 				<i class="fas fa-user"></i> 마이페이지 > 예약 현황
 			</h1>
 		</div>
-<!-- <a href="#" data-toggle="modal" data-target="#infoReservation">모달</a> -->
 <c:forEach items="${reservationInfo}" var="list" varStatus="status">
-	${list.reservationNo}
-	${list.employeeNo}
-	${list.roomNo}
-	${list.name}
-	${list.purpose}
-	${list.startDate}
-	${list.endDate}
-	${list.snackWant }
-	${list.status}
-
-
-	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#infoReservationModal"
+	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#infoReservationModal" id="infoModal"
 		data-reservationNo="${list.reservationNo}" 
 		data-employeeNo="${list.employeeNo}"
 		data-roomNo="${list.roomNo}"
@@ -98,9 +85,9 @@
 		data-purpose="${list.purpose}"
 		data-startDate="${list.startDate}"
 		data-endDate="${list.endDate}"
-		data-snackWant="${list.snackWant }"
+		data-snackWant="${list.snackWant}"
 		data-status="${list.status}">
-	모달</a>
+	${list.name }</a>
 </c:forEach>
 		<!-- Content Row -->
 
