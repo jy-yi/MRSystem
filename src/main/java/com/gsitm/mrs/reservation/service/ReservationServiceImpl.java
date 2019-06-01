@@ -70,5 +70,17 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getWaitingList();
 	}
 
+	/** 승인 반려 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getApprovalCancelList() {
+		return dao.getApprovalCancelList();
+	}
+
+	/** 예약 완료 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getSuccessList() {
+		return dao.getSuccessList();
+	}
+
 	
 }

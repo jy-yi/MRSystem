@@ -1,5 +1,7 @@
 package com.gsitm.mrs.reservation;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +25,8 @@ public class ReservationDaoTest {
 	
 	Logger logger = Logger.getLogger(ReservationDaoTest.class);
 	
+	/*********** 사용자 ************/
+	
 	/** 예약 목록 조회 테스트 */
 	@Test
 	public void TestReservationInfo() {
@@ -34,18 +38,6 @@ public class ReservationDaoTest {
 		}
 	}
 	
-	/** 승인 대기 목록 조회 테스트 */
-	@Test
-	public void TestWaitingList() {
-		
-		List<Map<String, Object>> list = dao.getWaitingList();
-		
-		for (Map<String, Object> map : list) {
-			logger.info(map);
-		}
-		
-	}
-
 	/** 회의실 정보 조회 테스트 */
 	@Test
 	public void TestRoomInfo() {
@@ -63,6 +55,75 @@ public class ReservationDaoTest {
 		List<Map<String, Object>> list=dao.getRoomList(1);
 		
 		logger.info(dao.getRoomInfo(1));
+		
+	}
+	
+	
+	
+	/*********** 관리자 ************/
+	
+	/** 승인 대기 목록 조회 테스트 */
+	@Test
+	public void TestWaitingList() {
+		
+		List<Map<String, Object>> list = dao.getWaitingList();
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+		
+	}
+
+	
+	/** 승인 반려 목록 조회 테스트 */
+	@Test
+	public void TestApprovalCancelList() {
+		
+		List<Map<String, Object>> list = dao.getApprovalCancelList();
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+		
+	}
+	
+	/** 예약 완료 목록 조회 테스트 */
+	@Test
+	public void TestSuccessList() {
+		
+		List<Map<String, Object>> list = dao.getSuccessList();
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date date = new Date();
+		String today = dateFormat.format(date);
+		
+		for (int i = 0; i < list.size(); i++) {
+			Map<String, Object> map = list.get(i);
+			String startDate = (String) map.get("STARTDATE");
+			String endDate = (String) map.get("ENDDATE");
+			
+			if (today.compareTo(startDate) < 0) {
+				map.put("STATUS", 0);	// 미사용
+			}
+			
+			if (today.compareTo(startDate) > 0 && today.compareTo(endDate) < 0) {
+				map.put("STATUS", 1);	// 사용 중
+			}
+			
+			if (today.compareTo(endDate) > 0) {
+				map.put("STATUS", 2);	// 사용 완료
+			}
+		}
+		
+		System.out.println("----------------------");
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map.get("STATUS"));
+		}
 		
 	}
 	

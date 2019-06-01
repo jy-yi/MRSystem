@@ -39,5 +39,10 @@ public interface ReservationService {
 	/** 승인 대기 목록 조회 */
 	public List<Map<String, Object>> getWaitingList();
 	
+	/** 승인 반려 목록 조회 */
+	public List<Map<String, Object>> getApprovalCancelList();
+	
+	/** 예약 완료 목록 조회 */
+	public List<Map<String, Object>> getSuccessList();
 
 }
