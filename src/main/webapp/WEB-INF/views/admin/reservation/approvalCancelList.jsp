@@ -44,7 +44,7 @@
 								<tbody>
 									<c:choose>
 										<c:when test="${empty approvalCancelList}">
-											<td colspan="9" class="text-center"> 승인 대기 중인 예약이 존재하지 않습니다.</td>
+											<td colspan="9" class="text-center"> 승인 반려된 예약이 존재하지 않습니다.</td>
 										</c:when>
 										<c:otherwise>
 											<c:forEach items="${approvalCancelList}" var="list" varStatus="status">

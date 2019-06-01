@@ -108,6 +108,7 @@
 		       AND r.room_no = room.room_no 
 		       AND r.emp_no = e.emp_no 
 		       AND e.mgr_no = e2.emp_no 
+		       AND r.status = 0
 		       AND ( w.mgr_approval = 'W' OR w.admin_approval = 'W' ) 
 		ORDER BY r.res_no
 	</select>
@@ -145,8 +146,9 @@
 		       employee e, 
 		       employee e2 
 		WHERE  r.room_no = room.room_no 
-		       AND r.emp_no = e.emp_no 
-		       AND e.mgr_no = e2.emp_no 
+       AND r.emp_no = e.emp_no 
+       AND e.mgr_no = e2.emp_no 
+       AND r.status = 1
 		ORDER BY r.res_no
 	</select>
 </mapper>
