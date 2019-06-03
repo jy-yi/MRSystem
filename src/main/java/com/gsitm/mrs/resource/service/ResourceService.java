@@ -3,6 +3,7 @@ package com.gsitm.mrs.resource.service;
 import java.util.List;
 import java.util.Map;
 
+import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
@@ -35,4 +36,7 @@ public interface ResourceService {
 	
 	/** 비품 삭제 */
 	public void deleteEquipment(int equipmentNo);
+	
+	/** 대여 비품 목록 조회 */
+	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList();
 }

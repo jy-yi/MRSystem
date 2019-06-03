@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
@@ -108,6 +109,7 @@ public class ResourceController {
 
 		List<Map<String, Object>> equipmentList = service.getEquipmentList();
 		List<Map<String, Object>> roomList = service.getRoomListForEquipment();
+		List<BorrowedEquipmentDTO> borrowedEquipmentList = service.getBorrowedEquipmentList();
 		List<Object> workplaceNameList = new ArrayList<>();
 
 		for (Map<String, Object> map : roomList) {
@@ -123,7 +125,18 @@ public class ResourceController {
 				}
 			}
 		}
+		
+		for (Map<String, Object> map : equipmentList) {
 
+			Integer equipNo = Integer.valueOf(map.get("EQUIPNO").toString());
+			
+			for (int i = 0; i < borrowedEquipmentList.size(); i++) {
+				if (borrowedEquipmentList.get(i).getEquipmentNo() == equipNo) {
+					map.put("isBorrowed", "Y");
+				} 
+			}
+		}
+		
 		model.addAttribute("equipmentList", equipmentList);
 		model.addAttribute("roomList", roomList);
 		model.addAttribute("workplaceNameList", workplaceNameList);

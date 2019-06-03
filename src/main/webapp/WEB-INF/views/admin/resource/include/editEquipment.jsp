@@ -1,15 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
-
 <!-- Add Equipment Modal-->
-<div class="modal fade" id="addEquipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editEquipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">비품 추가</h5>
+				<h5 class="modal-title" id="exampleModalLabel">비품 수정</h5>
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>
 			
@@ -22,7 +19,7 @@
 								<label> 비품명 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="text" class="form-control" id="name" name="name" placeholder="비품 이름을 입력하세요" />
+								<input type="text" class="form-control" id="editName" name="name" placeholder="비품 이름을 입력하세요" />
 							</div>
 						
 							<div class="clearfix"></div>
@@ -35,8 +32,8 @@
 								<label> 구매일 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-				                <div class="input-group input-append date" id="datePicker">
-				                    <input type="date" class="form-control" name="buyDate" />
+				                <div class="input-group input-append date" id="editDatePicker">
+				                    <input type="date" class="form-control" name="buyDate" id="editBuyDate"/>
 				                    <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 				                </div>
 							</div>
@@ -51,19 +48,7 @@
 								<label> 비치장소 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<select id="option-droup-demo" multiple="multiple" class="form-control">
-									<c:forEach items="${workplaceNameList}" var="workpalceList">
-										<optgroup label="${workpalceList}">
-											
-										<c:forEach items="${roomList}" var="roomList" varStatus="status">
-											<c:if test="${workpalceList eq  roomList.WORKPLACENAME}">
-												<option value="${roomList.ROOMNO}">${roomList.ROOMNAME }</option>
-											</c:if>
-										</c:forEach>
-							        	</optgroup>
-									</c:forEach>
-							    </select>
-							    <input type="hidden" id="roomNo" name="roomNoList" value="">
+								<input type="text" class="form-control" id="editRoomName" readonly="readonly"/>
 							</div>
 						
 							<div class="clearfix"></div>
@@ -82,11 +67,11 @@
 
 <script>
 	$(function() {
-	    $('#datePicker').datepicker({
+	    $('#editDatePicker').datepicker({
             format: 'yyyy-mm-dd'
         });
 	    
-	    $('#option-droup-demo').multiselect({buttonWidth: '340px'});
+	    $('#option-droup-demo-edit').multiselect({buttonWidth: '340px'});
 	});
 	
 	/* 모달 사라졌을 때 입력 값 초기화 */
@@ -95,7 +80,7 @@
 	});
 	
 	var arrSelected = [];
-	$('#option-droup-demo').on('change', function(){
+	$('#option-droup-demo-edit').on('change', function(){
 	    var selected = $(this).find("option:selected");
 	    arrSelected = [];
 	    selected.each(function(){
@@ -103,5 +88,24 @@
 	    });
 	    $('#roomNo').val(arrSelected);
 	});
+	
+	var equipNo="";
+	var equipName="";
+    var buyDate="";
+    var roomName = "";
+	
+	$(function() {     
+        $('#editEquipModal').on('show.bs.modal', function(event) {          
+        	equipNo = $(event.relatedTarget).data('equipno');
+        	equipName = $(event.relatedTarget).data('equipname');
+        	buyDate = $(event.relatedTarget).data('buydate');
+        	roomName = $(event.relatedTarget).data('roomname');
+        	
+        	$("#editEquipNo").val(equipNo);
+        	$("#editName").val(equipName);
+    	    $("#editBuyDate").val(buyDate);
+    	    $("#editRoomName").val(roomName);
+        });
+    });
 	
 </script>

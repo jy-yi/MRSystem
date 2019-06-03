@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
@@ -66,5 +67,11 @@ public class ResourceDAOImpl implements ResourceDAO {
 	@Override
 	public void deleteEquipment(int equipmentNo) {
 		sqlSession.delete(namespace + ".deleteEquipment", equipmentNo);		
+	}
+
+	/** 대여 비품 목록 조회 */
+	@Override
+	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
+		return sqlSession.selectList(namespace + ".getBorrowedEquipmentList");
 	}
 }

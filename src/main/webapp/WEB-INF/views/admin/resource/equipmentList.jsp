@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
 <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.min.js"></script>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
+
 <!-- Main Content -->
 <div id="content">
 
@@ -63,11 +66,22 @@
 													<td>${list.EQUIPNAME }</td>
 													<td>${list.BUYDATE }</td>
 													<td>${list.ROOMNAME }</td>
-													<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">수정</span> </a></td>
-													<td>
-														<button class="btn btn-danger"> 삭제 </button>
-														<input type="hidden" id="equipmentNo" name="equipmentNo" value="${list. EQUIPNO}">
-													</td>
+													
+													<c:choose>
+														<c:when test="${list.isBorrowed eq 'Y'}">
+															<td> 대여 중</td>
+															<td> 대여 중</td>
+														</c:when>
+														<c:otherwise>
+														<td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editEquipModal" id="editBtn" 
+															data-equipNo="${list.EQUIPNO}" data-equipName="${list.EQUIPNAME}" data-buyDate="${list.BUYDATE}" data-roomName="${list.ROOMNAME}"> 
+															<span class="text">수정</span> </a></td>
+														<td> 
+															<a href="#" class="btn btn-danger"> <span class="text">삭제</span> </a>
+															<input type="hidden" id="equipmentNo" name="equipmentNo" value="${list. EQUIPNO}">
+														</td>
+														</c:otherwise>
+													</c:choose>
 												</tr>
 											</c:forEach>
 										</c:otherwise>

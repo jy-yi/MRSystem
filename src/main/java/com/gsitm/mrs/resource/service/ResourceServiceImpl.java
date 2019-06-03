@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dao.ResourceDAO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
@@ -66,5 +67,10 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.deleteEquipment(equipmentNo);
 	}
 
+	/** 대여 비품 목록 조회 */
+	@Override
+	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
+		return dao.getBorrowedEquipmentList();
+	}
 
 }
