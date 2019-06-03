@@ -31,34 +31,63 @@
 			<h6 class="m-0 font-weight-bold text-primary">나의 예약 횟수 및 비용</h6>
 		</div>
 		<div class="card-body">
-			<div class="table">
-
-				<div class="row header">
-
-					<div class="cell">개인</div>
-					<div class="cell"></div>
-					<div class="cell">부서</div>
-					<div class="cell"></div>
-
-				</div>
-
-				<div class="row">
-					<div class="cell" data-title="Full Name">횟수</div>
-					<div class="cell" data-title="Age">비용</div>
-					<div class="cell" data-title="Job Title">횟수</div>
-					<div class="cell" data-title="Location">비용</div>
-				</div>
-
-				<div class="row">
-					<div class="cell" data-title="Full Name">2</div>
-					<div class="cell" data-title="Age">50000</div>
-					<div class="cell" data-title="Job Title">25</div>
-					<div class="cell" data-title="Location">255,000</div>
-				</div>
-			</div>
+			
+			<table class="table" border="2">
+				<tr class="rHeader">
+					<td colspan="2">개인</td>
+					<td  colspan="2">부서</td>
+				</tr>
+				
+				<tr>	
+					<td>횟수</td>
+					<td>비용</td>
+					<td>횟수</td>
+					<td>비용</td>
+				</tr>
+				
+				<tr>
+					<td>2</td>
+					<td>50000</td>
+					<td>25</td>
+					<td>255,000</td>
+				</tr>
+				
+			</table>
 		</div>
 
 	</div>
+	
+	<p class="mb-4">조회하고 싶은 날짜를 선택하세요.</p>
+
+			<input type="text" name="datefilter" value="" style="width: 250px;"/>
+
+			<script type="text/javascript">
+				$(function() {
+
+					$('input[name="datefilter"]').daterangepicker({
+						autoUpdateInput : false,
+						locale : {
+							cancelLabel : 'Clear'
+						}
+					});
+
+					$('input[name="datefilter"]').on(
+							'apply.daterangepicker',
+							function(ev, picker) {
+								$(this).val(
+										picker.startDate.format('YYYY/MM/DD')
+												+ ' - '
+												+ picker.endDate
+														.format('YYYY/MM/DD'));
+							});
+
+					$('input[name="datefilter"]').on('cancel.daterangepicker',
+							function(ev, picker) {
+								$(this).val('');
+							});
+
+				});
+			</script>
 </div>
 
 
