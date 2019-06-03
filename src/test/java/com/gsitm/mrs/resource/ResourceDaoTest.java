@@ -175,5 +175,15 @@ public class ResourceDaoTest {
 			logger.info(map);
 		}
 	}
+	
+	/** 비품 수정 테스트 */
+	@Test
+	public void TestEditEquipment() {
+
+		dao.editEquipment(new EquipmentDTO(35, 7, "비품 수정", "2019-06-03"));
+
+		logger.info("비품 수정 완료!");
+
+	}
 
 }

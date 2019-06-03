@@ -38,6 +38,8 @@ public class ResourceController {
 
 	@Inject
 	private ResourceService service;
+	
+	/* ------------- 지사 ------------- */
 
 	/**
 	 * 지사 관리 페이지
@@ -87,14 +89,25 @@ public class ResourceController {
 
 		return "redirect:/resource/workplaceList";
 	}
+	
+	
+	/* ------------- 회의실 ------------- */
 
+	/**
+	 * 회의실 관리 페이지
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/roomList", method = RequestMethod.GET)
-	public String roomList() {
+	public String roomList(Model model) {
 
 		logger.info("(관리자) 회의실 관리");
 
 		return "admin/resource/roomList";
 	}
+	
+	
+	/* ------------- 비품 ------------- */
 
 	/**
 	 * 비품 관리 페이지
@@ -126,6 +139,7 @@ public class ResourceController {
 			}
 		}
 		
+		/* 비품이 대여 중인지 여부 */
 		for (Map<String, Object> map : equipmentList) {
 
 			Integer equipNo = Integer.valueOf(map.get("EQUIPNO").toString());
@@ -154,6 +168,7 @@ public class ResourceController {
 	@RequestMapping(value = "/addEquipment", method = RequestMethod.POST)
 	public String addEquipment(EquipmentDTO equipmentDTO, String roomNoList) throws Exception {
 
+		/* 멀티 셀렉트로 view에서 넘어온 회의실 번호 토큰 분리 */
 		 StringTokenizer token = new StringTokenizer(roomNoList , ",");
 		 while(token.hasMoreTokens()) {
 			 equipmentDTO.setRoomNo(Integer.parseInt(token.nextToken()));
@@ -163,6 +178,27 @@ public class ResourceController {
 		return "redirect:/resource/equipmentList";
 	}
 	
+	/**
+	 * 비품 수정
+	 * @param equipmentDTO 수정할 비품 객체
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
+	public String editEquipment(EquipmentDTO equipmentDTO) throws Exception {
+
+		 service.editEquipment(equipmentDTO);
+
+		return "redirect:/resource/equipmentList";
+	}
+	
+	/**
+	 * 비품 삭제
+	 * @param equipmentNo 삭제할 비품 번호
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/deleteEquipment", method = RequestMethod.POST)
 	public String deleteEquipment(String equipmentNo) throws Exception {
 

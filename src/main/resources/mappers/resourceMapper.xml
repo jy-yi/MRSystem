@@ -36,7 +36,8 @@
 	<select id="getBorrowedEquipmentList" resultType="BorrowedEquipment">
 		SELECT equip_no AS equipmentNo, res_no AS reservationNo
 		FROM Borrowed_Equipment
-	</select>	
+	</select>
+		
 	<!-- 비품 추가 -->
 	<insert id="addEquipment">
 		INSERT INTO Equipment(equip_no, room_no, name, buy_date) 
@@ -51,9 +52,16 @@
 	</select>
 	
 	<!-- 비품 삭제 -->
-	<insert id="deleteEquipment">
+	<delete id="deleteEquipment">
 		DELETE FROM Equipment 
 		WHERE equip_no = #{equipmentNo}
-	</insert>
+	</delete>
+	
+	<!-- 비품 수정 -->
+	<update id="editEquipment">
+		UPDATE Equipment 
+		SET name = #{name}, buy_date = #{buyDate} 
+		WHERE equip_no = #{equipmentNo}
+	</update>
 	
 </mapper>

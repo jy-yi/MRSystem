@@ -16,17 +16,25 @@ import com.gsitm.mrs.resource.dto.WorkplaceDTO;
  */
 public interface ResourceDAO {
 	
+	/* ------------- 지사 ------------- */
+	
 	/** 지사 목록 조회 */
 	public List<WorkplaceDTO> getWorkplaceList();
-	
-	/** 비품 목록 조회 */
-	public List<Map<String, Object>> getEquipmentList();
 	
 	/** 지사 추가 */
 	public void addWorkplace(WorkplaceDTO workplaceDTO);
 	
 	/** 지사 수정 */
 	public void editWorkplace(WorkplaceDTO workplaceDTO);
+	
+
+	/* ------------- 비품 ------------- */
+	
+	/** 비품 목록 조회 */
+	public List<Map<String, Object>> getEquipmentList();
+	
+	/** 대여 비품 목록 조회 */
+	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList();
 	
 	/** 비품 추가 */
 	public void addEquipment(EquipmentDTO equipmentDTO);
@@ -37,6 +45,6 @@ public interface ResourceDAO {
 	/** 비품 삭제 */
 	public void deleteEquipment(int equipmentNo);
 	
-	/** 대여 비품 목록 조회 */
-	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList();
+	/** 비품 수정 */
+	public void editEquipment(EquipmentDTO equipmentDTO);
 }

@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
+
 <!-- Add Equipment Modal-->
 <div class="modal fade" id="addEquipModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -19,7 +22,7 @@
 								<label> 비품명 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="text" class="form-control" id="name" name="name" placeholder="비품 이름을 입력하세요" />
+								<input type="text" class="form-control" id="name" name="name" placeholder="비품 이름을 입력하세요" required="required" />
 							</div>
 						
 							<div class="clearfix"></div>
@@ -32,9 +35,11 @@
 								<label> 구매일 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-				                <div class="input-group input-append date" id="datePicker">
-				                    <input type="date" class="form-control" name="buyDate" />
-				                    <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+								<div class="form-group">
+					                <div class="input-group input-append date" id="datePicker">
+					                    <input type="text" class="form-control" name="buyDate" placeholder="비품 구매일을 입력하세요" required="required">
+					                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+					                </div>
 				                </div>
 							</div>
 						

@@ -26,19 +26,15 @@ public class ResourceDAOImpl implements ResourceDAO {
 	private SqlSession sqlSession;
 
 	private static String namespace = "com.gsitm.mrs.mappers.ResourceMapper";
+	
+	/* ------------- 지사 ------------- */
 
 	/** 지사 목록 조회 */
 	@Override
 	public List<WorkplaceDTO> getWorkplaceList() {
 		return sqlSession.selectList(namespace + ".getWorkplaceList");
 	}
-
-	/** 비품 목록 조회 */
-	@Override
-	public List<Map<String, Object>> getEquipmentList() {
-		return sqlSession.selectList(namespace + ".getEquipmentList");
-	}
-
+	
 	/** 지사 추가 */
 	@Override
 	public void addWorkplace(WorkplaceDTO workplaceDTO) {
@@ -49,6 +45,21 @@ public class ResourceDAOImpl implements ResourceDAO {
 	@Override
 	public void editWorkplace(WorkplaceDTO workplaceDTO) {
 		sqlSession.update(namespace + ".editWorkplace", workplaceDTO);
+	}
+	
+
+	/* ------------- 비품 ------------- */
+
+	/** 비품 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEquipmentList() {
+		return sqlSession.selectList(namespace + ".getEquipmentList");
+	}
+	
+	/** 대여 비품 목록 조회 */
+	@Override
+	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
+		return sqlSession.selectList(namespace + ".getBorrowedEquipmentList");
 	}
 
 	/** 비품 추가*/
@@ -69,9 +80,9 @@ public class ResourceDAOImpl implements ResourceDAO {
 		sqlSession.delete(namespace + ".deleteEquipment", equipmentNo);		
 	}
 
-	/** 대여 비품 목록 조회 */
+	/** 비품 수정 */
 	@Override
-	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
-		return sqlSession.selectList(namespace + ".getBorrowedEquipmentList");
+	public void editEquipment(EquipmentDTO equipmentDTO) {
+		sqlSession.update(namespace + ".editEquipment", equipmentDTO);
 	}
 }

@@ -25,18 +25,14 @@ public class ResourceServiceImpl implements ResourceService {
 	@Inject
 	private ResourceDAO dao;
 	
+	/* ------------- 지사 ------------- */
+	
 	/** 지사 목록 조회 */
 	@Override
 	public List<WorkplaceDTO> getWorkplaceList() {
 		return dao.getWorkplaceList();
 	}
-
-	/** 비품 목록 조회 */
-	@Override
-	public List<Map<String, Object>> getEquipmentList() {
-		return dao.getEquipmentList();
-	}
-
+	
 	/** 지사 추가 */
 	@Override
 	public void addWorkplace(WorkplaceDTO workplaceDTO) {
@@ -47,6 +43,21 @@ public class ResourceServiceImpl implements ResourceService {
 	@Override
 	public void editWorkplace(WorkplaceDTO workplaceDTO) {
 		dao.editWorkplace(workplaceDTO);
+	}
+	
+	
+	/* ------------- 비품 ------------- */
+
+	/** 비품 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEquipmentList() {
+		return dao.getEquipmentList();
+	}
+	
+	/** 대여 비품 목록 조회 */
+	@Override
+	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
+		return dao.getBorrowedEquipmentList();
 	}
 
 	/** 비품 추가*/
@@ -67,10 +78,10 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.deleteEquipment(equipmentNo);
 	}
 
-	/** 대여 비품 목록 조회 */
+	/** 비품 수정 */
 	@Override
-	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
-		return dao.getBorrowedEquipmentList();
+	public void editEquipment(EquipmentDTO equipmentDTO) {
+		dao.editEquipment(equipmentDTO);
 	}
 
 }

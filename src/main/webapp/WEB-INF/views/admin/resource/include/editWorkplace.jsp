@@ -21,7 +21,7 @@
 								<label> 이름</label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="text" class="form-control" id="editName" name="name" placeholder="지사 이름을 입력하세요" />
+								<input type="text" class="form-control" id="editName" name="name" placeholder="지사 이름을 입력하세요" required="required" />
 							</div>
 						
 							<div class="clearfix"></div>
@@ -34,7 +34,7 @@
 								<label>위치</label>
 							</div>
 							<div class="col-xs-7 col-sm-7">
-								<input type="text" class="form-control" id="editAddress" name="address" placeholder="위치를 입력하세요" />
+								<input type="text" class="form-control" id="editAddress" name="address" placeholder="위치를 입력하세요" required="required" />
 							</div>
 							
 							<div class="col-xs-2 col-sm-2">

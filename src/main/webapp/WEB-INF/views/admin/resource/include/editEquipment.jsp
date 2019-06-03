@@ -10,7 +10,7 @@
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>
 			
-			<form action="/resource/addEquipment" method="post">
+			<form action="/resource/editEquipment" method="post">
 				<div class="modal-body">
 					
 					<div class="form-group">
@@ -19,7 +19,7 @@
 								<label> 비품명 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="text" class="form-control" id="editName" name="name" placeholder="비품 이름을 입력하세요" />
+								<input type="text" class="form-control" id="editName" name="name" placeholder="비품 이름을 입력하세요" required="required" />
 							</div>
 						
 							<div class="clearfix"></div>
@@ -33,11 +33,11 @@
 							</div>
 							<div class="col-xs-9 col-sm-9">
 				                <div class="input-group input-append date" id="editDatePicker">
-				                    <input type="date" class="form-control" name="buyDate" id="editBuyDate"/>
+				                    <input type="text" class="form-control" name="buyDate" id="editBuyDate" placeholder="비품 구매일을 입력하세요" required="required"/>
 				                    <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 				                </div>
 							</div>
-						
+							
 							<div class="clearfix"></div>
 						</div>
 						
@@ -48,9 +48,10 @@
 								<label> 비치장소 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="text" class="form-control" id="editRoomName" readonly="readonly"/>
+								<input type="text" class="form-control" id="editRoomName" readonly="readonly" required="required"/>
 							</div>
 						
+							<input type="hidden" id="editEquipNo" name="equipmentNo"/>
 							<div class="clearfix"></div>
 						</div>
 					</div>
@@ -58,7 +59,7 @@
 			
 				<div class="modal-footer">
 					<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-					<input type="submit" class="btn btn-primary" value="추가" >
+					<input type="submit" class="btn btn-primary" value="수정" >
 				</div>
 			</form>
 		</div>
@@ -70,23 +71,6 @@
 	    $('#editDatePicker').datepicker({
             format: 'yyyy-mm-dd'
         });
-	    
-	    $('#option-droup-demo-edit').multiselect({buttonWidth: '340px'});
-	});
-	
-	/* 모달 사라졌을 때 입력 값 초기화 */
-	$('.modal').on('hidden.bs.modal', function (e) {
-	  $(this).find('form')[0].reset()
-	});
-	
-	var arrSelected = [];
-	$('#option-droup-demo-edit').on('change', function(){
-	    var selected = $(this).find("option:selected");
-	    arrSelected = [];
-	    selected.each(function(){
-	       arrSelected.push($(this).val());
-	    });
-	    $('#roomNo').val(arrSelected);
 	});
 	
 	var equipNo="";
