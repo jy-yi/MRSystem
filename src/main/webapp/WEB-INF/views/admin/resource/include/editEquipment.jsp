@@ -33,8 +33,8 @@
 							</div>
 							<div class="col-xs-9 col-sm-9">
 				                <div class="input-group input-append date" id="editDatePicker">
-				                    <input type="text" class="form-control" name="buyDate" id="editBuyDate" placeholder="비품 구매일을 입력하세요" required="required"/>
-				                    <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+				                    <input type="text" class="form-control" id="editBuyDate" name="buyDate" placeholder="비품 구매일을 입력하세요" required="required" autocomplete="off">
+				                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				                </div>
 							</div>
 							
@@ -67,11 +67,16 @@
 </div>
 
 <script>
-	$(function() {
-	    $('#editDatePicker').datepicker({
-            format: 'yyyy-mm-dd'
-        });
-	});
+	$(function () {
+		$('#editDatePicker').datepicker({
+	        calendarWeeks: false,
+	        todayHighlight: true,
+	        autoclose: true,
+	        format: "yyyy-mm-dd",
+	        language: "kr"
+	    });
+	})	
+
 	
 	var equipNo="";
 	var equipName="";

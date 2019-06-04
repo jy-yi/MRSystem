@@ -35,11 +35,9 @@
 								<label> 구매일 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<div class="form-group">
-					                <div class="input-group input-append date" id="datePicker">
-					                    <input type="text" class="form-control" name="buyDate" placeholder="비품 구매일을 입력하세요" required="required">
-					                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					                </div>
+				                <div class="input-group input-append date" id="datePicker">
+				                    <input type="text" class="form-control" name="buyDate" placeholder="비품 구매일을 입력하세요" required="required">
+				                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 				                </div>
 							</div>
 						
@@ -85,7 +83,11 @@
 <script>
 	$(function() {
 	    $('#datePicker').datepicker({
-            format: 'yyyy-mm-dd'
+	    	calendarWeeks: false,
+	        todayHighlight: true,
+	        autoclose: true,
+	        format: "yyyy-mm-dd",
+	        language: "kr"
         });
 	    
 	    $('#option-droup-demo').multiselect({buttonWidth: '340px'});
@@ -93,7 +95,7 @@
 	
 	/* 모달 사라졌을 때 입력 값 초기화 */
 	$('.modal').on('hidden.bs.modal', function (e) {
-	  $(this).find('form')[0].reset()
+	  $(this).find('form')[0].reset();
 	});
 	
 	var arrSelected = [];

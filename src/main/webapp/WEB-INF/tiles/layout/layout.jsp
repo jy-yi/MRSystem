@@ -79,6 +79,12 @@
 <script src='/resources/packages/interaction/main.js'></script>
 <script src='/resources/packages/daygrid/main.js'></script>
 <script src='/resources/packages/core/locales-all.js'></script>
+
+<!-- Date Picker -->
+<link rel="stylesheet" type="text/css" href="/resources/css/datepicker3.css" />
+<script type="text/javascript" src="/resources/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/resources/js/bootstrap-datepicker.kr.js"></script>
+
 	
 <style type="text/css">
 @font-face {
