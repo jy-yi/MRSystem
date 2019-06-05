@@ -1,6 +1,7 @@
 package com.gsitm.mrs.interceptor;
 
 import java.net.URLEncoder;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
@@ -15,6 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.WebUtils;
 
+import com.gsitm.mrs.resource.dto.WorkplaceDTO;
+import com.gsitm.mrs.resource.service.ResourceService;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 import com.gsitm.mrs.user.service.UserService;
 
@@ -31,7 +34,10 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
 	
 	@Inject
-	private UserService service;
+	private UserService userService;
+	
+	@Inject
+	private ResourceService resourceService;	
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -44,14 +50,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
 		
 		if (loginCookie != null) {
-			user = service.getInfo(loginCookie.getValue());
+			user = userService.getInfo(loginCookie.getValue());
 			
 			logger.info("자동 로그인! >> " + user.toString());
 			
 			session.setAttribute(LOGIN, user);
-			
 		}
 
+		/* 지사 목록 동적 연동을 위해 세션에 저장 */
+		List<WorkplaceDTO> workplaceList = resourceService.getWorkplaceList();
+		session.setAttribute("workplaceList", workplaceList);
+		
 		return true;
 	}
 	

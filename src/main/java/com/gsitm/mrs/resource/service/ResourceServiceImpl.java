@@ -45,6 +45,13 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.editWorkplace(workplaceDTO);
 	}
 	
+	/* ------------- 회의실 ------------- */
+	
+	@Override
+	public List<Map<String, Object>> getRoomList() {
+		return dao.getRoomList();
+	}
+	
 	
 	/* ------------- 비품 ------------- */
 
@@ -66,12 +73,6 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.addEquipment(equipmentDTO);
 	}
 	
-	/** 비품 추가를 위한 지사 및 회의실 정보 조회 */
-	@Override
-	public List<Map<String, Object>> getRoomListForEquipment() {
-		return dao.getRoomListForEquipment();
-	}
-
 	/** 비품 삭제 */
 	@Override
 	public void deleteEquipment(int equipmentNo) {

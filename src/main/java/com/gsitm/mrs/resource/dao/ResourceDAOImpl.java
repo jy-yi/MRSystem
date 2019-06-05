@@ -47,6 +47,14 @@ public class ResourceDAOImpl implements ResourceDAO {
 		sqlSession.update(namespace + ".editWorkplace", workplaceDTO);
 	}
 	
+	
+	/* ------------- 회의실 ------------- */
+	
+	@Override
+	public List<Map<String, Object>> getRoomList() {
+		return sqlSession.selectList(namespace + ".getRoomList");
+	}
+	
 
 	/* ------------- 비품 ------------- */
 
@@ -68,12 +76,6 @@ public class ResourceDAOImpl implements ResourceDAO {
 		sqlSession.insert(namespace + ".addEquipment", equipmentDTO);		
 	}
 
-	/** 비품 추가를 위한 지사 및 회의실 정보 조회 */
-	@Override
-	public List<Map<String, Object>> getRoomListForEquipment() {
-		return sqlSession.selectList(namespace + ".getRoomListForEquipment");
-	}
-
 	/** 비품 삭제 */
 	@Override
 	public void deleteEquipment(int equipmentNo) {
@@ -85,4 +87,5 @@ public class ResourceDAOImpl implements ResourceDAO {
 	public void editEquipment(EquipmentDTO equipmentDTO) {
 		sqlSession.update(namespace + ".editEquipment", equipmentDTO);
 	}
+
 }

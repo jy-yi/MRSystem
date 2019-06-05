@@ -67,10 +67,10 @@ $(function(){
 			
 				<h6 class="collapse-header">근무지별 예약 현황:</h6>
 				
-				<a class="collapse-item low-menu" href="/reservation/dashboard">재동 본사</a> 
-				<a class="collapse-item low-menu" href="/reservation/dashboard">삼환빌딩</a> 
-				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강남타워</a> 
-				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강서타워</a>
+				<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+				<c:forEach items="${workplaceList}" var="list">
+					<a class="collapse-item low-menu" href="/reservation/dashboard">${list.name}</a> 
+				</c:forEach>
 			</div>
 		</div>
 	</li>
@@ -103,10 +103,10 @@ $(function(){
 		
 		<div id="collapseAdminCal" class="collapse" aria-labelledby="collapseAdminCal" data-parent="#accordionSidebar">
 			<div class="bg-white py-2 collapse-inner rounded">
-				<a class="collapse-item low-menu" href="/reservation/dashboard">재동 본사</a> 
-				<a class="collapse-item low-menu" href="/reservation/dashboard">삼환빌딩</a> 
-				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강남타워</a> 
-				<a class="collapse-item low-menu" href="/reservation/dashboard">GS 강서타워</a>
+				<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+				<c:forEach items="${workplaceList}" var="list">
+					<a class="collapse-item low-menu" href="/reservation/dashboard">${list.name}</a> 
+				</c:forEach>
 			</div>
 		</div>
 	</li>

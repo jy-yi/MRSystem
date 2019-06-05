@@ -16,8 +16,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
+import com.gsitm.mrs.reservation.service.ReservationService;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
@@ -38,6 +41,9 @@ public class ResourceController {
 
 	@Inject
 	private ResourceService service;
+	
+	@Inject
+	private ReservationService reservationService;
 	
 	/* ------------- 지사 ------------- */
 
@@ -102,8 +108,24 @@ public class ResourceController {
 	public String roomList(Model model) {
 
 		logger.info("(관리자) 회의실 관리");
-
+		
+		List<Map<String, Object>> roomList = service.getRoomList();
+		
+		model.addAttribute("roomList", roomList);
+		
 		return "admin/resource/roomList";
+	}
+	
+	@RequestMapping(value = "/getEquipmentList", method = RequestMethod.POST)
+	public ModelAndView getEquipmentList(Model model, String roomNo) {
+
+		List<Map<String, Object>> equipmentList = reservationService.getEquipmentList(Integer.parseInt(roomNo));
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("equipmentList", equipmentList);
+		mav.setViewName("jsonView");
+		
+		return mav;
 	}
 	
 	
@@ -121,7 +143,7 @@ public class ResourceController {
 		logger.info("(관리자) 비품 관리");
 
 		List<Map<String, Object>> equipmentList = service.getEquipmentList();
-		List<Map<String, Object>> roomList = service.getRoomListForEquipment();
+		List<Map<String, Object>> roomList = service.getRoomList();
 		List<BorrowedEquipmentDTO> borrowedEquipmentList = service.getBorrowedEquipmentList();
 		List<Object> workplaceNameList = new ArrayList<>();
 

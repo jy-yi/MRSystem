@@ -42,6 +42,18 @@ public class ResourceDaoTest {
 		}
 
 	}
+	
+	/** 회의실 목록 조회 테스트 */
+	@Test
+	public void TestRoomList() {
+
+		List<Map<String, Object>> list = dao.getRoomList();
+
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+
+	}
 
 	/** 비품 목록 조회 테스트 */
 	@Test
@@ -89,7 +101,7 @@ public class ResourceDaoTest {
 	@Test
 	public void TestRoomListForEquipment() {
 
-		List<Map<String, Object>> list = dao.getRoomListForEquipment();
+		List<Map<String, Object>> list = dao.getRoomList();
 		List<Object> workplaceNameList = new ArrayList<>();
 
 		for (Map<String, Object> map : list) {
