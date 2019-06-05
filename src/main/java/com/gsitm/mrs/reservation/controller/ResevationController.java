@@ -137,7 +137,7 @@ public class ResevationController {
 	@RequestMapping(value = "/shortTerm_chooseDate/{roomNo}", method = RequestMethod.GET)
 	public String chooseDate(@PathVariable int roomNo, Model model) {
 		
-		//logger.info("(사용자) 예약-단기 예약 일자 선택");
+		logger.info("(사용자) 예약-단기 예약 일자 선택");
 		
 		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
 		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
@@ -152,7 +152,7 @@ public class ResevationController {
 	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto, 
 			HttpServletRequest request, Model model) {
 		
-		//logger.info("(사용자) 예약-예약 정보 입력");
+		logger.info("(사용자) 예약-예약 정보 입력");
 		
 		service.InputReservationInfo(request, reservationDto, model);
 		System.out.println(reservationDto.toString());

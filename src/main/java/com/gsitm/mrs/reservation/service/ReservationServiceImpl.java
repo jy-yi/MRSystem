@@ -86,7 +86,6 @@ public class ReservationServiceImpl implements ReservationService {
 		for(int i=0; i<equipmentList.size(); i++) {
 			for(int j=0; j<splitEquipments.size(); j++) {
 				if(equipmentList.get(i).get("EQUIP_NO").toString().equals(splitEquipments.get(j))) {
-					System.out.println("I need "+equipmentList.get(i).get("NAME"));
 					equipmentList.get(i).put("need", true);
 					splitEquipments.remove(j);
 					break;
@@ -97,6 +96,12 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// 예약 정보
 		reservationDto.setEmployeeNo(request.getParameter("employeeNo"));
+		String snackwant=reservationDto.getSnackWant();
+		if(snackwant!=null && snackwant.equals("on")) {
+			reservationDto.setSnackWant("Y");
+		} else {
+			reservationDto.setSnackWant("N");
+		}
 		model.addAttribute("reservationInfo",reservationDto);
 		
 		// 예약자 정보
