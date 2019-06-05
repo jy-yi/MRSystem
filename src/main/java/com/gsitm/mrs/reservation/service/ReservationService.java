@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 
@@ -33,6 +36,8 @@ public interface ReservationService {
 	
 	/** 사용자가 선택한 비품 목록 EquipmentDto에 담기 */
 	public EquipmentDTO putIntoEuipmentDto(HttpServletRequest request);
+	
+	public void InputReservationInfo(HttpServletRequest request, ReservationDTO reservationDto, Model model);
 	
 	/* ------------- 관리자 ------------- */
 	

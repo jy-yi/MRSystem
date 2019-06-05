@@ -1,16 +1,23 @@
 package com.gsitm.mrs.reservation.service;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 import freemarker.log.Logger;
 
@@ -62,6 +69,43 @@ public class ReservationServiceImpl implements ReservationService {
 		return null; 
 	}
 	
+	@Override
+	public void InputReservationInfo(HttpServletRequest request, ReservationDTO reservationDto, Model model) {
+		// 회의실 정보
+		int roomNo=Integer.parseInt(request.getParameter("roomNo"));
+		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
+		model.addAttribute("roomInfo",roomInfo);
+		
+		// 사용자가 선택한 비품 정보 가져오기
+		String equipments=request.getParameter("equipments");
+		List<String> splitEquipments=new ArrayList<String>();
+		splitEquipments.addAll(Arrays.asList(equipments.split(",")));
+		
+		// 비품 목록 중 사용자가 선택한 비품에는 Y, 선택하지 않은 비품에는 N 표시
+		List<Map<String, Object>> equipmentList=dao.getEquipmentList(roomNo);
+		for(int i=0; i<equipmentList.size(); i++) {
+			for(int j=0; j<splitEquipments.size(); j++) {
+				if(equipmentList.get(i).get("EQUIP_NO").toString().equals(splitEquipments.get(j))) {
+					System.out.println("I need "+equipmentList.get(i).get("NAME"));
+					equipmentList.get(i).put("need", true);
+					splitEquipments.remove(j);
+					break;
+				}
+			}
+		}
+		model.addAttribute("equipmentList",equipmentList);
+		
+		// 예약 정보
+		reservationDto.setEmployeeNo(request.getParameter("employeeNo"));
+		model.addAttribute("reservationInfo",reservationDto);
+		
+		// 예약자 정보
+		String employeeNo=request.getParameter("employeeNo");
+		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
+		model.addAttribute("employeeInfo", employeeDto);
+		
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -82,5 +126,4 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getSuccessList();
 	}
 
-	
 }

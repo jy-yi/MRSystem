@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 
 /**
@@ -28,6 +29,9 @@ public interface ReservationDAO {
 	
 	/** 회의실 비품 목록 조회 */
 	public List<Map<String, Object>> getEquipmentList(int roomNo);
+	
+	/** 사원 정보 조회 */
+	public EmployeeDTO getEmployeeInfo(String employeeNo);
 	
 	/* ------------- 관리자 ------------- */
 	

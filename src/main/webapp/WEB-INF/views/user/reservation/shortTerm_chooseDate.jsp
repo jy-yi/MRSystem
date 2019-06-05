@@ -75,6 +75,7 @@
 						<hr>
 						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
+							<input type="hidden" name="employeeNo" value=""/>
 							<input type="hidden" name="startDate" value="">
 							<input type="hidden" name="endDate" value="">
 							<input type="hidden" name="equipments" value="">
@@ -84,7 +85,7 @@
 								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
 					</div>
-					<button class="btn btn-disabled" id="nextBtn" data-toggle="modal" data-target="#chooseTimeModal" disabled>다음 단계</button>
+					<button class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
 				</div>
 			</div>
 		</div>
@@ -98,6 +99,7 @@
 <jsp:include page="include/chooseTime.jsp" />
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
 	// 사용자가 캘린더에서 선택한 날짜
 	var startDate=null;
@@ -262,25 +264,33 @@
 		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 	});
 	
-	$("input[name='checkbox-equipment']").change(function(){
-		console.log($(this).val())
-		as
-	});
-	
 	// 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
 	$("#nextBtn").on("click",function(){
 		// startDate와 endDate 값을 넘겨줌
 		$("input[name='startDate']").val(startDate+" "+startTime);
+		if(endTime==null){
+			// endTime 설정하기
+			if(startTime_bun=="30"){
+				
+			} else{
+				
+			}
+			endTime=startTime+30;
+		}
 		$("input[name='endDate']").val(startDate+" "+endTime);
 		
 		// 선택된 equipment 목록을 equipments input에 넣어줌
-		var checkedEquipmentList=$("input[name='checkbox-equipment']:checked").val();
-		console.log(checkedEquipmentList);
-		$("input[name=equipments]").val(checkedEquipmentList);
+		var checkedEquipmentList=[];
+		$("input:checkbox[name='checkbox-equipment']:checked").each(function () {
+			checkedEquipmentList.push($(this).val());
+		});
 		
+		$("input[name=equipments]").val(checkedEquipmentList);
+
+		// 쿠키에 저장된 employeeNo 폼에 전달
+		$("input[name=employeeNo]").val($.cookie('loginCookie'));
 		// 폼 제출
 		$("#option_form").submit();
-		location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
 	});
 </script>
 </html>
