@@ -169,4 +169,11 @@
        AND r.status = 1
 		ORDER BY r.res_no
 	</select>
+	
+	<!-- 사원 정보 조회 -->
+	<select id="getEmployeeInfo" parameterType="String" resultType="Employee">
+		SELECT *
+		FROM employee
+		WHERE emp_no=#{employeeNo}
+	</select>
 </mapper>

@@ -9,6 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
  * ReservationDAO 인터페이스를 구현하는 클래스
@@ -52,6 +53,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getEquipmentList", roomNo);
 	}
 
+	/** 사원 정보 조회 */
+	@Override
+	public EmployeeDTO getEmployeeInfo(String employeeNo) {
+		return sqlSession.selectOne(namespace + ".getEmployeeInfo", employeeNo);
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

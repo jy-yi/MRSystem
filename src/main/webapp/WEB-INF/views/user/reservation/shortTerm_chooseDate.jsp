@@ -75,6 +75,7 @@
 						<hr>
 						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
+							<input type="hidden" name="employeeNo" value=""/>
 							<input type="hidden" name="startDate" value="">
 							<input type="hidden" name="endDate" value="">
 							<input type="hidden" name="equipments" value="">
@@ -84,7 +85,7 @@
 								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
 					</div>
-					<button class="btn btn-disabled" id="nextBtn" data-toggle="modal" data-target="#chooseTimeModal" disabled>다음 단계</button>
+					<button class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
 				</div>
 			</div>
 		</div>
@@ -98,6 +99,7 @@
 <jsp:include page="include/chooseTime.jsp" />
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
 	// 사용자가 캘린더에서 선택한 날짜
 	var startDate=null;
@@ -183,49 +185,64 @@
 			1. 시작시간 보다 이른 종료시간을 선택할 수 없다.
 			2. 시작시간과 종료시간을 선택한 후 임의의 시간을 선택할 경우 모든 선택이 초기화된다.
 		*/
-		// 종료시간을 처음 선택하는지 확인
-		if(endTime==null){
-			// 시작시간보다 이른 종료시간을 선택했는지 확인한다.
-			endTime=$(endTime_object).text();
-			if(!calculateUseTime(startTime, endTime)){
-				// // 어기면 현재 선택한 시간을 시작시간으로 처리
+		
+		// 종료시간을 선택한 경우
+		if(typeof endTime_object !== "undefined"){
+			// 종료시간을 처음 선택하는지 확인
+			if(endTime==null){
+				// 시작시간보다 이른 종료시간을 선택했는지 확인한다.
+				endTime=$(endTime_object).text();
+				if(!calculateUseTime(startTime, endTime)){
+					// // 어기면 현재 선택한 시간을 시작시간으로 처리
+					setStartTime(endTime_object);
+					endTime=null;
+					$("#endTime").removeAttr("id");
+				} else{
+					// 종료시간을 제대로 선택했을 경우
+					// 이 객체에 id를 부여한다
+					$(endTime_object).attr("id","endTime");
+					// chosenTime 클래스를 추가한다.
+					$(endTime_object).addClass("chosenTime");
+					// #startTime객체부터 #endTime객체까지 chosenTime 클래스를 추가해준다.
+					var tmp_time_si=startTime_si;
+					var tmp_time_bun=startTime_bun;
+					
+					while(true){
+						tmp_time_bun=parseInt(tmp_time_bun)+30;
+						
+						if(tmp_time_bun==60){
+							tmp_time_si=parseInt(tmp_time_si)+1;
+							tmp_time_bun='00';
+						}
+						if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == endTime){
+							break;
+						}
+						// chosenTime 클래스 추가
+						$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass('chosenTime');
+					}
+
+					// 모달 라벨에 시간 표시
+					$("#time-label").text(modalTitle+startTime+"~"+endTime);
+					$("#chosen-date").text(modalTitle+startTime+"~"+endTime);
+				}
+			} else{ // 종료시간을 선택한 후 재선택하는 경우
+				// 시작시간으로 처리
 				setStartTime(endTime_object);
 				endTime=null;
 				$("#endTime").removeAttr("id");
+			};
+		} else{ // 종료시간을 선택하지 않은 경우 시작 시간에 30분을 더한 시간을 종료시간에 set함
+			// startTime_si, startTime_bun값을 얻어온다.
+			var startTimeSplit=startTime.split(":");
+			startTime_si=startTimeSplit[0];
+			startTime_bun=startTimeSplit[1];
+			
+			if(startTime_bun=="30"){
+				endTime=(parseInt(startTime_si)+1)+":00"
 			} else{
-				// 종료시간을 제대로 선택했을 경우
-				// 이 객체에 id를 부여한다
-				$(endTime_object).attr("id","endTime");
-				// chosenTime 클래스를 추가한다.
-				$(endTime_object).addClass("chosenTime");
-				// #startTime객체부터 #endTime객체까지 chosenTime 클래스를 추가해준다.
-				var tmp_time_si=startTime_si;
-				var tmp_time_bun=startTime_bun;
-				
-				while(true){
-					tmp_time_bun=parseInt(tmp_time_bun)+30;
-					
-					if(tmp_time_bun==60){
-						tmp_time_si=parseInt(tmp_time_si)+1;
-						tmp_time_bun='00';
-					}
-					if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == endTime){
-						break;
-					}
-					// chosenTime 클래스 추가
-					$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass('chosenTime');
-				}
-
-				// 모달 라벨에 시간 표시
-				$("#time-label").text(modalTitle+startTime+"~"+endTime);
-				$("#chosen-date").text(modalTitle+startTime+"~"+endTime);
+				endTime=startTime_si+":30";
 			}
-		} else{ // 종료시간을 선택한 후 재선택하는 경우
-			// 시작시간으로 처리
-			setStartTime(endTime_object);
-			endTime=null;
-			$("#endTime").removeAttr("id");
-		};
+		}
 	}
 	
 	// 사용시간을 계산하는 함수
@@ -262,25 +279,30 @@
 		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 	});
 	
-	$("input[name='checkbox-equipment']").change(function(){
-		console.log($(this).val())
-		as
-	});
-	
 	// 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
 	$("#nextBtn").on("click",function(){
+		console.log(startTime);
+		console.log(endTime);
 		// startDate와 endDate 값을 넘겨줌
 		$("input[name='startDate']").val(startDate+" "+startTime);
+		if(endTime==null){
+			// endTime 설정하기
+			setEndTime();
+		}
 		$("input[name='endDate']").val(startDate+" "+endTime);
 		
 		// 선택된 equipment 목록을 equipments input에 넣어줌
-		var checkedEquipmentList=$("input[name='checkbox-equipment']:checked").val();
-		console.log(checkedEquipmentList);
-		$("input[name=equipments]").val(checkedEquipmentList);
+		var checkedEquipmentList=[];
+		$("input:checkbox[name='checkbox-equipment']:checked").each(function () {
+			checkedEquipmentList.push($(this).val());
+		});
 		
+		$("input[name=equipments]").val(checkedEquipmentList);
+
+		// 쿠키에 저장된 employeeNo 폼에 전달
+		$("input[name=employeeNo]").val($.cookie('loginCookie'));
 		// 폼 제출
 		$("#option_form").submit();
-		location.href="${pageContext.request.contextPath}/reservation/InputReservationInfo";
 	});
 </script>
 </html>
