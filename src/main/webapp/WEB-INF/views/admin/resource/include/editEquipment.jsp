@@ -82,19 +82,23 @@
 	var equipName="";
     var buyDate="";
     var roomName = "";
-	
-	$(function() {     
-        $('#editEquipModal').on('show.bs.modal', function(event) {          
-        	equipNo = $(event.relatedTarget).data('equipno');
-        	equipName = $(event.relatedTarget).data('equipname');
-        	buyDate = $(event.relatedTarget).data('buydate');
-        	roomName = $(event.relatedTarget).data('roomname');
-        	
-        	$("#editEquipNo").val(equipNo);
-        	$("#editName").val(equipName);
-    	    $("#editBuyDate").val(buyDate);
-    	    $("#editRoomName").val(roomName);
-        });
-    });
+    
+    $(function() {
+       $('#editEquipModal').on('show.bs.modal', function(event) {  
+    	// Date Picker 클릭 시 value 초기화 방지
+        if(event.relatedTarget != null) {
+             equipNo = $(event.relatedTarget).data('equipno');
+             equipName = $(event.relatedTarget).data('equipname');
+             buyDate = $(event.relatedTarget).data('buydate');
+             roomName = $(event.relatedTarget).data('roomname');
+             
+             $("#editEquipNo").val(equipNo);
+             $("#editName").val(equipName);
+             $("#editBuyDate").val(buyDate);
+             $("#editRoomName").val(roomName);
+        }
+          
+       });
+   });
 	
 </script>
