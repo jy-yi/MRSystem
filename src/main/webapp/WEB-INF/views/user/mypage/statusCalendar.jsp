@@ -116,7 +116,7 @@
 						var calendar = new FullCalendar.Calendar(
 								calendarEl,
 								{
-									plugins : [ 'interaction', 'dayGrid' ],
+									plugins : [ 'interaction', 'dayGrid' ],	
 									defaultDate : new Date(),
 									editable : true,
 									eventLimit : true, // allow "more" link when too many events
@@ -124,10 +124,10 @@
 									events : [
 										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
 											{ 
-												id : '${list.reservationNo}',
-												title : '${list.name}',
-												start : '${list.startDate}',
-												end : '${list.endDate}'
+												id : '${list.RESERVATIONNO}',
+												title : '${list.RESERVATIONNAME}',
+												start : '${list.STARTDATE}',
+												end : '${list.ENDDATE}'
 											},
 										</c:forEach>
 									], eventClick: function(info) {
@@ -137,13 +137,22 @@
 										var start = info.event.start;
 										var end = info.event.end;
 										
+										$.ajax({
+											url : "",
+											type : "post",
+											data : "id"+reservationNo,
+											success:function(){
+												alert("성공!");
+											}
+											
+										});
+										
+										console.log(reservationNo);
 										console.log(name);
 										console.log(start);
 										console.log(end);
 										
-										alert(reservationNo);
-										
-										$("#reservationNo").val(name);
+										$("#reservationNo").val(reservationNo);
 						        		$("#employeeNo").val(name); 	
 						        	 	$("#roomNo").val(name);
 							        	$("#name").val(name);

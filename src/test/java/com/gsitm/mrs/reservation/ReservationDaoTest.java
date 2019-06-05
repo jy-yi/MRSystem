@@ -31,7 +31,7 @@ public class ReservationDaoTest {
 	@Test
 	public void TestReservationInfo() {
 		
-		List<Map<String, Object>> list = dao.getReservationInfo("it1226");
+		List<Map<String, Object>> list = dao.getReservationInfo("it1228");
 		
 		for (Map<String, Object> map : list) {
 			logger.info(map);

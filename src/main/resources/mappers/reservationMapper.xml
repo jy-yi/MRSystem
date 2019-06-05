@@ -10,7 +10,7 @@
 	<!-- 사용자 -->
 	
 	<!-- 마이페이지 예약현황 조회 -->
-	<select id="getReservationInfo" resultType="Reservation">
+	<!-- <select id="getReservationInfo" resultType="Reservation">
 		SELECT res_no                            AS reservationNo, 
 		       emp_no                            AS employeeNo, 
 		       room_no                           AS roomNo, 
@@ -22,6 +22,24 @@
 		       status 
 		FROM   reservation 
 		WHERE  emp_no = #{employeeNo} 
+	</select> -->
+	
+	
+	<!-- 마이페이지 예약현황 조회 -->
+	<select id="getReservationInfo" resultType="Map">
+		SELECT res_no                            AS reservationNo, 
+		       e.name                            AS empName,
+		       room_no                           AS roomNo, 
+		       r.NAME 							 AS reservationName,
+		       purpose, 
+		       To_char(start_date, 'YYYY-MM-DD') AS startDate, 
+		       To_char(end_date, 'YYYY-MM-DD')   AS endDate, 
+		       snack_want                        AS snackWant, 
+		       status 
+		FROM   reservation r,
+			   employee e
+		WHERE  r.emp_no = e.emp_no
+			   AND e.emp_no = #{employeeNo} 
 	</select>
 	
 	<!-- 회의실 정보 조회 -->
