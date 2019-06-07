@@ -87,25 +87,29 @@
 <jsp:include page="include/editRoom.jsp" />
 
 <script type="text/javascript">
+
+/* 회의실 별 비품 목록 AJAX */
 $(function() {
+	$('.card').each(function(i, e){
+		$.ajax({
+	        url : "/resource/getEquipmentList",
+	        data : {roomNo: $(e).find("#roomNo").val()},
+	        type : "POST",
+	        dataType : "json",
+	        success : function(data){
+	            var str = '';
+	            $.each(data.equipmentList , function(i, item){
+	                str += item.NAME + " ";
+	           });
+	            
+	            $(e).find("#equipList").append(str); 
+	        },
+	        error : function(){
+	            alert("회의실 별 비품 목록 조회 에러");
+	        }
+	    });
+	});
 	
-	$.ajax({
-        url : "/resource/getEquipmentList",
-        data : {roomNo:$("#roomNo").val()},
-        type : "POST",
-        dataType : "json",
-        success : function(data){
-            var str = '';
-            $.each(data.equipmentList , function(i, item){
-                str += item.NAME + " ";
-           });
-            
-           $("#equipList").append(str); 
-        },
-        error : function(){
-            alert("회의실 별 비품 목록 조회 에러");
-        }
-    });
 });
 
 
