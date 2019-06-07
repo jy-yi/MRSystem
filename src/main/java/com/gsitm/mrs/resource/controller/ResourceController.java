@@ -22,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
 
@@ -110,12 +111,20 @@ public class ResourceController {
 		logger.info("(관리자) 회의실 관리");
 		
 		List<Map<String, Object>> roomList = service.getRoomList();
-		
+		List<String> equipmentList = service.getEquipmentListDistinct();
+		 
 		model.addAttribute("roomList", roomList);
+		model.addAttribute("equipDistinctList", equipmentList);
 		
 		return "admin/resource/roomList";
 	}
 	
+	/**
+	 * 회의실 별 비품 목록 조회
+	 * @param model
+	 * @param roomNo	조회할 회의실 번호
+	 * @return
+	 */
 	@RequestMapping(value = "/getEquipmentList", method = RequestMethod.POST)
 	public ModelAndView getEquipmentList(Model model, String roomNo) {
 
@@ -126,6 +135,21 @@ public class ResourceController {
 		mav.setViewName("jsonView");
 		
 		return mav;
+	}
+	
+	@RequestMapping(value = "/addRoom", method = RequestMethod.POST)
+	public String addRoom(RoomDTO roomDTO) throws Exception {
+		
+		System.out.println(roomDTO.toString());
+
+//		/* 멀티 셀렉트로 view에서 넘어온 회의실 번호 토큰 분리 */
+//		 StringTokenizer token = new StringTokenizer(roomNoList , ",");
+//		 while(token.hasMoreTokens()) {
+//			 equipmentDTO.setRoomNo(Integer.parseInt(token.nextToken()));
+//			 service.addEquipment(equipmentDTO);
+//		 }
+
+		return "redirect:/resource/equipmentList";
 	}
 	
 	
@@ -184,6 +208,7 @@ public class ResourceController {
 	 * 비품 추가
 	 * 
 	 * @param equipmentDTO 추가할 비품 객체
+	 * @param roomNoList	비치될 회의실 번호
 	 * @return
 	 * @throws Exception
 	 */

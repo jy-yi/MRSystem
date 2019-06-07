@@ -52,6 +52,12 @@
 		ORDER  BY r.room_no 
 	</select>
 	
+	<!-- 회의실 추가 -->
+	<insert id="addRoom">
+		INSERT INTO Room(room_no, workplace_no, name, capacity, nw_available, image, admin_id) 
+		VALUES (Room_Seq.nextVal, ?, ?, ?, ?, ?, ?)
+	</insert>
+	
 	
 	<!-- #### 비품 #### -->
 	
@@ -67,6 +73,12 @@
 	<select id="getBorrowedEquipmentList" resultType="BorrowedEquipment">
 		SELECT equip_no AS equipmentNo, res_no AS reservationNo
 		FROM Borrowed_Equipment
+	</select>
+	
+	<!-- 비품 목록 이름 (중복제거) 조회 -->
+	<select id="getEquipmentListDistinct" resultType="String">
+		SELECT DISTINCT(name) 
+		FROM Equipment
 	</select>
 		
 	<!-- 비품 추가 -->

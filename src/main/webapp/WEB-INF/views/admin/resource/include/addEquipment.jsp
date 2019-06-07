@@ -51,7 +51,7 @@
 								<label> 비치장소 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<select id="option-droup-demo" multiple="multiple" class="form-control">
+								<select id="option-drop-demo" multiple="multiple" class="form-control">
 									<c:forEach items="${workplaceNameList}" var="workpalceList">
 										<optgroup label="${workpalceList}">
 											
@@ -90,7 +90,7 @@
 	        language: "kr"
         });
 	    
-	    $('#option-droup-demo').multiselect({buttonWidth: '340px'});
+	    $('#option-drop-demo').multiselect({buttonWidth: '340px'});
 	});
 	
 	/* 모달 사라졌을 때 입력 값 초기화 */
@@ -99,7 +99,7 @@
 	});
 	
 	var arrSelected = [];
-	$('#option-droup-demo').on('change', function(){
+	$('#option-drop-demo').on('change', function(){
 	    var selected = $(this).find("option:selected");
 	    arrSelected = [];
 	    selected.each(function(){
