@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" type="text/css">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
 
 <!-- Main Content -->
 <div id="content">
@@ -87,25 +87,29 @@
 <jsp:include page="include/editRoom.jsp" />
 
 <script type="text/javascript">
+
+/* 회의실 별 비품 목록 AJAX */
 $(function() {
+	$('.card').each(function(i, e){
+		$.ajax({
+	        url : "/resource/getEquipmentList",
+	        data : {roomNo: $(e).find("#roomNo").val()},
+	        type : "POST",
+	        dataType : "json",
+	        success : function(data){
+	            var str = '';
+	            $.each(data.equipmentList , function(i, item){
+	                str += item.NAME + " ";
+	           });
+	            
+	            $(e).find("#equipList").append(str); 
+	        },
+	        error : function(){
+	            alert("회의실 별 비품 목록 조회 에러");
+	        }
+	    });
+	});
 	
-	$.ajax({
-        url : "/resource/getEquipmentList",
-        data : {roomNo:$("#roomNo").val()},
-        type : "POST",
-        dataType : "json",
-        success : function(data){
-            var str = '';
-            $.each(data.equipmentList , function(i, item){
-                str += item.NAME + " ";
-           });
-            
-           $("#equipList").append(str); 
-        },
-        error : function(){
-            alert("회의실 별 비품 목록 조회 에러");
-        }
-    });
 });
 
 
@@ -137,6 +141,3 @@ $(function() {
 	});
 });
 </script>
-</body>
-
-</html>

@@ -41,6 +41,9 @@ public interface ResourceService {
 	/** 대여 비품 목록 조회 */
 	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList();
 	
+	/** 비품 목록 이름 중복제거 조회 */
+	public List<String> getEquipmentListDistinct();
+	
 	/** 비품 추가*/
 	public void addEquipment(EquipmentDTO equipmentDTO);
 	

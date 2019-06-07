@@ -197,5 +197,17 @@ public class ResourceDaoTest {
 		logger.info("비품 수정 완료!");
 
 	}
+	
+	/** 비품 이름 중복 제거 테스트 */
+	@Test
+	public void TestEquipmentDistinct() {
+
+		List<String> list = dao.getEquipmentListDistinct();
+		
+		for (String string : list) {
+			logger.info(string);
+		}
+
+	}
 
 }

@@ -69,6 +69,12 @@ public class ResourceDAOImpl implements ResourceDAO {
 	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
 		return sqlSession.selectList(namespace + ".getBorrowedEquipmentList");
 	}
+	
+	/** 비품 목록 이름 중복제거 조회 */
+	@Override
+	public List<String> getEquipmentListDistinct() {
+		return sqlSession.selectList(namespace + ".getEquipmentListDistinct");
+	}
 
 	/** 비품 추가*/
 	@Override

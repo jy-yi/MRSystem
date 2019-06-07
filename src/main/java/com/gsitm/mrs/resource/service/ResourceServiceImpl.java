@@ -66,6 +66,12 @@ public class ResourceServiceImpl implements ResourceService {
 	public List<BorrowedEquipmentDTO> getBorrowedEquipmentList() {
 		return dao.getBorrowedEquipmentList();
 	}
+	
+	/** 비품 목록 이름 중복제거 조회 */
+	@Override
+	public List<String> getEquipmentListDistinct() {
+		return dao.getEquipmentListDistinct();
+	}
 
 	/** 비품 추가*/
 	@Override

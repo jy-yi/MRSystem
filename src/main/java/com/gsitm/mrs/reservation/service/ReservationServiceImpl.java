@@ -117,6 +117,13 @@ public class ReservationServiceImpl implements ReservationService {
 		
 	}
 	
+	/** 초성에 해당하는 사원 목록 조회 */
+	@Override
+	public List<EmployeeDTO> getChosungEmployeeList(String chosung) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

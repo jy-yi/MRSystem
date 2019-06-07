@@ -74,11 +74,11 @@
 							<input type="hidden" name="endDate" value="">
 							<input type="hidden" name="equipments" value="">
 							<ul>
-							<div class="form-group">
+							<!-- <div class="form-group">
 							    <label for="exampleInputEmail1">Email address</label>
 							    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
 							    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-							  </div>
+							  </div> -->
 								<li>
 									
 									<label>예약자</label>
@@ -106,7 +106,7 @@
 								</li>
 								<li>
 									<label>참여인원</label>
-									<button class="btn btn-primary">검색</button>
+									<a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
 								</li>
 								<li>
 									<label>주관부서</label>
@@ -150,6 +150,8 @@
 
 </div>
 
+<!-- Modal -->
+<jsp:include page="include/chooseParticipation.jsp" />
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript">
@@ -193,4 +195,21 @@
 		}
 		$("#reservation-date").text(reserved_date);
 	})
+	
+	// 모달 초성 선택 이벤트
+	$("#ganada-list>li").on("click",function(){
+		var chosung=$(this).text();
+		$.ajax({
+			type:"get",
+			url:"${pageContext.request.contextPath}/reservation/",
+			data : {name : "홍길동"},
+			dataType : "xml",
+			success: function(xml){
+				console.log(xml);
+			},
+			error: function(xhr, status, error) {
+				alert(error);
+			}	
+		});
+	});
 </script>
