@@ -2,6 +2,7 @@ package com.gsitm.mrs.reservation.controller;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
@@ -151,11 +153,22 @@ public class ResevationController {
 	@RequestMapping(value = "/InputReservationInfo", method = RequestMethod.GET)
 	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto, 
 			HttpServletRequest request, Model model) {
-		
+			
 		logger.info("(사용자) 예약-예약 정보 입력");
 		
 		service.InputReservationInfo(request, reservationDto, model);
 		System.out.println(reservationDto.toString());
 		return "user/reservation/InputReservationInfo";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getChosungEmployeeList", method = RequestMethod.GET)
+	public Map<String, Object> getChosungEmployeeList(@RequestParam char chosung) {
+		
+		logger.info("(사용자) 예약-초성에 해당하는 사원 목록 조회");
+		// 사원번호, 이름 조회
+		Map<String, Object> employeeList=new HashMap<>();
+		
+		return employeeList;
 	}
 }

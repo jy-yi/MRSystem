@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
  * 예약 관련 인터페이스 정의
@@ -38,6 +39,9 @@ public interface ReservationService {
 	public EquipmentDTO putIntoEuipmentDto(HttpServletRequest request);
 	
 	public void InputReservationInfo(HttpServletRequest request, ReservationDTO reservationDto, Model model);
+	
+	/** 초성에 해당하는 사원 목록 조회 */
+	public List<EmployeeDTO> getChosungEmployeeList(String chosung);
 	
 	/* ------------- 관리자 ------------- */
 	

@@ -59,6 +59,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectOne(namespace + ".getEmployeeInfo", employeeNo);
 	}
 	
+	/** 초성에 해당하는 사원 목록 조회 */
+	@Override
+	public List<EmployeeDTO> getChosungEmployeeList(String chosung) {
+		return sqlSession.selectList(namespace + ".getChosungEmployeeList", chosung);
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

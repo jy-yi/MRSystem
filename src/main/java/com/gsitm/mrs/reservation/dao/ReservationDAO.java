@@ -33,6 +33,9 @@ public interface ReservationDAO {
 	/** 사원 정보 조회 */
 	public EmployeeDTO getEmployeeInfo(String employeeNo);
 	
+	/** 초성에 해당하는 사원 목록 조회 */
+	public List<EmployeeDTO> getChosungEmployeeList(String chosung);
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

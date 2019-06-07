@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
@@ -127,4 +128,11 @@ public class ReservationDaoTest {
 		
 	}
 	
+	@Test
+	public void getChosungEmployeeList() {
+		List<EmployeeDTO> list=dao.getChosungEmployeeList("ㄱ");
+		for(EmployeeDTO dto:list) {
+			System.out.println(dto.getEmployeeNo() + " : "+dto.getName());
+		}
+	}
 }
