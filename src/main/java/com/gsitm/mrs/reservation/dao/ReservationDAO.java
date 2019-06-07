@@ -21,6 +21,9 @@ public interface ReservationDAO {
 	/** 마이페이지 예약현황 조회 */
 	public List<Map<String, Object>> getReservationInfo(String employeeNo);
 	
+	/** 마이페이지 캘린더 상세 조회 */
+	public List<ReservationDTO> getCalendarInfo(int reservationNo);
+	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	
@@ -43,5 +46,7 @@ public interface ReservationDAO {
 	
 	/** 예약 완료 목록 조회 */
 	public List<Map<String, Object>> getSuccessList();
+
+	
 
 }

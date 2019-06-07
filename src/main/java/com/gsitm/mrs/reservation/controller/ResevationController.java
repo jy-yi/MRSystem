@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
@@ -64,6 +65,23 @@ public class ResevationController {
 		
 		return "user/mypage/statusCalendar";
 	}
+	
+	@RequestMapping(value = "/getCalendar", method = RequestMethod.GET)
+	public String getCalendar(int reservationNo, Model model) {
+		
+		logger.info("(사용자) 마이페이지 - 캘린더 상세 정보");
+		
+		List<ReservationDTO> calendarInfo = service.getCalendarInfo(reservationNo);
+		
+		logger.info(calendarInfo+"");
+		
+		model.addAttribute("calendarInfo", calendarInfo);
+		
+		return "user/mypage/statusCalendar";
+		
+	}
+	
+	
 	
 	@RequestMapping(value = "/statusList", method = RequestMethod.GET)
 	public String statusList() {

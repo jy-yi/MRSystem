@@ -41,6 +41,12 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getReservationInfo(String employeeNo) {
 		return dao.getReservationInfo(employeeNo);
 	}
+	
+	/** 마이페이지 캘린더 상세 조회 */
+	@Override
+	public List<ReservationDTO> getCalendarInfo(int reservationNo) {
+		return dao.getCalendarInfo(reservationNo);
+	}
 
 	/** 회의실 정보 조회 */
 	@Override
@@ -130,5 +136,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getSuccessList() {
 		return dao.getSuccessList();
 	}
+
+	
 
 }

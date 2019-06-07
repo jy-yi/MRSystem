@@ -138,11 +138,15 @@
 										var end = info.event.end;
 										
 										$.ajax({
-											url : "",
-											type : "post",
+											url : "/reservation/getCalendar",
+											type : "get",
 											data : "id"+reservationNo,
 											success:function(){
-												alert("성공!");
+												
+												
+												/* var info = ${calendarInfo};
+												
+												console.log(info) */
 											}
 											
 										});
