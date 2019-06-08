@@ -9,8 +9,9 @@ package com.gsitm.mrs.user.dto;
  */
 public class DepartmentDTO {
 
-	private int departmentNo;
 	private String name;
+	private int departmentNo;
+	
 
 	public DepartmentDTO() {}
 

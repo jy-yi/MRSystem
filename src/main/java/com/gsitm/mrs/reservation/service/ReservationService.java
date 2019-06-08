@@ -23,11 +23,17 @@ public interface ReservationService {
 	
 	/* ------------- 사용자 ------------- */
 	
-	/** 마이페이지 예약현황 조회 */
+	/** 마이페이지 예약 현황 캘린더 */
 	public List<Map<String, Object>> getReservationInfo(String employeeNo);
 	
 	/** 마이페이지 캘린더 상세 조회 */
 	public List<ReservationDTO> getCalendarInfo(int reservationNo);
+	
+	/** 마이페이지 예약 현황 리스트*/
+	public List<Map<String, Object>> getReservationList(String employeeNo);
+	
+	/** 마이페이지 목록형 예약 취소 */
+	public void deleteReservation(int reservationNo);
 	
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);

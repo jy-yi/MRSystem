@@ -29,7 +29,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 
 	private static String namespace = "com.gsitm.mrs.mappers.ReservationMapper";
 	
-	/** 마이페이지 예약현황 조회 */
+	/** 마이페이지 예약 현황 캘린더 */
 	@Override
 	public List<Map<String, Object>> getReservationInfo(String employeeNo) {
 		return sqlSession.selectList(namespace +".getReservationInfo", employeeNo);
@@ -41,6 +41,17 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectOne(namespace +".getCalendarInfo", reservationNo);
 	}
 	
+	/** 마이페이지 예약 현황 리스트*/
+	@Override
+	public List<Map<String, Object>> getReservationList(String employeeNo) {
+		return sqlSession.selectList(namespace +".getReservationList", employeeNo);
+	}
+	
+	/** 마이페이지 목록형 예약 취소 */
+	@Override
+	public void deleteReservation(int reservationNo) {
+		sqlSession.delete(namespace +".deleteReservation", reservationNo); 
+	}
 	
 	/** 회의실 목록 조회 */
 	@Override

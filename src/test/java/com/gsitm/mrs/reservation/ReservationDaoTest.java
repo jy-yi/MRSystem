@@ -28,11 +28,22 @@ public class ReservationDaoTest {
 	
 	/*********** 사용자 ************/
 	
-	/** 예약 목록 조회 테스트 */
+	/** 예약 캘린더 조회 테스트 */
 	@Test
 	public void TestReservationInfo() {
 		
 		List<Map<String, Object>> list = dao.getReservationInfo("it1228");
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+	}
+	
+	/** 예약 리스트 조회 테스트 */
+	@Test
+	public void TestReservationList() {
+		
+		List<Map<String, Object>> list = dao.getReservationList("it1228");
 		
 		for (Map<String, Object> map : list) {
 			logger.info(map);

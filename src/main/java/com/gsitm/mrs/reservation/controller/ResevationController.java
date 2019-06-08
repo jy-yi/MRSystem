@@ -83,14 +83,34 @@ public class ResevationController {
 	}
 	
 	
-	
 	@RequestMapping(value = "/statusList", method = RequestMethod.GET)
-	public String statusList() {
+	public String statusList(HttpSession session, String employeeNo, Model model) {
 		
 		logger.info("(사용자) 마이페이지 - 예약 현황 리스트");
 		
+		Object user = session.getAttribute("login");
+		EmployeeDTO employee = (EmployeeDTO) user;
+		
+		employeeNo = employee.getEmployeeNo();
+		
+		List<Map<String, Object>> reservationList = service.getReservationList(employeeNo);
+		
+		logger.info(reservationList+"");
+		
+		model.addAttribute("reservationList", reservationList);
+		
 		return "user/mypage/statusList";
 	}
+	
+	@RequestMapping(value = "/deleteReservation", method = RequestMethod.POST)
+	public String deleteReservation(String reservationNo) throws Exception {
+
+		 service.deleteReservation(Integer.parseInt(reservationNo));
+
+		return "redirect:/reservation/statusList";
+	}
+	
+	
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String dashboard() {

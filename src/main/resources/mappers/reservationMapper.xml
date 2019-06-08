@@ -43,6 +43,30 @@
 			   AND e.emp_no = #{employeeNo}
 	</select>
 	
+	<!-- 마이페이지 목록형 조회 -->
+	<select id="getReservationList" resultType="Map">
+		SELECT	r.res_no						AS reservationNo,
+				r.name							AS reservationName,
+				purpose,
+				room_no							AS roomNo,
+				To_char(start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH:mm') 		AS endDate,
+				d.name							AS departmentName,
+				status
+		FROM	reservation r,
+				lead_department ld,
+				department d
+		WHERE	r.res_no = ld.res_no
+				AND ld.dept_no = d.dept_no
+				AND	emp_no = #{employeeNo}
+	</select>
+	
+	<!-- 마이페이지 목록형 예약 취소 -->
+	<delete id="deleteReservation">
+		DELETE FROM reservation 
+		WHERE res_no = #{reservationNo}
+	</delete>
+		
 	<!-- 회의실 정보 조회 -->
 	<select id="getRoomInfo" parameterType="int" resultType="Map">
 		SELECT <include refid="roomInfo_columns"/>, 
