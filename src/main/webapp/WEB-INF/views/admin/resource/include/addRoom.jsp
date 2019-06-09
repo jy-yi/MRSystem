@@ -67,7 +67,7 @@
 								<label> 인원 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="number" class="form-control" name="capacity" placeholder="" />
+								<input type="number" class="form-control" name="capacity" placeholder="수용 인원을 입력하세요" />
 							</div>
 						
 							<div class="clearfix"></div>
