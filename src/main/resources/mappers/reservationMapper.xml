@@ -257,4 +257,15 @@
 			</when>
 		</choose>
 	</select>
+	
+	<!-- 검색 키워드에 해당하는 사원 목록 조회  -->
+	<select id="getEmployeeListBySearching" parameterType="String" resultType="Map">
+		SELECT  employee.name 		AS name, 
+				emp_no 				AS employeeNo, 
+				department.name 	AS departmentName
+		FROM employee
+		JOIN department 
+		USING(dept_no)
+		WHERE employee.name LIKE '%' || #{keyword} || '%'
+	</select>
 </mapper>

@@ -211,12 +211,12 @@ public class ResevationController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getEmployeeListBySearching", method = RequestMethod.GET)
-	public Map<String, Object> getEmployeeListBySearching(@RequestParam String chosung) {
+	public Map<String, Object> getEmployeeListBySearching(@RequestParam String keyword) {
 		
 		logger.info("(사용자) 예약-검색 키워드에 해당하는 사원 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> employeeList=new HashMap<>();
-		employeeList.put("employeeList", service.getEmployeeListBySearching(chosung));
+		employeeList.put("employeeList", service.getEmployeeListBySearching(keyword));
 		return employeeList;
 	}
 	

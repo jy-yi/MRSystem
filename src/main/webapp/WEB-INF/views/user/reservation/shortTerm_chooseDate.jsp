@@ -274,7 +274,6 @@
 	var checkedEquipmentList=$("input[name='checkbox-equipment']:checked").val();
 	// 시간 선택 완료 버튼 클릭 이벤트
 	$("#choose-complete-btn").on("click",function(){
-		console.log(checkedEquipmentList);
 		// 다음 단계 버튼 disabled 해제
 		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 	});

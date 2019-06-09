@@ -107,6 +107,7 @@
 								<li>
 									<label>참여인원</label>
 									<a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
+									<div id="final-participartion-list-div"></div>
 								</li>
 								<li>
 									<label>주관부서</label>
@@ -158,6 +159,7 @@
 	// 회의 참여자 사원번호를 담은 배열
 	var participation=new Array();
 	var chosung;
+	var keyword;
 	
 	$(function(){
 		// 예약 일자 값을 설정
@@ -203,32 +205,58 @@
 	// 모달 초성 선택 이벤트
 	$("#ganada-list>li").on("click",function(){
 		chosung=$(this).text();
+		keyword=null;
 		getEmployeeList();
 	});
 	
 	// 사원 목록을 가져오는 함수
 	function getEmployeeList(){
-		$.ajax({
-			type:"get",
-			url:"${pageContext.request.contextPath}/reservation/getEmployeeListByChosung",
-			data : {"chosung" : chosung},
-			success: function(data){
-				var employeeList=data.employeeList;
-				// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
-				$("#search-employee-list > ul").empty();
-				$.each(employeeList, function(index, item){
-					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
-					if($.inArray(item.EMPLOYEENO, participation)==-1){
-						$("#search-employee-list > ul").append("<li>"
-							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
-							+"</li>");
-					}
-				})
-			},
-			error: function(xhr, status, error) {
-				alert(error);
-			}	
-		});
+		// 초성에 의한 검색일 경우
+		if(chosung!=null && keyword==null){
+			$.ajax({
+				type:"get",
+				url:"${pageContext.request.contextPath}/reservation/getEmployeeListByChosung",
+				data : {"chosung" : chosung},
+				success: function(data){
+					var employeeList=data.employeeList;
+					// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
+					$("#search-employee-list > ul").empty();
+					$.each(employeeList, function(index, item){
+						// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
+						if($.inArray(item.EMPLOYEENO, participation)==-1){
+							$("#search-employee-list > ul").append("<li>"
+								+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
+								+"</li>");
+						}
+					})
+				},
+				error: function(xhr, status, error) {
+					alert(error);
+				}	
+			});
+		} else{ // 키워드에 의한 검색일 경우
+			$.ajax({
+				type:"get",
+				url:"${pageContext.request.contextPath}/reservation/getEmployeeListBySearching",
+				data : {"keyword" : keyword},
+				success: function(data){
+					var employeeList=data.employeeList;
+					// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
+					$("#search-employee-list > ul").empty();
+					$.each(employeeList, function(index, item){
+						// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
+						if($.inArray(item.EMPLOYEENO, participation)==-1){
+							$("#search-employee-list > ul").append("<li>"
+								+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
+								+"</li>");
+						}
+					})
+				},
+				error: function(xhr, status, error) {
+					alert(error);
+				}	
+			});
+		}
 	}
 	
 	// 참여 사원 추가 함수
@@ -240,11 +268,14 @@
 				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
 		// 사원 목록을 업데이트한다.
 		getEmployeeList();
+		// 참여자가 한 명이라도 있을 경우 모달의 확인 버튼 Active
+		if(participation.length>=1){
+			$("#choose-complete-btn").addClass("btn-primary").attr("disabled",false);
+		}
 	}
 	
 	// 참여자 삭제 이벤트
 	$(document).on("click",".delete-participation-btn",function(){
-		console.log($(this).parent());
 		var employeeNo=$(this).prev().text();
 		// 사원번호 배열에서 해당 사원을 삭제한다.
 		participation.splice($.inArray(employeeNo, participation),1);
@@ -252,31 +283,29 @@
 		$(this).parent().remove();
 		// 사원 목록을 업데이트한다.
 		getEmployeeList();
+		// 참여자가 없을 경우 모달의 확인 버튼 disabled
+		if(participation.length==0){
+			$("#choose-complete-btn").removeClass("btn-primary").attr("disabled",true);
+		}
 	});
 	
 	// 이름 검색을 통한 사원 조회
 	$("#searchBtn").on("click",function(){
-		var keyword=$("#searchByName").val();
-		$.ajax({
-			type:"get",
-			url:"${pageContext.request.contextPath}/reservation/getEmployeeListBySearching",
-			data : {"keyword" : keyword},
-			success: function(data){
-				var employeeList=data.employeeList;
-				// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
-				$("#search-employee-list > ul").empty();
-				$.each(employeeList, function(index, item){
-					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
-					if($.inArray(item.EMPLOYEENO, participation)==-1){
-						$("#search-employee-list > ul").append("<li>"
-							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
-							+"</li>");
-					}
-				})
-			},
-			error: function(xhr, status, error) {
-				alert(error);
-			}	
-		});
+		keyword=$("#searchByName").val();
+		chosung=null;
+		getEmployeeList();
+	});
+	
+	// 취소 버튼 클릭할 경우 reset
+	$("#choose-cancel-btn").on("click",function(){
+		participation=new Array();
+		$("#search-employee-list>ul").empty();
+		$("#participation-list>li").empty();
+	})
+	
+	// 확인 버튼 클릭할 경우 참여 사원 목록을 화면에 뿌림
+	$("#choose-complete-btn").on("click",function(){
+		$("#participation-list").clone().appendTo("#final-participartion-list-div");
+		$("#final-participartion-list-div>ul").attr("id","final-participartion-list-div");
 	});
 </script>

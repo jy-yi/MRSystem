@@ -72,8 +72,17 @@ public class ReservationDaoTest {
 	
 	/** 초성에 해당하는 사원 정보 조회 테스트 */
 	@Test
-	public void getChosungEmployeeList() {
+	public void getEmployeeListByChosung() {
 		List<Map<String, Object>> list=dao.getEmployeeListByChosung("ㄱ");
+		for(Map<String, Object> map:list) {
+			logger.info(map.toString());
+		}
+	}
+	
+	/** 검색 키워드에 해당하는 사원 목록 조회 테스트 */
+	@Test
+	public void getEmployeeListBySearching() {
+		List<Map<String, Object>> list=dao.getEmployeeListBySearching("김");
 		for(Map<String, Object> map:list) {
 			logger.info(map.toString());
 		}

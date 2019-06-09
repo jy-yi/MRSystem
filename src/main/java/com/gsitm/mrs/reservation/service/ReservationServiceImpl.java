@@ -84,10 +84,10 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getEmployeeListByChosung(chosung);
 	}
 
+	/** 검색 키워드에 해당하는 사원 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getEmployeeListBySearching(String keyword) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getEmployeeListBySearching(keyword);
 	}
 	
 	/* ------------- 마이페이지 ------------- */
