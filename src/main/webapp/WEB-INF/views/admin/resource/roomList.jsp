@@ -48,7 +48,11 @@
 											<div class="card-header py-3">
 												<h5 class="m-0 font-weight-bold text-primary"> ${list.ROOMNAME} 
 													<span style="float:right"> 
-														<i class="fas fa-edit"></i>
+														<a href="#" data-toggle="modal" data-target="#editRoomModal" style="text-decoration: none;" 
+															data-roomNo="${list.ROOMNO}" data-workplaceNo="${list.WORKPLACENO}"
+															data-image="${list.IMAGE}" data-name="${list.ROOMNAME}" data-capacity="${list.CAPACITY}" data-nwAvailable="${list.NWAVAILABLE}"> 
+															<span class="text"><i class="fas fa-edit"></i></span> </a>
+															
 														<i class="fas fa-trash-alt"></i> 
 													</span> 
 													<input type="hidden" id="roomNo" name="roomNo" value="${list.ROOMNO}">
@@ -56,9 +60,8 @@
 												
 											</div>
 											<div class="card-body">
-												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%"></div>
 												<p>
-												
 												<div>수용 인원 : ${list.CAPACITY}명</div>
 												<div>비치 물품 : <span id="equipList"></span></div>
 												<div>네트워크 : ${list.NWAVAILABLE eq 'Y' ? "사용 가능":"사용 불가능" }</div>
@@ -114,9 +117,6 @@ $(function() {
 
 
 $(function() {
-	$('.fa-edit').click(function(){
-		$('#editRoomModal').modal("show");
-	});
 	
 	/* 휴지통 아이콘 클릭 */
 	$(".fa-trash-alt").click(function() {

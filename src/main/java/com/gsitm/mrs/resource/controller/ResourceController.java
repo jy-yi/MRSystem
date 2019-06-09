@@ -1,24 +1,29 @@
 package com.gsitm.mrs.resource.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
@@ -42,10 +47,13 @@ public class ResourceController {
 
 	@Inject
 	private ResourceService service;
-	
+
 	@Inject
 	private ReservationService reservationService;
-	
+
+	@Resource(name = "uploadPath")
+	private String uploadPath;
+
 	/* ------------- 지사 ------------- */
 
 	/**
@@ -69,8 +77,7 @@ public class ResourceController {
 	/**
 	 * 지사 추가
 	 * 
-	 * @param workplaceDTO
-	 *            추가할 지사 객체
+	 * @param workplaceDTO 추가할 지사 객체
 	 * @return
 	 * @throws Exception
 	 */
@@ -96,12 +103,12 @@ public class ResourceController {
 
 		return "redirect:/resource/workplaceList";
 	}
-	
-	
+
 	/* ------------- 회의실 ------------- */
 
 	/**
 	 * 회의실 관리 페이지
+	 * 
 	 * @param model
 	 * @return
 	 */
@@ -109,50 +116,80 @@ public class ResourceController {
 	public String roomList(Model model) {
 
 		logger.info("(관리자) 회의실 관리");
-		
+
 		List<Map<String, Object>> roomList = service.getRoomList();
 		List<String> equipmentList = service.getEquipmentListDistinct();
-		 
+
 		model.addAttribute("roomList", roomList);
 		model.addAttribute("equipDistinctList", equipmentList);
-		
+
 		return "admin/resource/roomList";
 	}
-	
+
 	/**
 	 * 회의실 별 비품 목록 조회
+	 * 
 	 * @param model
-	 * @param roomNo	조회할 회의실 번호
+	 * @param roomNo 조회할 회의실 번호
 	 * @return
 	 */
 	@RequestMapping(value = "/getEquipmentList", method = RequestMethod.POST)
 	public ModelAndView getEquipmentList(Model model, String roomNo) {
 
 		List<Map<String, Object>> equipmentList = reservationService.getEquipmentList(Integer.parseInt(roomNo));
-		
+
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("equipmentList", equipmentList);
 		mav.setViewName("jsonView");
-		
+
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/addRoom", method = RequestMethod.POST)
-	public String addRoom(RoomDTO roomDTO) throws Exception {
+	public String addRoom(RoomDTO roomDTO, MultipartFile file, String equipList) throws Exception {
+
+		if (file != null) {
+			logger.info("originalName:" + file.getOriginalFilename());
+			logger.info("size:" + file.getSize());
+			logger.info("ContentType:" + file.getContentType());
+		}
+
+		String savedName = uploadFile(file.getOriginalFilename(), file.getBytes());
+
+		logger.info("savedName:" + savedName);
+
+		roomDTO.setImage(savedName);
 		
-		System.out.println(roomDTO.toString());
+		// TODO: 관리자 로그인 아이디 처리
+		service.addRoom(roomDTO);
 
-//		/* 멀티 셀렉트로 view에서 넘어온 회의실 번호 토큰 분리 */
-//		 StringTokenizer token = new StringTokenizer(roomNoList , ",");
-//		 while(token.hasMoreTokens()) {
-//			 equipmentDTO.setRoomNo(Integer.parseInt(token.nextToken()));
-//			 service.addEquipment(equipmentDTO);
-//		 }
+		/* 멀티 셀렉트로 view에서 넘어온 비품 이름 토큰 분리 */
+		 StringTokenizer token = new StringTokenizer(equipList, ",");
+		 while(token.hasMoreTokens()) {
+			 Date today = new Date();
+			 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			 
+			 EquipmentDTO equipmentDTO = new EquipmentDTO(1, roomDTO.getRoomNo(), token.nextToken(), format.format(today));
+			 service.addEquipment(equipmentDTO);
+		 }
 
-		return "redirect:/resource/equipmentList";
+		return "redirect:/resource/roomList";
 	}
-	
-	
+
+	// 업로드된 파일을 저장하는 함수
+	private String uploadFile(String originalName, byte[] fileDate) throws IOException {
+
+		UUID uid = UUID.randomUUID();
+
+		String savedName = uid.toString() + "_" + originalName;
+		File target = new File(uploadPath, savedName);
+
+		FileCopyUtils.copy(fileDate, target);  // 데이터가 담긴 바이트 배열을 파일에 기록
+
+		return savedName;
+
+	}
+
 	/* ------------- 비품 ------------- */
 
 	/**
@@ -184,31 +221,31 @@ public class ResourceController {
 				}
 			}
 		}
-		
+
 		/* 비품이 대여 중인지 여부 */
 		for (Map<String, Object> map : equipmentList) {
 
 			Integer equipNo = Integer.valueOf(map.get("EQUIPNO").toString());
-			
+
 			for (int i = 0; i < borrowedEquipmentList.size(); i++) {
 				if (borrowedEquipmentList.get(i).getEquipmentNo() == equipNo) {
 					map.put("isBorrowed", "Y");
-				} 
+				}
 			}
 		}
-		
+
 		model.addAttribute("equipmentList", equipmentList);
 		model.addAttribute("roomList", roomList);
 		model.addAttribute("workplaceNameList", workplaceNameList);
 
 		return "admin/resource/equipmentList";
 	}
-	
+
 	/**
 	 * 비품 추가
 	 * 
 	 * @param equipmentDTO 추가할 비품 객체
-	 * @param roomNoList	비치될 회의실 번호
+	 * @param roomNoList   비치될 회의실 번호
 	 * @return
 	 * @throws Exception
 	 */
@@ -216,17 +253,18 @@ public class ResourceController {
 	public String addEquipment(EquipmentDTO equipmentDTO, String roomNoList) throws Exception {
 
 		/* 멀티 셀렉트로 view에서 넘어온 회의실 번호 토큰 분리 */
-		 StringTokenizer token = new StringTokenizer(roomNoList , ",");
-		 while(token.hasMoreTokens()) {
-			 equipmentDTO.setRoomNo(Integer.parseInt(token.nextToken()));
-			 service.addEquipment(equipmentDTO);
-		 }
+		StringTokenizer token = new StringTokenizer(roomNoList, ",");
+		while (token.hasMoreTokens()) {
+			equipmentDTO.setRoomNo(Integer.parseInt(token.nextToken()));
+			service.addEquipment(equipmentDTO);
+		}
 
 		return "redirect:/resource/equipmentList";
 	}
-	
+
 	/**
 	 * 비품 수정
+	 * 
 	 * @param equipmentDTO 수정할 비품 객체
 	 * 
 	 * @return
@@ -235,13 +273,14 @@ public class ResourceController {
 	@RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
 	public String editEquipment(EquipmentDTO equipmentDTO) throws Exception {
 
-		 service.editEquipment(equipmentDTO);
+		service.editEquipment(equipmentDTO);
 
 		return "redirect:/resource/equipmentList";
 	}
-	
+
 	/**
 	 * 비품 삭제
+	 * 
 	 * @param equipmentNo 삭제할 비품 번호
 	 * @return
 	 * @throws Exception
@@ -249,7 +288,7 @@ public class ResourceController {
 	@RequestMapping(value = "/deleteEquipment", method = RequestMethod.POST)
 	public String deleteEquipment(String equipmentNo) throws Exception {
 
-		 service.deleteEquipment(Integer.parseInt(equipmentNo));
+		service.deleteEquipment(Integer.parseInt(equipmentNo));
 
 		return "redirect:/resource/equipmentList";
 	}

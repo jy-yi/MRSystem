@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -50,11 +51,17 @@ public class ResourceDAOImpl implements ResourceDAO {
 	
 	/* ------------- 회의실 ------------- */
 	
+	/** 회의실 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getRoomList() {
 		return sqlSession.selectList(namespace + ".getRoomList");
 	}
 	
+	/** 회의실 추가 */
+	@Override
+	public int addRoom(RoomDTO roomDTO) {
+		return sqlSession.insert(namespace + ".addRoom", roomDTO);
+	}
 
 	/* ------------- 비품 ------------- */
 
