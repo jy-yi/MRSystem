@@ -204,50 +204,50 @@
 	
 	<!-- 초성에 해당하는 사원 목록 조회 -->
 	<select id="getChosungEmployeeList" parameterType="String" resultType="Employee">
-		SELECT name, emp_no
+		SELECT name, emp_no AS employeeNo
 		FROM employee
 		WHERE
 		<choose>
-			<when test="#{chosung} != null">
-				name='김나윤'
+			<when test='_parameter.equals("ㄱ")'>
+				name BETWEEN '가' AND '나'
 			</when>
-			<when test="${chosung} eq 'ㄴ'">
+			<when test='_parameter.equals("ㄴ")'>
 				name BETWEEN '나' AND '다'
 			</when>
-			<when test="${chosung} eq 'ㄷ'">
+			<when test='_parameter.equals("ㄷ")'>
 				name BETWEEN '다' AND '라'
 			</when>
-			<when test="${chosung} eq 'ㄹ'">
+			<when test='_parameter.equals("ㄹ")'>
 				name BETWEEN '라' AND '마'
 			</when>
-			<when test="${chosung} eq 'ㅁ'">
+			<when test='_parameter.equals("ㅁ")'>
 				name BETWEEN '마' AND '바'
 			</when>
-			<when test="${chosung} eq 'ㅂ'">
+			<when test='_parameter.equals("ㅂ")'>
 				name BETWEEN '바' AND '사'
 			</when>
-			<when test="${chosung} eq 'ㅅ'">
+			<when test='_parameter.equals("ㅅ")'>
 				name BETWEEN '사' AND '아'
 			</when>
-			<when test="${chosung} eq 'ㅇ'">
+			<when test='_parameter.equals("ㅇ")'>
 				name BETWEEN '아' AND '자'
 			</when>
-			<when test="${chosung} eq 'ㅈ'">
+			<when test='_parameter.equals("ㅈ")'>
 				name BETWEEN '자' AND '차'
 			</when>
-			<when test="${chosung} eq 'ㅊ'">
+			<when test='_parameter.equals("ㅊ")'>
 				name BETWEEN '차' AND '카'
 			</when>
-			<when test="${chosung} eq 'ㅋ'">
+			<when test='_parameter.equals("ㅋ")'>
 				name BETWEEN '카' AND '타'
 			</when>
-			<when test="${chosung} eq 'ㅌ'">
+			<when test='_parameter.equals("ㅌ")'>
 				name BETWEEN '타' AND '파'
 			</when>
-			<when test="${chosung} eq 'ㅍ'">
+			<when test='_parameter.equals("ㅍ")'>
 				name BETWEEN '파' AND '하'
 			</when>
-			<when test="${chosung} eq 'ㅎ'">
+			<when test='_parameter.equals("ㅎ")'>
 				name BETWEEN '하' AND '힣'
 			</when>
 		</choose>
