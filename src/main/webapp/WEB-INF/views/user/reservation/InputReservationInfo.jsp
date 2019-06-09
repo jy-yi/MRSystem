@@ -111,7 +111,7 @@
 								</li>
 								<li>
 									<label>주관부서</label>
-									<button class="btn btn-primary">검색</button>
+									<a class="btn btn-primary" href="#" id="chooseMainDeptBtn"  data-toggle="modal" data-target="#chooseDeptModal">검색</a>
 								</li>
 								<li>
 									<label>협조부서</label>
@@ -308,4 +308,31 @@
 		$("#participation-list").clone().appendTo("#final-participartion-list-div");
 		$("#final-participartion-list-div>ul").attr("id","final-participartion-list-div");
 	});
+	
+	// 주관부서 버튼 클릭 이벤트
+	$("#chooseMainDeptBtn").on("click",function(){
+		console.log("주관부서 클릭!");
+		getDepartmentList();
+		// 선택한 사원들의 부서를 모달에 뿌려준다
+		$("#department-list").append();
+	});
+	
+	// 부서정보를 가져오는 함수
+	function getDepartmentList(){
+		console.log(participation);
+		//jQuery.ajaxSettings.traditional = true;
+
+		$.ajax({
+			type:"post",
+			url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
+			traditional:true,
+			data : {"participation" : participation},
+			success: function(data){
+				
+			},
+			error: function(xhr, status, error) {
+				alert(error);
+			}	
+		});
+	};
 </script>

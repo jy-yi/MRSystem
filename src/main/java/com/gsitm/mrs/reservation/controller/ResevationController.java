@@ -2,6 +2,7 @@ package com.gsitm.mrs.reservation.controller;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,5 +220,20 @@ public class ResevationController {
 		employeeList.put("employeeList", service.getEmployeeListBySearching(keyword));
 		return employeeList;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getDepartmentList", method = RequestMethod.POST)
+	public Map<String, Object> getDepartmentList(@RequestParam ArrayList<String> participation) {
+		//@RequestParam String[] participation
+		
+		logger.info("(사용자) 예약-사원들의 부서 목록 조회");
+		// 사원번호, 이름 조회
+		//Map<String, Object> employeeList=new HashMap<>();
+		//employeeList.put("employeeList", service.getEmployeeListBySearching(keyword));
+		//return employeeList;
+		System.out.println(participation.toString());
+		return null;
+	}
+	
 	
 }

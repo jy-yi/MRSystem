@@ -1,5 +1,6 @@
 package com.gsitm.mrs.reservation.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +91,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getEmployeeListBySearching", keyword);
 	}
 
+
+	@Override
+	public List<Map<String, Object>> getDepartmentList(List<String> participation) {
+		return sqlSession.selectList(namespace + ".getDepartmentList", participation);
+	}
 	
 	/* ------------- 관리자 ------------- */
 	
@@ -110,5 +116,6 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getSuccessList() {
 		return sqlSession.selectList(namespace + ".getSuccessList");
 	}
+
 
 }

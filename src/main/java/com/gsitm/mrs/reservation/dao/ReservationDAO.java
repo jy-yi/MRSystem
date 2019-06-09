@@ -1,5 +1,6 @@
 package com.gsitm.mrs.reservation.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,8 @@ public interface ReservationDAO {
 
 	/** 검색 키워드에 해당하는 사원 목록 조회 */
 	public List<Map<String, Object>> getEmployeeListBySearching(String keyword);
+	
+	public List<Map<String, Object>> getDepartmentList(List<String> participation);
 	
 	/* ------------- 관리자 ------------- */
 	

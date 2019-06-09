@@ -1,6 +1,8 @@
 package com.gsitm.mrs.reservation;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -86,6 +88,14 @@ public class ReservationDaoTest {
 		for(Map<String, Object> map:list) {
 			logger.info(map.toString());
 		}
+	}
+	
+	@Test
+	public void getDepartmentList() {
+		String[] strArr= {"it1226", "it1227"};
+		List<String> participation=new ArrayList<>(Arrays.asList(strArr));
+		List<Map<String, Object>> list=dao.getDepartmentList(participation);
+		logger.info(list.toString());
 	}
 	
 	/*********** 관리자 ************/

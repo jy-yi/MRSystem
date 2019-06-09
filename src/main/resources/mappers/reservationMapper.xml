@@ -268,4 +268,15 @@
 		USING(dept_no)
 		WHERE employee.name LIKE '%' || #{keyword} || '%'
 	</select>
+	
+	<select id="getDepartmentList" parameterType="Map" resultType="Map">
+		SELECT DISTINCT(dept_no), department.name
+		FROM department
+		JOIN employee
+		USING(dept_no)
+		WHERE
+		<foreach collection="list" item="participation">
+			emp_no=#{participation}	OR
+		</foreach>
+	</select>
 </mapper>
