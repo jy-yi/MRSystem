@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!-- Edit Work place Modal-->
 <div class="modal fade" id="editRoomModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -9,7 +10,7 @@
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>
 			
-			<form action="/resource/addRoom" method="post" enctype="multipart/form-data">
+			<form action="/resource/editRoom" method="post" enctype="multipart/form-data">
 				<div class="modal-body">
 					
 					<div class="form-group">
@@ -19,7 +20,7 @@
 								<label>이미지</label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="file" class="form-control" id="editImage" name="file"/>
+								<input type="file" class="form-control" id="editImage" name="img" accept="image/gif, image/jpeg, image/png"/>
 							</div>
 						
 							<div class="clearfix"></div>
@@ -46,11 +47,11 @@
 								<label>지사</label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<button class="btn btn-light dropdown-toggle" type="button" id="editDropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			                      지사 선택 
 			                    </button>
 			                      <input type="hidden" name="workplaceNo" id="editWorkplaceNo">
-			                    <div id="workplaceDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+			                    <div id="editWorkplaceDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
 			                    	<c:forEach items="${workplaceList}" var="list">
 				                      <a class="dropdown-item" value="${list.workplaceNo}">${list.name}</a>
 			                    	</c:forEach>
@@ -101,19 +102,9 @@
 </div>
 
 <script>
-	/* 모달 사라졌을 때 입력 값 초기화 */
-	$('.modal').on('hidden.bs.modal', function (e) {
-	  $(this).find('form')[0].reset()
-	});
-	
-	/* 지사 드롭박스 선택 시 텍스트 변경 */
-	$('#workplaceDropdown a').on('click', function() {
-	    $('#dropdownMenuButton').text($(this).text());
-	    $('#workplaceNo').val($(this).attr('value'));
-	});
-	
 	var roomNo="";
 	var workplaceNo="";
+	var workplaceName="";
 	var image="";
 	var name="";
     var capacity="";
@@ -123,17 +114,17 @@
         $('#editRoomModal').on('show.bs.modal', function(event) {          
         	roomNo = $(event.relatedTarget).data('roomno');
         	workplaceNo = $(event.relatedTarget).data('workplaceno');
+        	workplaceName = $(event.relatedTarget).data('workplacename');
         	image = $(event.relatedTarget).data('image');
         	name = $(event.relatedTarget).data('name');
         	capacity = $(event.relatedTarget).data('capacity');
         	nwAvailable = $(event.relatedTarget).data('nwavailable');
         	
-        	console.log(roomNo + " | " + workplaceNo + " | " + image + " | " + name + " | " + capacity + " | " + nwAvailable);
-        	
         	 $("#editRoomNo").val(roomNo);
         	 $("#editWorkplaceNo").val(workplaceNo);
 //         	 $("#editImage").val(name);
         	 $("#editName").val(name);
+        	 $('#editDropdownMenuButton').text(workplaceName);
     	     $("#editCapacity").val(capacity);
     	     
     	     if (nwAvailable === 'Y') 
@@ -142,4 +133,10 @@
     	    	 $("input:radio[id='editNwN']").prop('checked', true);
         });
     });
+	
+	/* 지사 드롭박스 선택 시 텍스트 변경 */
+	$('#editWorkplaceDropdown a').on('click', function() {
+	    $('#editDropdownMenuButton').text($(this).text());
+	    $('#editWorkplaceNo').val($(this).attr('value'));
+	});
 </script>

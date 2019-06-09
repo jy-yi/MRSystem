@@ -49,7 +49,7 @@
 												<h5 class="m-0 font-weight-bold text-primary"> ${list.ROOMNAME} 
 													<span style="float:right"> 
 														<a href="#" data-toggle="modal" data-target="#editRoomModal" style="text-decoration: none;" 
-															data-roomNo="${list.ROOMNO}" data-workplaceNo="${list.WORKPLACENO}"
+															data-roomNo="${list.ROOMNO}" data-workplaceNo="${list.WORKPLACENO}" data-workplaceName="${workplaceList.name}"
 															data-image="${list.IMAGE}" data-name="${list.ROOMNAME}" data-capacity="${list.CAPACITY}" data-nwAvailable="${list.NWAVAILABLE}"> 
 															<span class="text"><i class="fas fa-edit"></i></span> </a>
 															

@@ -20,7 +20,7 @@
 								<label>이미지</label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="file" class="form-control" id="image" name="file" placeholder="" />
+								<input type="file" class="form-control" id="image" name="file"  accept="image/gif, image/jpeg, image/png" />
 							</div>
 						
 							<div class="clearfix"></div>

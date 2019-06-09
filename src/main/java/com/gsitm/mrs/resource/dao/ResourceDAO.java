@@ -36,7 +36,11 @@ public interface ResourceDAO {
 	
 	/** 회의실 추가 */
 	public int addRoom(RoomDTO roomDTO);
+	
+	/** 회의실 수정 */
+	public void editRoom(RoomDTO roomDTO);
 
+	
 	/* ------------- 비품 ------------- */
 	
 	/** 비품 목록 조회 */

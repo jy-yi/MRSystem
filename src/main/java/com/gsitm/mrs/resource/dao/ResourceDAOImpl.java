@@ -62,6 +62,12 @@ public class ResourceDAOImpl implements ResourceDAO {
 	public int addRoom(RoomDTO roomDTO) {
 		return sqlSession.insert(namespace + ".addRoom", roomDTO);
 	}
+	
+	/** 회의실 수정 */
+	@Override
+	public void editRoom(RoomDTO roomDTO) {
+		sqlSession.update(namespace + ".editRoom", roomDTO);
+	}
 
 	/* ------------- 비품 ------------- */
 

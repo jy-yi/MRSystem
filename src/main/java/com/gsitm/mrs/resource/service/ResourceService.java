@@ -28,6 +28,7 @@ public interface ResourceService {
 	/** 지사 수정 */
 	public void editWorkplace(WorkplaceDTO workplaceDTO);
 	
+	
 	/* ------------- 회의실 ------------- */
 	
 	/** 회의실 목록 조회 */
@@ -35,6 +36,10 @@ public interface ResourceService {
 	
 	/** 회의실 추가 */
 	public void addRoom(RoomDTO roomDTO);
+	
+	/** 회의실 수정 */
+	public void editRoom(RoomDTO roomDTO);
+	
 	
 	/* ------------- 비품 ------------- */
 	

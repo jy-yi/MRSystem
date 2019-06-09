@@ -60,6 +60,12 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.addRoom(roomDTO);
 	}
 	
+	/** 회의실 수정 */
+	@Override
+	public void editRoom(RoomDTO roomDTO) {
+		dao.editRoom(roomDTO);
+	}
+	
 	
 	/* ------------- 비품 ------------- */
 
@@ -98,4 +104,5 @@ public class ResourceServiceImpl implements ResourceService {
 	public void editEquipment(EquipmentDTO equipmentDTO) {
 		dao.editEquipment(equipmentDTO);
 	}
+
 }

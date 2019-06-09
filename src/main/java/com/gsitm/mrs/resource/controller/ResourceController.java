@@ -145,6 +145,15 @@ public class ResourceController {
 		return mav;
 	}
 
+	/**
+	 * 회의실 등록
+	 * 
+	 * @param roomDTO	등록할 회의실 객체
+	 * @param file		파일 업로드 (회의실 이미지)
+	 * @param equipList	선택한 비품 리스트
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/addRoom", method = RequestMethod.POST)
 	public String addRoom(RoomDTO roomDTO, MultipartFile file, String equipList) throws Exception {
 
@@ -176,7 +185,14 @@ public class ResourceController {
 		return "redirect:/resource/roomList";
 	}
 
-	// 업로드된 파일을 저장하는 함수
+	/**
+	 * 업로드된 파일을 저장하는 함수
+	 * 
+	 * @param originalName	원본 파일 이름
+	 * @param fileDate		파일의 바이트 배열
+	 * @return
+	 * @throws IOException
+	 */
 	private String uploadFile(String originalName, byte[] fileDate) throws IOException {
 
 		UUID uid = UUID.randomUUID();
@@ -188,6 +204,28 @@ public class ResourceController {
 
 		return savedName;
 
+	}
+	
+	/**
+	 * 회의실 수정
+	 * 
+	 * @param roomDTO	수정할 회의실 객체
+	 * @param img		파일 업로드 (회의실 이미지)
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/editRoom", method = RequestMethod.POST)
+	public String editRoom(RoomDTO roomDTO, MultipartFile img) throws Exception {
+		
+		String savedName = uploadFile(img.getOriginalFilename(), img.getBytes());
+
+		logger.info("savedName:" + savedName);
+
+		roomDTO.setImage(savedName);
+		
+		service.editRoom(roomDTO);
+
+		return "redirect:/resource/roomList";
 	}
 
 	/* ------------- 비품 ------------- */

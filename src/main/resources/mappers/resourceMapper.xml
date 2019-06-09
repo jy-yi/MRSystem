@@ -60,8 +60,14 @@
 		<selectKey keyProperty="roomNo" resultType="Integer" order="AFTER"> 
 			SELECT Max(Room_no) FROM Room 
 		</selectKey>
-
 	</insert>
+	
+	<!-- 회의실 수정 -->
+	<update id="editRoom">
+		UPDATE Room 
+		SET workplace_no = #{workplaceNo}, name = #{name}, capacity = #{capacity}, nw_available = #{nwAvailable}, image = #{image}
+		WHERE room_no = #{roomNo}
+	</update>
 	
 	<!-- #### 비품 #### -->
 	
