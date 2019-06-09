@@ -10,7 +10,7 @@
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>
 			
-			<form action="/resource/addRoom" method="post">
+			<form action="/resource/addRoom" method="post" enctype="multipart/form-data">
 				<div class="modal-body">
 					
 					<div class="form-group">
@@ -20,7 +20,7 @@
 								<label>이미지</label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
-								<input type="file" class="form-control" id="image" name="image" placeholder="" />
+								<input type="file" class="form-control" id="image" name="file" placeholder="" />
 							</div>
 						
 							<div class="clearfix"></div>
@@ -52,7 +52,7 @@
 			                      <input type="hidden" name="workplaceNo" id="workplaceNo">
 			                    <div id="workplaceDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
 			                    	<c:forEach items="${workplaceList}" var="list">
-				                      <a class="dropdown-item" value="${list.workplaceNo }">${list.name}</a>
+				                      <a class="dropdown-item" value="${list.workplaceNo}">${list.name}</a>
 			                    	</c:forEach>
 			                    </div>
 							</div>
@@ -87,7 +87,7 @@
 										</c:forEach>
 						        	</optgroup>
 							    </select>
-							    <input type="hidden" id="equipList" name="equipList" value="">
+							    <input type="hidden" id="equipName" name="equipList">
 							</div>
 						
 							<div class="clearfix"></div>
@@ -105,6 +105,7 @@
 							</div>
 						
 							<div class="clearfix"></div>
+							<input type="hidden" name="adminId" value="${login.employeeNo}">
 						</div>
 						
 					</div>
@@ -142,6 +143,6 @@
 	       arrSelected.push($(this).val());
 	    });
 	    console.log(arrSelected);
-	    $('#equipList').val(arrSelected);
+	    $('#equipName').val(arrSelected);
 	});
 </script>

@@ -57,7 +57,7 @@
         <beans:property name="order" value="1" />
     </beans:bean> 
     
-    <!-- jsonView -->
+    <!-- JSonView -->
    <beans:bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
       <beans:property name="contentType" value="text/html;charset=UTF-8" />
    </beans:bean>
@@ -65,6 +65,18 @@
    <beans:bean id="beanNameResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
       <beans:property name="order" value="0" />
    </beans:bean>
+
+	<!-- 파일 업로드 -->
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 파일 업로드 용량 -->
+        <beans:property name="maxUploadSize" value="10485760"/> <!-- 10mb 제한 -->
+    </beans:bean>
+    
+	<!-- 파일 업로드를 위한 디렉토리 설정 -->
+    <beans:bean id="uploadPath" class="java.lang.String">
+	<!-- 파일 업로드 디렉토리 -->
+        <beans:constructor-arg value="C:/Users/jongy/git/MRSystem/src/main/webapp/resources/img/room"/>
+    </beans:bean>
     
     <context:component-scan base-package="com.gsitm.mrs" />
 	

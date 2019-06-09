@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dao.ResourceDAO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -47,9 +48,16 @@ public class ResourceServiceImpl implements ResourceService {
 	
 	/* ------------- 회의실 ------------- */
 	
+	/** 회의실 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getRoomList() {
 		return dao.getRoomList();
+	}
+	
+	/** 회의실 추가 */
+	@Override
+	public void addRoom(RoomDTO roomDTO) {
+		dao.addRoom(roomDTO);
 	}
 	
 	
@@ -90,5 +98,4 @@ public class ResourceServiceImpl implements ResourceService {
 	public void editEquipment(EquipmentDTO equipmentDTO) {
 		dao.editEquipment(equipmentDTO);
 	}
-
 }

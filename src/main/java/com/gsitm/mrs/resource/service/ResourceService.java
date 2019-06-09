@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 
 /**
@@ -31,7 +32,9 @@ public interface ResourceService {
 	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList();
-
+	
+	/** 회의실 추가 */
+	public void addRoom(RoomDTO roomDTO);
 	
 	/* ------------- 비품 ------------- */
 	

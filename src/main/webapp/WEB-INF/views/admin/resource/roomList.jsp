@@ -56,9 +56,8 @@
 												
 											</div>
 											<div class="card-body">
-												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%"></div>
 												<p>
-												
 												<div>수용 인원 : ${list.CAPACITY}명</div>
 												<div>비치 물품 : <span id="equipList"></span></div>
 												<div>네트워크 : ${list.NWAVAILABLE eq 'Y' ? "사용 가능":"사용 불가능" }</div>
