@@ -35,6 +35,60 @@ public class ReservationServiceImpl implements ReservationService {
 	private ReservationDAO dao;
 	
 	/* ------------- 사용자 ------------- */
+
+	@Override
+	public void InputReservationInfo(HttpServletRequest request, ReservationDTO reservationDto, Model model) {
+		// 회의실 정보
+		int roomNo=Integer.parseInt(request.getParameter("roomNo"));
+		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
+		model.addAttribute("roomInfo",roomInfo);
+		
+		// 사용자가 선택한 비품 정보 가져오기
+		String equipments=request.getParameter("equipments");
+		List<String> splitEquipments=new ArrayList<String>();
+		splitEquipments.addAll(Arrays.asList(equipments.split(",")));
+		
+		// 비품 목록 중 사용자가 선택한 비품에는 Y, 선택하지 않은 비품에는 N 표시
+		List<Map<String, Object>> equipmentList=dao.getEquipmentList(roomNo);
+		for(int i=0; i<equipmentList.size(); i++) {
+			for(int j=0; j<splitEquipments.size(); j++) {
+				if(equipmentList.get(i).get("EQUIP_NO").toString().equals(splitEquipments.get(j))) {
+					equipmentList.get(i).put("need", true);
+					splitEquipments.remove(j);
+					break;
+				}
+			}
+		}
+		model.addAttribute("equipmentList",equipmentList);
+		
+		// 예약 정보
+		reservationDto.setEmployeeNo(request.getParameter("employeeNo"));
+		String snackwant=reservationDto.getSnackWant();
+		if(snackwant!=null && snackwant.equals("on")) {
+			reservationDto.setSnackWant("Y");
+		} else {
+			reservationDto.setSnackWant("N");
+		}
+		model.addAttribute("reservationInfo",reservationDto);
+		
+		// 예약자 정보
+		String employeeNo=request.getParameter("employeeNo");
+		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
+		model.addAttribute("employeeInfo", employeeDto);
+		
+	}
+	
+	/** 초성에 해당하는 사원 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getEmployeeListByChosung(String chosung) {
+		return dao.getEmployeeListByChosung(chosung);
+	}
+
+	@Override
+	public List<Map<String, Object>> getEmployeeListBySearching(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	/* ------------- 마이페이지 ------------- */
 	
@@ -89,55 +143,7 @@ public class ReservationServiceImpl implements ReservationService {
 		// form에서 넘긴 equipmentNo로 equipmentname 알아내기, Y,N 여부
 		return null; 
 	}
-	
-	@Override
-	public void InputReservationInfo(HttpServletRequest request, ReservationDTO reservationDto, Model model) {
-		// 회의실 정보
-		int roomNo=Integer.parseInt(request.getParameter("roomNo"));
-		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
-		model.addAttribute("roomInfo",roomInfo);
-		
-		// 사용자가 선택한 비품 정보 가져오기
-		String equipments=request.getParameter("equipments");
-		List<String> splitEquipments=new ArrayList<String>();
-		splitEquipments.addAll(Arrays.asList(equipments.split(",")));
-		
-		// 비품 목록 중 사용자가 선택한 비품에는 Y, 선택하지 않은 비품에는 N 표시
-		List<Map<String, Object>> equipmentList=dao.getEquipmentList(roomNo);
-		for(int i=0; i<equipmentList.size(); i++) {
-			for(int j=0; j<splitEquipments.size(); j++) {
-				if(equipmentList.get(i).get("EQUIP_NO").toString().equals(splitEquipments.get(j))) {
-					equipmentList.get(i).put("need", true);
-					splitEquipments.remove(j);
-					break;
-				}
-			}
-		}
-		model.addAttribute("equipmentList",equipmentList);
-		
-		// 예약 정보
-		reservationDto.setEmployeeNo(request.getParameter("employeeNo"));
-		String snackwant=reservationDto.getSnackWant();
-		if(snackwant!=null && snackwant.equals("on")) {
-			reservationDto.setSnackWant("Y");
-		} else {
-			reservationDto.setSnackWant("N");
-		}
-		model.addAttribute("reservationInfo",reservationDto);
-		
-		// 예약자 정보
-		String employeeNo=request.getParameter("employeeNo");
-		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
-		model.addAttribute("employeeInfo", employeeDto);
-		
-	}
-	
-	/** 초성에 해당하는 사원 목록 조회 */
-	@Override
-	public List<EmployeeDTO> getChosungEmployeeList(String chosung) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	/* ------------- 관리자 ------------- */
 	
@@ -158,7 +164,5 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getSuccessList() {
 		return dao.getSuccessList();
 	}
-
-	
 
 }

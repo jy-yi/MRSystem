@@ -155,6 +155,10 @@
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript">
+	// 회의 참여자 사원번호를 담은 배열
+	var participation=new Array();
+	var chosung;
+	
 	$(function(){
 		// 예약 일자 값을 설정
 		Date.prototype.format = function (f) {
@@ -198,14 +202,77 @@
 	
 	// 모달 초성 선택 이벤트
 	$("#ganada-list>li").on("click",function(){
-		var chosung=$(this).text();
+		chosung=$(this).text();
+		getEmployeeList();
+	});
+	
+	// 사원 목록을 가져오는 함수
+	function getEmployeeList(){
 		$.ajax({
 			type:"get",
-			url:"${pageContext.request.contextPath}/reservation/",
-			data : {name : "홍길동"},
-			dataType : "xml",
-			success: function(xml){
-				console.log(xml);
+			url:"${pageContext.request.contextPath}/reservation/getEmployeeListByChosung",
+			data : {"chosung" : chosung},
+			success: function(data){
+				var employeeList=data.employeeList;
+				// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
+				$("#search-employee-list > ul").empty();
+				$.each(employeeList, function(index, item){
+					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
+					if($.inArray(item.EMPLOYEENO, participation)==-1){
+						$("#search-employee-list > ul").append("<li>"
+							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
+							+"</li>");
+					}
+				})
+			},
+			error: function(xhr, status, error) {
+				alert(error);
+			}	
+		});
+	}
+	
+	// 참여 사원 추가 함수
+	function addParticipation(employeeNo, name){
+		// 해당 사원을 배열에 추가한다.
+		participation.push(employeeNo);
+		$("#participation-list").append("<li>"+name
+				+"<i style='display:none'>"+employeeNo+"</i>"
+				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
+		// 사원 목록을 업데이트한다.
+		getEmployeeList();
+	}
+	
+	// 참여자 삭제 이벤트
+	$(document).on("click",".delete-participation-btn",function(){
+		console.log($(this).parent());
+		var employeeNo=$(this).prev().text();
+		// 사원번호 배열에서 해당 사원을 삭제한다.
+		participation.splice($.inArray(employeeNo, participation),1);
+		// 해당 사원의 이름을 #participation-list에서 삭제
+		$(this).parent().remove();
+		// 사원 목록을 업데이트한다.
+		getEmployeeList();
+	});
+	
+	// 이름 검색을 통한 사원 조회
+	$("#searchBtn").on("click",function(){
+		var keyword=$("#searchByName").val();
+		$.ajax({
+			type:"get",
+			url:"${pageContext.request.contextPath}/reservation/getEmployeeListBySearching",
+			data : {"keyword" : keyword},
+			success: function(data){
+				var employeeList=data.employeeList;
+				// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
+				$("#search-employee-list > ul").empty();
+				$.each(employeeList, function(index, item){
+					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
+					if($.inArray(item.EMPLOYEENO, participation)==-1){
+						$("#search-employee-list > ul").append("<li>"
+							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
+							+"</li>");
+					}
+				})
 			},
 			error: function(xhr, status, error) {
 				alert(error);

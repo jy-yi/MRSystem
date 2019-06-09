@@ -70,7 +70,14 @@ public class ReservationDaoTest {
 		
 	}
 	
-	
+	/** 초성에 해당하는 사원 정보 조회 테스트 */
+	@Test
+	public void getChosungEmployeeList() {
+		List<Map<String, Object>> list=dao.getEmployeeListByChosung("ㄱ");
+		for(Map<String, Object> map:list) {
+			logger.info(map.toString());
+		}
+	}
 	
 	/*********** 관리자 ************/
 	
@@ -139,11 +146,4 @@ public class ReservationDaoTest {
 		
 	}
 	
-	@Test
-	public void getChosungEmployeeList() {
-		List<EmployeeDTO> list=dao.getChosungEmployeeList("ㄱ");
-		for(EmployeeDTO dto:list) {
-			System.out.println(dto.getEmployeeNo() + " : "+dto.getName());
-		}
-	}
 }

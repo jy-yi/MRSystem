@@ -79,9 +79,16 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 초성에 해당하는 사원 목록 조회 */
 	@Override
-	public List<EmployeeDTO> getChosungEmployeeList(String chosung) {
-		return sqlSession.selectList(namespace + ".getChosungEmployeeList", chosung);
+	public List<Map<String, Object>> getEmployeeListByChosung(String chosung) {
+		return sqlSession.selectList(namespace + ".getEmployeeListByChosung", chosung);
 	}
+
+	@Override
+	public List<Map<String, Object>> getEmployeeListBySearching(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	/* ------------- 관리자 ------------- */
 	
@@ -102,7 +109,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getSuccessList() {
 		return sqlSession.selectList(namespace + ".getSuccessList");
 	}
-
-
 
 }

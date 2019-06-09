@@ -43,7 +43,10 @@ public interface ReservationDAO {
 	public EmployeeDTO getEmployeeInfo(String employeeNo);
 	
 	/** 초성에 해당하는 사원 목록 조회 */
-	public List<EmployeeDTO> getChosungEmployeeList(String chosung);
+	public List<Map<String, Object>> getEmployeeListByChosung(String chosung);
+
+	/** 검색 키워드에 해당하는 사원 목록 조회 */
+	public List<Map<String, Object>> getEmployeeListBySearching(String keyword);
 	
 	/* ------------- 관리자 ------------- */
 	

@@ -35,6 +35,35 @@
 		margin-top: 20px;
 	}
 	
+	#search-employee-list>ul{
+		margin-top: 20px;
+	    line-height: 2;
+	    list-style: inside;
+	}
+	
+	#search-employee-list>ul>li:hover {
+		cursor: pointer;
+	}
+	
+	.delete-participation-btn{
+		padding: 0;
+	}
+	
+	#participation-list{
+		list-style: none;
+	    display: flex;
+	    padding: 0;
+	}
+	
+	#participation-list::before{
+		margin-right: 7px;
+    	content: "참여인원 : ";
+	}
+	
+	#participation-list>li{
+		margin-right: 5px;
+	}
+}
 	
 </style>
 
@@ -65,17 +94,19 @@
 					</div>
 			        <div class="col-md-10">
 			        	<div id="particaption-list-div" class="padding-left-12">
-			        		<span>참여인원 : </span>
-			    			<span id="participationList">참여인원목록</span>
+			    			<ul id="participation-list"></ul>
 			        	</div>
 			            <div id="custom-search-input">
 			                <div class="input-group col-md-12">
-			                    <input type="text" class="form-control input-lg" placeholder="성명을 입력하세요." />
+			                    <input type="text" id="searchByName" class="form-control input-lg" placeholder="성명을 입력하세요." />
 			                    <span class="input-group-btn">
-			                        <button class="btn btn-info btn-lg" type="button">
+			                        <button class="btn btn-info btn-lg" type="button" id="searchBtn">
 			                            <i class="glyphicon glyphicon-search"></i>
 			                        </button>
 			                    </span>
+			                </div>
+			                <div id="search-employee-list">
+			                	<ul></ul>
 			                </div>
 			            </div>
 			        </div>

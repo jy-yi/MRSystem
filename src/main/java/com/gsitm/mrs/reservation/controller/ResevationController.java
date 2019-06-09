@@ -199,13 +199,25 @@ public class ResevationController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getChosungEmployeeList", method = RequestMethod.GET)
-	public Map<String, Object> getChosungEmployeeList(@RequestParam char chosung) {
+	@RequestMapping(value = "/getEmployeeListByChosung", method = RequestMethod.GET)
+	public Map<String, Object> getEmployeeListByChosung(@RequestParam String chosung) {
 		
 		logger.info("(사용자) 예약-초성에 해당하는 사원 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> employeeList=new HashMap<>();
-		
+		employeeList.put("employeeList", service.getEmployeeListByChosung(chosung));
 		return employeeList;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getEmployeeListBySearching", method = RequestMethod.GET)
+	public Map<String, Object> getEmployeeListBySearching(@RequestParam String chosung) {
+		
+		logger.info("(사용자) 예약-검색 키워드에 해당하는 사원 목록 조회");
+		// 사원번호, 이름 조회
+		Map<String, Object> employeeList=new HashMap<>();
+		employeeList.put("employeeList", service.getEmployeeListBySearching(chosung));
+		return employeeList;
+	}
+	
 }
