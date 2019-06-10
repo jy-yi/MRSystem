@@ -1,10 +1,13 @@
 package com.gsitm.mrs.user.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.gsitm.mrs.user.dto.DepartmentDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
@@ -25,13 +28,18 @@ public class UserDAOImpl implements UserDAO {
 	/** 로그인 */
 	@Override
 	public EmployeeDTO login(EmployeeDTO employee) {
-		return sqlSession.selectOne(namespace +".login", employee); 
+		return sqlSession.selectOne(namespace + ".login", employee); 
 	}
 
 	/** 회원번호로 회원 정보 받아오기 */
 	@Override
 	public EmployeeDTO getInfo(String employeeNo) {
-		return sqlSession.selectOne(namespace +".getInfo", employeeNo);
+		return sqlSession.selectOne(namespace + ".getInfo", employeeNo);
+	}
+
+	@Override
+	public List<DepartmentDTO> getDepartmentList() {
+		return sqlSession.selectList(namespace + ".getDepartmentList");
 	}
 	
 }

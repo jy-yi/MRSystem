@@ -76,6 +76,11 @@
 <script type="text/javascript" src="/resources/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap-datepicker.kr.js"></script>
 
+<!-- Date Range Picker -->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
 <style type="text/css">
 @font-face {
 	font-family: "setFont";

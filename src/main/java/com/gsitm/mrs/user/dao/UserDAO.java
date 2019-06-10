@@ -1,5 +1,8 @@
 package com.gsitm.mrs.user.dao;
 
+import java.util.List;
+
+import com.gsitm.mrs.user.dto.DepartmentDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
@@ -16,6 +19,9 @@ public interface UserDAO {
 
 	/** 회원번호로 회원 정보 받아오기 */
 	public EmployeeDTO getInfo (String employeeNo);
+	
+	/** 부서 목록 조회 */
+	public List<DepartmentDTO> getDepartmentList();
 	
 	
 }

@@ -1,11 +1,19 @@
 package com.gsitm.mrs.statistic.controller;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.gsitm.mrs.statistic.service.StatisticService;
+import com.gsitm.mrs.user.dto.DepartmentDTO;
+import com.gsitm.mrs.user.service.UserService;
 
 /**
  * 통계 관련 프로젝트 Controller @RequestMapping("/statistic") URI 매칭
@@ -21,6 +29,12 @@ public class StatisticController {
 
 	private static final Logger logger = LoggerFactory.getLogger(StatisticController.class);
 	
+	@Inject
+	private StatisticService statisticService;
+	
+	@Inject
+	private UserService userService;
+	
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(Model model) {
 		
@@ -29,10 +43,20 @@ public class StatisticController {
 		return "user/mypage/statistic";
 	}
 	
+	/**
+	 * (관리자) 예약 통계 페이지
+	 * 
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "/statistic", method = RequestMethod.GET)
 	public String statusCalendar(Model model) {
 		
 		logger.info("관리자 - 예약 통계");
+		
+		List<DepartmentDTO> departmentList = userService.getDepartmentList();
+		
+		model.addAttribute("departmentList", departmentList);
 		
 		return "admin/statistic/statistic";
 	}
