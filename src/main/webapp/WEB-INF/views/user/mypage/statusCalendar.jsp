@@ -51,8 +51,7 @@
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
 								<div
-									class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의
-									일정</div>
+									class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의 일정</div>
 
 								<!-- 프로그레스 바 -->
 								<div id="bar" style="display: none">
@@ -65,7 +64,7 @@
 											<div class="progress progress-sm mr-2">
 												<div class="progress-bar bg-info" role="progressbar"
 													style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-													aria-valuemax="100"></div>
+													aria-valuemax="100"></div>	
 											</div>
 										</div>
 									</div>
@@ -138,20 +137,6 @@
 										var name = info.event.title;
 										var start = info.event.start;
 										var end = info.event.end;
-										
-										$.ajax({
-											url : "/reservation/getCalendar",
-											type : "get",
-											data : "id"+reservationNo,
-											success:function(){
-												
-												
-												/* var info = ${calendarInfo};
-												
-												console.log(info) */
-											}
-											
-										});
 										
 										console.log(reservationNo);
 										console.log(name);
