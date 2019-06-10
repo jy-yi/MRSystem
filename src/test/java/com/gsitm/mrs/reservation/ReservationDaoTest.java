@@ -90,6 +90,7 @@ public class ReservationDaoTest {
 		}
 	}
 	
+	/** 사원들의 부서 목록 조회 테스트 */
 	@Test
 	public void getDepartmentList() {
 		String[] strArr= {"it1226", "it1227"};

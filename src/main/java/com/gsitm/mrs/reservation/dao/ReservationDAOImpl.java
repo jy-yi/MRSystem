@@ -91,7 +91,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getEmployeeListBySearching", keyword);
 	}
 
-
+	/** 사원들의 부서 정보 조회 */
 	@Override
 	public List<Map<String, Object>> getDepartmentList(List<String> participation) {
 		return sqlSession.selectList(namespace + ".getDepartmentList", participation);

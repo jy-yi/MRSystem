@@ -269,14 +269,14 @@
 		WHERE employee.name LIKE '%' || #{keyword} || '%'
 	</select>
 	
-	<select id="getDepartmentList" parameterType="Map" resultType="Map">
-		SELECT DISTINCT(dept_no), department.name
+	<select id="getDepartmentList" parameterType="java.util.ArrayList" resultType="Map">
+		SELECT DISTINCT(dept_no) AS dept_no, department.name AS name
 		FROM department
 		JOIN employee
 		USING(dept_no)
-		WHERE
-		<foreach collection="list" item="participation">
-			emp_no=#{participation}	OR
+		WHERE emp_no in
+		<foreach collection="list" item="empNo" separator="," open="(" close=")">
+			#{empNo}
 		</foreach>
 	</select>
 </mapper>

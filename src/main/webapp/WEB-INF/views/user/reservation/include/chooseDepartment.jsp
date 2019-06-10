@@ -12,7 +12,9 @@
 		<div class="modal-content">
 			<div class="modal-body">
 				<ul id="MainDept-list"></ul>
-			    <div id="department-list"></div>
+			    <div id="department-list">
+			    	<ul></ul>
+			    </div>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled="disabled">확인</button>

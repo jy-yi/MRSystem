@@ -195,7 +195,6 @@ public class ResevationController {
 		logger.info("(사용자) 예약-예약 정보 입력");
 		
 		service.InputReservationInfo(request, reservationDto, model);
-		System.out.println(reservationDto.toString());
 		return "user/reservation/InputReservationInfo";
 	}
 	
@@ -228,11 +227,9 @@ public class ResevationController {
 		
 		logger.info("(사용자) 예약-사원들의 부서 목록 조회");
 		// 사원번호, 이름 조회
-		//Map<String, Object> employeeList=new HashMap<>();
-		//employeeList.put("employeeList", service.getEmployeeListBySearching(keyword));
-		//return employeeList;
-		System.out.println(participation.toString());
-		return null;
+		Map<String, Object> map=new HashMap<>();
+		map.put("departmentList", service.getDepartmentList(participation));
+		return map;
 	}
 	
 	

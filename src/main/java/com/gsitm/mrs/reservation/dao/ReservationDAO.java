@@ -49,6 +49,7 @@ public interface ReservationDAO {
 	/** 검색 키워드에 해당하는 사원 목록 조회 */
 	public List<Map<String, Object>> getEmployeeListBySearching(String keyword);
 	
+	/** 사원들의 부서 정보 조회 */
 	public List<Map<String, Object>> getDepartmentList(List<String> participation);
 	
 	/* ------------- 관리자 ------------- */
