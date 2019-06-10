@@ -1,5 +1,8 @@
 package com.gsitm.mrs.statistic.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -19,4 +22,10 @@ public class StatisticDAOImpl implements StatisticDAO {
 	private SqlSession sqlSession;
 
 	private static String namespace = "com.gsitm.mrs.mappers.StatisticMapper";
+
+	/** 지사 별 전체 예약 현황 조회 */
+	@Override
+	public List<Map<String, Object>> getReservationList(int workplaceNo) {
+		return sqlSession.selectList(namespace + ".getReservationList", workplaceNo);
+	}
 }

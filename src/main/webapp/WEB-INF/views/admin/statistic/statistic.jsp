@@ -18,6 +18,7 @@
 			<li class="nav-item"><a
 				class="nav-link  ${status.index eq 0 ? 'active':''}"
 				data-toggle="tab" href="#workplace${list.workplaceNo}">${list.name}</a></li>
+			<input type="hidden" name="workplaceNo" id="workplaceNo" value="${list.workplaceNo}">
 		</c:forEach>
 	</ul>
 
@@ -26,37 +27,23 @@
 		<div class="col-xl-8">
 
 			<div class="tab-content">
-				<div class="tab-pane fade show active" id="workplace1">
-
-					<!-- Bar Chart -->
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
-						</div>
-						<div class="card-body">
-							<div class="chart-bar">
-								<canvas id="myBarChart"></canvas>
+				<c:forEach items="${workplaceList}" var="workplaceList" varStatus="status">
+					<div class="tab-pane fade show ${status.index eq 0 ? 'active':''}" id="workplace${workplaceList.workplaceNo}">
+	
+						<!-- Bar Chart -->
+						<div class="card shadow mb-4">
+							<div class="card-header py-3">
+								<h6 class="m-0 font-weight-bold text-primary">${workplaceList.name}</h6>
+							</div>
+							<div class="card-body">
+								<div class="chart-bar">
+									<canvas id="myBarChart"></canvas>
+								</div>
 							</div>
 						</div>
+						<!-- End of Bar Chart -->
 					</div>
-					<!-- End of Bar Chart -->
-				</div>
-
-				<div class="tab-pane fade show" id="workplace2">
-
-					<!-- Bar Chart -->
-					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">삼환</h6>
-						</div>
-						<div class="card-body">
-							<div class="chart-bar">
-								<canvas id="myBarChart"></canvas>
-							</div>
-						</div>
-					</div>
-					<!-- End of Bar Chart -->
-				</div>
+				</c:forEach>
 			</div>
 		</div>
 
@@ -102,8 +89,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%"
-							cellspacing="0">
+						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 							<thead>
 								<tr>
 									<th>No</th>
@@ -111,9 +97,9 @@
 									<th>회의 목적</th>
 									<th>회의실</th>
 									<th>기간</th>
+									<th>신청자</th>
 									<th>주관부서</th>
 									<th>승인 상태</th>
-									<th>취소</th>
 								</tr>
 							</thead>
 
@@ -126,7 +112,6 @@
 									<td>2011/04/25</td>
 									<td>$320,800</td>
 									<td>$320,800</td>
-									<td>$320,800</td>
 								</tr>
 								<tr>
 									<td>Garrett Winters</td>
@@ -134,7 +119,6 @@
 									<td>Tokyo</td>
 									<td>63</td>
 									<td>2011/07/25</td>
-									<td>$170,750</td>
 									<td>$170,750</td>
 									<td>$170,750</td>
 								</tr>
@@ -146,7 +130,6 @@
 									<td>2009/01/12</td>
 									<td>$86,000</td>
 									<td>$86,000</td>
-									<td>$86,000</td>
 								</tr>
 								<tr>
 									<td>Cedric Kelly</td>
@@ -154,7 +137,6 @@
 									<td>Edinburgh</td>
 									<td>22</td>
 									<td>2012/03/29</td>
-									<td>$433,060</td>
 									<td>$433,060</td>
 									<td>$433,060</td>
 								</tr>
@@ -166,7 +148,6 @@
 									<td>2008/11/28</td>
 									<td>$162,700</td>
 									<td>$162,700</td>
-									<td>$162,700</td>
 								</tr>
 								<tr>
 									<td>Brielle Williamson</td>
@@ -174,7 +155,6 @@
 									<td>New York</td>
 									<td>61</td>
 									<td>2012/12/02</td>
-									<td>$372,000</td>
 									<td>$372,000</td>
 									<td>$372,000</td>
 								</tr>
@@ -186,7 +166,6 @@
 									<td>2012/08/06</td>
 									<td>$137,500</td>
 									<td>$137,500</td>
-									<td>$137,500</td>
 								</tr>
 								<tr>
 									<td>Rhona Davidson</td>
@@ -194,7 +173,6 @@
 									<td>Tokyo</td>
 									<td>55</td>
 									<td>2010/10/14</td>
-									<td>$327,900</td>
 									<td>$327,900</td>
 									<td>$327,900</td>
 								</tr>
@@ -206,7 +184,6 @@
 									<td>2009/09/15</td>
 									<td>$205,500</td>
 									<td>$205,500</td>
-									<td>$205,500</td>
 								</tr>
 								<tr>
 									<td>Sonya Frost</td>
@@ -214,7 +191,6 @@
 									<td>Edinburgh</td>
 									<td>23</td>
 									<td>2008/12/13</td>
-									<td>$103,600</td>
 									<td>$103,600</td>
 									<td>$103,600</td>
 								</tr>
@@ -226,7 +202,6 @@
 									<td>2008/12/19</td>
 									<td>$90,560</td>
 									<td>$90,560</td>
-									<td>$90,560</td>
 								</tr>
 								<tr>
 									<td>Quinn Flynn</td>
@@ -236,7 +211,6 @@
 									<td>2013/03/03</td>
 									<td>$342,000</td>
 									<td>$342,000</td>
-									<td>$342,000</td>
 								</tr>
 								<tr>
 									<td>Charde Marshall</td>
@@ -244,7 +218,6 @@
 									<td>San Francisco</td>
 									<td>36</td>
 									<td>2008/10/16</td>
-									<td>$470,600</td>
 									<td>$470,600</td>
 									<td>$470,600</td>
 								</tr>
@@ -264,26 +237,44 @@
 <script src="/resources/js/demo/chart-bar-demo.js"></script>
 
 <script type="text/javascript">
-	$(function() {
-		$('input[name="datefilter"]').daterangepicker({
-			autoUpdateInput : false,
-			locale : {
-				cancelLabel : 'Clear'
-			}
-		});
 
-		$('input[name="datefilter"]').on(
-				'apply.daterangepicker',
-				function(ev, picker) {
-					$(this).val(
-							picker.startDate.format('YYYY/MM/DD') + ' - '
-									+ picker.endDate.format('YYYY/MM/DD'));
-				});
-
-		$('input[name="datefilter"]').on('cancel.daterangepicker',
-				function(ev, picker) {
-					$(this).val('');
-				});
-
+/* Date Range Picker */
+$(function() {
+	$('input[name="datefilter"]').daterangepicker({
+		autoUpdateInput : false,
+		locale : {
+			cancelLabel : 'Clear'
+		}
 	});
+
+	$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+			$(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
+	});
+
+	$('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+			$(this).val('');
+	});
+
+});
+
+$(function() {
+	$.ajax({
+        url : "/statistic/getReservationList",
+        data : {workplaceNo: $("#roomNo").val()},
+        type : "POST",
+        dataType : "json",
+        success : function(data){
+            var str = '';
+            $.each(data.equipmentList , function(i, item){
+                str += item.NAME + " ";
+           });
+            
+            $(e).find("#equipList").append(str); 
+        },
+        error : function(){
+            alert("전체 예약 현황 조회 에러");
+        }
+    });
+});
+
 </script>

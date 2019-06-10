@@ -1,6 +1,7 @@
 package com.gsitm.mrs.statistic.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gsitm.mrs.statistic.service.StatisticService;
 import com.gsitm.mrs.user.dto.DepartmentDTO;
@@ -61,6 +63,18 @@ public class StatisticController {
 		return "admin/statistic/statistic";
 	}
 	
+	
+	@RequestMapping(value = "/getReservationList", method = RequestMethod.POST)
+	public ModelAndView getReservationList(Model model, String workplaceNo) {
+
+		List<Map<String, Object>> reservationList = statisticService.getReservationList(Integer.parseInt(workplaceNo));
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("reservationList", reservationList);
+		mav.setViewName("jsonView");
+
+		return mav;
+	}
 
 	
 }
