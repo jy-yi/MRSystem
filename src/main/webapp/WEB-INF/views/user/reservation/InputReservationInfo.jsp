@@ -153,6 +153,7 @@
 
 <!-- Modal -->
 <jsp:include page="include/chooseParticipation.jsp" />
+<jsp:include page="include/chooseDepartment.jsp" />
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script type="text/javascript">
@@ -160,6 +161,8 @@
 	var participation=new Array();
 	var chosung;
 	var keyword;
+	// 부서를 담은 배열
+	var departmentList=new Array();
 	
 	$(function(){
 		// 예약 일자 값을 설정
@@ -311,28 +314,26 @@
 	
 	// 주관부서 버튼 클릭 이벤트
 	$("#chooseMainDeptBtn").on("click",function(){
-		console.log("주관부서 클릭!");
-		getDepartmentList();
-		// 선택한 사원들의 부서를 모달에 뿌려준다
-		$("#department-list").append();
-	});
-	
-	// 부서정보를 가져오는 함수
-	function getDepartmentList(){
-		console.log(participation);
-		//jQuery.ajaxSettings.traditional = true;
-
 		$.ajax({
 			type:"post",
 			url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
 			traditional:true,
 			data : {"participation" : participation},
 			success: function(data){
-				
+				departmentList.push({'dept_no':data.departmentList.DEPT_NO,'name':data.departmentList.NAME});
 			},
 			error: function(xhr, status, error) {
 				alert(error);
 			}	
+		});
+		getDepartmentList();
+	});
+	
+	// 부서정보를 가져오는 함수
+	function getDepartmentList(){
+		$.each(departmentList, function(index, item){
+			// 선택한 사원들의 부서를 모달에 뿌려준다
+			$("#department-list>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
 		});
 	};
 </script>

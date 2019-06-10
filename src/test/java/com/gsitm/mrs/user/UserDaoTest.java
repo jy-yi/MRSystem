@@ -1,5 +1,7 @@
 package com.gsitm.mrs.user;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
@@ -9,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gsitm.mrs.user.dao.UserDAO;
+import com.gsitm.mrs.user.dto.DepartmentDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,5 +39,15 @@ public class UserDaoTest {
 		
 		logger.info(dao.getInfo("it1232"));
 		
+	}
+	
+	/** 부서 목록 조회 테스트 */
+	@Test
+	public void TestGetDeptList() {
+		List<DepartmentDTO> list = dao.getDepartmentList();
+		
+		for (DepartmentDTO departmentDTO : list) {
+			logger.info(departmentDTO);
+		}
 	}
 }

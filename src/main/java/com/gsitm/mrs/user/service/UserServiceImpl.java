@@ -1,10 +1,13 @@
 package com.gsitm.mrs.user.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.gsitm.mrs.user.dao.UserDAO;
+import com.gsitm.mrs.user.dto.DepartmentDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
@@ -30,6 +33,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public EmployeeDTO getInfo(String employeeNo) {
 		return dao.getInfo(employeeNo);
+	}
+
+	/** 부서 목록 조회 */
+	@Override
+	public List<DepartmentDTO> getDepartmentList() {
+		return dao.getDepartmentList();
 	}
 
 }

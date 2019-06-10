@@ -144,6 +144,11 @@ public class ReservationServiceImpl implements ReservationService {
 		return null; 
 	}
 
+	/** 사원들의 부서 정보 조회 */
+	@Override
+	public List<Map<String, Object>> getDepartmentList(List<String> participation) {
+		return dao.getDepartmentList(participation);
+	}
 	
 	/* ------------- 관리자 ------------- */
 	
@@ -164,5 +169,4 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getSuccessList() {
 		return dao.getSuccessList();
 	}
-
 }

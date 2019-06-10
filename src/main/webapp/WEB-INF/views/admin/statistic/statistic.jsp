@@ -1,10 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
 <!-- Main Content -->
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -19,14 +15,16 @@
 	<ul class="nav nav-tabs">
 		<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
 		<c:forEach items="${workplaceList}" var="list" varStatus="status">
-			<li class="nav-item"><a class="nav-link  ${status.index eq 0 ? 'active':''}" data-toggle="tab" href="#workplace${list.workplaceNo}">${list.name}</a></li>
+			<li class="nav-item"><a
+				class="nav-link  ${status.index eq 0 ? 'active':''}"
+				data-toggle="tab" href="#workplace${list.workplaceNo}">${list.name}</a></li>
 		</c:forEach>
 	</ul>
-	
+
 	<!-- Content Row -->
 	<div class="row">
-		<div class="col-xl-8 col-lg-7">
-		
+		<div class="col-xl-8">
+
 			<div class="tab-content">
 				<div class="tab-pane fade show active" id="workplace1">
 
@@ -43,7 +41,7 @@
 					</div>
 					<!-- End of Bar Chart -->
 				</div>
-			
+
 				<div class="tab-pane fade show" id="workplace2">
 
 					<!-- Bar Chart -->
@@ -62,52 +60,27 @@
 			</div>
 		</div>
 
-		<div id="selectDept">
-			<p class="mb-4">조회하고 싶은 부서를 선택하세요.</p>
-			<select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
-				<option value="">부서를 선택하세요.</option>
-				<option value="">인사지원팀</option>
-				<option value="">기획팀</option>
-				<option value="">인프라총괄본부</option>
-				<option value="">A&I 사업부</option>
-				<option value="">SI 사업부</option>
-			</select>
-
+		<div class="col-xl-4">
+			<div id="selectDept">
+				<p>조회하고 싶은 부서를 선택하세요.</p>
+				<select name="dataTable_length" aria-controls="dataTable"
+					class="custom-select custom-select-sm form-control form-control-sm">
+					<option value="0"> --- 부서 선택 --- </option>
+					<c:forEach items="${departmentList}" var="list">
+						<option value="${list.departmentNo }">${list.name }</option>
+					</c:forEach>
+				</select>
+			</div>
+	
 			<hr>
-
-			<p class="mb-4">조회하고 싶은 날짜를 선택하세요.</p>
-
-			<input type="text" name="datefilter" value="" style="width: 250px;" />
-
-			<script type="text/javascript">
-				$(function() {
-
-					$('input[name="datefilter"]').daterangepicker({
-						autoUpdateInput : false,
-						locale : {
-							cancelLabel : 'Clear'
-						}
-					});
-
-					$('input[name="datefilter"]').on(
-							'apply.daterangepicker',
-							function(ev, picker) {
-								$(this).val(
-										picker.startDate.format('YYYY/MM/DD')
-												+ ' - '
-												+ picker.endDate
-														.format('YYYY/MM/DD'));
-							});
-
-					$('input[name="datefilter"]').on('cancel.daterangepicker',
-							function(ev, picker) {
-								$(this).val('');
-							});
-
-				});
-			</script>
+	
+			<div>
+				<p>조회하고 싶은 날짜를 선택하세요.</p>
+				<div>
+					<input type="text" class="form-control" name="datefilter" />
+				</div>
+			</div>
 		</div>
-
 	</div>
 
 </div>
@@ -129,7 +102,8 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+						<table class="table table-bordered" id="dataTable" width="100%"
+							cellspacing="0">
 							<thead>
 								<tr>
 									<th>No</th>
@@ -288,3 +262,28 @@
 
 <!-- Bar Chart -->
 <script src="/resources/js/demo/chart-bar-demo.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$('input[name="datefilter"]').daterangepicker({
+			autoUpdateInput : false,
+			locale : {
+				cancelLabel : 'Clear'
+			}
+		});
+
+		$('input[name="datefilter"]').on(
+				'apply.daterangepicker',
+				function(ev, picker) {
+					$(this).val(
+							picker.startDate.format('YYYY/MM/DD') + ' - '
+									+ picker.endDate.format('YYYY/MM/DD'));
+				});
+
+		$('input[name="datefilter"]').on('cancel.daterangepicker',
+				function(ev, picker) {
+					$(this).val('');
+				});
+
+	});
+</script>
