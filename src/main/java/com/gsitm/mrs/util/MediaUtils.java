@@ -6,10 +6,11 @@ import java.util.Map;
 import org.springframework.http.MediaType;
 
 /**
- * 업로드한 파일중 이미지 파일만 거르는 클래스
+ * 업로드한 파일 중 이미지 파일만 거르는 클래스
  * 
- * @author jongy
- *
+ * @Package : com.gsitm.mrs.util
+ * @date : 2019. 6. 9.
+ * @author : 이종윤
  */
 public class MediaUtils {
 
