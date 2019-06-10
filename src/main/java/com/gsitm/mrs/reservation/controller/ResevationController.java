@@ -103,10 +103,10 @@ public class ResevationController {
 		return "user/mypage/statusList";
 	}
 	
-	@RequestMapping(value = "/deleteReservation", method = RequestMethod.POST)
-	public String deleteReservation(String reservationNo) throws Exception {
+	@RequestMapping(value = "/updateReservation", method = RequestMethod.POST)
+	public String updateReservation(String reservationNo) throws Exception {
 
-		 service.deleteReservation(Integer.parseInt(reservationNo));
+		 service.updateReservation(Integer.parseInt(reservationNo));
 
 		return "redirect:/reservation/statusList";
 	}

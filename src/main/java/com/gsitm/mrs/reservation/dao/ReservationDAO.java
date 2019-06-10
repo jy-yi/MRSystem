@@ -29,7 +29,7 @@ public interface ReservationDAO {
 	public List<Map<String, Object>> getReservationList(String employeeNo);
 	
 	/** 마이페이지 목록형 예약 취소 */
-	public void deleteReservation(int reservationNo);
+	public void updateReservation(int reservationNo);
 	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);

@@ -72,7 +72,7 @@
 										<th>No</th>
 										<th>회의명</th>
 										<th>회의 목적</th>
-										<th>회의실</th>
+										<th>회의실 번호</th>
 										<th>기간</th>
 										<th>주관부서</th>
 										<th>승인 상태</th>
@@ -107,13 +107,24 @@
 														<td> <span class="text-primary"> 반려 </span></td>
 													</c:if>
 													
-													<c:if test="${list.STATUS eq 3	 }">
-														<td> <span class="text-primary"> 취소 </span></td>
-													</c:if>
 													
 													<td>
-														<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-														<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														<c:if test="${list.STATUS eq 3	 }">
+															<span class="text-primary" style="align-content: center;"> 취소 완료 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 0 }">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
+														<c:if test="${list.STATUS eq 1 }">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
+														<c:if test="${list.STATUS eq 2 }">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
 													</td>
 												</tr>
 											</c:forEach>
@@ -139,17 +150,15 @@
 
 </body>
 
-</html>
-
-<script type="text/javascript">
+<script>
 	
-	/* 삭제 버튼 클릭 */
+	/* 취소 버튼 클릭 */
 	$(document).on("click", ".btn-danger", function() {
 		var reservationNo = $(this).next().val();	// 취소 버튼을 클릭한 예약 번호
 		
 		swal({
-			title: '정말 삭제하시겠습니까?',
-			text: "이후 복구는 불가능합니다.",
+			title: '정말 취소하시겠습니까?',
+			text: "이후 변경은 불가능합니다.",
 			type: 'warning',
 			showCancelButton: true,
 			confirmButtonColor: '#3085d6',
@@ -159,12 +168,12 @@
   		}).then( (result) => {
   			if (result.value) {
 	  			$.ajax({
-					url : "/reservation/deleteReservation",
+					url : "/reservation/updateReservation",
 					type : "POST",
 					data : {
 						reservationNo : reservationNo,
 					}, success : function(data) {
-						swal('Success!', '예액 취소가 완료되었습니다.', 'success'
+						swal('Success!', '예약 취소가 완료되었습니다.', 'success'
 				    		).then(function(){
 	  		    		    	location.href="/reservation/statusList";
 	  		    		    });
@@ -175,3 +184,6 @@
   		});
 	});
 </script>
+
+</html>
+

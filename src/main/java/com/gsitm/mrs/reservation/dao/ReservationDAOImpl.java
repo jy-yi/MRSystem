@@ -50,8 +50,8 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 마이페이지 목록형 예약 취소 */
 	@Override
-	public void deleteReservation(int reservationNo) {
-		sqlSession.delete(namespace +".deleteReservation", reservationNo); 
+	public void updateReservation(int reservationNo) {
+		sqlSession.update(namespace +".updateReservation", reservationNo); 
 	}
 	
 	/** 회의실 목록 조회 */

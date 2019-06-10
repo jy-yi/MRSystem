@@ -62,10 +62,11 @@
 	</select>
 	
 	<!-- 마이페이지 목록형 예약 취소 -->
-	<delete id="deleteReservation">
-		DELETE FROM reservation 
-		WHERE res_no = #{reservationNo}
-	</delete>
+	<update id="updateReservation">
+		UPDATE	reservation
+		SET		status = 3
+		WHERE	res_no = #{reservationNo}
+	</update>
 		
 	<!-- 회의실 정보 조회 -->
 	<select id="getRoomInfo" parameterType="int" resultType="Map">

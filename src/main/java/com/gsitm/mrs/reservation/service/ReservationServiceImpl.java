@@ -112,8 +112,8 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 마이페이지 목록형 예약 취소 */
 	@Override
-	public void deleteReservation(int reservationNo) {
-		dao.deleteReservation(reservationNo);
+	public void updateReservation(int reservationNo) {
+		dao.updateReservation(reservationNo);
 	}
 	
 	/* ------------- 회의실 ------------- */

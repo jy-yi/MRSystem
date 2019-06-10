@@ -33,7 +33,7 @@ public interface ReservationService {
 	public List<Map<String, Object>> getReservationList(String employeeNo);
 	
 	/** 마이페이지 목록형 예약 취소 */
-	public void deleteReservation(int reservationNo);
+	public void updateReservation(int reservationNo);
 	
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);
