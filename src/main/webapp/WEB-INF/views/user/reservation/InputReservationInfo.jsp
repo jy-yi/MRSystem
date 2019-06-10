@@ -228,7 +228,10 @@
 					$("#search-employee-list > ul").empty();
 					$.each(employeeList, function(index, item){
 						// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
-						if($.inArray(item.EMPLOYEENO, participation)==-1){
+						var found=participation.some(function(obj){
+							return obj.employeeNo==item.EMPLOYEENO;
+						});
+						if(!found){
 							$("#search-employee-list > ul").append("<li>"
 								+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
 								+"</li>");
@@ -245,17 +248,15 @@
 				url:"${pageContext.request.contextPath}/reservation/getEmployeeListBySearching",
 				data : {"keyword" : keyword},
 				success: function(data){
-					var employeeList=data.employeeList;
-					// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
-					$("#search-employee-list > ul").empty();
-					$.each(employeeList, function(index, item){
-						// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
-						if($.inArray(item.EMPLOYEENO, participation)==-1){
-							$("#search-employee-list > ul").append("<li>"
-								+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
-								+"</li>");
-						}
-					})
+					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
+					var found=participation.some(function(obj){
+						return obj.employeeNo==item.EMPLOYEENO;
+					});
+					if(!found){
+						$("#search-employee-list > ul").append("<li>"
+							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
+							+"</li>");
+					}
 				},
 				error: function(xhr, status, error) {
 					alert(error);
@@ -266,9 +267,10 @@
 	
 	// 참여 사원 추가 함수
 	function addParticipation(employeeNo, name){
+		console.log(participation);
 		// 해당 사원을 배열에 추가한다.
-		participation.push(employeeNo);
-		$("#participation-list").append("<li>"+name
+		participation.push({"employeeNo":employeeNo, "name":name});
+		$(".participation-list").append("<li>"+name
 				+"<i style='display:none'>"+employeeNo+"</i>"
 				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
 		// 사원 목록을 업데이트한다.
@@ -283,8 +285,12 @@
 	$(document).on("click",".delete-participation-btn",function(){
 		var employeeNo=$(this).prev().text();
 		// 사원번호 배열에서 해당 사원을 삭제한다.
+		//////////////////////////////////////////여기 할 차례//////////////////////
 		participation.splice($.inArray(employeeNo, participation),1);
-		// 해당 사원의 이름을 #participation-list에서 삭제
+		// 사원 이름 reset
+		//$(".participation-list").
+		// 모달 사원 목록에는 participation 배열로 reset, 창에 사원 목록에는 모달 click효과를 내주기
+		// 해당 사원의 이름을 .participation-list에서 삭제
 		$(this).parent().remove();
 		// 사원 목록을 업데이트한다.
 		getEmployeeList();
@@ -305,12 +311,13 @@
 	$("#choose-cancel-btn").on("click",function(){
 		participation=new Array();
 		$("#search-employee-list>ul").empty();
-		$("#participation-list>li").empty();
+		$(".participation-list>li").empty();
 	})
 	
 	// 확인 버튼 클릭할 경우 참여 사원 목록을 화면에 뿌림
 	$("#choose-complete-btn").on("click",function(){
-		$("#participation-list").clone().appendTo("#final-participartion-list-div");
+		$("#final-participartion-list-div").empty();
+		$(".participation-list").clone().appendTo("#final-participartion-list-div");
 		$("#final-participartion-list-div>ul").attr("id","final-participartion-list-div");
 	});
 	
@@ -373,10 +380,11 @@
 	// 부서 선택 완료 이벤트
 	$("#dept-choose-complete-btn").on("click",function(){
 		// MainDept 요소들을 화면에 뿌려준다.
-		$("#final-mainDept-list-div")
+		$("#final-mainDept-list-div").empty();
 		$("#MainDept-list").clone().appendTo("#final-mainDept-list-div");
 		$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list-div");
 		// 남은 부서들을 협조부서에 뿌려준다.
+		$("#final-subDept-list-div>ul").empty();
 		$.each(departmentList, function(index, item){
 			$("#final-subDept-list-div>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
 		});

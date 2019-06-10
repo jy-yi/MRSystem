@@ -23,10 +23,6 @@
 		line-height: 2;
 	}
 
-	.padding-left-12{
-		padding-left: 12px;
-	}
-	
 	#particaption-list-div{
 		color: #464646;
 	}
@@ -49,19 +45,23 @@
 		padding: 0;
 	}
 	
-	#participation-list{
+	.participation-list{
 		list-style: none;
 	    display: flex;
 	    padding: 0;
 	}
 	
-	#participation-list::before{
+	.participation-list::before{
 		margin-right: 7px;
     	content: "참여인원 : ";
 	}
 	
-	#participation-list>li{
+	.participation-list>li{
 		margin-right: 5px;
+	}
+	
+	#searchBtn:hover {
+		cursor: pointer;
 	}
 }
 	
@@ -93,22 +93,35 @@
 						</ul>
 					</div>
 			        <div class="col-md-10">
-			        	<div id="particaption-list-div" class="padding-left-12">
-			    			<ul id="participation-list"></ul>
+			        	<div id="particaption-list-div">
+			    			<ul class="participation-list"></ul>
 			        	</div>
+			        	
 			            <div id="custom-search-input">
-			                <div class="input-group col-md-12">
-			                    <input type="text" id="searchByName" class="form-control input-lg" placeholder="성명을 입력하세요." />
-			                    <span class="input-group-btn">
-			                        <button class="btn btn-info btn-lg" type="button" id="searchBtn">
-			                            <i class="glyphicon glyphicon-search"></i>
-			                        </button>
-			                    </span>
-			                </div>
+				            <div class="input-group md-form form-sm form-2 pl-0">
+								<input type="text" id="searchByName" class="form-control input-lg my-0 py-1" placeholder="성명을 입력하세요." />
+								<div class="input-group-append">
+									<span class="input-group-text lighten-2" id="searchBtn">
+										<i class="fas fa-search" aria-hidden="true"></i>
+									</span>
+								</div>
+							</div>
+							<!-- 
+							 <div class="input-group col-md-12">
+				                    <input type="text" id="searchByName" class="form-control input-lg" placeholder="성명을 입력하세요." />
+				                    <span class="input-group-btn">
+				                        <button class="btn btn-info btn-lg" type="button" id="searchBtn">
+				                            <i class="fas fa-search"></i>
+				                        </button>
+				                    </span>
+				             </div>	
+						 	-->
 			                <div id="search-employee-list">
 			                	<ul></ul>
 			                </div>
 			            </div>
+			            
+
 			        </div>
 			      </div>
 			</div>
