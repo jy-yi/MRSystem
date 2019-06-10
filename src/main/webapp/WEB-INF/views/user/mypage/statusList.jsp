@@ -110,7 +110,7 @@
 													
 													<td>
 														<c:if test="${list.STATUS eq 3	 }">
-															<span class="text-primary" style="align-content: center;"> 취소 완료 </span>
+															<span class="text-primary" id="cancelChk"> 취소 완료 </span>
 														</c:if>
 														
 														<c:if test="${list.STATUS eq 0 }">
