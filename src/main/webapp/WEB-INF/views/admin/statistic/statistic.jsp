@@ -1,18 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page session="false"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
-<script type="text/javascript"
-	src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript"
-	src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript"
-	src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
 <!-- Main Content -->
 <!-- Begin Page Content -->
@@ -25,92 +16,55 @@
 		</h1>
 	</div>
 
-	<p class="mb-4">관리자 통계 페이지의 차트 그래프입니다.</p>
-	
 	<ul class="nav nav-tabs">
-				<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#qwe">본사</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#asd">삼환빌딩</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#zxc">GS 강남타워</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#zxc">GS 강서타워</a></li>
+		<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+		<c:forEach items="${workplaceList}" var="list" varStatus="status">
+			<li class="nav-item"><a class="nav-link  ${status.index eq 0 ? 'active':''}" data-toggle="tab" href="#workplace${list.workplaceNo}">${list.name}</a></li>
+		</c:forEach>
 	</ul>
-
+	
 	<!-- Content Row -->
 	<div class="row">
-		
 		<div class="col-xl-8 col-lg-7">
+		
+			<div class="tab-content">
+				<div class="tab-pane fade show active" id="workplace1">
 
-			<!-- Bar Chart -->
-			<div class="card shadow mb-4">
-				<div class="card-header py-3">
-					<h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+					<!-- Bar Chart -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+						</div>
+						<div class="card-body">
+							<div class="chart-bar">
+								<canvas id="myBarChart"></canvas>
+							</div>
+						</div>
+					</div>
+					<!-- End of Bar Chart -->
 				</div>
-				<canvas id="myChart" width="400" height="200"></canvas>
-				<script>
-					var ctx = document.getElementById('myChart').getContext(
-							'2d');
-					var myChart = new Chart(ctx,
-							{
-								type : 'bar',
-								data : {
-									labels : [ 'January', 'February', 'March',
-											'April', 'May', 'June', 'August',
-											'Setember', 'October', 'November',
-											'December' ],
-									datasets : [ {
-										label : '# of Counts',
-										data : [ 12, 19, 3, 5, 2, 3, 7, 5, 1,
-												8, 10, 11 ],
-										backgroundColor : [
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)',
-												'rgba(54, 162, 235, 0.2)' ],
-										borderColor : [
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)',
-												'rgba(54, 162, 235, 1)' ],
-										borderWidth : 2
-									} ]
-								},
-								options : {
-									scales : {
-										yAxes : [ {
-											ticks : {
-												beginAtZero : true
-											}
-										} ]
-									}
-								}
-							});
-				</script>
-			</div>
-			<!-- End of Bar Chart -->
-			<hr>
-		</div>
-		<!-- div class = col-xl ... -->
+			
+				<div class="tab-pane fade show" id="workplace2">
 
+					<!-- Bar Chart -->
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">삼환</h6>
+						</div>
+						<div class="card-body">
+							<div class="chart-bar">
+								<canvas id="myBarChart"></canvas>
+							</div>
+						</div>
+					</div>
+					<!-- End of Bar Chart -->
+				</div>
+			</div>
+		</div>
 
 		<div id="selectDept">
 			<p class="mb-4">조회하고 싶은 부서를 선택하세요.</p>
-			<select name="dataTable_length" aria-controls="dataTable"
-				class="custom-select custom-select-sm form-control form-control-sm">
+			<select name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
 				<option value="">부서를 선택하세요.</option>
 				<option value="">인사지원팀</option>
 				<option value="">기획팀</option>
@@ -118,12 +72,12 @@
 				<option value="">A&I 사업부</option>
 				<option value="">SI 사업부</option>
 			</select>
-				
+
 			<hr>
-			
+
 			<p class="mb-4">조회하고 싶은 날짜를 선택하세요.</p>
 
-			<input type="text" name="datefilter" value="" style="width: 250px;"/>
+			<input type="text" name="datefilter" value="" style="width: 250px;" />
 
 			<script type="text/javascript">
 				$(function() {
@@ -175,8 +129,7 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%"
-							cellspacing="0">
+						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 							<thead>
 								<tr>
 									<th>No</th>
@@ -333,5 +286,5 @@
 	</div>
 </div>
 
-<!-- End of Main Content -->
-</html>
+<!-- Bar Chart -->
+<script src="/resources/js/demo/chart-bar-demo.js"></script>

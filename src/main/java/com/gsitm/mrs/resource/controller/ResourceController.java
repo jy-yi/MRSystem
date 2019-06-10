@@ -32,7 +32,7 @@ import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
 
 /**
- * 자원 관련 프로젝트 Controller @RequestMapping("/reservation") URI 매칭
+ * 자원 관련 프로젝트 Controller @RequestMapping("/resource") URI 매칭
  * 
  * @Package : com.gsitm.mrs.resource.controller
  * @date : 2019. 5. 8.
@@ -218,9 +218,6 @@ public class ResourceController {
 	public String editRoom(RoomDTO roomDTO, MultipartFile img) throws Exception {
 		
 		String savedName = uploadFile(img.getOriginalFilename(), img.getBytes());
-
-		logger.info("savedName:" + savedName);
-
 		roomDTO.setImage(savedName);
 		
 		service.editRoom(roomDTO);

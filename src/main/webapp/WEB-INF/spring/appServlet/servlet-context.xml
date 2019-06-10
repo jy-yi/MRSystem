@@ -75,7 +75,12 @@
 	<!-- 파일 업로드를 위한 디렉토리 설정 -->
     <beans:bean id="uploadPath" class="java.lang.String">
 	<!-- 파일 업로드 디렉토리 -->
+		<!-- 종윤 -->
         <beans:constructor-arg value="C:/Users/IT1903007/git/MRSystem/src/main/webapp/resources/img/room"/>
+        <!-- 재율 -->
+<!--         <beans:constructor-arg value="C:/Users/IT1903003/git/MRSystem/src/main/webapp/resources/img/room"/> -->
+		<!-- 나윤 -->
+<!--         <beans:constructor-arg value="C:/Users/IT1903001/git/MRSystem/src/main/webapp/resources/img/room"/> -->
     </beans:bean>
     
     <context:component-scan base-package="com.gsitm.mrs" />

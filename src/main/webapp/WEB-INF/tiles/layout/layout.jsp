@@ -47,18 +47,9 @@
 <!-- Custom scripts for all pages-->
 <script src="/resources/js/sb-admin-2.min.js"></script>
 
-<!-- Page level plugins -->
-<script src="/resources/vendor/chart.js/Chart.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="/resources/js/demo/chart-area-demo.js"></script>
-
 <!-- Page table plugins -->
 <script src="/resources/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="/resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<!-- Bar Chart -->
-<script src="/resources/js/demo/chart-bar-demo.js"></script>
 
 <!-- Page level plugins -->
 <script src="/resources/vendor/chart.js/Chart.min.js"></script>
@@ -85,7 +76,6 @@
 <script type="text/javascript" src="/resources/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="/resources/js/bootstrap-datepicker.kr.js"></script>
 
-	
 <style type="text/css">
 @font-face {
 	font-family: "setFont";
@@ -113,4 +103,5 @@ body, div, h1, h2, h3, h4, h5, h6 {
 	</div>
 
 </body>
+
 </html>
