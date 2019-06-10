@@ -65,8 +65,7 @@
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%"
-								cellspacing="0">
+							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 								<thead>
 									<tr>
 										<th>No</th>
@@ -95,35 +94,44 @@
 													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
 													<td> ${list.DEPARTMENTNAME}</td>
 													
-													<c:if test="${list.STATUS eq 0 }">
-														<td> <span class="text-danger"> 대기 </span> </td>
-													</c:if>
+													<td>
+														<c:if test="${list.STATUS eq 0 }">
+															<span class="text-success"> 대기 </span>
+														</c:if>
 													
-													<c:if test="${list.STATUS eq 1 }">
-														<td> <span class="text-warning"> 승인 </span> </td>
-													</c:if>
+														<c:if test="${list.STATUS eq 1 }">
+															<span class="text-primary"> 승인 </span> 
+														</c:if>
 													
-													<c:if test="${list.STATUS eq 2 }">
-														<td> <span class="text-primary"> 반려 </span></td>
-													</c:if>
+														<c:if test="${list.STATUS eq 2 }">
+															 <span class="text-danger"> 반려 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 3 }">
+															 <span class="text-warning"> 예약 취소 </span>
+														</c:if>
+														
+													</td>
 													
 													
 													<td>
-														<c:if test="${list.STATUS eq 3	 }">
-															<span class="text-primary" id="cancelChk"> 취소 완료 </span>
-														</c:if>
-														
 														<c:if test="${list.STATUS eq 0 }">
 															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
 															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
 														</c:if>
+														
 														<c:if test="${list.STATUS eq 1 }">
 															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
 															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
 														</c:if>
+														
 														<c:if test="${list.STATUS eq 2 }">
 															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
 															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 3	 }">
+															<span class="text-warning"> 취소 완료 </span>
 														</c:if>
 													</td>
 												</tr>

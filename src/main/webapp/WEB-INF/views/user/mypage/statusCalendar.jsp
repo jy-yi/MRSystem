@@ -123,12 +123,14 @@
 
 									events : [
 										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+											<c:if test="${list.STATUS ne 3 }">
 											{ 
 												id : '${list.RESERVATIONNO}',
 												title : '${list.RESERVATIONNAME}',
 												start : '${list.STARTDATE}',
 												end : '${list.ENDDATE}'
 											},
+											</c:if>
 										</c:forEach>
 									], eventClick: function(info) {
 										
