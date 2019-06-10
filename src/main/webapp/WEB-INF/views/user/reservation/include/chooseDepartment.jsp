@@ -4,6 +4,25 @@
 		margin-right: 7px;
     	content: "주관부서 : ";
 	}
+	
+	#MainDept-list{
+		list-style: none;
+	    display: flex;
+	    padding: 0;
+	}
+	
+	#participation-list::before{
+		margin-right: 7px;
+    	content: "참여인원 : ";
+	}
+	
+	#MainDept-list>li{
+		margin-right: 5px;
+	}
+	
+	#department-list>ul>li:hover{
+		cursor: pointer;
+	}
 </style>
 
 <!-- Add Work place Modal-->
@@ -17,7 +36,7 @@
 			    </div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled="disabled">확인</button>
+				<button class="btn btn-md" id="dept-choose-complete-btn" type="button" data-dismiss="modal" disabled="disabled">확인</button>
 				<button class="btn btn-md btn-danger" id="choose-cancel-btn" type="button" data-dismiss="modal">취소</button>
 			</div>
 		</div>

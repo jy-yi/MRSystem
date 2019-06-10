@@ -112,10 +112,11 @@
 								<li>
 									<label>주관부서</label>
 									<a class="btn btn-primary" href="#" id="chooseMainDeptBtn"  data-toggle="modal" data-target="#chooseDeptModal">검색</a>
+									<div id="final-mainDept-list-div"></div>
 								</li>
 								<li>
 									<label>협조부서</label>
-									<button class="btn btn-primary">검색</button>
+									<div id="final-subDept-list-div"><ul></ul></div>
 								</li>
 							</ul>
 						</form>
@@ -162,7 +163,8 @@
 	var chosung;
 	var keyword;
 	// 부서를 담은 배열
-	var departmentList=new Array();
+	var departmentList;
+	var mainDept=new Array();
 	
 	$(function(){
 		// 예약 일자 값을 설정
@@ -314,26 +316,69 @@
 	
 	// 주관부서 버튼 클릭 이벤트
 	$("#chooseMainDeptBtn").on("click",function(){
-		$.ajax({
-			type:"post",
-			url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
-			traditional:true,
-			data : {"participation" : participation},
-			success: function(data){
-				departmentList.push({'dept_no':data.departmentList.DEPT_NO,'name':data.departmentList.NAME});
-			},
-			error: function(xhr, status, error) {
-				alert(error);
-			}	
-		});
-		getDepartmentList();
+		if(departmentList==null){
+			departmentList=new Array();
+			$.ajax({
+				type:"post",
+				url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
+				traditional:true,
+				data : {"participation" : participation},
+				success: function(data){
+					$.each(data.departmentList, function(index, item){
+						departmentList.push({"dept_no":item.DEPT_NO,"name":item.NAME});
+					})
+					getDepartmentList();
+				},
+				error: function(xhr, status, error) {
+					alert(error);
+				}	
+			});
+		} else{
+			getDepartmentList();
+		}
 	});
 	
 	// 부서정보를 가져오는 함수
 	function getDepartmentList(){
+		$("#department-list>ul").empty();
 		$.each(departmentList, function(index, item){
-			// 선택한 사원들의 부서를 모달에 뿌려준다
 			$("#department-list>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
 		});
 	};
+	
+	// 부서 선택 이벤트
+	$(document).on("click","#department-list>ul>li",function(){
+		var deptNo=$(this).prev().text();
+		var deptName=$(this).text();
+		var deptInfo={"dept_no":deptNo, "name":deptName};
+		
+		// 선택한 부서를 departmentList에서 삭제한다.
+		departmentList.splice(deptInfo,1);
+		// 선택한 부서를 mainDept 배열에 넣는다.
+		mainDept.push(deptInfo);
+		// 선택한 부서 정보를 모달에 뿌려준다.
+		$("#MainDept-list").append("<li>"+deptName
+				+"<i style='display:none'>"+deptNo+"</i>"
+				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
+		// 부서 목록을 업데이트한다.
+		getDepartmentList();
+		// 선택한 부서가 1개 이상이면 확인 버튼 active
+		if(mainDept.length>=1){
+			$("#dept-choose-complete-btn").addClass("btn-primary").attr("disabled",false);
+		} else{
+			$("#dept-choose-complete-btn").addClass("btn-primary").attr("disabled",true);
+		}
+	});
+	
+	// 부서 선택 완료 이벤트
+	$("#dept-choose-complete-btn").on("click",function(){
+		// MainDept 요소들을 화면에 뿌려준다.
+		$("#final-mainDept-list-div")
+		$("#MainDept-list").clone().appendTo("#final-mainDept-list-div");
+		$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list-div");
+		// 남은 부서들을 협조부서에 뿌려준다.
+		$.each(departmentList, function(index, item){
+			$("#final-subDept-list-div>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
+		});
+	});
 </script>
