@@ -107,7 +107,7 @@
 								<li>
 									<label>참여인원</label>
 									<a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
-									<div id="final-participartion-list-div"></div>
+									<div id="final-participation-list-div"></div>
 								</li>
 								<li>
 									<label>주관부서</label>
@@ -166,6 +166,7 @@
 	var departmentList;
 	var mainDept=new Array();
 	
+	/* 예약 일자 */
 	$(function(){
 		// 예약 일자 값을 설정
 		Date.prototype.format = function (f) {
@@ -207,6 +208,7 @@
 		$("#reservation-date").text(reserved_date);
 	})
 	
+	/* 사원 검색 */
 	// 모달 초성 선택 이벤트
 	$("#ganada-list>li").on("click",function(){
 		chosung=$(this).text();
@@ -274,6 +276,8 @@
 				+"<i style='display:none'>"+employeeNo+"</i>"
 				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
 		// 사원 목록을 업데이트한다.
+		updateParticipationList();
+		// 검색 사원 목록을 업데이트한다.
 		getEmployeeList();
 		// 참여자가 한 명이라도 있을 경우 모달의 확인 버튼 Active
 		if(participation.length>=1){
@@ -285,20 +289,35 @@
 	$(document).on("click",".delete-participation-btn",function(){
 		var employeeNo=$(this).prev().text();
 		// 사원번호 배열에서 해당 사원을 삭제한다.
-		//////////////////////////////////////////여기 할 차례//////////////////////
-		participation.splice($.inArray(employeeNo, participation),1);
-		// 사원 이름 reset
-		//$(".participation-list").
-		// 모달 사원 목록에는 participation 배열로 reset, 창에 사원 목록에는 모달 click효과를 내주기
-		// 해당 사원의 이름을 .participation-list에서 삭제
-		$(this).parent().remove();
-		// 사원 목록을 업데이트한다.
+		var index;
+		participation.some(function(entry, i) {
+		    if (entry.employeeNo == employeeNo) {
+		        participation.splice(i,1);
+		        return true;
+		    };
+		});	
+		// 참여 사원 목록을 업데이트한다.
+		updateParticipationList();
+		// 검색 사원 이름 reset
 		getEmployeeList();
 		// 참여자가 없을 경우 모달의 확인 버튼 disabled
 		if(participation.length==0){
 			$("#choose-complete-btn").removeClass("btn-primary").attr("disabled",true);
+			$("#final-participation-list-div").hide();
 		}
+		
 	});
+	
+	// 참여 사원 목록을 업데이트하는 함수
+	function updateParticipationList(){
+		$(".participation-list").empty();
+		// 참여 사원 목록을 업데이트한다.
+		$.each(participation, function(index, item){
+			$(".participation-list")
+				.append("<li>"+item.name+"<i style='display:none'>"+item.employeeNo+"</i>"
+						+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
+		});
+	}
 	
 	// 이름 검색을 통한 사원 조회
 	$("#searchBtn").on("click",function(){
@@ -316,20 +335,26 @@
 	
 	// 확인 버튼 클릭할 경우 참여 사원 목록을 화면에 뿌림
 	$("#choose-complete-btn").on("click",function(){
-		$("#final-participartion-list-div").empty();
-		$(".participation-list").clone().appendTo("#final-participartion-list-div");
-		$("#final-participartion-list-div>ul").attr("id","final-participartion-list-div");
+		$("#final-participation-list-div").empty();
+		$(".participation-list").clone().appendTo("#final-participation-list-div");
+		$("#final-participation-list-div").show();
+		$("#final-participation-list-div>ul").attr("id","user-chosen-participation");
 	});
 	
+	/* 부서 */
 	// 주관부서 버튼 클릭 이벤트
 	$("#chooseMainDeptBtn").on("click",function(){
 		if(departmentList==null){
 			departmentList=new Array();
+			
+			// Object 배열 데이터 직렬화
+			var jsonData = JSON.stringify(participation);
 			$.ajax({
 				type:"post",
 				url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
 				traditional:true,
-				data : {"participation" : participation},
+				data : {"jsonData" : jsonData},
+				dataType: "json",
 				success: function(data){
 					$.each(data.departmentList, function(index, item){
 						departmentList.push({"dept_no":item.DEPT_NO,"name":item.NAME});
