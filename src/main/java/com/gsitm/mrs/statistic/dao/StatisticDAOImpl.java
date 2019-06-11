@@ -32,14 +32,7 @@ public class StatisticDAOImpl implements StatisticDAO {
 
 	/** 지사 별 예약 현황 검색 */
 	@Override
-	public List<Map<String, Object>> getSearchList(int workplaceNo, int departmentNo, String startDate, String endDate) {
-		Map<String, Object> map = new HashMap<>();
-		
-        map.put("workplaceNo", workplaceNo);
-        map.put("departmentNo", departmentNo);
-        map.put("startDate", startDate);
-        map.put("endDate", endDate);
-
-		return sqlSession.selectList(namespace + ".getSearchList", map);
+	public List<Map<String, Object>> getSearchList(Map<String, Object> searchMap) {
+		return sqlSession.selectList(namespace + ".getSearchList", searchMap);
 	}
 }

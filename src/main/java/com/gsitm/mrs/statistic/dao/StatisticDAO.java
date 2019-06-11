@@ -16,6 +16,6 @@ public interface StatisticDAO {
 	public List<Map<String, Object>> getReservationList (int workplaceNo);
 	
 	/** 지사 별 예약 현황 검색 */
-	public List<Map<String, Object>> getSearchList (int workplaceNo, int departmentNo, String startDate, String endDate);
+	public List<Map<String, Object>> getSearchList (Map<String, Object> searchMap);
 
 }

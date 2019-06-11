@@ -1,5 +1,6 @@
 package com.gsitm.mrs.statistic.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,7 +64,13 @@ public class StatisticController {
 		return "admin/statistic/statistic";
 	}
 	
-	
+	/**
+	 * 지사별 전체 예약 목록 조회
+	 * 
+	 * @param model
+	 * @param workplaceNo	조회할 지사 번호
+	 * @return
+	 */
 	@RequestMapping(value = "/getReservationList", method = RequestMethod.POST)
 	public ModelAndView getReservationList(Model model, String workplaceNo) {
 
@@ -75,6 +82,23 @@ public class StatisticController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value = "/getReservationList", method = RequestMethod.POST)
+	public ModelAndView getSearchList(Model model, String workplaceNo, String departmentNo, String startDate, String endDate) {
 
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("workplaceNo", workplaceNo);
+		searchMap.put("departmentNo", departmentNo);
+		searchMap.put("startDate", startDate);
+		searchMap.put("endDate", endDate);
+		
+		List<Map<String, Object>> searchList = statisticService.getSearchList(searchMap);
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("searchList", searchList);
+		mav.setViewName("jsonView");
+
+		return mav;
+	}
 	
 }

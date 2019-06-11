@@ -28,4 +28,10 @@ public class StatisticServiceImpl implements StatisticService {
 		return dao.getReservationList(workplaceNo);
 	}
 
+	/** 지사 별 예약 현황 검색 */
+	@Override
+	public List<Map<String, Object>> getSearchList(Map<String, Object> searchMap) {
+		return dao.getSearchList(searchMap);
+	}
+
 }

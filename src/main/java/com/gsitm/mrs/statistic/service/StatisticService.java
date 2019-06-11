@@ -14,5 +14,8 @@ public interface StatisticService {
 	
 	/** 지사 별 전체 예약 현황 조회 */
 	public List<Map<String, Object>> getReservationList(int workplaceNo);
+	
+	/** 지사 별 예약 현황 검색 */
+	public List<Map<String, Object>> getSearchList (Map<String, Object> searchMap);
 
 }
