@@ -402,6 +402,7 @@
 		}
 	});
 	
+	
 	// 부서 선택 완료 이벤트
 	$("#dept-choose-complete-btn").on("click",function(){
 		// MainDept 요소들을 화면에 뿌려준다.
