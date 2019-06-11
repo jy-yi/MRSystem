@@ -87,16 +87,16 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+						<table class="table table-bordered text-center" >
 							<thead>
 								<tr>
 									<th>No</th>
-									<th>회의명</th>
+									<th width="15%">회의명</th>
 									<th>회의 목적</th>
 									<th>회의실</th>
-									<th>기간</th>
+									<th width="30%">기간</th>
 									<th>신청자</th>
-									<th>주관부서</th>
+									<th width="15%">주관부서</th>
 									<th>승인 상태</th>
 								</tr>
 							</thead>
@@ -148,7 +148,7 @@ $(function() {
 	        success : function(data){
 	        	var table = '';
 	        	if (data.reservationList.length == 0) {
-	        		table += '<tr><td  colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
+	        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
 	        	} else {
 		        	$.each(data.reservationList , function(i, item){
 		        		table += '<tr>'
@@ -159,7 +159,15 @@ $(function() {
 		        		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
 		        		table += '<td> ' + item.EMPNAME + ' </td>';
 		        		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
-		        		table += '<td> ' + item.STATUS + ' </td>';
+		        		
+		        		if (item.STATUS == 0)
+			        		table += '<td class="text-success"> 승인 대기 </td>';
+		        		else if (item.STATUS == 1)
+		        			table += '<td class="text-primary"> 예약 완료 </td>';
+	        			else if (item.STATUS == 2)
+		        			table += '<td class="text-danger"> 예약 반려 </td>';
+	        			else
+	        				table += '<td class="text-warning"> 예약 취소 </td>';	
 		        		table += '</tr>';
 		           });
 	        	}

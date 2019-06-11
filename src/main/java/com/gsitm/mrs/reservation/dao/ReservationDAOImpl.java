@@ -117,5 +117,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getSuccessList");
 	}
 
+	/** 예약 취소 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getReservationCancelList() {
+		return sqlSession.selectList(namespace + ".getReservationCancelList");
+	}
+
 
 }

@@ -3,6 +3,11 @@
 
 <!-- MyBatis XML 설정 파일(MyBatis설정의 중앙 허브 역할) -->
 <configuration>
+
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+
 	<typeAliases>
 		<!-- 사원(사용자, 관리자) 및 부서 -->
 		<typeAlias type="com.gsitm.mrs.user.dto.EmployeeDTO" alias="Employee"/>
@@ -21,6 +26,7 @@
 		<typeAlias type="com.gsitm.mrs.reservation.dto.BorrowedEquipmentDTO" alias="BorrowedEquipment"/>
 		<typeAlias type="com.gsitm.mrs.reservation.dto.RefuseDTO" alias="Refuse"/>
 		<typeAlias type="com.gsitm.mrs.reservation.dto.WaitingDTO" alias="Waiting"/>
+		<typeAlias type="com.gsitm.mrs.reservation.dto.CancelDTO" alias="Cancel"/>
 		
 		<typeAlias type="java.util.Map" alias="Map"/>
 	</typeAliases>

@@ -169,4 +169,10 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getSuccessList() {
 		return dao.getSuccessList();
 	}
+
+	/** 예약 취소 목록 조회 */
+	@Override
+	public List<Map<String, Object>> getReservationCancelList() {
+		return dao.getReservationCancelList();
+	}
 }

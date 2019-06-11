@@ -1,25 +1,22 @@
 package com.gsitm.mrs.reservation.controller;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,6 +45,8 @@ public class ResevationController {
 	
 	@Inject
 	private ReservationService service;
+	
+	/* ------------- 사용자 ------------- */
 	
 	@RequestMapping(value = "/statusCalendar", method = RequestMethod.GET)
 	public String statusCalendar(HttpSession session, String employeeNo, Model model) {
@@ -121,51 +120,6 @@ public class ResevationController {
 		return "user/dashboard/dashboard";
 	}
 	
-	@RequestMapping(value = "/approvalWaitingList", method = RequestMethod.GET)
-	public String approvalWaitingList(Model model) {
-		
-		logger.info("(관리자) 승인 대기 목록");
-		
-		List<Map<String, Object>> waitingList = service.getWaitingList();
-		
-		model.addAttribute("waitingList", waitingList);
-		
-		return "admin/reservation/approvalWatingList";
-	}
-	
-	@RequestMapping(value = "/approvalCancelList", method = RequestMethod.GET)
-	public String approvalCancelList() {
-		
-		logger.info("(관리자) 승인 반려 목록");
-		
-		return "admin/reservation/approvalCancelList";
-	}
-	
-	@RequestMapping(value = "/reservationSuccessList", method = RequestMethod.GET)
-	public String reservationSuccessList() {
-		
-		logger.info("(관리자) 예약 완료 목록");
-		
-		return "admin/reservation/reservationSuccessList";
-	}
-	
-	@RequestMapping(value = "/reservationCancelList", method = RequestMethod.GET)
-	public String reservationCancelList() {
-		
-		logger.info("(관리자) 예약 취소 목록");
-		
-		return "admin/reservation/reservationCancelList";
-	}
-	
-	@RequestMapping(value = "/statistic", method = RequestMethod.GET)
-	public String statistic() {
-		
-		logger.info("(관리자) 예약 통계");
-		
-		return "admin/reservation/statistic";
-	}
-
-	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String room() {
 		
@@ -177,7 +131,7 @@ public class ResevationController {
 	@RequestMapping(value = "/shortTerm_chooseDate/{roomNo}", method = RequestMethod.GET)
 	public String chooseDate(@PathVariable int roomNo, Model model) {
 		
-		logger.info("(사용자) 예약-단기 예약 일자 선택");
+		logger.info("(사용자) 예약 - 단기 예약 일자 선택");
 		
 		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
 		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
@@ -192,7 +146,7 @@ public class ResevationController {
 	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto, 
 			HttpServletRequest request, Model model) {
 			
-		logger.info("(사용자) 예약-예약 정보 입력");
+		logger.info("(사용자) 예약 - 예약 정보 입력");
 		
 		service.InputReservationInfo(request, reservationDto, model);
 		return "user/reservation/InputReservationInfo";
@@ -213,7 +167,7 @@ public class ResevationController {
 	@RequestMapping(value = "/getEmployeeListBySearching", method = RequestMethod.GET)
 	public Map<String, Object> getEmployeeListBySearching(@RequestParam String keyword) {
 		
-		logger.info("(사용자) 예약-검색 키워드에 해당하는 사원 목록 조회");
+		logger.info("(사용자) 예약 - 검색 키워드에 해당하는 사원 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> employeeList=new HashMap<>();
 		employeeList.put("employeeList", service.getEmployeeListBySearching(keyword));
@@ -223,14 +177,107 @@ public class ResevationController {
 	@ResponseBody
 	@RequestMapping(value = "/getDepartmentList", method = RequestMethod.POST)
 	public Map<String, Object> getDepartmentList(@RequestParam ArrayList<String> participation) {
-		//@RequestParam String[] participation
 		
-		logger.info("(사용자) 예약-사원들의 부서 목록 조회");
+		logger.info("(사용자) 예약 - 사원들의 부서 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> map=new HashMap<>();
 		map.put("departmentList", service.getDepartmentList(participation));
 		return map;
 	}
 	
+	/* ------------- 관리자 ------------- */
+	
+	/**
+	 * (관리자) 승인 대기 목록 조회 페이지 
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/approvalWaitingList", method = RequestMethod.GET)
+	public String approvalWaitingList(Model model) {
+		
+		logger.info("(관리자) 승인 대기 목록");
+		
+		List<Map<String, Object>> waitingList = service.getWaitingList();
+		
+		model.addAttribute("waitingList", waitingList);
+		
+		return "admin/reservation/approvalWatingList";
+	}
+	
+	/**
+	 * (관리자) 승인 반려 목록 조회 페이지 
+	 *
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/approvalCancelList", method = RequestMethod.GET)
+	public String approvalCancelList(Model model) {
+		
+		logger.info("(관리자) 승인 반려 목록");
+		
+		List<Map<String, Object>> approvalCancelList = service.getApprovalCancelList();
+		
+		model.addAttribute("approvalCancelList", approvalCancelList);
+		
+		return "admin/reservation/approvalCancelList";
+	}
+	
+	/**
+	 * (관리자) 예약 완료 목록 조회 페이지 
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/reservationSuccessList", method = RequestMethod.GET)
+	public String reservationSuccessList(Model model) {
+		
+		logger.info("(관리자) 예약 완료 목록");
+		
+		List<Map<String, Object>> successList = service.getSuccessList();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date date = new Date();
+		String today = dateFormat.format(date);
+		
+		for (int i = 0; i < successList.size(); i++) {
+			Map<String, Object> map = successList.get(i);
+			String startDate = (String) map.get("STARTDATE");
+			String endDate = (String) map.get("ENDDATE");
+			
+			if (today.compareTo(startDate) < 0) {
+				map.put("STATUS", 0);	// 미사용
+			}
+			
+			if (today.compareTo(startDate) > 0 && today.compareTo(endDate) < 0) {
+				map.put("STATUS", 1);	// 사용 중
+			}
+			
+			if (today.compareTo(endDate) > 0) {
+				map.put("STATUS", 2);	// 사용 완료
+			}
+		}
+		
+		model.addAttribute("successList", successList);
+		
+		return "admin/reservation/reservationSuccessList";
+	}
+	
+	/**
+	 * (관리자) 예약 취소 목록 조회 페이지
+	 * 
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "/reservationCancelList", method = RequestMethod.GET)
+	public String reservationCancelList(Model model) {
+		
+		logger.info("(관리자) 예약 취소 목록");
+		
+		List<Map<String, Object>> reservationCancelList = service.getReservationCancelList();
+		
+		model.addAttribute("reservationCancelList", reservationCancelList);
+		
+		return "admin/reservation/reservationCancelList";
+	}
 	
 }
