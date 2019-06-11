@@ -46,24 +46,29 @@
 		</div>
 
 		<div class="col-xl-4">
-			<div id="selectDept">
-				<p>조회하고 싶은 부서를 선택하세요.</p>
-				<select name="dataTable_length" aria-controls="dataTable"
-					class="custom-select custom-select-sm form-control form-control-sm">
-					<option value="0"> --- 부서 선택 --- </option>
-					<c:forEach items="${departmentList}" var="list">
-						<option value="${list.departmentNo }">${list.name }</option>
-					</c:forEach>
-				</select>
-			</div>
+			<br>
+			
+			<div class="small mb-1"> 부서 : </div>
+			<select id="departmentSelect" name="dataTable_length" aria-controls="dataTable" class="custom-select custom-select-sm form-control form-control-sm">
+				<option value="0"> 조회하고 싶은 부서를 선택하세요. </option>
+				<c:forEach items="${departmentList}" var="list">
+					<option value="${list.departmentNo }">${list.name }</option>
+				</c:forEach>
+			</select>
 	
 			<hr>
 	
 			<div>
-				<p>조회하고 싶은 날짜를 선택하세요.</p>
-				<div>
-					<input type="text" class="form-control" name="datefilter" />
-				</div>
+				<div class="small mb-1"> 기간 : </div>
+				<input type="text" class="form-control" name="daterange" placeholder="조회하고 싶은 날짜를 선택하세요." />
+			</div>
+			
+			<hr>
+	
+			<div class="text-right">
+				<button id="searchBtn" class="btn btn-warning">
+					<span id="spanText" class="text">검색</span>
+				</button>
 			</div>
 		</div>
 	</div>
@@ -120,24 +125,32 @@
 
 /* Date Range Picker */
 $(function() {
-	$('input[name="datefilter"]').daterangepicker({
-		autoUpdateInput : false,
-		locale : {
-			cancelLabel : 'Clear'
-		}
+	
+	var startDate = "";
+	var endDate = "";
+	
+	$('input[name="daterange"]').daterangepicker({
+		autoUpdateInput : false, 
+		locale: {
+	      format: 'YYYY-MM-DD',
+    	  cancelLabel: '취소'
+	    }
+	}, function(start, end, label) {
+	    console.log("선택한 날짜: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+	    
+	    startDate = start.format('YYYY-MM-DD');
+	    endDate = end.format('YYYY-MM-DD');
+	});	
+
+	/* 날짜 선택 완료 시 데이트 포맷 */
+	$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
 	});
+	
+	$('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+	      $(this).val('');
+	  });
 
-	$('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
-			$(this).val(picker.startDate.format('YYYY/MM/DD') + ' - ' + picker.endDate.format('YYYY/MM/DD'));
-	});
-
-	$('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
-			$(this).val('');
-	});
-
-});
-
-$(function() {
 	/* 검색 조건 미설정 시 해당 본사에 속해있는 모든 회의실 예약 정보 조회 */
 	$(".workplace-list").on("click", function() {
 		$.ajax({
@@ -181,6 +194,17 @@ $(function() {
 	
 	/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 	$(".workplace-list:first").trigger("click");	
+	
+	
+	$("#searchBtn").click(function() {
+		var departmentNo = $("#departmentSelect").val();
+	
+		/* 검색 조건 하나라도 선택 안 했을 경우 */
+		if(departmentNo == 0 || startDate == "" || endDate == "") {
+			swal('잠깐!', '검색 조건을 선택하세요', 'warning');
+		}
+		
+		console.log(departmentNo + " | " + startDate + " | " + endDate);
+	});
 });
-
 </script>

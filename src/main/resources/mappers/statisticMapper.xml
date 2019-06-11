@@ -4,8 +4,7 @@
 <!-- 통계 네임스페이스(사용영역) 설정 -->
 <mapper namespace="com.gsitm.mrs.mappers.StatisticMapper">
 
-	<!-- 지사 별 전체 예약 현황 조회 -->
-	<select id="getReservationList" resultType="Map">
+	<sql id="reservationList">
 		SELECT r.res_no     						AS reservationNo, 
 		       e.name       						AS empName, 
 		       r.name       						AS resName, 
@@ -29,6 +28,20 @@
 	       AND d.dept_no = ld.dept_no 
 	       AND r.emp_no = e.emp_no 
 	       AND room.room_no = r.room_no
+	</sql>
+
+	<!-- 지사 별 전체 예약 현황 조회 -->
+	<select id="getReservationList" resultType="Map">
+		<include refid="reservationList"/>
+	</select>
+	
+	<!-- 지사 별 예약 현황 검색 -->
+	<select id="getSearchList" resultType="Map">
+	
+		<include refid="reservationList"/>
+	       AND ld.dept_no = #{departmentNo}
+	       AND ( r.start_date &gt;= #{startDate} AND r.end_date &lt;= #{endDate} ) 
+	       
 	</select>
 	
 </mapper>

@@ -1,5 +1,6 @@
 package com.gsitm.mrs.statistic.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +28,18 @@ public class StatisticDAOImpl implements StatisticDAO {
 	@Override
 	public List<Map<String, Object>> getReservationList(int workplaceNo) {
 		return sqlSession.selectList(namespace + ".getReservationList", workplaceNo);
+	}
+
+	/** 지사 별 예약 현황 검색 */
+	@Override
+	public List<Map<String, Object>> getSearchList(int workplaceNo, int departmentNo, String startDate, String endDate) {
+		Map<String, Object> map = new HashMap<>();
+		
+        map.put("workplaceNo", workplaceNo);
+        map.put("departmentNo", departmentNo);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
+
+		return sqlSession.selectList(namespace + ".getSearchList", map);
 	}
 }
