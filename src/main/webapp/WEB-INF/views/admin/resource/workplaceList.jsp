@@ -52,7 +52,7 @@
 								<tbody>
 									<c:choose>
 										<c:when test="${empty workplaceList}">
-											<td colspan="9" class="text-center"> 지사가 존재하지 않습니다.</td>
+											<td colspan="9" class="text-center"> 지사가 존재하지 않습니다. </td>
 										</c:when>
 										<c:otherwise>
 											<c:forEach items="${workplaceList}" var="list" varStatus="status">
