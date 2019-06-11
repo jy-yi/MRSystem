@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page session="false"%>
@@ -14,6 +15,7 @@
 }
 </style>
 
+
 <!-- Main Content -->
 <div id="content">
 
@@ -26,19 +28,7 @@
 				<i class="fas fa-user"></i> 마이페이지 > 예약 현황
 			</h1>
 		</div>
-		<%-- <c:forEach items="${reservationInfo}" var="list" varStatus="status">
-	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#infoReservationModal" id="infoModal"
-		data-reservationNo="${list.reservationNo}" 
-		data-employeeNo="${list.employeeNo}"
-		data-roomNo="${list.roomNo}"
-		data-name="${list.name}" 
-		data-purpose="${list.purpose}"
-		data-startDate="${list.startDate}"
-		data-endDate="${list.endDate}"
-		data-snackWant="${list.snackWant}"
-		data-status="${list.status}">
-	${list.name }</a>
-</c:forEach> --%>
+		
 		<!-- Content Row -->
 		
 
@@ -53,23 +43,19 @@
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 								
 									오늘의 일정 - <c:forEach items="${reservationInfo}" var="list" varStatus="status">
-														<c:if test="">
-															
-														</c:if>
-														${list.RESERVATIONNAME }
+														<c:if test="${list.STATUS ne 3 }">
+														
+												  
+												<%--   <jsp:useBean id="today" class="java.util.Date"></jsp:useBean>
+												  <fmt:formatDate var="now" value="${today }" pattern="yyyyMMdd" />												
+												  <fmt:formatDate var="bdate" value="${list.STARTDATE }" pattern="yyyyMMdd" />												
+												  	
+												  ${bdate-now } --%>
+												  
+												  </c:if>
+														
 												  </c:forEach>
-									
-									
-									<%-- <c:forEach items="${latestReservation}" var="list" varStatus="status">
-										
-											<c:if test="${list.STATUS ne 3 }">
-											
-												<c:if test="${list.STARTDATE }">
-													${list.RESERVATIONNAME}
-												</c:if>
-											</c:if>
-									</c:forEach> --%>
-								
+												  											
 								</div>
 
 								<!-- 프로그레스 바 -->

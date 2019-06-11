@@ -70,7 +70,7 @@
 	</update>
 	
 	<!-- 마이페이지 가장 최근 일자 표시 -->
-	<select id="getLatestReservation">
+	<select id="getLatestReservation" resultType="Reservation">
 		SELECT	res_no							AS reservationNo,
 				emp_no							AS employeeNo,
 				room_no							AS roomNo,
@@ -81,9 +81,9 @@
 				status
         FROM	reservation
         WHERE 	emp_no = #{employeeNo}
-        AND 	start_date = (	SELECT min(start_date) 
+        AND 	start_date = (	SELECT MIN(start_date) 
                             	FROM reservation 
-                            	WHERE  emp_no = #{employeeNo});
+                            	WHERE  emp_no = #{employeeNo})
 	</select>
 		
 	<!-- 회의실 정보 조회 -->

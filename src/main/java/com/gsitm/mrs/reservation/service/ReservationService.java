@@ -36,7 +36,7 @@ public interface ReservationService {
 	public void updateReservation(int reservationNo);
 	
 	/** 마이페이지 가장 최근 예약 표시 */
-	public List<ReservationDTO> getLatestReservation(String employeeNo);
+	List<ReservationDTO> getLatestReservation(String employeeNo);
 	
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);

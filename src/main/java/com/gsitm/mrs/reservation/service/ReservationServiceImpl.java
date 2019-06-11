@@ -176,13 +176,9 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getSuccessList();
 	}
 
-<<<<<<< HEAD
-
-=======
 	/** 예약 취소 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getReservationCancelList() {
 		return dao.getReservationCancelList();
 	}
->>>>>>> branch 'master' of https://github.com/YIJONGYUN/MRSystem.git
 }

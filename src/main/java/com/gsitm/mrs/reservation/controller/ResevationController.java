@@ -113,8 +113,8 @@ public class ResevationController {
 		return "redirect:/reservation/statusList";
 	}
 	
-	@RequestMapping(value = "/getLatestReservation", method = RequestMethod.GET)
-	public String getLatestReservation(HttpSession session, String employeeNo, Model model) {
+	@RequestMapping(value = "/getLatest", method = RequestMethod.GET)
+	public String getLatest(HttpSession session, String employeeNo, Model model) {
 		
 		logger.info("(사용자) 마이페이지 - 가장 최근 예약 표시");
 		
