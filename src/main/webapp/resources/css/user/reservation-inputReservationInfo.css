@@ -5,4 +5,21 @@
     line-height: 2;
     list-style-image: url("img/check.png");
 }
-    
+	
+#final-participation-list-div{
+	display:none;
+	margin: 0 60px;
+    padding: 10px;
+    border: 1px solid black;
+    overflow: scroll;
+    height: 200px;
+    overflow-x: hidden;
+}
+
+#user-chosen-participation{
+    display: inline-block;
+}
+
+#user-chosen-participation::before{
+	content: none;
+}
