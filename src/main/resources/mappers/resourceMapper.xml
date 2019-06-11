@@ -8,7 +8,7 @@
 
 	<!-- 지사 목록 조회 -->
 	<select id="getWorkplaceList" resultType="Workplace">
-		SELECT workplace_no as workplaceNo, name, address 
+		SELECT workplace_no, name, address 
 		FROM Workplace
 		ORDER BY workplace_no
 	</select>

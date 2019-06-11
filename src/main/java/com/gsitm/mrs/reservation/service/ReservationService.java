@@ -72,6 +72,7 @@ public interface ReservationService {
 	/** 예약 완료 목록 조회 */
 	public List<Map<String, Object>> getSuccessList();
 
-	
+	/** 예약 취소 목록 조회 */
+	public List<Map<String, Object>> getReservationCancelList();
 
 }

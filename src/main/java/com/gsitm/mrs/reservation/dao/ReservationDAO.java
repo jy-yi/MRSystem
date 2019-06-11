@@ -1,6 +1,5 @@
 package com.gsitm.mrs.reservation.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +64,8 @@ public interface ReservationDAO {
 	
 	/** 예약 완료 목록 조회 */
 	public List<Map<String, Object>> getSuccessList();
-
 	
+	/** 예약 취소 목록 조회 */
+	public List<Map<String, Object>> getReservationCancelList();
 
 }

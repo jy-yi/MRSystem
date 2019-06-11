@@ -166,4 +166,16 @@ public class ReservationDaoTest {
 		
 	}
 	
+	/** 예약 취소 목록 조회 테스트 */
+	@Test
+	public void TestReservationCancelList() {
+		
+		List<Map<String, Object>> list = dao.getReservationCancelList();
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+		
+	}
+	
 }
