@@ -31,6 +31,9 @@ public interface ReservationDAO {
 	/** 마이페이지 목록형 예약 취소 */
 	public void updateReservation(int reservationNo);
 	
+	/** 마이페이지 가장 최근 예약 표시 */
+	public List<ReservationDTO> getLatestReservation(String employeeNo);
+	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	

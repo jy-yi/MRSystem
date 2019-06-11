@@ -103,12 +103,33 @@ public class ResevationController {
 		return "user/mypage/statusList";
 	}
 	
+	
 	@RequestMapping(value = "/updateReservation", method = RequestMethod.POST)
 	public String updateReservation(String reservationNo) throws Exception {
 
-		 service.updateReservation(Integer.parseInt(reservationNo));
+		logger.info("(사용자) 마이페이지 - 예약 현황 리스트 - 상태 취소 변경");
+		
+		service.updateReservation(Integer.parseInt(reservationNo));
 
 		return "redirect:/reservation/statusList";
+	}
+	
+	@RequestMapping(value = "/getLatestReservation", method = RequestMethod.GET)
+	public String getLatestReservation(HttpSession session, String employeeNo, Model model) {
+		
+		logger.info("(사용자) 마이페이지 - 가장 최근 예약 표시");
+		
+		Object user = session.getAttribute("login");
+		EmployeeDTO employee = (EmployeeDTO) user;
+		
+		employeeNo = employee.getEmployeeNo();
+		
+		List<ReservationDTO> latestReservation = service.getLatestReservation(employeeNo);
+		
+		model.addAttribute("latestReservation", latestReservation);
+		
+		return "user/mypage/statusCalendar";
+		
 	}
 	
 	

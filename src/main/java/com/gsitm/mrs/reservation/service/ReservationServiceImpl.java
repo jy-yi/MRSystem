@@ -116,6 +116,12 @@ public class ReservationServiceImpl implements ReservationService {
 		dao.updateReservation(reservationNo);
 	}
 	
+	/** 마이페이지 가장 최근 예약 표시 */
+	@Override
+	public List<ReservationDTO> getLatestReservation(String employeeNo) {
+		return dao.getLatestReservation(employeeNo);
+	}
+	
 	/* ------------- 회의실 ------------- */
 
 	/** 회의실 정보 조회 */
@@ -169,4 +175,6 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getSuccessList() {
 		return dao.getSuccessList();
 	}
+
+
 }

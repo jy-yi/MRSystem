@@ -1,6 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<style>
+.table {
+  display: table;
+  text-align: center;
+}
+.rHeader{
+	color: #ffffff;
+ 	background: #6c7ae0;
+}
+</style>
+
+
 <!-- Main Content -->
 <!-- Begin Page Content -->
 <div class="container-fluid">

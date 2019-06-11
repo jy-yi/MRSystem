@@ -67,6 +67,23 @@
 		SET		status = 3
 		WHERE	res_no = #{reservationNo}
 	</update>
+	
+	<!-- 마이페이지 가장 최근 일자 표시 -->
+	<select id="getLatestReservation">
+		SELECT	res_no							AS reservationNo,
+				emp_no							AS employeeNo,
+				room_no							AS roomNo,
+				name							AS reservationName,
+				purpose,
+				To_char(start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH:mm') 		AS endDate,
+				status
+        FROM	reservation
+        WHERE 	emp_no = #{employeeNo}
+        AND 	start_date = (	SELECT min(start_date) 
+                            	FROM reservation 
+                            	WHERE  emp_no = #{employeeNo});
+	</select>
 		
 	<!-- 회의실 정보 조회 -->
 	<select id="getRoomInfo" parameterType="int" resultType="Map">

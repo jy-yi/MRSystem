@@ -6,7 +6,6 @@
 <!DOCTYPE html>
 <html>
 
-
 <style>
 #calendar {
 	max-width: 1300px;
@@ -41,6 +40,7 @@
 	${list.name }</a>
 </c:forEach> --%>
 		<!-- Content Row -->
+		
 
 		<div class="row">
 
@@ -50,8 +50,27 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div
-									class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의 일정</div>
+								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+								
+									오늘의 일정 - <c:forEach items="${reservationInfo}" var="list" varStatus="status">
+														<c:if test="">
+															
+														</c:if>
+														${list.RESERVATIONNAME }
+												  </c:forEach>
+									
+									
+									<%-- <c:forEach items="${latestReservation}" var="list" varStatus="status">
+										
+											<c:if test="${list.STATUS ne 3 }">
+											
+												<c:if test="${list.STARTDATE }">
+													${list.RESERVATIONNAME}
+												</c:if>
+											</c:if>
+									</c:forEach> --%>
+								
+								</div>
 
 								<!-- 프로그레스 바 -->
 								<div id="bar" style="display: none">
