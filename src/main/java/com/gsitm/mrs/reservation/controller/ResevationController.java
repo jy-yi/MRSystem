@@ -197,12 +197,12 @@ public class ResevationController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getDepartmentList", method = RequestMethod.POST)
-	public Map<String, Object> getDepartmentList(@RequestParam ArrayList<String> participation) {
+	public Map<String, Object> getDepartmentList(@RequestParam String jsonData) {
 		
 		logger.info("(사용자) 예약 - 사원들의 부서 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> map=new HashMap<>();
-		map.put("departmentList", service.getDepartmentList(participation));
+		//map.put("departmentList", service.getDepartmentList(participation));
 		return map;
 	}
 	
