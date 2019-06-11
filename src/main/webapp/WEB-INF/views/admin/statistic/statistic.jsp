@@ -66,8 +66,11 @@
 			<hr>
 	
 			<div class="text-right">
+				<button id="resetBtn" class="btn btn-info">
+					<span>초기화</span>
+				</button>
 				<button id="searchBtn" class="btn btn-warning">
-					<span id="spanText" class="text">검색</span>
+					<span>검색</span>
 				</button>
 			</div>
 		</div>
@@ -123,12 +126,13 @@
 
 <script type="text/javascript">
 
-/* Date Range Picker */
 $(function() {
 	
+	var workplaceNo = "";
 	var startDate = "";
 	var endDate = "";
 	
+	/* Date Range Picker */
 	$('input[name="daterange"]').daterangepicker({
 		autoUpdateInput : false, 
 		locale: {
@@ -136,8 +140,6 @@ $(function() {
     	  cancelLabel: '취소'
 	    }
 	}, function(start, end, label) {
-	    console.log("선택한 날짜: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-	    
 	    startDate = start.format('YYYY-MM-DD');
 	    endDate = end.format('YYYY-MM-DD');
 	});	
@@ -153,9 +155,14 @@ $(function() {
 
 	/* 검색 조건 미설정 시 해당 본사에 속해있는 모든 회의실 예약 정보 조회 */
 	$(".workplace-list").on("click", function() {
+		
+		resetData(); // 지사 탭 변경 시 검색 옵션 초기화
+		
+		workplaceNo = $(this).attr('value');
+		
 		$.ajax({
 	        url : "/statistic/getReservationList",
-	        data : {workplaceNo: $(this).attr('value')},
+	        data : {"workplaceNo": workplaceNo},
 	        type : "POST",
 	        dataType : "json",
 	        success : function(data){
@@ -195,16 +202,72 @@ $(function() {
 	/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 	$(".workplace-list:first").trigger("click");	
 	
-	
+	/* 검색 버튼 클릭 */
 	$("#searchBtn").click(function() {
 		var departmentNo = $("#departmentSelect").val();
 	
 		/* 검색 조건 하나라도 선택 안 했을 경우 */
 		if(departmentNo == 0 || startDate == "" || endDate == "") {
 			swal('잠깐!', '검색 조건을 선택하세요', 'warning');
+		} else {
+			$.ajax({
+		        url : "/statistic/getSearchList",
+		        data : {"workplaceNo" : workplaceNo,
+		        		"departmentNo" : departmentNo,
+		        		"startDate" : startDate,
+		        		"endDate" : endDate},
+		        type : "POST",
+		        dataType : "json",
+		        success : function(data){
+		        	var table = '';
+		        	if (data.searchList.length == 0) {
+		        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
+		        	} else {
+			        	$.each(data.searchList , function(i, item){
+			        		table += '<tr>'
+			        		table += '<td> ' + (i+1) + ' </td>';
+			        		table += '<td> ' + item.RESNAME + ' </td>';
+			        		table += '<td> ' + item.PURPOSE + ' </td>';
+			        		table += '<td> ' + item.ROOMNAME + ' </td>';
+			        		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
+			        		table += '<td> ' + item.EMPNAME + ' </td>';
+			        		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
+			        		
+			        		if (item.STATUS == 0)
+				        		table += '<td class="text-success"> 승인 대기 </td>';
+			        		else if (item.STATUS == 1)
+			        			table += '<td class="text-primary"> 예약 완료 </td>';
+		        			else if (item.STATUS == 2)
+			        			table += '<td class="text-danger"> 예약 반려 </td>';
+		        			else
+		        				table += '<td class="text-warning"> 예약 취소 </td>';	
+			        		table += '</tr>';
+			           });
+		        	}
+		        	$("#tableBody").empty().append(table);
+		        },
+		        error : function(){
+		            alert("검색 예약 현황 조회 에러");
+		        }
+			});
+			
 		}
 		
-		console.log(departmentNo + " | " + startDate + " | " + endDate);
 	});
+	
+	/* 초기화 버튼 클릭 */
+	$("#resetBtn").on("click", function() {
+		resetData();
+		$("a[value=" + workplaceNo + "]").trigger("click");	// 검색된 리스트 -> 전체 리스트로 초기화
+	});
+	
+	/* 검색 옵션 초기화 */
+	function resetData() {
+		// 부서 선택 select 초기화
+		$("#departmentSelect").val("0").prop("selected", true);
+		// Data Range Picker 초기화
+		$('input[name="daterange"]').val('');
+	}
+	
 });
 </script>

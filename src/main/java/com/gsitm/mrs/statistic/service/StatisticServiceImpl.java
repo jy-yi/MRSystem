@@ -21,6 +21,9 @@ public class StatisticServiceImpl implements StatisticService {
 	
 	@Inject
 	private StatisticDAO dao;
+	
+	
+	/* ------------- 관리자 ------------- */
 
 	/** 지사 별 전체 예약 현황 조회 */
 	@Override

@@ -24,6 +24,9 @@ public class StatisticDAOImpl implements StatisticDAO {
 
 	private static String namespace = "com.gsitm.mrs.mappers.StatisticMapper";
 
+	
+	/* ------------- 관리자 ------------- */
+	
 	/** 지사 별 전체 예약 현황 조회 */
 	@Override
 	public List<Map<String, Object>> getReservationList(int workplaceNo) {

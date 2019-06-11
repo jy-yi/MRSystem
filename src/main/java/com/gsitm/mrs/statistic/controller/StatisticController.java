@@ -38,6 +38,8 @@ public class StatisticController {
 	@Inject
 	private UserService userService;
 	
+	/* ------------- 사용자 ------------- */
+	
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(Model model) {
 		
@@ -45,6 +47,9 @@ public class StatisticController {
 		
 		return "user/mypage/statistic";
 	}
+	
+	
+	/* ------------- 관리자 ------------- */
 	
 	/**
 	 * (관리자) 예약 통계 페이지
@@ -83,7 +88,7 @@ public class StatisticController {
 		return mav;
 	}
 	
-	@RequestMapping(value = "/getReservationList", method = RequestMethod.POST)
+	@RequestMapping(value = "/getSearchList", method = RequestMethod.POST)
 	public ModelAndView getSearchList(Model model, String workplaceNo, String departmentNo, String startDate, String endDate) {
 
 		Map<String, Object> searchMap = new HashMap<>();

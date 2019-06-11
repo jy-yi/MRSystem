@@ -131,8 +131,6 @@ public class ResevationController {
 		
 	}
 	
-	
-	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
 	public String dashboard() {
 		

@@ -12,6 +12,9 @@ import java.util.Map;
  */
 public interface StatisticService {
 	
+	
+	/* ------------- 관리자 ------------- */
+	
 	/** 지사 별 전체 예약 현황 조회 */
 	public List<Map<String, Object>> getReservationList(int workplaceNo);
 	
