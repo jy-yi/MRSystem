@@ -235,8 +235,8 @@
 						});
 						if(!found){
 							$("#search-employee-list > ul").append("<li>"
-								+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
-								+"</li>");
+									+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\", \""+item.DEPARTMENTNAME+"\")'>"+item.NAME+"("+item.DEPARTMENTNAME+")</a>"
+									+"</li>");
 						}
 					})
 				},
@@ -256,7 +256,7 @@
 					});
 					if(!found){
 						$("#search-employee-list > ul").append("<li>"
-							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\")'>"+item.NAME+"( "+item.DEPARTMENTNAME+")</a>"
+							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\", \""+item.DEPARTMENTNAME+"\")'>"+item.NAME+"("+item.DEPARTMENTNAME+")</a>"
 							+"</li>");
 					}
 				},
@@ -268,13 +268,10 @@
 	}
 	
 	// 참여 사원 추가 함수
-	function addParticipation(employeeNo, name){
-		console.log(participation);
+	function addParticipation(employeeNo, name, departmentName){
+		console.log(departmentName);
 		// 해당 사원을 배열에 추가한다.
-		participation.push({"employeeNo":employeeNo, "name":name});
-		$(".participation-list").append("<li>"+name
-				+"<i style='display:none'>"+employeeNo+"</i>"
-				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
+		participation.push({"employeeNo":employeeNo, "name":name, "departmentName":departmentName});
 		// 사원 목록을 업데이트한다.
 		updateParticipationList();
 		// 검색 사원 목록을 업데이트한다.
@@ -289,7 +286,6 @@
 	$(document).on("click",".delete-participation-btn",function(){
 		var employeeNo=$(this).prev().text();
 		// 사원번호 배열에서 해당 사원을 삭제한다.
-		var index;
 		participation.some(function(entry, i) {
 		    if (entry.employeeNo == employeeNo) {
 		        participation.splice(i,1);
@@ -314,7 +310,7 @@
 		// 참여 사원 목록을 업데이트한다.
 		$.each(participation, function(index, item){
 			$(".participation-list")
-				.append("<li>"+item.name+"<i style='display:none'>"+item.employeeNo+"</i>"
+				.append("<li>"+item.name+"("+item.departmentName+")"+"<i style='display:none'>"+item.employeeNo+"</i>"
 						+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
 		});
 	}
@@ -347,14 +343,15 @@
 		if(departmentList==null){
 			departmentList=new Array();
 			
-			// Object 배열 데이터 직렬화
-			var jsonData = JSON.stringify(participation);
+			// participation배열에서 employeeNo 값으로만 배열 생성
+			var employeeNoArr=participation.map(function(a){
+				return a.employeeNo;
+			})
 			$.ajax({
 				type:"post",
 				url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
 				traditional:true,
-				data : {"jsonData" : jsonData},
-				dataType: "json",
+				data : {"employeeNoArr" : employeeNoArr},
 				success: function(data){
 					$.each(data.departmentList, function(index, item){
 						departmentList.push({"dept_no":item.DEPT_NO,"name":item.NAME});
@@ -378,6 +375,26 @@
 		});
 	};
 	
+	// 주관부서를 append하는 함수
+	function appendMainDept(){
+		$("#MainDept-list").empty();
+		$.each(mainDept, function(index, item){
+			$("#MainDept-list").append("<li>"+item.name
+					+"<i style='display:none'>"+item.dept_no+"</i>"
+					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
+		});
+	};
+	
+	// 협조부서를 append하는 함수
+	function appendSubDept(){
+		$("#final-subDept-list-div>ul").empty();
+		$.each(departmentList, function(index, item){
+			$("#final-subDept-list-div>ul").append("<li>"+item.name
+					+"<i style='display:none'>"+item.dept_no+"</i>"
+					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
+		});
+	}
+	
 	// 부서 선택 이벤트
 	$(document).on("click","#department-list>ul>li",function(){
 		var deptNo=$(this).prev().text();
@@ -388,10 +405,8 @@
 		departmentList.splice(deptInfo,1);
 		// 선택한 부서를 mainDept 배열에 넣는다.
 		mainDept.push(deptInfo);
-		// 선택한 부서 정보를 모달에 뿌려준다.
-		$("#MainDept-list").append("<li>"+deptName
-				+"<i style='display:none'>"+deptNo+"</i>"
-				+"<button class='btn btn-default delete-participation-btn'>x</button></li>");
+		// 주관 부서 정보를 모달에 뿌려준다.
+		appendMainDept();
 		// 부서 목록을 업데이트한다.
 		getDepartmentList();
 		// 선택한 부서가 1개 이상이면 확인 버튼 active
@@ -408,11 +423,49 @@
 		// MainDept 요소들을 화면에 뿌려준다.
 		$("#final-mainDept-list-div").empty();
 		$("#MainDept-list").clone().appendTo("#final-mainDept-list-div");
-		$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list-div");
+		$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list");
 		// 남은 부서들을 협조부서에 뿌려준다.
-		$("#final-subDept-list-div>ul").empty();
-		$.each(departmentList, function(index, item){
-			$("#final-subDept-list-div>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
+		appendSubDept();
+	});
+
+	// 부서 삭제 이벤트
+	$(document).on("click",".delete-department-btn",function(){
+		
+		var deptName;
+		var deptNo=$(this).prev().text();
+		var index;
+		var isMainDept=mainDept.some(function(entry, i) {
+		    if (entry.dept_no == deptNo) {
+		    	index=i;
+		    	console.log("i : "+i);
+
+				console.log("index : "+index);
+		        return true;
+		    };
 		});
+		
+		if(isMainDept){ // 주관 부서를 삭제한다면
+			// 해당 부서 협조 부서 배열에 push
+			console.log("name : "+name);
+			deptName=mainDept[index].name;
+			mainDept.splice(index,1);
+			departmentList.push({"dept_no":deptNo,"name":name});
+		}else{ // 협조 부서를 삭제한다면
+			// 해당 부서 주관 부서 배열에 push
+			mainDept.some(function(entry, i) {
+			    if (entry.dept_no == deptNo) {
+			    	deptName=entry.name;
+			    	departmentList.splice(i,1);
+			        return true;
+			    };
+			});
+			
+			mainDept.push({"dept_no":deptNo,"name":name});
+		}
+
+		// 부서 li요소 재 append
+		getDepartmentList();
+		appendMainDept();
+		appendSubDept();
 	});
 </script>

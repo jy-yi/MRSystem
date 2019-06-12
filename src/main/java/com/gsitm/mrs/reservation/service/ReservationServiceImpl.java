@@ -92,10 +92,8 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 사원들의 부서 정보 조회 */
 	@Override
-	public List<Map<String, Object>> getDepartmentList(String jsonData) {
-		// jsonData를 
-		//return dao.getDepartmentList(jsonData);
-		return null;
+	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr) {
+		return dao.getDepartmentList(employeeNoArr);
 	}
 	
 	/* ------------- 마이페이지 ------------- */

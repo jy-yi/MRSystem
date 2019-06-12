@@ -59,7 +59,7 @@ public interface ReservationService {
 	public List<Map<String, Object>> getEmployeeListBySearching(String keyword);
 	
 	/** 사원들의 부서 정보 조회 */
-	public List<Map<String, Object>> getDepartmentList(String jsonData);
+	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr);
 	
 	/* ------------- 관리자 ------------- */
 	

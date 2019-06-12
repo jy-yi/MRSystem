@@ -23,6 +23,10 @@
 	#department-list>ul>li:hover{
 		cursor: pointer;
 	}
+	
+	.delete-department-btn{
+		padding: 0;
+	}
 </style>
 
 <!-- Add Work place Modal-->
