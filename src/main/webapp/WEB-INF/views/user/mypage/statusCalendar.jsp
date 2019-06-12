@@ -42,21 +42,13 @@
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 								
-									오늘의 일정 - <c:forEach items="${reservationInfo}" var="list" varStatus="status">
-														<c:if test="${list.STATUS ne 3 }">
+									오늘의 일정 -	<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+													<c:if test="${list.STATUS ne 3 }">
 														
-												  
-												<%--   <jsp:useBean id="today" class="java.util.Date"></jsp:useBean>
-												  <fmt:formatDate var="now" value="${today }" pattern="yyyyMMdd" />												
-												  <fmt:formatDate var="bdate" value="${list.STARTDATE }" pattern="yyyyMMdd" />												
-												  	
-												  ${bdate-now } --%>
-												  
-												  </c:if>
+														${list.RESERVATIONNAME }		
+													</c:if>
 														
-														
-														
-												  </c:forEach>
+												</c:forEach>
 												  											
 								</div>
 
