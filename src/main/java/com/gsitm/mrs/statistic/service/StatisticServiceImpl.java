@@ -7,6 +7,7 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.statistic.dao.StatisticDAO;
 
 /**
@@ -35,6 +36,12 @@ public class StatisticServiceImpl implements StatisticService {
 	@Override
 	public List<Map<String, Object>> getSearchList(Map<String, Object> searchMap) {
 		return dao.getSearchList(searchMap);
+	}
+
+	/** 지사별 회의실 목록 조회 */
+	@Override
+	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
+		return dao.getRoomListByWorkplaceNo(workplaceNo);
 	}
 
 }

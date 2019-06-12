@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.statistic.dao.StatisticDAO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,6 +32,16 @@ public class StatisticDaoTest {
 		
 		for (Map<String, Object> map : list) {
 			logger.info(map);
+		}
+	}
+	
+	/** 지사별 회의실 목록 조회 테스트 */
+	@Test
+	public void TestRoomList() {
+		List<RoomDTO> list = dao.getRoomListByWorkplaceNo(1);
+		
+		for (RoomDTO roomDTO : list) {
+			logger.info(roomDTO);
 		}
 	}
 	
