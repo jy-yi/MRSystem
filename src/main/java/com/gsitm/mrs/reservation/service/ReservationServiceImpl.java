@@ -90,6 +90,14 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getEmployeeListBySearching(keyword);
 	}
 	
+	/** 사원들의 부서 정보 조회 */
+	@Override
+	public List<Map<String, Object>> getDepartmentList(String jsonData) {
+		// jsonData를 
+		//return dao.getDepartmentList(jsonData);
+		return null;
+	}
+	
 	/* ------------- 마이페이지 ------------- */
 	
 	/** 마이페이지 예약 현황 캘린더 */
@@ -148,12 +156,6 @@ public class ReservationServiceImpl implements ReservationService {
 		// 서비스에서 해야 하는 일
 		// form에서 넘긴 equipmentNo로 equipmentname 알아내기, Y,N 여부
 		return null; 
-	}
-
-	/** 사원들의 부서 정보 조회 */
-	@Override
-	public List<Map<String, Object>> getDepartmentList(List<String> participation) {
-		return dao.getDepartmentList(participation);
 	}
 	
 	/* ------------- 관리자 ------------- */
