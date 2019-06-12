@@ -35,7 +35,7 @@
 							</div>
 							<div class="card-body">
 								<div class="chart-bar">
-									<canvas id="myBarChart"></canvas>
+									<canvas id="myBarChart${workplaceList.workplaceNo}"></canvas>
 								</div>
 							</div>
 						</div>
@@ -170,26 +170,7 @@ $(function() {
 	        	if (data.reservationList.length == 0) {
 	        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
 	        	} else {
-		        	$.each(data.reservationList , function(i, item){
-		        		table += '<tr>'
-		        		table += '<td> ' + (i+1) + ' </td>';
-		        		table += '<td> ' + item.RESNAME + ' </td>';
-		        		table += '<td> ' + item.PURPOSE + ' </td>';
-		        		table += '<td> ' + item.ROOMNAME + ' </td>';
-		        		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
-		        		table += '<td> ' + item.EMPNAME + ' </td>';
-		        		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
-		        		
-		        		if (item.STATUS == 0)
-			        		table += '<td class="text-success"> 승인 대기 </td>';
-		        		else if (item.STATUS == 1)
-		        			table += '<td class="text-primary"> 예약 완료 </td>';
-	        			else if (item.STATUS == 2)
-		        			table += '<td class="text-danger"> 예약 반려 </td>';
-	        			else
-	        				table += '<td class="text-warning"> 예약 취소 </td>';	
-		        		table += '</tr>';
-		           });
+	        		table += makeTable(data.reservationList);
 	        	}
 	        	$("#tableBody").empty().append(table);
 	        },
@@ -197,6 +178,7 @@ $(function() {
 	            alert("전체 예약 현황 조회 에러");
 	        }
 	    });
+		makeChart(workplaceNo);
 	});
 	
 	/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
@@ -223,26 +205,7 @@ $(function() {
 		        	if (data.searchList.length == 0) {
 		        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
 		        	} else {
-			        	$.each(data.searchList , function(i, item){
-			        		table += '<tr>'
-			        		table += '<td> ' + (i+1) + ' </td>';
-			        		table += '<td> ' + item.RESNAME + ' </td>';
-			        		table += '<td> ' + item.PURPOSE + ' </td>';
-			        		table += '<td> ' + item.ROOMNAME + ' </td>';
-			        		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
-			        		table += '<td> ' + item.EMPNAME + ' </td>';
-			        		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
-			        		
-			        		if (item.STATUS == 0)
-				        		table += '<td class="text-success"> 승인 대기 </td>';
-			        		else if (item.STATUS == 1)
-			        			table += '<td class="text-primary"> 예약 완료 </td>';
-		        			else if (item.STATUS == 2)
-			        			table += '<td class="text-danger"> 예약 반려 </td>';
-		        			else
-		        				table += '<td class="text-warning"> 예약 취소 </td>';	
-			        		table += '</tr>';
-			           });
+		        		table += makeTable(data.searchList);
 		        	}
 		        	$("#tableBody").empty().append(table);
 		        },
@@ -261,6 +224,32 @@ $(function() {
 		$("a[value=" + workplaceNo + "]").trigger("click");	// 검색된 리스트 -> 전체 리스트로 초기화
 	});
 	
+	/* 예약 현황 목록 table 삽입 */
+	function makeTable(list, table) {
+		$.each(list , function(i, item){
+    		table += '<tr>'
+    		table += '<td> ' + (i+1) + ' </td>';
+    		table += '<td> ' + item.RESNAME + ' </td>';
+    		table += '<td> ' + item.PURPOSE + ' </td>';
+    		table += '<td> ' + item.ROOMNAME + ' </td>';
+    		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
+    		table += '<td> ' + item.EMPNAME + ' </td>';
+    		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
+    		
+    		if (item.STATUS == 0)
+        		table += '<td class="text-success"> 승인 대기 </td>';
+    		else if (item.STATUS == 1)
+    			table += '<td class="text-primary"> 예약 완료 </td>';
+			else if (item.STATUS == 2)
+    			table += '<td class="text-danger"> 예약 반려 </td>';
+			else
+				table += '<td class="text-warning"> 예약 취소 </td>';	
+    		table += '</tr>';
+       });
+		
+		return table;
+	}
+	
 	/* 검색 옵션 초기화 */
 	function resetData() {
 		// 부서 선택 select 초기화
@@ -268,6 +257,5 @@ $(function() {
 		// Data Range Picker 초기화
 		$('input[name="daterange"]').val('');
 	}
-	
 });
 </script>

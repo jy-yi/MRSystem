@@ -3,6 +3,8 @@ package com.gsitm.mrs.statistic.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.gsitm.mrs.resource.dto.RoomDTO;
+
 /**
  * 통계 관련 DB에서 데이터를 가져와 모델 생성
  * 
@@ -15,10 +17,13 @@ public interface StatisticDAO {
 	
 	/* ------------- 관리자 ------------- */
 	
-	/** 지사 별 전체 예약 현황 조회 */
+	/** 지사별 전체 예약 현황 조회 */
 	public List<Map<String, Object>> getReservationList (int workplaceNo);
 	
-	/** 지사 별 예약 현황 검색 */
+	/** 지사별 예약 현황 검색 */
 	public List<Map<String, Object>> getSearchList (Map<String, Object> searchMap);
+	
+	/** 지사별 회의실 목록 조회 */
+	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo);
 
 }

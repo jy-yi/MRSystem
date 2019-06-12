@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.statistic.service.StatisticService;
 import com.gsitm.mrs.user.dto.DepartmentDTO;
 import com.gsitm.mrs.user.service.UserService;
@@ -33,13 +34,13 @@ public class StatisticController {
 	private static final Logger logger = LoggerFactory.getLogger(StatisticController.class);
 	
 	@Inject
-	private StatisticService statisticService;
+	private StatisticService service;
 	
 	@Inject
 	private UserService userService;
 	
 	/* ------------- 사용자 ------------- */
-	
+	 
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(Model model) {
 		
@@ -72,14 +73,13 @@ public class StatisticController {
 	/**
 	 * 지사별 전체 예약 목록 조회
 	 * 
-	 * @param model
 	 * @param workplaceNo	조회할 지사 번호
 	 * @return
 	 */
 	@RequestMapping(value = "/getReservationList", method = RequestMethod.POST)
-	public ModelAndView getReservationList(Model model, String workplaceNo) {
+	public ModelAndView getReservationList(String workplaceNo) {
 
-		List<Map<String, Object>> reservationList = statisticService.getReservationList(Integer.parseInt(workplaceNo));
+		List<Map<String, Object>> reservationList = service.getReservationList(Integer.parseInt(workplaceNo));
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("reservationList", reservationList);
@@ -88,8 +88,17 @@ public class StatisticController {
 		return mav;
 	}
 	
+	/**
+	 * 검색 옵션별 예약 목록 조회
+	 * 
+	 * @param workplaceNo	검색할 지사 번호
+	 * @param departmentNo	검색할 부서 번호
+	 * @param startDate		검색할 시작 날짜
+	 * @param endDate		검색할 종료 날짜
+	 * @return
+	 */
 	@RequestMapping(value = "/getSearchList", method = RequestMethod.POST)
-	public ModelAndView getSearchList(Model model, String workplaceNo, String departmentNo, String startDate, String endDate) {
+	public ModelAndView getSearchList(String workplaceNo, String departmentNo, String startDate, String endDate) {
 
 		Map<String, Object> searchMap = new HashMap<>();
 		searchMap.put("workplaceNo", workplaceNo);
@@ -97,10 +106,28 @@ public class StatisticController {
 		searchMap.put("startDate", startDate);
 		searchMap.put("endDate", endDate);
 		
-		List<Map<String, Object>> searchList = statisticService.getSearchList(searchMap);
+		List<Map<String, Object>> searchList = service.getSearchList(searchMap);
 
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("searchList", searchList);
+		mav.setViewName("jsonView");
+
+		return mav;
+	}
+	
+	/**
+	 * 지사별 회의실 목록 조회
+	 * 
+	 * @param workplaceNo	조회할 지사
+	 * @return
+	 */
+	@RequestMapping(value = "/getRoomListByWorkplaceNo", method = RequestMethod.POST)
+	public ModelAndView getRoomListByWorkplaceNo(String workplaceNo) {
+
+		List<RoomDTO> roomList = service.getRoomListByWorkplaceNo(Integer.parseInt(workplaceNo));
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("roomList", roomList);
 		mav.setViewName("jsonView");
 
 		return mav;

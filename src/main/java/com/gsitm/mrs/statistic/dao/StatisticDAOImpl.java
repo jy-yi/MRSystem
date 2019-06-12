@@ -9,6 +9,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.gsitm.mrs.resource.dto.RoomDTO;
+
 /**
  * StatisticDAO 인터페이스를 구현하는 클래스
  * 
@@ -27,15 +29,21 @@ public class StatisticDAOImpl implements StatisticDAO {
 	
 	/* ------------- 관리자 ------------- */
 	
-	/** 지사 별 전체 예약 현황 조회 */
+	/** 지사별 전체 예약 현황 조회 */
 	@Override
 	public List<Map<String, Object>> getReservationList(int workplaceNo) {
 		return sqlSession.selectList(namespace + ".getReservationList", workplaceNo);
 	}
 
-	/** 지사 별 예약 현황 검색 */
+	/** 지사별 예약 현황 검색 */
 	@Override
 	public List<Map<String, Object>> getSearchList(Map<String, Object> searchMap) {
 		return sqlSession.selectList(namespace + ".getSearchList", searchMap);
+	}
+
+	/** 지사별 회의실 목록 조회 */
+	@Override
+	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
+		return sqlSession.selectList(namespace + ".getRoomListByWorkplaceNo", workplaceNo);
 	}
 }
