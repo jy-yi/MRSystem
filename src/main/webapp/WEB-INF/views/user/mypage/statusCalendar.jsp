@@ -42,13 +42,7 @@
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 								
-									오늘의 일정 -	<c:forEach items="${reservationInfo}" var="list" varStatus="status">
-													<c:if test="${list.STATUS ne 3 }">
-														
-														${list.RESERVATIONNAME }		
-													</c:if>
-														
-												</c:forEach>
+									오늘의 일정 -	${latestReservation}
 												  											
 								</div>
 

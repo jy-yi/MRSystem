@@ -59,9 +59,9 @@ public class ResevationController {
 		employeeNo = employee.getEmployeeNo();
 		
 		List<Map<String, Object>> reservationInfo = service.getReservationInfo(employeeNo);
+		List<ReservationDTO> latestReservation = service.getLatestReservation(employeeNo);
 		
-		logger.info(reservationInfo+"");
-		
+		model.addAttribute("latestReservation", latestReservation);
 		model.addAttribute("reservationInfo", reservationInfo);
 		
 		return "user/mypage/statusCalendar";
@@ -111,24 +111,6 @@ public class ResevationController {
 		service.updateReservation(Integer.parseInt(reservationNo));
 
 		return "redirect:/reservation/statusList";
-	}
-	
-	@RequestMapping(value = "/getLatest", method = RequestMethod.GET)
-	public String getLatest(HttpSession session, String employeeNo, Model model) {
-		
-		logger.info("(사용자) 마이페이지 - 가장 최근 예약 표시");
-		
-		Object user = session.getAttribute("login");
-		EmployeeDTO employee = (EmployeeDTO) user;
-		
-		employeeNo = employee.getEmployeeNo();
-		
-		List<ReservationDTO> latestReservation = service.getLatestReservation(employeeNo);
-		
-		model.addAttribute("latestReservation", latestReservation);
-		
-		return "user/mypage/statusCalendar";
-		
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
