@@ -173,7 +173,7 @@ $(function() {
 	        		table += makeTable(data.reservationList);
 	        	}
 	        	$("#tableBody").empty().append(table);
-				makeChart(workplaceNo, data.reservationList);
+				makeChart(workplaceNo, data.reservationList);	// 그래프 그려주기
 	        },
 	        error : function(){
 	            alert("전체 예약 현황 조회 에러");
@@ -210,6 +210,7 @@ $(function() {
 		        		table += makeTable(data.searchList);
 		        	}
 		        	$("#tableBody").empty().append(table);
+		        	makeChart(workplaceNo, data.searchList);
 		        },
 		        error : function(){
 		            alert("검색 예약 현황 조회 에러");

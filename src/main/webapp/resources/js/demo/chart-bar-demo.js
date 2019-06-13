@@ -21,8 +21,8 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 	return s.join(dec);
 }
 
-var reservationCount = new Array();
-
+var reservationInfo = new Array();
+var countList = new Array();
 
 /* 지사별 막대 그래프 그리기 */
 function makeChart(workplaceNo, reservationList) {
@@ -41,13 +41,15 @@ function makeChart(workplaceNo, reservationList) {
         	if (data.roomList.length == 0) {
         		console.log('회의실 없음');
         	} else {
+        		reservationInfo = [];
+        		countList = [];
         		$.each(data.roomList, function(i, item){
         			roomList.push(item.name);
-        			reservationCount.push({"roomName":item.name, "count":0});
+        			reservationInfo.push({"roomName":item.name, "count":0});
         		});
         		
         	}
-        	putCount();
+        	reservationInfo = putCount();
         },
         error : function(){
             alert("전체 예약 현황 조회 에러");
@@ -55,21 +57,23 @@ function makeChart(workplaceNo, reservationList) {
     });
 	
 	function putCount() {
-		
 		for (var i = 0; i < roomList.length; i++) {
 			for (var j = 0; j < reservationList.length; j++) {
-				if (reservationList[j].ROOMNAME === roomList[i].name) {
-					reservationCount[i].count += 1;
+				if (reservationList[j].ROOMNAME === roomList[i]) {
+					reservationInfo[i].count += 1;
 				}
 			}
 		}
 		
-		return reservationCount;
+		return reservationInfo;
 	}
 	
-	console.log(roomList);
+	for(var i in reservationInfo) { 
+		console.log(reservationInfo[i].count);
+		countList[i] = Number(reservationInfo[i].count);	// String -> int 형변환
+	}
 	
-	console.log(reservationCount);
+	console.log(countList);
 	
 	var myBarChart = new Chart(
 			ctx,
@@ -82,7 +86,7 @@ function makeChart(workplaceNo, reservationList) {
 						backgroundColor : "#4e73df",
 						hoverBackgroundColor : "#2e59d9",
 						borderColor : "#4e73df",
-						data : [ 5, 15 ],
+						data : countList,
 					} ],
 				},
 				options : {
@@ -112,8 +116,8 @@ function makeChart(workplaceNo, reservationList) {
 						yAxes : [ {
 							ticks : {
 								min : 0,
-								max : 100,
-								maxTicksLimit : 5,
+								max : 50,
+								maxTicksLimit : 10,
 								padding : 10,
 								// Include a dollar sign in the ticks
 								callback : function(value, index, values) {
