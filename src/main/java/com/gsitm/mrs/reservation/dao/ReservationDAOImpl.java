@@ -56,7 +56,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 마이페이지 가장 최근 예약 표시 */
 	@Override
-	public List<ReservationDTO> getLatestReservation(String employeeNo) {
+	public ReservationDTO getLatestReservation(String employeeNo) {
 		return sqlSession.selectOne(namespace +".getLatestReservation", employeeNo);
 	}
 	

@@ -42,8 +42,8 @@
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 								
-									오늘의 일정 -	${latestReservation}
-												  											
+									가장 최근 회의 일정 -	${latestReservation.name} / ${latestReservation.startDate} ~ ${latestReservation.endDate}
+									
 								</div>
 
 								<!-- 프로그레스 바 -->

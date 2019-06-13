@@ -56,9 +56,9 @@ public class ReservationDaoTest {
 	@Test
 	public void TestLastestReservation() {
 		
-		List<ReservationDTO> list = dao.getLatestReservation("it1228");
+		ReservationDTO reservation = dao.getLatestReservation("it1228");
 		
-		logger.info(list);
+		logger.info(reservation);
 	}
 	
 	/** 회의실 정보 조회 테스트 */

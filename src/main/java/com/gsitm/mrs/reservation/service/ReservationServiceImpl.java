@@ -124,7 +124,7 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 마이페이지 가장 최근 예약 표시 */
 	@Override
-	public List<ReservationDTO> getLatestReservation(String employeeNo) {
+	public ReservationDTO getLatestReservation(String employeeNo) {
 		return dao.getLatestReservation(employeeNo);
 	}
 	

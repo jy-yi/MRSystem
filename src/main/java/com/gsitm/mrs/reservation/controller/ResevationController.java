@@ -59,10 +59,10 @@ public class ResevationController {
 		employeeNo = employee.getEmployeeNo();
 		
 		List<Map<String, Object>> reservationInfo = service.getReservationInfo(employeeNo);
-		List<ReservationDTO> latestReservation = service.getLatestReservation(employeeNo);
+		ReservationDTO latestReservation = service.getLatestReservation(employeeNo);
 		
-		model.addAttribute("latestReservation", latestReservation);
 		model.addAttribute("reservationInfo", reservationInfo);
+		model.addAttribute("latestReservation", latestReservation);
 		
 		return "user/mypage/statusCalendar";
 	}
