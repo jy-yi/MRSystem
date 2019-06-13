@@ -173,12 +173,14 @@ $(function() {
 	        		table += makeTable(data.reservationList);
 	        	}
 	        	$("#tableBody").empty().append(table);
+				makeChart(workplaceNo, data.reservationList);
 	        },
 	        error : function(){
 	            alert("전체 예약 현황 조회 에러");
 	        }
 	    });
-		makeChart(workplaceNo);
+		
+	
 	});
 	
 	/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */

@@ -21,8 +21,11 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 	return s.join(dec);
 }
 
+var reservationCount = new Array();
+
+
 /* 지사별 막대 그래프 그리기 */
-function makeChart(workplaceNo) {
+function makeChart(workplaceNo, reservationList) {
 	
 	var ctx = document.getElementById("myBarChart" + workplaceNo);
 	
@@ -40,13 +43,33 @@ function makeChart(workplaceNo) {
         	} else {
         		$.each(data.roomList, function(i, item){
         			roomList.push(item.name);
+        			reservationCount.push({"roomName":item.name, "count":0});
         		});
+        		
         	}
+        	putCount();
         },
         error : function(){
             alert("전체 예약 현황 조회 에러");
         }
     });
+	
+	function putCount() {
+		
+		for (var i = 0; i < roomList.length; i++) {
+			for (var j = 0; j < reservationList.length; j++) {
+				if (reservationList[j].ROOMNAME === roomList[i].name) {
+					reservationCount[i].count += 1;
+				}
+			}
+		}
+		
+		return reservationCount;
+	}
+	
+	console.log(roomList);
+	
+	console.log(reservationCount);
 	
 	var myBarChart = new Chart(
 			ctx,
