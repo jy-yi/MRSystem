@@ -1,6 +1,7 @@
 package com.gsitm.mrs.user.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,12 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public EmployeeDTO login(EmployeeDTO employee) {
 		return sqlSession.selectOne(namespace + ".login", employee); 
+	}
+	
+	/** 관리자 로그인 */
+	@Override
+	public Map<String, Object> loginAdmin(EmployeeDTO employee) {
+		return sqlSession.selectOne(namespace + ".loginAdmin", employee);
 	}
 
 	/** 회원번호로 회원 정보 받아오기 */

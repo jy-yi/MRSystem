@@ -1,7 +1,9 @@
 package com.gsitm.mrs.interceptor;
 
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
@@ -18,6 +20,7 @@ import org.springframework.web.util.WebUtils;
 
 import com.gsitm.mrs.resource.dto.WorkplaceDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
+import com.gsitm.mrs.user.dto.AdminDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 import com.gsitm.mrs.user.service.UserService;
 
@@ -102,7 +105,12 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			empNameCookie.setMaxAge(60 * 60);
 			response.addCookie(empNameCookie);
 
-			response.sendRedirect("/reservation/statusCalendar");
+			/* 일반 회원일 경우 */
+			if (session.getAttribute("adminId") == null) 
+				response.sendRedirect("/reservation/statusCalendar");
+			/* 관리자일 경우 */
+			else
+				response.sendRedirect("/reservation/dashboard");
 		}
 
 	}

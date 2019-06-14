@@ -1,6 +1,7 @@
 package com.gsitm.mrs.user.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,12 @@ public class UserServiceImpl implements UserService {
 	public EmployeeDTO login(EmployeeDTO employee) {
 		return dao.login(employee);
 	}
+	
+	/** 관리자 로그인 */
+	@Override
+	public Map<String, Object> loginAdmin(EmployeeDTO employee) {
+		return dao.loginAdmin(employee);
+	}
 
 	/** 회원번호로 회원 정보 받아오기 */
 	@Override
@@ -40,5 +47,4 @@ public class UserServiceImpl implements UserService {
 	public List<DepartmentDTO> getDepartmentList() {
 		return dao.getDepartmentList();
 	}
-
 }

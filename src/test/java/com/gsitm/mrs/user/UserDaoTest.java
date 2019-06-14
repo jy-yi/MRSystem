@@ -1,6 +1,7 @@
 package com.gsitm.mrs.user;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -30,6 +31,16 @@ public class UserDaoTest {
 		EmployeeDTO employee = new EmployeeDTO("it1232", "it0003", 26, "이종윤", "1111111", "it1232@gsitm.com", "010-1111-1111");
 		
 		logger.info(dao.login(employee).toString());
+		
+	}
+	
+	/** 관리자 로그인 테스트 */
+	@Test
+	public void TestLoginAdmin() {
+		
+		EmployeeDTO employee = new EmployeeDTO("admin_it0002", "it0003", 26, "이종윤", "admin_it0002", "it1232@gsitm.com", "010-1111-1111");
+
+		logger.info(dao.loginAdmin(employee));
 		
 	}
 	

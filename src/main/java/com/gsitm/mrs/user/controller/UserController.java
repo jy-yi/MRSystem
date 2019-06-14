@@ -1,5 +1,7 @@
 package com.gsitm.mrs.user.controller;
 
+import java.util.Map;
+
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -46,12 +48,27 @@ public class UserController {
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(EmployeeDTO employee, HttpSession session, Model model) throws Exception {
+		
+		Object isUser;
+		Map<String, Object> admin;
 
-		EmployeeDTO isUser = service.login(employee);
+		/* 관리자 로그인 */
+		if (employee.getEmployeeNo().contains("admin")) {
+			admin = service.loginAdmin(employee);
+			isUser = service.getInfo((String) admin.get("EMPLOYEENO"));
+			
+			if (isUser != null) session.setAttribute("adminId", admin.get("ADMINID"));
+			
+		/* 회원 로그인 */	
+		} else {
+			isUser = service.login(employee);
+		}
 
+		/* 로그인 실패 */
 		if (isUser == null) {
 			return "login";
 		}
+		
 		model.addAttribute("user", isUser);
 
 		return "login";
@@ -68,7 +85,8 @@ public class UserController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+			throws Exception {
 
 		Object obj = session.getAttribute("login");
 
@@ -97,7 +115,7 @@ public class UserController {
 				empNameCookie.setPath("/");
 				empNameCookie.setMaxAge(0);
 				response.addCookie(empNameCookie);
-			}	
+			}
 		}
 
 		return "redirect:/";

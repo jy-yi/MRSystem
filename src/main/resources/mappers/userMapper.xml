@@ -11,6 +11,14 @@
 		WHERE emp_no=#{employeeNo} and password=#{password}
 	</select>
 	
+	<!-- 관리자 로그인 -->
+	<select id="loginAdmin" resultType="Map">
+		SELECT a.admin_id as adminId, e.emp_no as employeeNo, e.name, a.password, e.email
+		FROM Employee e, admin a
+		WHERE e.emp_no = a.emp_no
+		AND a.admin_id=#{employeeNo} and a.password=#{password}
+	</select>
+	
 	<!-- 사원 번호로 회원 정보 받아오기 -->
 	<select id="getInfo" resultType="Employee">
 		SELECT emp_no as employeeNo, mgr_no as managerNo, dept_no as departmentNo, name, password, email, phone

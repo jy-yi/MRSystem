@@ -123,6 +123,7 @@
 
 <!-- Bar Chart -->
 <script src="/resources/js/demo/chart-bar-demo.js"></script>
+<script src="/resources/js/moment.min.js"></script>
 
 <script type="text/javascript">
 
@@ -137,7 +138,7 @@ $(function() {
 		autoUpdateInput : false, 
 		locale: {
 	      format: 'YYYY-MM-DD',
-    	  cancelLabel: '취소'
+    	  cancelLabel: '취소',
 	    }
 	}, function(start, end, label) {
 	    startDate = start.format('YYYY-MM-DD');
@@ -191,7 +192,7 @@ $(function() {
 		var departmentNo = $("#departmentSelect").val();
 	
 		/* 검색 조건 하나라도 선택 안 했을 경우 */
-		if(departmentNo == 0 || startDate == "" || endDate == "") {
+		if(departmentNo == 0 || $('input[name="daterange"]').val()=='') {
 			swal('잠깐!', '검색 조건을 선택하세요', 'warning');
 		} else {
 			$.ajax({
@@ -216,7 +217,6 @@ $(function() {
 		            alert("검색 예약 현황 조회 에러");
 		        }
 			});
-			
 		}
 		
 	});
@@ -224,7 +224,7 @@ $(function() {
 	/* 초기화 버튼 클릭 */
 	$("#resetBtn").on("click", function() {
 		resetData();
-		$("a[value=" + workplaceNo + "]").trigger("click");	// 검색된 리스트 -> 전체 리스트로 초기화
+		$("a[value=" + workplaceNo + "]").trigger("click");	// 현재 선택된 지사 탭에서 검색된 리스트 -> 전체 리스트로 초기화
 	});
 	
 	/* 예약 현황 목록 table 삽입 */
