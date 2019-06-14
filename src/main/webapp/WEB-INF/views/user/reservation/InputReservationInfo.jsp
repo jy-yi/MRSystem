@@ -187,11 +187,9 @@
 		        }
 		    });
 		};
-
 		String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
 		String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
 		Number.prototype.zf = function (len) { return this.toString().zf(len); };
-
 		// 예약 시작날짜와 종료날짜
 		var startDate=new Date("${reservationInfo.startDate}");
 		var endDate=new Date("${reservationInfo.endDate}");
@@ -354,11 +352,11 @@
 				data : {"employeeNoArr" : employeeNoArr},
 				success: function(data){
 					$.each(data.departmentList, function(index, item){
-						departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
+						departmentList.push({"dept_no":item.DEPT_NO,"name":item.NAME});
 					})
 					getDepartmentList();
 				},
-				error: function(xhr,e status, error) {
+				error: function(xhr, status, error) {
 					alert(error);
 				}	
 			});
@@ -371,7 +369,7 @@
 	function getDepartmentList(){
 		$("#department-list>ul").empty();
 		$.each(departmentList, function(index, item){
-			$("#department-list>ul").append("<i style='display:none'>"+item.deptNo+"</i><li>"+item.name+"</li>");
+			$("#department-list>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
 		});
 	};
 	
@@ -380,7 +378,7 @@
 		$("#MainDept-list").empty();
 		$.each(mainDept, function(index, item){
 			$("#MainDept-list").append("<li>"+item.name
-					+"<i style='display:none'>"+item.deptNo+"</i>"
+					+"<i style='display:none'>"+item.dept_no+"</i>"
 					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
 		});
 	};
@@ -390,7 +388,7 @@
 		$("#final-subDept-list-div>ul").empty();
 		$.each(departmentList, function(index, item){
 			$("#final-subDept-list-div>ul").append("<li>"+item.name
-					+"<i style='display:none'>"+item.deptNo+"</i>"
+					+"<i style='display:none'>"+item.dept_no+"</i>"
 					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
 		});
 	}
@@ -399,7 +397,7 @@
 	$(document).on("click","#department-list>ul>li",function(){
 		var deptNo=$(this).prev().text();
 		var deptName=$(this).text();
-		var deptInfo={"deptNo":deptNo, "name":deptName};
+		var deptInfo={"dept_no":deptNo, "name":deptName};
 		
 		// 선택한 부서를 departmentList에서 삭제한다.
 		departmentList.splice(deptInfo,1);
@@ -427,42 +425,43 @@
 		// 남은 부서들을 협조부서에 뿌려준다.
 		appendSubDept();
 	});
-
 	// 부서 삭제 이벤트
 	$(document).on("click",".delete-department-btn",function(){
+		
 		var deptName;
 		var deptNo=$(this).prev().text();
 		var index;
 		var isMainDept=mainDept.some(function(entry, i) {
-		    if (entry.deptNo == deptNo) {
+		    if (entry.dept_no == deptNo) {
 		    	index=i;
+		    	console.log("i : "+i);
+				console.log("index : "+index);
 		        return true;
 		    };
 		});
 		
 		if(isMainDept){ // 주관 부서를 삭제한다면
 			// 해당 부서 협조 부서 배열에 push
-			console.log("주관부서 index : "+index);
+			console.log("name : "+name);
 			deptName=mainDept[index].name;
 			mainDept.splice(index,1);
-			departmentList.push({"deptNo":deptNo,"name":name})
+			departmentList.push({"dept_no":deptNo,"name":name});
 		}else{ // 협조 부서를 삭제한다면
 			// 해당 부서 주관 부서 배열에 push
 			mainDept.some(function(entry, i) {
-			    if (entry.deptNo == deptNo) {
+			    if (entry.dept_no == deptNo) {
 			    	deptName=entry.name;
 			    	departmentList.splice(i,1);
-			    	console.log("협조부서 index : "+i);
 			        return true;
 			    };
 			});
 			
-			mainDept.push({"deptNo":deptNo,"name":name});
+			mainDept.push({"dept_no":deptNo,"name":name});
 		}
-
 		// 부서 li요소 재 append
 		getDepartmentList();
 		appendMainDept();
 		appendSubDept();
 	});
 </script>
+</html>

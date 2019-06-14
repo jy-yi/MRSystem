@@ -36,8 +36,8 @@ $(function(){
 		<div class="sidebar-brand-text mx-3">GS ITM</div>
 	</a>
 
-	<c:choose>
-		<c:when test="${empty adminId}">
+<%-- 	<c:choose> --%>
+<%-- 		<c:when test="${empty adminId}"> --%>
 			<!-- Divider -->
 			<hr class="sidebar-divider">
 		
@@ -93,8 +93,8 @@ $(function(){
 		
 			<!-- Divider -->
 			<hr class="sidebar-divider d-none d-md-block">
-		</c:when>
-		<c:otherwise>
+<%-- 		</c:when> --%>
+<%-- 		<c:otherwise> --%>
 			
 			<hr class="sidebar-divider d-none d-md-block">
 		
@@ -163,8 +163,8 @@ $(function(){
 		
 			<!-- Divider -->
 			<hr class="sidebar-divider d-none d-md-block">
-		</c:otherwise>
-	</c:choose>
+<%-- 		</c:otherwise> --%>
+<%-- 	</c:choose> --%>
 
 	<!-- Sidebar Toggler (Sidebar) -->
 	<div class="text-center d-none d-md-inline">
