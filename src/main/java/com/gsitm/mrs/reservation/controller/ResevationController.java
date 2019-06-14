@@ -83,26 +83,6 @@ public class ResevationController {
 	}
 	
 	
-	@RequestMapping(value = "/statusList", method = RequestMethod.GET)
-	public String statusList(HttpSession session, String employeeNo, Model model) {
-		
-		logger.info("(사용자) 마이페이지 - 예약 현황 리스트");
-		
-		Object user = session.getAttribute("login");
-		EmployeeDTO employee = (EmployeeDTO) user;
-		
-		employeeNo = employee.getEmployeeNo();
-		
-		List<Map<String, Object>> reservationList = service.getReservationList(employeeNo);
-		
-		logger.info(reservationList+"");
-		
-		model.addAttribute("reservationList", reservationList);
-		
-		return "user/mypage/statusList";
-	}
-	
-	
 	@RequestMapping(value = "/updateReservation", method = RequestMethod.POST)
 	public String updateReservation(String reservationNo) throws Exception {
 
@@ -111,6 +91,16 @@ public class ResevationController {
 		service.updateReservation(Integer.parseInt(reservationNo));
 
 		return "redirect:/reservation/statusList";
+	}
+	
+	@RequestMapping(value ="/statistic", method = RequestMethod.GET)
+	public String statistic(HttpSession session, String employeeNo, Model model) {
+		
+		logger.info("(사용자) 마이페이지 - 예약 통계");
+		
+		
+		
+		return "user/mypage/statistic";
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)

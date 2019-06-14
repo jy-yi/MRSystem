@@ -15,6 +15,12 @@ import com.gsitm.mrs.resource.dto.RoomDTO;
 public interface StatisticDAO {
 	
 	
+	/* ------------- 사용자 ------------- */
+	
+	/** 마이페이지 개인 예약 통계 */ 
+	public List<Map<String, Object>> getIndividual(String employeeNo);
+	
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 지사별 전체 예약 현황 조회 */

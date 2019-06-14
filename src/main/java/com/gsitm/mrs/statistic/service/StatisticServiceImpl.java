@@ -23,6 +23,13 @@ public class StatisticServiceImpl implements StatisticService {
 	@Inject
 	private StatisticDAO dao;
 	
+	/* ------------- 사용자 ------------- */
+	
+	/** 마이페이지 개인 예약 통계 */ 
+	@Override
+	public List<Map<String, Object>> getIndividual(String employeeNo) {
+		return dao.getIndividual(employeeNo);
+	}
 	
 	/* ------------- 관리자 ------------- */
 

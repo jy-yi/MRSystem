@@ -128,6 +128,7 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getLatestReservation(employeeNo);
 	}
 	
+	
 	/* ------------- 회의실 ------------- */
 
 	/** 회의실 정보 조회 */
@@ -181,4 +182,5 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return dao.getReservationCancelList();
 	}
+
 }

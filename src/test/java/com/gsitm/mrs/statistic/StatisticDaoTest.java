@@ -23,6 +23,17 @@ public class StatisticDaoTest {
 	
 	Logger logger = Logger.getLogger(StatisticDaoTest.class);
 	
+	/** 개인 예약 통계 테스트 */
+	@Test
+	public void TestIndividual() {
+		
+		List<Map<String, Object>> list = dao.getIndividual("it1228");
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+	}
+	
 	
 	/** 지사 별 전체 예약 현황 조회 테스트 */
 	@Test

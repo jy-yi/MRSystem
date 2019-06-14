@@ -11,8 +11,17 @@ import com.gsitm.mrs.resource.dto.RoomDTO;
  * @Package : com.gsitm.mrs.statistic.service
  * @date : 2019. 5. 8.
  * @author : 이종윤
+ * 
+ * @date : 2019. 6. 14.
+ * @author : 김재율
  */
 public interface StatisticService {
+	
+	
+	/* ------------- 사용자 ------------- */
+	
+	/** 마이페이지 개인 예약 통계 */ 
+	public List<Map<String, Object>> getIndividual(String employeeNo);
 	
 	
 	/* ------------- 관리자 ------------- */

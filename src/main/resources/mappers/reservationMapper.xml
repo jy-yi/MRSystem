@@ -86,7 +86,7 @@
                             	WHERE start_date >= sysdate 
                             	AND emp_no = #{employeeNo})
 	</select>
-		
+	
 	<!-- 회의실 정보 조회 -->
 	<select id="getRoomInfo" parameterType="int" resultType="Map">
 		SELECT <include refid="roomInfo_columns"/>, 

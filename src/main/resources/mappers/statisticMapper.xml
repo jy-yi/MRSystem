@@ -4,6 +4,24 @@
 <!-- 통계 네임스페이스(사용영역) 설정 -->
 <mapper namespace="com.gsitm.mrs.mappers.StatisticMapper">
 
+	<!-- #### 사용자 #### -->
+
+	<!-- 개인 예약 통계 -->
+	<select id="getIndividual" resultType="map">
+		SELECT	r.emp_no,
+				count(*)			AS count,
+				sum(money)			AS sum
+        FROM 	reservation r, 
+        		participation p
+        WHERE 	r.res_no = p.res_no
+        AND 	r.emp_no= #{employeeNo}
+        GROUP BY ROLLUP(r.emp_no)
+        HAVING GROUPING_ID(r.emp_no) IN(0,3)
+	</select>
+
+
+	<!-- #### 관리자 #### -->
+
 	<sql id="reservationList">
 		SELECT r.res_no     						AS reservationNo, 
 		       e.name       						AS empName, 

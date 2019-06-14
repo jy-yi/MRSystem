@@ -25,6 +25,14 @@ public class StatisticDAOImpl implements StatisticDAO {
 	private SqlSession sqlSession;
 
 	private static String namespace = "com.gsitm.mrs.mappers.StatisticMapper";
+	
+	/* ------------- 사용자 ------------- */
+	
+	/** 마이페이지 개인 예약 통계 */ 
+	@Override
+	public List<Map<String, Object>> getIndividual(String employeeNo) {
+		return sqlSession.selectList(namespace + ".getIndividual", employeeNo);
+	}
 
 	
 	/* ------------- 관리자 ------------- */

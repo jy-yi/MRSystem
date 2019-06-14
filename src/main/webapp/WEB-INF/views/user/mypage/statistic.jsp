@@ -1,14 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 
 <style>
 .table {
-  display: table;
-  text-align: center;
+	display: table;
+	text-align: center;
 }
-.rHeader{
+
+.rHeader {
 	color: #ffffff;
- 	background: #6c7ae0;
+	background: #6c7ae0;
 }
 </style>
 
@@ -29,63 +31,62 @@
 			<h6 class="m-0 font-weight-bold text-primary">나의 예약 횟수 및 비용</h6>
 		</div>
 		<div class="card-body">
-			
+
 			<table class="table" border="2">
 				<tr class="rHeader">
 					<td colspan="2">개인</td>
-					<td  colspan="2">부서</td>
+					<td colspan="2">부서</td>
 				</tr>
-				
-				<tr>	
-					<td>횟수</td>
-					<td>비용</td>
-					<td>횟수</td>
-					<td>비용</td>
-				</tr>
-				
+
 				<tr>
-					<td>2</td>
-					<td>50000</td>
+					<td>횟수</td>
+					<td>비용</td>
+					<td>횟수</td>
+					<td>비용</td>
+				</tr>
+				<tr>
+					<c:forEach items="${getIndividual}" var="list" varStatus="status">
+						<td>${list.COUNT}</td>
+						<td>${list.SUM}</td>
+					</c:forEach>
 					<td>25</td>
 					<td>255,000</td>
 				</tr>
-				
+
 			</table>
 		</div>
 
 	</div>
-	
+
 	<p class="mb-4">조회하고 싶은 날짜를 선택하세요.</p>
 
-			<input type="text" name="datefilter" value="" style="width: 250px;"/>
+	<input type="text" name="datefilter" value="" style="width: 250px;" />
 
-			<script type="text/javascript">
-				$(function() {
+	<script type="text/javascript">
+		$(function() {
 
-					$('input[name="datefilter"]').daterangepicker({
-						autoUpdateInput : false,
-						locale : {
-							cancelLabel : 'Clear'
-						}
+			$('input[name="datefilter"]').daterangepicker({
+				autoUpdateInput : false,
+				locale : {
+					cancelLabel : 'Clear'
+				}
+			});
+
+			$('input[name="datefilter"]').on(
+					'apply.daterangepicker',
+					function(ev, picker) {
+						$(this).val(
+								picker.startDate.format('YYYY/MM/DD') + ' - '
+										+ picker.endDate.format('YYYY/MM/DD'));
 					});
 
-					$('input[name="datefilter"]').on(
-							'apply.daterangepicker',
-							function(ev, picker) {
-								$(this).val(
-										picker.startDate.format('YYYY/MM/DD')
-												+ ' - '
-												+ picker.endDate
-														.format('YYYY/MM/DD'));
-							});
+			$('input[name="datefilter"]').on('cancel.daterangepicker',
+					function(ev, picker) {
+						$(this).val('');
+					});
 
-					$('input[name="datefilter"]').on('cancel.daterangepicker',
-							function(ev, picker) {
-								$(this).val('');
-							});
-
-				});
-			</script>
+		});
+	</script>
 </div>
 
 

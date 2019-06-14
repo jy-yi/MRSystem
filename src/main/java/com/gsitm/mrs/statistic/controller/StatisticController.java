@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.statistic.service.StatisticService;
 import com.gsitm.mrs.user.dto.DepartmentDTO;
+import com.gsitm.mrs.user.dto.EmployeeDTO;
 import com.gsitm.mrs.user.service.UserService;
 
 /**
@@ -42,9 +47,16 @@ public class StatisticController {
 	/* ------------- 사용자 ------------- */
 	 
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
-	public String mypage(Model model) {
+	public String mypage(HttpSession session, Model model) {
 		
 		logger.info("사용자 - 예약 통계");
+		
+		Object user = session.getAttribute("login");
+		EmployeeDTO employee = (EmployeeDTO) user;
+		
+		List<Map<String, Object>> getIndividual = service.getIndividual(employee.getEmployeeNo());
+		
+		model.addAttribute("getIndividual", getIndividual);
 		
 		return "user/mypage/statistic";
 	}
