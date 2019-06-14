@@ -105,7 +105,7 @@
 							</div>
 						
 							<div class="clearfix"></div>
-							<input type="hidden" name="adminId" value="${login.employeeNo}">
+							<input type="hidden" name="adminId" value="${adminId}">
 						</div>
 						
 					</div>
