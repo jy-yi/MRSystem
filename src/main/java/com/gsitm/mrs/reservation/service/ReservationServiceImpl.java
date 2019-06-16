@@ -164,6 +164,16 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getWaitingList() {
 		return dao.getWaitingList();
 	}
+	
+	@Override
+	public void updateStatus(Map<String, Object> map) {
+		dao.updateStatus(map);
+	}
+
+	@Override
+	public void updateAdminApproval(Map<String, Object> map) {
+		dao.updateAdminApproval(map);
+	}
 
 	/** 승인 반려 목록 조회 */
 	@Override

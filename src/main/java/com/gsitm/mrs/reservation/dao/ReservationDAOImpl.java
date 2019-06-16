@@ -110,6 +110,16 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getWaitingList() {
 		return sqlSession.selectList(namespace + ".getWaitingList");
 	}
+	
+	@Override
+	public void updateStatus(Map<String, Object> map) {
+		sqlSession.update(namespace + ".updateStatus", map);
+	}
+
+	@Override
+	public void updateAdminApproval(Map<String, Object> map) {
+		sqlSession.update(namespace + ".updateAdminApproval", map);
+	}
 
 	/** 승인 반려 목록 조회 */
 	@Override
@@ -128,9 +138,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-
-
-
-
 
 }

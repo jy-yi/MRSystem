@@ -1,7 +1,6 @@
 package com.gsitm.mrs.reservation.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -194,6 +193,31 @@ public class ResevationController {
 		model.addAttribute("waitingList", waitingList);
 		
 		return "admin/reservation/approvalWatingList";
+	}
+	
+	/**
+	 * 예약 관리자 승인
+	 *
+	 * @param status
+	 * @param reservationNo
+	 * @return
+	 */
+	@RequestMapping(value = "/adminApproval", method = RequestMethod.POST)
+	public String adminApproval(String status, String reservationNo) {
+		
+		Map<String, Object> statusMap = new HashMap<>();
+		statusMap.put("status", status);
+		statusMap.put("reservationNo", reservationNo);
+		
+		service.updateStatus(statusMap);
+		
+		Map<String, Object> approvalMap = new HashMap<>();
+		approvalMap.put("adminApproval", "Y");
+		approvalMap.put("reservationNo", reservationNo);
+		
+		service.updateAdminApproval(approvalMap);
+		
+		return "redirect:/reservation/approvalWaitingList";
 	}
 	
 	/**

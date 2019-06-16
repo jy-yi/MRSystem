@@ -66,6 +66,12 @@ public interface ReservationService {
 	/** 승인 대기 목록 조회 */
 	public List<Map<String, Object>> getWaitingList();
 	
+	/** 예약 상태 변경 */
+	public void updateStatus(Map<String, Object> map);
+
+	/** 관리자 승인 상태 변경 */
+	public void updateAdminApproval(Map<String, Object> map);
+	
 	/** 승인 반려 목록 조회 */
 	public List<Map<String, Object>> getApprovalCancelList();
 	

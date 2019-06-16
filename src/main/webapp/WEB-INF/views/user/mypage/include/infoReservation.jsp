@@ -15,20 +15,7 @@
 					
 					<div class="row">
 						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 예약번호 </label>
-						</div>
-						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="reservationNo"/>
-						</div>
-					
-						<div class="clearfix"></div>
-					</div>
-					
-					<br>	
-					
-					<div class="row">
-						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 사원번호 </label>
+							<label> 신청자 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
 							<input type="text" class="form-control" id="employeeNo"/>
@@ -41,7 +28,7 @@
 					
 					<div class="row">
 						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 회의실호 </label>
+							<label> 회의실 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
 							<input type="text" class="form-control" id="roomNo"/>
@@ -67,7 +54,7 @@
 					
 					<div class="row">
 						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 회의목적 </label>
+							<label> 목적 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
 							<input type="text" class="form-control" id="purpose" />
@@ -80,7 +67,7 @@
 					
 					<div class="row">
 						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 시작시간 </label>
+							<label> 기간 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
 							<input type="text" class="form-control" id="startDate"/>
@@ -91,44 +78,6 @@
 					
 					<br>
 					
-					<div class="row">
-						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 종료시간 </label>
-						</div>
-						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="endDate" />
-						</div>
-					
-						<div class="clearfix"></div>
-					</div>
-					
-					<br>
-					
-					<div class="row">
-						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 간식여부 </label>
-						</div>
-						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="snackWant" />
-						</div>
-					
-						<div class="clearfix"></div>
-					</div>
-					
-					<br>
-					
-					<div class="row">
-						<div class="col-xs-2 col-sm-2 text-center">
-							<label> 승인상태 </label>
-						</div>
-						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="status" />
-						</div>
-					
-						<div class="clearfix"></div>
-					</div>
-					
-					
 				</div>
 			</div>
 			
@@ -138,10 +87,3 @@
 		</div>
 	</div>
 </div>
-
-<script>
-	/* 모달 사라졌을 때 입력 값 초기화 */
-	$('.modal').on('hidden.bs.modal', function (e) {
-	  $(this).find('form')[0].reset()
-	});
-</script>

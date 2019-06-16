@@ -261,6 +261,22 @@
 		ORDER BY r.res_no
 	</select>
 	
+	<!-- 예약 상태 변경 -->
+	<!-- 0 : 예약 대기
+		 1 : 예약 승인
+		 2 : 예약 반려
+		 3 : 예약 취소 -->
+	<update id="updateStatus">
+		UPDATE reservation SET status = #{status} WHERE res_no = #{reservationNo}
+	</update>
+	
+	<!-- 관리자 승인 상태 변경 -->
+	<update id="updateAdminApproval">
+		UPDATE waiting 
+		SET admin_approval = #{adminApproval} 
+		WHERE res_no = #{reservationNo}
+	</update>
+	
 	<!-- 승인 반려 목록 조회 -->
 	<select id="getApprovalCancelList" resultType="Map">
 		SELECT r.res_no     							 AS reservationNo, 

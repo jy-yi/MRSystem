@@ -50,22 +50,24 @@
 										<c:otherwise>
 											<c:forEach items="${waitingList}" var="list" varStatus="status">
 												<tr>
-													<td> ${status.count} </td>
-													<td> ${list.RESNAME}</td>
+													<td> ${status.count}</td>
+													<td> ${list.RESNAME} </td>
 													<td> ${list.PURPOSE}</td>
 													<td> ${list.ROOMNAME}</td>
 													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
 													<td> ${list.EMPNAME}</td>
-													<td> ${list.MGRNAME}</td>
 													
 													<c:choose>
 														<c:when test="${list.MANAGERAPPROVAL eq 'W'}">
 															<td> 승인 대기</td>
 															<td> 승인 대기</td>
+															<td> 승인 대기</td>
 														</c:when>	
 														<c:otherwise>
-															<td><a href="/reservation/statusCalendar" class="btn btn-primary"> <span class="text">승인</span></a></td>
-															<td><a href="/reservation/statusCalendar" class="btn btn-danger"> <span class="text">반려</span></a></td>
+															<td> ${list.MGRNAME}</td>
+															<td><a href="#" class="btn btn-primary"> <span class="text">승인</span></a></td>
+															<td><a href="#" class="btn btn-danger"> <span class="text">반려</span></a></td>
+															<input type="hidden" id="reservationNo" value="${list.RESERVATIONNO}">
 														</c:otherwise>
 													</c:choose>
 												</tr>
@@ -88,3 +90,73 @@
 
 </div>
 <!-- End of Main Content -->
+
+<script>
+/* 승인 버튼 클릭 */
+$(document).on("click", ".btn-primary", function() {
+	var reservationNo = $(this).parent().next().next().val();	// 승인할 예약 번호
+	var empName = $(this).parent().prev().prev().text();
+	var reservationName = $(this).parent().prev().prev().prev().prev().prev().prev().text();
+	
+	swal({
+		title: '해당 예약을 승인처리 하시겠습니까?',
+		text: "신청자 : " + empName + " / 회의명 : " + reservationName,
+		type: 'question',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		    confirmButtonText: 'Yes',
+		    cancelButtonText: 'No',
+		}).then( (result) => {
+			if (result.value) {
+  			$.ajax({
+				url : "/reservation/adminApproval",
+				type : "POST",
+				data : {
+					reservationNo : reservationNo,
+					status : 1
+				}, success : function(data) {
+					swal('Success!', '예약 승인이 완료되었습니다.', 'success'
+			    		).then(function(){
+  		    		    	location.href="/reservation/approvalWaitingList";
+  		    		    });
+				}
+			});
+			}
+			  
+		});
+});
+
+
+/* 반려 버튼 클릭 */
+$(document).on("click", ".btn-danger", function() {
+	var equipmentNo = $(this).next().val();	// 삭제 버튼을 클릭한 비품의 번호
+	
+	swal({
+		title: '정말 삭제하시겠습니까?',
+		text: "이후 복구는 불가능합니다.",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		    confirmButtonText: 'Yes',
+		    cancelButtonText: 'No',
+		}).then( (result) => {
+			if (result.value) {
+  			$.ajax({
+				url : "/resource/deleteEquipment",
+				type : "POST",
+				data : {
+					equipmentNo : equipmentNo,
+				}, success : function(data) {
+					swal('Success!', '비품 삭제가 완료되었습니다.', 'success'
+			    		).then(function(){
+  		    		    	location.href="/resource/equipmentList";
+  		    		    });
+				}
+			});
+			}
+			  
+		});
+});
+</script>
