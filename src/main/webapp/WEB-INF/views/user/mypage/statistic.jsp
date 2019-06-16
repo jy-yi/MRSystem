@@ -26,6 +26,8 @@
 		</h1>
 	</div>
 
+	<!-- 개인 및 부서 통계 표 -->
+
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
 			<h6 class="m-0 font-weight-bold text-primary">나의 예약 횟수 및 비용</h6>
@@ -49,47 +51,32 @@
 						<td>${list.COUNT}</td>
 						<td>${list.SUM}</td>
 					</c:forEach>
-					<td>25</td>
-					<td>255,000</td>
+					<c:forEach items="${getDepartment}" var="list" varStatus="status">
+						<td>${list.COUNT}</td>
+						<td>${list.SUM}</td>
+					</c:forEach>
 				</tr>
 
 			</table>
 		</div>
-
 	</div>
+	
+	<!-- 개인 및 부서 통계 표 끝 -->
+	<div>
+		<div class="small mb-1"> 기간 : </div>
+		<input type="text" class="form-control" name="daterange" placeholder="조회하고 싶은 날짜를 선택하세요." />
+	</div>
+	
+	<hr>
 
-	<p class="mb-4">조회하고 싶은 날짜를 선택하세요.</p>
-
-	<input type="text" name="datefilter" value="" style="width: 250px;" />
-
-	<script type="text/javascript">
-		$(function() {
-
-			$('input[name="datefilter"]').daterangepicker({
-				autoUpdateInput : false,
-				locale : {
-					cancelLabel : 'Clear'
-				}
-			});
-
-			$('input[name="datefilter"]').on(
-					'apply.daterangepicker',
-					function(ev, picker) {
-						$(this).val(
-								picker.startDate.format('YYYY/MM/DD') + ' - '
-										+ picker.endDate.format('YYYY/MM/DD'));
-					});
-
-			$('input[name="datefilter"]').on('cancel.daterangepicker',
-					function(ev, picker) {
-						$(this).val('');
-					});
-
-		});
-	</script>
-</div>
-
-
+	<div class="text-right">
+		<button id="resetBtn" class="btn btn-info">
+			<span>초기화</span>
+		</button>
+		<button id="searchBtn" class="btn btn-warning">
+			<span>검색</span>
+		</button>
+	</div>
 
 
 <!-- /.container-fluid -->
@@ -97,7 +84,7 @@
 <div id="content">
 
 	<!-- Content Row -->
-	<div class="row2">
+	<div class="row">
 
 		<!-- Begin Page Content -->
 		<div class="container-fluid">
@@ -123,138 +110,65 @@
 									<th>취소</th>
 								</tr>
 							</thead>
-
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>가</td>
-									<td>Edinburgh</td>
-									<td>61</td>
-									<td>2011/04/25</td>
-									<td>$320,800</td>
-									<td>$320,800</td>
-									<td>$320,800</td>
-								</tr>
-								<tr>
-									<td>Garrett Winters</td>
-									<td>1</td>
-									<td>Tokyo</td>
-									<td>63</td>
-									<td>2011/07/25</td>
-									<td>$170,750</td>
-									<td>$170,750</td>
-									<td>$170,750</td>
-								</tr>
-								<tr>
-									<td>Ashton Cox</td>
-									<td>나</td>
-									<td>San Francisco</td>
-									<td>66</td>
-									<td>2009/01/12</td>
-									<td>$86,000</td>
-									<td>$86,000</td>
-									<td>$86,000</td>
-								</tr>
-								<tr>
-									<td>Cedric Kelly</td>
-									<td>다</td>
-									<td>Edinburgh</td>
-									<td>22</td>
-									<td>2012/03/29</td>
-									<td>$433,060</td>
-									<td>$433,060</td>
-									<td>$433,060</td>
-								</tr>
-								<tr>
-									<td>Airi Satou</td>
-									<td>갸</td>
-									<td>Tokyo</td>
-									<td>33</td>
-									<td>2008/11/28</td>
-									<td>$162,700</td>
-									<td>$162,700</td>
-									<td>$162,700</td>
-								</tr>
-								<tr>
-									<td>Brielle Williamson</td>
-									<td>Integration Specialist</td>
-									<td>New York</td>
-									<td>61</td>
-									<td>2012/12/02</td>
-									<td>$372,000</td>
-									<td>$372,000</td>
-									<td>$372,000</td>
-								</tr>
-								<tr>
-									<td>Herrod Chandler</td>
-									<td>Sales Assistant</td>
-									<td>San Francisco</td>
-									<td>59</td>
-									<td>2012/08/06</td>
-									<td>$137,500</td>
-									<td>$137,500</td>
-									<td>$137,500</td>
-								</tr>
-								<tr>
-									<td>Rhona Davidson</td>
-									<td>Integration Specialist</td>
-									<td>Tokyo</td>
-									<td>55</td>
-									<td>2010/10/14</td>
-									<td>$327,900</td>
-									<td>$327,900</td>
-									<td>$327,900</td>
-								</tr>
-								<tr>
-									<td>Colleen Hurst</td>
-									<td>Javascript Developer</td>
-									<td>San Francisco</td>
-									<td>39</td>
-									<td>2009/09/15</td>
-									<td>$205,500</td>
-									<td>$205,500</td>
-									<td>$205,500</td>
-								</tr>
-								<tr>
-									<td>Sonya Frost</td>
-									<td>Software Engineer</td>
-									<td>Edinburgh</td>
-									<td>23</td>
-									<td>2008/12/13</td>
-									<td>$103,600</td>
-									<td>$103,600</td>
-									<td>$103,600</td>
-								</tr>
-								<tr>
-									<td>Jena Gaines</td>
-									<td>Office Manager</td>
-									<td>London</td>
-									<td>30</td>
-									<td>2008/12/19</td>
-									<td>$90,560</td>
-									<td>$90,560</td>
-									<td>$90,560</td>
-								</tr>
-								<tr>
-									<td>Quinn Flynn</td>
-									<td>Support Lead</td>
-									<td>Edinburgh</td>
-									<td>22</td>
-									<td>2013/03/03</td>
-									<td>$342,000</td>
-									<td>$342,000</td>
-									<td>$342,000</td>
-								</tr>
-								<tr>
-									<td>Charde Marshall</td>
-									<td>Regional Director</td>
-									<td>San Francisco</td>
-									<td>36</td>
-									<td>2008/10/16</td>
-									<td>$470,600</td>
-									<td>$470,600</td>
-									<td>$470,600</td>
-								</tr>
+								<c:choose>
+										<c:when test="${empty userAllList}">
+											<td colspan="9" class="text-center"> 예약이 존재하지 않습니다.</td>
+										</c:when>
+										<c:otherwise>
+											<c:forEach items="${userAllList}" var="list" varStatus="status">
+												<tr>
+													<td> ${status.count} </td>
+													<td> ${list.RESERVATIONNAME}</td>
+													<td> ${list.PURPOSE}</td>
+													<td> ${list.ROOMNO}</td>
+													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
+													<td> ${list.DEPARTMENTNAME}</td>
+													
+													<td>
+														<c:if test="${list.STATUS eq 0 }">
+															<span class="text-success"> 대기 </span>
+														</c:if>
+													
+														<c:if test="${list.STATUS eq 1 }">
+															<span class="text-primary"> 승인 </span> 
+														</c:if>
+													
+														<c:if test="${list.STATUS eq 2 }">
+															 <span class="text-danger"> 반려 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 3 }">
+															 <span class="text-warning"> 예약 취소 </span>
+														</c:if>
+														
+													</td>
+													
+													
+													<td>
+														<c:if test="${list.STATUS eq 0 }">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 1 }">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 2 }">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 3	 }">
+															<span class="text-warning"> 취소 완료 </span>
+														</c:if>
+													</td>
+												</tr>
+											</c:forEach>
+										</c:otherwise>
+									</c:choose>
 							</tbody>
 						</table>
 					</div>
@@ -266,3 +180,77 @@
 
 	</div>
 </div>
+
+<script type="text/javascript">
+
+$(function() {
+	
+	var startDate = "";
+	var endDate = "";
+	
+	/* Date Range Picker */
+	$('input[name="daterange"]').daterangepicker({
+		autoUpdateInput : false, 
+		locale: {
+	      format: 'YYYY-MM-DD',
+    	  cancelLabel: '취소',
+	    }
+	}, function(start, end, label) {
+	    startDate = start.format('YYYY-MM-DD');
+	    endDate = end.format('YYYY-MM-DD');
+	});	
+
+	/* 날짜 선택 완료 시 데이트 포맷 */
+	$('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+		$(this).val(picker.startDate.format('YYYY-MM-DD') + ' ~ ' + picker.endDate.format('YYYY-MM-DD'));
+	});
+	
+	$('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+	      $(this).val('');
+	  });
+
+	
+	/* 검색 버튼 클릭 */
+	$("#searchBtn").click(function() {
+	
+		/* 검색 조건 하나라도 선택 안 했을 경우 */
+		if($('input[name="daterange"]').val()=='') {
+			swal('잠깐!', '검색 조건을 선택하세요', 'warning');
+		} else {
+			$.ajax({
+		        url : "/mypage/getUserSearchList",
+		        data : {"startDate" : startDate,
+		        		"endDate" : endDate},
+		        type : "POST",
+		        dataType : "json",
+		        success : function(data){
+		        	var table = '';
+		        	if (data.userSearchList.length == 0) {
+		        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
+		        	} else {
+		        		table += makeTable(data.userSearchList);
+		        	}
+		        	//$("#tableBody").empty().append(table);
+		        	//makeChart(workplaceNo, data.searchList);
+		        },
+		        error : function(){
+		            alert("검색 예약 현황 조회 에러");
+		        }
+			});
+		}
+		
+	});
+	
+ 	/* 초기화 버튼 클릭 */
+	$("#resetBtn").on("click", function() {
+		resetData();
+		$("a[value=" + workplaceNo + "]").trigger("click");	// 현재 선택된 지사 탭에서 검색된 리스트 -> 전체 리스트로 초기화
+	});
+	
+	/* 검색 옵션 초기화 */
+	function resetData() {
+		// Data Range Picker 초기화
+		$('input[name="daterange"]').val('');
+	}
+});
+</script>

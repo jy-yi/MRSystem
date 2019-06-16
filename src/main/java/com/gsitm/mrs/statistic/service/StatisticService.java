@@ -23,6 +23,14 @@ public interface StatisticService {
 	/** 마이페이지 개인 예약 통계 */ 
 	public List<Map<String, Object>> getIndividual(String employeeNo);
 	
+	/** 마이페이지 소속 부서 예약 통계 */ 
+	public List<Map<String, Object>> getDepartment(String employeeNo);
+
+	/** 마이페이지 전체 예약 통계 */
+	public List<Map<String, Object>> getUserAllList(String employeeNo);
+	
+	/** 마이페이지 날짜 검색 */
+	public List<Map<String, Object>> getUserSearchList(Map<String, Object> searchMap);
 	
 	/* ------------- 관리자 ------------- */
 	
@@ -34,4 +42,6 @@ public interface StatisticService {
 
 	/** 지사별 회의실 목록 조회 */
 	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo);
+
+
 }

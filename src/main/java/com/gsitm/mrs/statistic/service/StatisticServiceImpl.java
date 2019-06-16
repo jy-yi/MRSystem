@@ -31,6 +31,23 @@ public class StatisticServiceImpl implements StatisticService {
 		return dao.getIndividual(employeeNo);
 	}
 	
+	/** 마이페이지 소속 부서 예약 통계 */ 
+	public List<Map<String, Object>> getDepartment(String employeeNo) {
+		return dao.getDepartment(employeeNo);
+	}
+
+	/** 마이페이지 전쳬 예약 통계 */
+	@Override
+	public List<Map<String, Object>> getUserAllList(String employeeNo) {
+		return dao.getUserAllList(employeeNo);
+	}
+	
+	/** 마이페이지 날짜 검색 */
+	@Override
+	public List<Map<String, Object>> getUserSearchList(Map<String, Object> searchMap) {
+		return dao.getUserSearchList(searchMap);
+	}
+	
 	/* ------------- 관리자 ------------- */
 
 	/** 지사 별 전체 예약 현황 조회 */
@@ -50,5 +67,8 @@ public class StatisticServiceImpl implements StatisticService {
 	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
 		return dao.getRoomListByWorkplaceNo(workplaceNo);
 	}
+
+
+	
 
 }

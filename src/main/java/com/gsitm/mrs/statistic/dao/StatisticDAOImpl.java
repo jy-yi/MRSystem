@@ -34,6 +34,23 @@ public class StatisticDAOImpl implements StatisticDAO {
 		return sqlSession.selectList(namespace + ".getIndividual", employeeNo);
 	}
 
+	/** 마이페이지 소속 부서 예약 통계 */
+	@Override
+	public List<Map<String, Object>> getDepartment(String employeeNo) {
+		return sqlSession.selectList(namespace + ".getDepartment", employeeNo);
+	}
+	
+	/** 마이페이지 전쳬 예약 통계 */
+	@Override
+	public List<Map<String, Object>> getUserAllList(String employeeNo) {
+		return sqlSession.selectList(namespace +".getUserAllList", employeeNo);
+	}
+	
+	/** 마이페이지 날짜 검색 */
+	@Override
+	public List<Map<String, Object>> getUserSearchList(Map<String, Object> searchMap) {
+		return sqlSession.selectList(namespace + ".getUserSearchList", searchMap);
+	}
 	
 	/* ------------- 관리자 ------------- */
 	
@@ -54,4 +71,10 @@ public class StatisticDAOImpl implements StatisticDAO {
 	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
 		return sqlSession.selectList(namespace + ".getRoomListByWorkplaceNo", workplaceNo);
 	}
+
+
+	
+
+
+
 }

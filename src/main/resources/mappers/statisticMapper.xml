@@ -20,6 +20,55 @@
 	</select>
 
 
+	<select id="getDepartment" resultType="map">
+		SELECT	r.emp_no,
+        		count(*)			AS count,
+       			sum(money)			AS sum
+		FROM 	reservation r, 
+        		participation p,
+        		department d,
+        		employee e
+		WHERE 	d.dept_no = e.dept_no
+		AND     e.emp_no = p.emp_no
+		AND     p.res_no = r.res_no
+		AND 	r.emp_no= #{employeeNo}
+		GROUP BY ROLLUP(r.emp_no)
+		HAVING GROUPING_ID(r.emp_no) IN(0,3)
+	</select>
+	
+	<select id="getUserAllList" resultType="map">
+		SELECT  r.name										AS reservationName, 
+				purpose, 
+				room_no										AS roomNo, 
+				TO_CHAR(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
+		      	TO_CHAR(r.end_date, 'YYYY-MM-DD HH:mm') 	AS endDate, 
+				d.name										AS departmentName, 
+				status
+		FROM 	reservation r, 
+				lead_department ld, 
+				department d
+		WHERE 	r.res_no = ld.res_no
+		AND 	ld.dept_no = d.dept_no
+		AND 	r.emp_no = #{employeeNo}
+	</select>
+	
+	<select id="getUserSearchList" resultType="map">
+		SELECT  r.name										AS reservationName, 
+				purpose, 
+				room_no										AS roomNo, 
+				TO_CHAR(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
+		      	TO_CHAR(r.end_date, 'YYYY-MM-DD HH:mm') 	AS endDate, 
+				d.name										AS departmentName, 
+				status
+		FROM 	reservation r, 
+				lead_department ld, 
+				department d
+		WHERE 	r.res_no = ld.res_no
+		AND 	ld.dept_no = d.dept_no
+	    AND 	(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate} )
+		AND 	r.emp_no = #{employeeNo}
+	</select>
+
 	<!-- #### 관리자 #### -->
 
 	<sql id="reservationList">

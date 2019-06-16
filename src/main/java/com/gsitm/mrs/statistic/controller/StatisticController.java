@@ -55,11 +55,35 @@ public class StatisticController {
 		EmployeeDTO employee = (EmployeeDTO) user;
 		
 		List<Map<String, Object>> getIndividual = service.getIndividual(employee.getEmployeeNo());
+		List<Map<String, Object>> getDepartment = service.getDepartment(employee.getEmployeeNo());
+		List<Map<String, Object>> userAllList = service.getUserAllList(employee.getEmployeeNo());
+		
 		
 		model.addAttribute("getIndividual", getIndividual);
+		model.addAttribute("getDepartment", getDepartment);
+		model.addAttribute("userAllList", userAllList);
 		
 		return "user/mypage/statistic";
 	}
+	
+	/** 날짜 선택하여 예약 통계 검색 */
+	@RequestMapping(value = "/mypage/getUserSearchList", method = RequestMethod.POST)
+	public ModelAndView getUserSearchList(String startDate, String endDate) {
+
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("startDate", startDate);
+		searchMap.put("endDate", endDate);
+		
+		List<Map<String, Object>> userSearchList = service.getUserSearchList(searchMap);
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("userSearchList", userSearchList);
+		mav.setViewName("jsonView");
+
+		return mav;
+	}
+	
+	
 	
 	
 	/* ------------- 관리자 ------------- */

@@ -33,6 +33,29 @@ public class StatisticDaoTest {
 			logger.info(map);
 		}
 	}
+	/** 소속 부서 예약 통계 테스트 */
+	@Test
+	public void TestDepartment() {
+		
+		List<Map<String, Object>> list = dao.getDepartment("it1228");
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+	}
+	
+	/** 전체 예약 통계 테스트 */
+	@Test
+	public void TestUserAll() {
+		
+		List<Map<String, Object>> list = dao.getUserAllList("it1228");
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+	}
+	
+	
 	
 	
 	/** 지사 별 전체 예약 현황 조회 테스트 */
