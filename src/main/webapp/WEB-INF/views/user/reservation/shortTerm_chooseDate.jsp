@@ -85,7 +85,7 @@
 								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
 					</div>
-					<button class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
+					<button class="btn btn-disabled" id="nextBtn">다음 단계</button>
 				</div>
 			</div>
 		</div>
@@ -278,10 +278,8 @@
 		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 	});
 	
-	// 회의실 예약 내역을 다 입력하면 active로 전환(임의로 마우스오버 시 active)
+	// 회의실 예약 내역을 다 입력하면 active로 전환
 	$("#nextBtn").on("click",function(){
-		console.log(startTime);
-		console.log(endTime);
 		// startDate와 endDate 값을 넘겨줌
 		$("input[name='startDate']").val(startDate+" "+startTime);
 		if(endTime==null){

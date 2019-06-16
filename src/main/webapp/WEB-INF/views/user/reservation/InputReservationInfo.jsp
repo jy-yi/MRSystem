@@ -69,16 +69,14 @@
 						<hr>
 						<form action="${pageContext.request.contextPath}/reservation/checkReservation" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
+							<input type="hidden" name="startDate" value="${reservationInfo.startDate}">
+							<input type="hidden" name="endDate" value="${reservationInfo.endDate}">
+							<input type="hidden" name="equipments" value="${equipmentList}">
 							<input type="hidden" name="employeeNo" value=""/>
-							<input type="hidden" name="startDate" value="">
-							<input type="hidden" name="endDate" value="">
-							<input type="hidden" name="equipments" value="">
+							<input type="hidden" name="participation" value="">
+							<input type="hidden" name="mainDept" value="">
+							<input type="hidden" name="subDept" value="">
 							<ul>
-							<!-- <div class="form-group">
-							    <label for="exampleInputEmail1">Email address</label>
-							    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-							    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-							  </div> -->
 								<li>
 									
 									<label>예약자</label>
@@ -112,7 +110,9 @@
 								<li>
 									<label>주관부서</label>
 									<a class="btn btn-primary" href="#" id="chooseMainDeptBtn"  data-toggle="modal" data-target="#chooseDeptModal">검색</a>
-									<div id="final-mainDept-list-div"></div>
+									<div id="final-mainDept-list-div">
+										<ul id="final-mainDept-list"></ul>
+									</div>
 								</li>
 								<li>
 									<label>협조부서</label>
@@ -142,7 +142,7 @@
 							</li>
 						</ul>
 					</div>
-					<button class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
+					<button type="submit" class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
 				</div>
 			</div>
 		</div>
@@ -152,12 +152,13 @@
 
 </div>
 
+
 <!-- Modal -->
 <jsp:include page="include/chooseParticipation.jsp" />
 <jsp:include page="include/chooseDepartment.jsp" />
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script type="text/javascript">
+<script>
 	// 회의 참여자 사원번호를 담은 배열
 	var participation=new Array();
 	var chosung;
@@ -204,9 +205,12 @@
 			reserved_date=startDate.format('yyyy. MM. dd(KS) HH:mm')+"~"+endDate.format('yyyy. MM. dd(KS) HH:mm');
 		}
 		$("#reservation-date").text(reserved_date);
+		
 	})
 	
-	/* 사원 검색 */
+	/******************
+		사원
+	*******************/
 	// 모달 초성 선택 이벤트
 	$("#ganada-list>li").on("click",function(){
 		chosung=$(this).text();
@@ -267,7 +271,6 @@
 	
 	// 참여 사원 추가 함수
 	function addParticipation(employeeNo, name, departmentName){
-		console.log(departmentName);
 		// 해당 사원을 배열에 추가한다.
 		participation.push({"employeeNo":employeeNo, "name":name, "departmentName":departmentName});
 		// 사원 목록을 업데이트한다.
@@ -278,6 +281,8 @@
 		if(participation.length>=1){
 			$("#choose-complete-btn").addClass("btn-primary").attr("disabled",false);
 		}
+		// 폼을 다 채웠는지 확인하는 함수
+		checkFormInput();
 	}
 	
 	// 참여자 삭제 이벤트
@@ -335,7 +340,11 @@
 		$("#final-participation-list-div>ul").attr("id","user-chosen-participation");
 	});
 	
-	/* 부서 */
+	
+	/******************
+		부서
+	*******************/
+	
 	// 주관부서 버튼 클릭 이벤트
 	$("#chooseMainDeptBtn").on("click",function(){
 		if(departmentList==null){
@@ -352,7 +361,7 @@
 				data : {"employeeNoArr" : employeeNoArr},
 				success: function(data){
 					$.each(data.departmentList, function(index, item){
-						departmentList.push({"dept_no":item.DEPT_NO,"name":item.NAME});
+						departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
 					})
 					getDepartmentList();
 				},
@@ -369,16 +378,16 @@
 	function getDepartmentList(){
 		$("#department-list>ul").empty();
 		$.each(departmentList, function(index, item){
-			$("#department-list>ul").append("<i style='display:none'>"+item.dept_no+"</i><li>"+item.name+"</li>");
+			$("#department-list>ul").append("<i style='display:none'>"+item.deptNo+"</i><li>"+item.name+"</li>");
 		});
 	};
 	
 	// 주관부서를 append하는 함수
 	function appendMainDept(){
-		$("#MainDept-list").empty();
+		$("#final-mainDept-list").empty();
 		$.each(mainDept, function(index, item){
-			$("#MainDept-list").append("<li>"+item.name
-					+"<i style='display:none'>"+item.dept_no+"</i>"
+			$("#final-mainDept-list").append("<li>"+item.name
+					+"<i style='display:none'>"+item.deptNo+"</i>"
 					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
 		});
 	};
@@ -388,7 +397,7 @@
 		$("#final-subDept-list-div>ul").empty();
 		$.each(departmentList, function(index, item){
 			$("#final-subDept-list-div>ul").append("<li>"+item.name
-					+"<i style='display:none'>"+item.dept_no+"</i>"
+					+"<i style='display:none'>"+item.deptNo+"</i>"
 					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
 		});
 	}
@@ -397,14 +406,19 @@
 	$(document).on("click","#department-list>ul>li",function(){
 		var deptNo=$(this).prev().text();
 		var deptName=$(this).text();
-		var deptInfo={"dept_no":deptNo, "name":deptName};
+		var deptInfo={"deptNo":deptNo, "name":deptName};
 		
 		// 선택한 부서를 departmentList에서 삭제한다.
 		departmentList.splice(deptInfo,1);
 		// 선택한 부서를 mainDept 배열에 넣는다.
 		mainDept.push(deptInfo);
 		// 주관 부서 정보를 모달에 뿌려준다.
-		appendMainDept();
+		$("#MainDept-list").empty();
+		$.each(mainDept, function(index, item){
+			$("#MainDept-list").append("<li>"+item.name
+					+"<i style='display:none'>"+item.deptNo+"</i>"
+					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
+		});
 		// 부서 목록을 업데이트한다.
 		getDepartmentList();
 		// 선택한 부서가 1개 이상이면 확인 버튼 active
@@ -413,55 +427,88 @@
 		} else{
 			$("#dept-choose-complete-btn").addClass("btn-primary").attr("disabled",true);
 		}
+
+		// 폼을 다 채웠는지 확인하는 함수
+		checkFormInput();
 	});
 	
 	
 	// 부서 선택 완료 이벤트
 	$("#dept-choose-complete-btn").on("click",function(){
 		// MainDept 요소들을 화면에 뿌려준다.
-		$("#final-mainDept-list-div").empty();
-		$("#MainDept-list").clone().appendTo("#final-mainDept-list-div");
-		$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list");
+		appendMainDept();
+		//$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list");
 		// 남은 부서들을 협조부서에 뿌려준다.
 		appendSubDept();
 	});
+	
 	// 부서 삭제 이벤트
 	$(document).on("click",".delete-department-btn",function(){
-		
 		var deptName;
 		var deptNo=$(this).prev().text();
 		var index;
 		var isMainDept=mainDept.some(function(entry, i) {
-		    if (entry.dept_no == deptNo) {
+		    if (entry.deptNo == deptNo) {
 		    	index=i;
-		    	console.log("i : "+i);
-				console.log("index : "+index);
 		        return true;
 		    };
 		});
 		
 		if(isMainDept){ // 주관 부서를 삭제한다면
+			// 주관부서는 무조건 1개 이상이여야 한다.
+			if(mainDept.length==1){
+				alert("회의실 예약을 위해선 1개 이상의 부서가 주관해야합니다.");
+				return;
+			}
 			// 해당 부서 협조 부서 배열에 push
-			console.log("name : "+name);
 			deptName=mainDept[index].name;
 			mainDept.splice(index,1);
-			departmentList.push({"dept_no":deptNo,"name":name});
+			departmentList.push({"deptNo":deptNo,"name":deptName});
 		}else{ // 협조 부서를 삭제한다면
 			// 해당 부서 주관 부서 배열에 push
-			mainDept.some(function(entry, i) {
-			    if (entry.dept_no == deptNo) {
+			departmentList.some(function(entry, i) {
+			    if (entry.deptNo == deptNo) {
 			    	deptName=entry.name;
 			    	departmentList.splice(i,1);
 			        return true;
 			    };
 			});
-			
-			mainDept.push({"dept_no":deptNo,"name":name});
+			mainDept.push({"deptNo":deptNo,"name":deptName});
 		}
-		// 부서 li요소 재 append
+		// 화면에 반영
 		getDepartmentList();
 		appendMainDept();
 		appendSubDept();
 	});
+	
+	// 회의명 작성 이벤트
+	$("input[name='name']").on("propertychange change keyup paste input",function(){
+		checkFormInput();
+	});
+	
+	// 폼을 다 채웠는지 확인하는 함수
+	function checkFormInput(){
+		// 회의명을 채웠는지 확인
+		if($("input[name='name']").val()!=''){
+			// 참여인원과 주관부서를 선택했는지 확인
+			if(participation.length!=0 && mainDept.length!=0){
+				// 폼의 모든 요소를 채웠으면 버튼 active
+				$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+			}
+		}
+	}
+	
+	// 회의실 예약 내역을 다 입력하면 active로 전환
+	$("#nextBtn").on("click",function(){
+		// 쿠키에 저장된 employeeNo 폼에 전달
+		$("input[name=employeeNo]").val($.cookie('loginCookie'));
+		// 참여사원, 주관부서, 협조부서를 폼에 전달
+		$("input[name=participation]").val(participation);
+		$("input[name=mainDept]").val(mainDept);
+		$("input[name=subDept]").val(departmentList);
+		// 폼 제출
+		$("#option_form").submit();
+	});
+	
 </script>
 </html>
