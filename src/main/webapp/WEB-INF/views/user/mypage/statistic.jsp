@@ -18,11 +18,14 @@
 <!-- Main Content -->
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
+<c:forEach items="userSearchList" var="list" varStatus="status">
+	${list }
+	${status.count }
+</c:forEach>
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h5 mb-0 text-gray-800">
-			<i class="fas fa-user"></i> 마이페이지 > 예약 통계
+			<i class="fas fa-user"></i> 마이페이지 > 예약 통계 	
 		</h1>
 	</div>
 
@@ -77,7 +80,7 @@
 			<span>검색</span>
 		</button>
 	</div>
-
+</div>
 
 <!-- /.container-fluid -->
 
@@ -218,8 +221,9 @@ $(function() {
 			swal('잠깐!', '검색 조건을 선택하세요', 'warning');
 		} else {
 			$.ajax({
-		        url : "/mypage/getUserSearchList",
-		        data : {"startDate" : startDate,
+		        url : "/statistic/getUserSearchList",
+		        data : {"employeeNo" : employeeNo,
+		        		"startDate" : startDate,
 		        		"endDate" : endDate},
 		        type : "POST",
 		        dataType : "json",
@@ -239,12 +243,6 @@ $(function() {
 			});
 		}
 		
-	});
-	
- 	/* 초기화 버튼 클릭 */
-	$("#resetBtn").on("click", function() {
-		resetData();
-		$("a[value=" + workplaceNo + "]").trigger("click");	// 현재 선택된 지사 탭에서 검색된 리스트 -> 전체 리스트로 초기화
 	});
 	
 	/* 검색 옵션 초기화 */

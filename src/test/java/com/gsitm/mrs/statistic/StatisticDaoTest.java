@@ -1,5 +1,6 @@
 package com.gsitm.mrs.statistic;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,6 +54,21 @@ public class StatisticDaoTest {
 		for (Map<String, Object> map : list) {
 			logger.info(map);
 		}
+	}
+	
+	@Test
+	public void TestUserSearch() {
+		
+		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("startDate", "20190520");
+		searchMap.put("endDate", "20190620");
+		
+		List<Map<String, Object>> list = dao.getUserSearchList(searchMap);
+		
+		for (Map<String, Object> map : list) {
+			logger.info(map);
+		}
+		
 	}
 	
 	
