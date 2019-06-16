@@ -130,10 +130,10 @@ $(document).on("click", ".btn-primary", function() {
 
 /* 반려 버튼 클릭 */
 $(document).on("click", ".btn-danger", function() {
-	var equipmentNo = $(this).next().val();	// 삭제 버튼을 클릭한 비품의 번호
+	var reservationNo = $(this).parent().next().val();	// 반려할 예약 번호
 	
 	swal({
-		title: '정말 삭제하시겠습니까?',
+		title: '정말 빈려하시겠습니까?',
 		text: "이후 복구는 불가능합니다.",
 		type: 'warning',
 		showCancelButton: true,
@@ -143,18 +143,40 @@ $(document).on("click", ".btn-danger", function() {
 		    cancelButtonText: 'No',
 		}).then( (result) => {
 			if (result.value) {
-  			$.ajax({
-				url : "/resource/deleteEquipment",
-				type : "POST",
-				data : {
-					equipmentNo : equipmentNo,
-				}, success : function(data) {
-					swal('Success!', '비품 삭제가 완료되었습니다.', 'success'
-			    		).then(function(){
-  		    		    	location.href="/resource/equipmentList";
-  		    		    });
-				}
-			});
+				Swal.mixin({
+					  input: 'text',
+					  confirmButtonText: '확인',
+					  showCancelButton: true
+					}).queue([
+					  {
+					    title: '반려 사유를 작성하세요',
+					    text: '해당 사유는 신청자에게 메일로 전송됩니다.'
+					  },
+					]).then((result) => {
+					  if (result.value) {
+						 
+						  /* 반려 사유 아무것도 작성하지 않았을 경우 */
+						  if ($.trim(result.value[0]) == "") {
+							  return;
+						  } else {
+				  			$.ajax({
+								url : "/reservation/adminRefuse",
+								type : "POST",
+								data : {
+									reservationNo : reservationNo,
+									reason : result.value[0],
+									status : 2
+								}, success : function(data) {
+									swal('Success!', '반려가 완료되었습니다.', 'success'
+						    		).then(function(){
+			  		    		    	location.href="/reservation/approvalWaitingList";
+			  		    		    });
+								}
+							});
+						  }
+				  			
+					  }
+					})
 			}
 			  
 		});

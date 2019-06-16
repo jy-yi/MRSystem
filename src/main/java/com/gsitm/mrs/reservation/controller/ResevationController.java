@@ -205,17 +205,37 @@ public class ResevationController {
 	@RequestMapping(value = "/adminApproval", method = RequestMethod.POST)
 	public String adminApproval(String status, String reservationNo) {
 		
-		Map<String, Object> statusMap = new HashMap<>();
-		statusMap.put("status", status);
-		statusMap.put("reservationNo", reservationNo);
+		Map<String, Object> map = new HashMap<>();
+		map.put("reservationNo", reservationNo);
+		map.put("status", status);
+		map.put("adminApproval", "N");
 		
-		service.updateStatus(statusMap);
+		service.updateStatus(map);
+		service.updateAdminApproval(map);
 		
-		Map<String, Object> approvalMap = new HashMap<>();
-		approvalMap.put("adminApproval", "Y");
-		approvalMap.put("reservationNo", reservationNo);
+		return "redirect:/reservation/approvalWaitingList";
+	}
+	
+	/**
+	 * 예약 반려
+	 * 
+	 * @param status		예약 상태 (반려 : 2)
+	 * @param reservationNo	예약 번호
+	 * @param reason		반려 사유
+	 * @return
+	 */
+	@RequestMapping(value = "/adminRefuse", method = RequestMethod.POST)
+	public String adminRefuse(String status, String reservationNo, String reason) {
 		
-		service.updateAdminApproval(approvalMap);
+		Map<String, Object> map = new HashMap<>();
+		map.put("reservationNo", reservationNo);
+		map.put("status", status);
+		map.put("adminApproval", "N");
+		map.put("reason", reason);
+		
+		service.updateStatus(map);
+		service.updateAdminApproval(map);
+		service.insertRefuse(map);
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}

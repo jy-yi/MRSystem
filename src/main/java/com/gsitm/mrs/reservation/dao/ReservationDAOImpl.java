@@ -111,14 +111,22 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getWaitingList");
 	}
 	
+	/** 예약 상태 변경 */
 	@Override
 	public void updateStatus(Map<String, Object> map) {
 		sqlSession.update(namespace + ".updateStatus", map);
 	}
 
+	/** 관리자 승인 상태 변경 */
 	@Override
 	public void updateAdminApproval(Map<String, Object> map) {
 		sqlSession.update(namespace + ".updateAdminApproval", map);
+	}
+	
+	/** 반려 사유 추가 */
+	@Override
+	public void insertRefuse(Map<String, Object> map) {
+		sqlSession.insert(namespace + ".insertRefuse", map);
 	}
 
 	/** 승인 반려 목록 조회 */

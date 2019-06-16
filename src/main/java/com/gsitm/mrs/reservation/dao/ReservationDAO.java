@@ -64,6 +64,9 @@ public interface ReservationDAO {
 
 	/** 관리자 승인 상태 변경 */
 	public void updateAdminApproval(Map<String, Object> map);
+
+	/** 반려 사유 추가 */
+	public void insertRefuse (Map<String, Object> map);
 	
 	/** 승인 반려 목록 조회 */
 	public List<Map<String, Object>> getApprovalCancelList();

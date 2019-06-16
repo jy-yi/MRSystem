@@ -277,6 +277,11 @@
 		WHERE res_no = #{reservationNo}
 	</update>
 	
+	<!-- 반려 사유 추가 -->
+	<update id="insertRefuse">
+		INSERT INTO refuse(res_no, reason) VALUES (#{reservationNo}, #{reason})
+	</update>
+	
 	<!-- 승인 반려 목록 조회 -->
 	<select id="getApprovalCancelList" resultType="Map">
 		SELECT r.res_no     							 AS reservationNo, 
