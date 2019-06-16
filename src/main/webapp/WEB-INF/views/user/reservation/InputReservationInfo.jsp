@@ -67,7 +67,7 @@
 					<div id="calendar_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">예약 정보</h4>
 						<hr>
-						<form action="${pageContext.request.contextPath}/reservation/checkReservation" id="option_form" method="get">
+						<form action="${pageContext.request.contextPath}/reservation/checkReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
 							<input type="hidden" name="startDate" value="${reservationInfo.startDate}">
 							<input type="hidden" name="endDate" value="${reservationInfo.endDate}">
@@ -142,7 +142,7 @@
 							</li>
 						</ul>
 					</div>
-					<button type="submit" class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
+					<button class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
 				</div>
 			</div>
 		</div>
@@ -158,6 +158,7 @@
 <jsp:include page="include/chooseDepartment.jsp" />
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
 	// 회의 참여자 사원번호를 담은 배열
 	var participation=new Array();
@@ -502,10 +503,20 @@
 	$("#nextBtn").on("click",function(){
 		// 쿠키에 저장된 employeeNo 폼에 전달
 		$("input[name=employeeNo]").val($.cookie('loginCookie'));
+		// participation배열에서 employeeNo 값으로만 배열 생성
+		var employeeNoArr=participation.map(function(a){
+			return a.employeeNo;
+		});
+		var mainDeptNoArr=mainDept.map(function(a){
+			return a.deptNo;
+		});
+		var subDeptNoArr=departmentList.map(function(a){
+			return a.deptNo;
+		});
 		// 참여사원, 주관부서, 협조부서를 폼에 전달
-		$("input[name=participation]").val(participation);
-		$("input[name=mainDept]").val(mainDept);
-		$("input[name=subDept]").val(departmentList);
+		$("input[name=participation]").val(employeeNoArr);
+		$("input[name=mainDept]").val(mainDeptNoArr);
+		$("input[name=subDept]").val(subDeptNoArr);
 		// 폼 제출
 		$("#option_form").submit();
 	});

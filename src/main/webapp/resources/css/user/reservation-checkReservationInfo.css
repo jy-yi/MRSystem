@@ -1,0 +1,9 @@
+@charset "EUC-KR";
+#reservationInfoDiv{
+	background-color: #cecece;
+	margin: 0 24px;
+}
+
+#reservationInfoDiv span{
+	margin: 30px;	
+}

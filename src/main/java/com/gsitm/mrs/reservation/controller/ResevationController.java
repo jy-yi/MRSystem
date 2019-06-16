@@ -175,6 +175,17 @@ public class ResevationController {
 		return map;
 	}
 	
+	@RequestMapping(value="/checkReservationInfo", method=RequestMethod.GET)
+	public String checkReservation(HttpServletRequest request, Model model, 
+			@RequestParam List<String> participation, @RequestParam List<String> mainDept
+			,@RequestParam List<String> subDept) {
+		
+		logger.info("(사용자) 예약 - 회의실 예약 정보 입력 내역 조회");
+		
+		service.checkReservationInfo(request, model);
+		return "user/reservation/checkReservationInfo";
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/**

@@ -2,8 +2,11 @@ package com.gsitm.mrs.reservation.service;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,6 +20,7 @@ import org.springframework.ui.Model;
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 import freemarker.log.Logger;
@@ -95,7 +99,42 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr) {
 		return dao.getDepartmentList(employeeNoArr);
 	}
-	
+
+
+	/** 회의실 예약 입력 정보 조회 */
+	@Override
+	public void checkReservationInfo(HttpServletRequest request, Model model) {
+		// 사용자 정보
+		String employeeNo=request.getParameter("employeeNo");
+		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
+		model.addAttribute("employeeDto",employeeDto);
+		
+		// 방 정보
+		int roomNo=Integer.parseInt(request.getParameter("roomNo"));
+		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
+		model.addAttribute("roomInfo",roomInfo);
+		
+		// 사용시간 정보
+		String startDate=request.getParameter("startDate");
+		String endDate=request.getParameter("endDate");
+		System.out.println("startDate : "+startDate);
+		System.out.println("endDate : "+endDate);
+		SimpleDateFormat transFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
+		try {
+			Date start=transFormat.parse(startDate);
+			Date end=transFormat.parse(endDate);
+			long diff=(end.getTime()-start.getTime())/60000;
+			// 30분당 5000천원 적용
+			int price=((int)(diff/30)*5000);
+			model.addAttribute("startDate",startDate);
+			model.addAttribute("endDate",endDate);
+			model.addAttribute("useTime",diff);
+			model.addAttribute("price",price);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	/* ------------- 마이페이지 ------------- */
 	
 	/** 마이페이지 예약 현황 캘린더 */
@@ -200,6 +239,5 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return dao.getReservationCancelList();
 	}
-
 
 }
