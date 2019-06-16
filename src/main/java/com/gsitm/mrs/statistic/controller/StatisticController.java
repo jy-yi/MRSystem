@@ -67,10 +67,16 @@ public class StatisticController {
 	}
 	
 	/** 날짜 선택하여 예약 통계 검색 */
-	@RequestMapping(value = "/mypage/getUserSearchList", method = RequestMethod.POST)
-	public ModelAndView getUserSearchList(String startDate, String endDate) {
+	@RequestMapping(value = "/getUserSearchList", method = RequestMethod.POST)
+	public ModelAndView getUserSearchList(HttpSession session, String startDate, String endDate) {
 
+		Object user = session.getAttribute("login");	
+		EmployeeDTO employee = (EmployeeDTO) user;
+		
+		logger.info(employee.getEmployeeNo() +","+startDate +", " +endDate);
+		
 		Map<String, Object> searchMap = new HashMap<>();
+		searchMap.put("employeeNo", employee.getEmployeeNo());
 		searchMap.put("startDate", startDate);
 		searchMap.put("endDate", endDate);
 		
