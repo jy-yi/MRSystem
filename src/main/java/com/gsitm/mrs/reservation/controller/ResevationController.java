@@ -1,10 +1,12 @@
 package com.gsitm.mrs.reservation.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
+import com.gsitm.mrs.resource.service.ResourceService;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
@@ -44,6 +47,9 @@ public class ResevationController {
 	
 	@Inject
 	private ReservationService service;
+	
+	@Inject
+	private ResourceService resourceService;
 	
 	/* ------------- 사용자 ------------- */
 	
@@ -128,9 +134,15 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
-	public String room() {
+	public String room(Model model) {
 		
 		logger.info("(사용자) 회의실 정보");
+		
+		List<Map<String, Object>> roomList = resourceService.getRoomList();
+		List<String> equipmentList = resourceService.getEquipmentListDistinct();
+
+		model.addAttribute("roomList", roomList);
+		model.addAttribute("equipDistinctList", equipmentList);
 		
 		return "user/reservation/room";
 	}
@@ -193,13 +205,44 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value="/checkReservationInfo", method=RequestMethod.GET)
-	public String checkReservation(HttpServletRequest request, Model model, 
-			@RequestParam List<String> participation, @RequestParam List<String> mainDept
-			,@RequestParam List<String> subDept, @RequestParam List<Map<String, Object>> equipments) {
-		System.out.println("checkReservationInfo.controller");
+	public String checkReservation(HttpServletRequest request, Model model, String participation, String mainDept, String subDept, String equipments) {
+		
 		logger.info("(사용자) 예약 - 회의실 예약 정보 입력 내역 조회");
 		
-		service.checkReservationInfo(request, model, participation, mainDept, subDept, equipments);
+		logger.info("participation" + participation);	// participationit1226,it1228,it0001
+		logger.info("mainDept" + mainDept);				// mainDept24,1
+		logger.info("subDept" + subDept);				// subDept
+		logger.info("equipments" + equipments);
+		
+		StringTokenizer token = new StringTokenizer(participation, ",");
+		List<String> participationList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			participationList.add(token.nextToken());
+		}
+		
+		token = new StringTokenizer(mainDept, ",");
+		List<String> mainDeptList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			mainDeptList.add(token.nextToken());
+		}
+		
+		token = new StringTokenizer(subDept, ",");
+		List<String> subDeptList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			subDeptList.add(token.nextToken());
+		}
+		
+		logger.info("participationList : " + participationList);	// participationList : [it1226, it1228, it0001]
+		logger.info("mainDeptList : " + mainDeptList);	// mainDeptList : [24, 1]
+		logger.info("subDeptList : " + subDeptList);	// subDeptList : []
+		
+		// TODO : 여기만 바꿔주면 될듯~
+		List<Map<String, Object>> equipmentsList = new ArrayList<>();
+		// equipments[{EQUIP_NO=1, NW_AVAILABLE=Y, CAPACITY=10, WORKPLACE_NO=1, IMAGE=maldives.jpg, need=true, ADMIN_ID=admin_it0002, ROOM_NO=1, BUY_DATE=2019-01-01 00:00:00.0, NAME=화이트보드}, {EQUIP_NO=2, NW_AVAILABLE=Y, CAPACITY=10, WORKPLACE_NO=1, IMAGE=maldives.jpg, need=true, ADMIN_ID=admin_it0002, ROOM_NO=1, BUY_DATE=2019-01-01 00:00:00.0, NAME=보드마카}, {EQUIP_NO=3, NW_AVAILABLE=Y, CAPACITY=10, WORKPLACE_NO=1, IMAGE=maldives.jpg, ADMIN_ID=admin_it0002, ROOM_NO=1, BUY_DATE=2019-01-01 00:00:00.0, NAME=빔 프로젝터}, {EQUIP_NO=4, NW_AVAILABLE=Y, CAPACITY=10, WORKPLACE_NO=1, IMAGE=maldives.jpg, need=true, ADMIN_ID=admin_it0002, ROOM_NO=1, BUY_DATE=2019-01-01 00:00:00.0, NAME=노트북}]
+		// TODO : 이렇게 생긴거 List<Map<String, Object>> 형식으루 바꿔서 서비스로 넘겨주기!
+		
+//		service.checkReservationInfo(request, model, participationList, mainDeptList, subDeptList, equipments);
+		
 		return "user/reservation/checkReservationInfo";
 	}
 	

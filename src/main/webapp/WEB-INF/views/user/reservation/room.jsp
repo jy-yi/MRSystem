@@ -23,218 +23,49 @@
 		<div class="row">
 
 			<ul class="nav nav-tabs">
-				<li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#qwe">본사</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#asd">삼환빌딩</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#zxc">GS 강남타워</a></li>
-				<li class="nav-item"><a class="nav-link" data-toggle="tab" href="#zxc">GS 강서타워</a></li>
+				<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+				<c:forEach items="${workplaceList}" var="list" varStatus="status">
+					<li class="nav-item"><a class="nav-link  ${status.index eq 0 ? 'active':''}" data-toggle="tab" href="#workplace${list.workplaceNo}">${list.name}</a></li>
+				</c:forEach>
 			</ul>
 
 			<div class="tab-content">
-				<div class="tab-pane fade show active" id="qwe">
-
-					<div class="row">
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<a href="/reservation/shortTerm_chooseDate/1" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
-											<a href="#" class="btn btn-primary"> <span class="text">장기 예약</span> </a>
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
+				<c:forEach items="${workplaceList}" var="workplaceList" varStatus="status">
+					<div class="tab-pane fade show ${status.index eq 0 ? 'active':''}" id="workplace${workplaceList.workplaceNo}">
+						<div class="row">
+							<c:forEach items="${roomList}" var="list">
+								<c:if test="${workplaceList.workplaceNo eq list.WORKPLACENO}">
+									<div class="col-xl-4 col-md-4 mb-4">
+										<div class="card shadow mb-4">
+											<div class="card-header py-3">
+												<h5 class="m-0 font-weight-bold text-primary"> ${list.ROOMNAME}
+												 
+												<span style="float:right"> 
+													<a href="/reservation/shortTerm_chooseDate/1" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
+													<a href="#" class="btn btn-primary"> <span class="text">장기 예약</span> </a>
+												</span> 
+												
+													<input type="hidden" id="roomNo" name="roomNo" value="${list.ROOMNO}">
+												</h5>
+												
+											</div>
+											<div class="card-body">
+												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%"></div>
+												<p>
+												<div>구분 : 회의실</div>
+												<div>수용 인원 : ${list.CAPACITY}명</div>
+												<div>비치 물품 : <span id="equipList"></span></div>
+												<div>네트워크 : ${list.NWAVAILABLE eq 'Y' ? "사용 가능":"사용 불가능" }</div>
+												<div>사용 요금 : 10,000원/시간</div>
+												<div>관리자 : ${list.DEPTNAME } ${list.ADMINNAME }</div>
+											</div>
+										</div>
+									</div>
+								</c:if>
+							</c:forEach>
 						</div>
 					</div>
-				</div>
-				<div class="tab-pane fade" id="asd">
-					<div class="row">
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
-									<p>
-									<div>구분 : 회의실</div>
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-									<div>사용 요금 : 10,000원/시간</div>
-									<div>관리자 : 인사지원실 이예지</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-xl-4 col-md-4 mb-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h5 class="m-0 font-weight-bold text-primary"> 몰디브 
-										<span style="float:right"> 
-											<i class="fas fa-edit"></i>
-											<i class="fas fa-trash-alt"></i> 
-										</span> 
-									</h5>
-									
-								</div>
-								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
-									<p>
-									
-									<div>위치 : 본사 2층</div>
-									<div>수용 인원 : 20명</div>
-									<div>비치 물품 : 빔프로젝터 노트북</div>
-									<div>네트워크 : 사용 가능</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="tab-pane fade" id="zxc">
-					<p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut mattis
-						leo, vel fermentum tellus. Sed sagittis rhoncus venenatis. Quisque
-						commodo consectetur faucibus. Aenean eget ultricies justo.</p>
-				</div>
-
+				</c:forEach>
 			</div>
 		</div>
 
@@ -246,31 +77,27 @@
 </div>
 
 <script type="text/javascript">
-		$(function() {
-			$('.fa-edit').click(function(){
-				$('#editRoomModal').modal("show");
-			});
-			
-			/* 휴지통 아이콘 클릭 */
-			$(".fa-trash-alt").click(function() {
-				Swal.fire({
-					  title: 'Are you sure?',
-					  text: "You won't be able to revert this!",
-					  type: 'warning',
-					  showCancelButton: true,
-					  confirmButtonColor: '#3085d6',
-					  cancelButtonColor: '#d33',
-					  confirmButtonText: 'Yes, delete it!'
-					}).then((result) => {
-					  if (result.value) {
-					    Swal.fire(
-					      'Deleted!',
-					      'Your file has been deleted.',
-					      'success'
-					    )
-					  }
-					});
-				
-			});
-		});
+/* 회의실 별 비품 목록 AJAX */
+$(function() {
+	$('.card').each(function(i, e){
+		$.ajax({
+	        url : "/resource/getEquipmentList",
+	        data : {roomNo: $(e).find("#roomNo").val()},
+	        type : "POST",
+	        dataType : "json",
+	        success : function(data){
+	            var str = '';
+	            $.each(data.equipmentList , function(i, item){
+	                str += item.NAME + " ";
+	           });
+	            
+	            $(e).find("#equipList").append(str); 
+	        },
+	        error : function(){
+	            alert("회의실 별 비품 목록 조회 에러");
+	        }
+	    });
+	});
+	
+});
 </script>

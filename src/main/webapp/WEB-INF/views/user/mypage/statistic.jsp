@@ -1,19 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<style>
-.table {
-	display: table;
-	text-align: center;
-}
-
-.rHeader {
-	color: #ffffff;
-	background: #6c7ae0;
-}
-</style>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!-- Main Content -->
 <!-- Begin Page Content -->
@@ -32,21 +18,20 @@
 			<h6 class="m-0 font-weight-bold text-primary">나의 예약 횟수 및 비용</h6>
 		</div>
 		<div class="card-body">
-
-			<table class="table" border="2">
-				<thead>
-					<tr class="rHeader">
-						<th colspan="2">개인</th>
-						<th colspan="2">부서</th>
-					</tr>
+			<table class="table table-bordered text-center" >
+				<thead style="color: #ffffff; background: #6c7ae0;">
 					<tr>
-						<td>횟수</td>
-						<td>비용</td>
-						<td>횟수</td>
-						<td>비용</td>
+						<th colspan="2" class="table-header">개인</th>
+						<th colspan="2" class="table-header">부서</th>
 					</tr>
 				</thead>
-				<tbody id="tableBody2">
+				<tbody>
+					<tr>
+						<td> 횟수 </td>
+						<td> 비용 </td>
+						<td> 횟수 </td>
+						<td> 비용 </td>
+					</tr>
 					<tr>
 						<td id="countIn"></td>
 						<td id="sumIn"></td>
@@ -57,25 +42,25 @@
 			</table>
 		</div>
 	</div>
-	
-	
 	<!-- 개인 및 부서 통계 표 끝 -->
-	<div>
-		<div class="small mb-1"> 기간 : </div>
-		<input type="text" class="form-control" name="daterange" placeholder="조회하고 싶은 날짜를 선택하세요." />
-	</div>
 	
-	<hr>
-
-	<div class="text-right">
-		<button id="resetBtn" class="btn btn-info">
-			<span>초기화</span>
-		</button>
-		<button id="searchBtn" class="btn btn-warning">
-			<span>검색</span>
-		</button>
+	<div class="row">
+		<div class="col-xl-6 col-xl-offset-3">
+			<div class="small mb-1"> 기간 : </div>
+			<input type="text" class="form-control" name="daterange" placeholder="조회하고 싶은 날짜를 선택하세요." />
+		</div>
+		<div class="col-xl-3" style="margin-top: 1.4em"> 
+			<button id="resetBtn" class="btn btn-info">
+				<span>초기화</span>
+			</button>
+			<button id="searchBtn" class="btn btn-warning">
+				<span>검색</span>
+			</button>
+		</div>
 	</div>
 </div>
+
+<hr>
 
 <!-- /.container-fluid -->
 

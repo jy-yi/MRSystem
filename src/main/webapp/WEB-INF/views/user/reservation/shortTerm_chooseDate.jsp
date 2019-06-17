@@ -31,10 +31,9 @@
 						<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>
 						<hr>
 						<ul>
-							<li>회의실 이름 : ${roomInfo.ROOMNAME}
-							<li>회의실 위치 : ${roomInfo.WORKPLACEADDRESS}
-							<li>수용인원 수 : ${roomInfo.CAPACITY}명
-							<li>비치물품 : ${roomInfo.EQUIPMENTS}
+							<li>회의실 위치 : ${roomInfo.WORKPLACENAME}
+							<li>수용 인원 : ${roomInfo.CAPACITY}명
+							<li>비치 물품 : ${roomInfo.EQUIPMENTS}
 							<li>네트워크 : 
 								<c:choose>
 									<c:when test="${roomInfo.NWAVAILABLE eq 'Y'}">
@@ -44,7 +43,7 @@
 										사용불가능
 									</c:otherwise>
 								</c:choose>
-							<li>사용요금 : 1시간 당 10000원
+							<li>사용요금 : 10,000원 / 시간
 							<li>관리자 : ${roomInfo.ADMINNAME}
 						</ul>	
 					</div>
@@ -68,7 +67,7 @@
 								<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment" id="equipment${equip.EQUIP_NO}">
 									<span class="font-checkbox"><label for="equipment${equip.EQUIP_NO}">${equip.NAME} 대여</label> </span><br>
 							</c:forEach>
-								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
+								<input type="checkbox" name="snackWant" id="snackWant"><span class="font-checkbox"> <label for="snackWant">간식준비 여부</label></span><br>
 						</form>
 					</div>
 					<button class="btn btn-disabled" id="nextBtn">다음 단계</button>

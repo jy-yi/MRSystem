@@ -546,6 +546,9 @@
 		$("input[name=subDept]").val(subDeptNoArr);
 		// 폼 제출
 		alert("제출!"); 
+		alert("employeeNoArr!" + employeeNoArr); 
+		alert("mainDeptNoArr!" + mainDeptNoArr); 
+		alert("subDeptNoArr!" + subDeptNoArr); 
 		$("#option_form").submit();
 	});
 	

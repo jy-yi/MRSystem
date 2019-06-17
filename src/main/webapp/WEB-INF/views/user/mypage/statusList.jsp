@@ -1,9 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page session="false"%>
-
-<!DOCTYPE html>
-<html>
 
 <!-- Main Content -->
 <div id="content">
@@ -65,7 +61,7 @@
 					</div>
 					<div class="card-body">
 						<div class="table-responsive">
-							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+							<table class="table table-bordered text-center" id="dataTable">
 								<thead>
 									<tr>
 										<th>No</th>
@@ -192,6 +188,3 @@
   		});
 	});
 </script>
-
-</html>
-
