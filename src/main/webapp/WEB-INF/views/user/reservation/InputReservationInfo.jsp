@@ -1,11 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page session="false"%>
-<!DOCTYPE html>
-<html>
 
-<link rel= "stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/user/reservation-chooseDate.css">
-<link rel= "stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/user/reservation-inputReservationInfo.css">
+<link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-chooseDate.css">
+<link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-inputReservationInfo.css">
 
 
 <!-- Main Content -->
@@ -26,37 +24,34 @@
 				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 정보 입력 </h1>
 			</div>
 
-			<div class="row">
-				<div class="card-body py-2 text-right">
-					<span class="pull-right text-lg"> 본사 </span>
-
-				</div>
-			</div>
-
 			<!-- Content Row -->
 			
 			<div class="row">
-				<div class="col-sm-6 left-padding-zero" >
-					<img id="room_img" alt="본사 몰디브 회의실의 사진" src="${pageContext.request.contextPath}/resources/img/maldives.jpg">	
+				<div class="col-sm-6" >
+				
+					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE }" width="90%">
+					<br>
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
-						<h1 class="align-center color-title">${roomInfo.ROOMNAME }</h1>
-						<p id="reservation-date" class="align-center"></p>
+					
+						<h1 class="text-center color-title">${roomInfo.ROOMNAME }</h1>
+						<p id="reservation-date" class="text-center"></p>
+						
 						<hr>
 						<ul>
-							<li>회의실 이름 : ${roomInfo.ROOMNAME}
-							<li>회의실 위치 : ${roomInfo.WORKPLACEADDRESS}
-							<li>수용인원 수 : ${roomInfo.CAPACITY}명
-							<li>비치물품 : ${roomInfo.EQUIPMENTS}
+							<li>회의실 위치 : ${roomInfo.WORKPLACENAME} </li>
+							<li>수용 인원 : ${roomInfo.CAPACITY}명 </li>
+							<li>비치 물품 : ${roomInfo.EQUIPMENTS} </li>
 							<li>네트워크 : 
 								<c:choose>
 									<c:when test="${roomInfo.NWAVAILABLE eq 'Y'}">
-										사용가능
+										사용 가능
 									</c:when>
 									<c:otherwise>
-										사용불가능
+										사용 불가능
 									</c:otherwise>
 								</c:choose>
-							<li>사용요금 : 1시간 당 10000원
+							</li>
+							<li>사용요금 : 10,000원 / 시간
 							<li>관리자 : ${roomInfo.ADMINNAME}
 						</ul>	
 					</div>
@@ -67,7 +62,7 @@
 					<div id="calendar_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">예약 정보</h4>
 						<hr>
-						<form action="${pageContext.request.contextPath}/reservation/checkReservationInfo" id="option_form" method="get">
+						<form action="/reservation/checkReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
 							<input type="hidden" name="startDate" value="${reservationInfo.startDate}">
 							<input type="hidden" name="endDate" value="${reservationInfo.endDate}">
@@ -76,49 +71,83 @@
 							<input type="hidden" name="participation" value="">
 							<input type="hidden" name="mainDept" value="">
 							<input type="hidden" name="subDept" value="">
-							<ul>
-								<li>
-									
+							
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
 									<label>예약자</label>
-									<input type="text" value="${employeeInfo.name }" disabled><br>
-								</li>
-								<li>
+								</div>
+								<div class="col-xs-9 col-sm-9">
+									<input type="text" class="form-control" value="${employeeInfo.name }"  disabled="disabled"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
 									<label>연락처</label>
-									<input type="text" value="${employeeInfo.phone }" disabled><br>
-								</li>
-								<li>
+								</div>
+								<div class="col-xs-9 col-sm-9">
+									<input type="text" class="form-control" value="${employeeInfo.phone }"  disabled="disabled"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
 									<label>이메일</label>
-									<input type="text" value="${employeeInfo.email }" disabled><br>
-								</li>
-								<li>
+								</div>
+								<div class="col-xs-9 col-sm-9">
+									<input type="text" class="form-control" value="${employeeInfo.email }"  disabled="disabled"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
 									<label>회의명</label>
-									<input type="text" name="name">
-								</li>
-								<li>
-									<label>회의구분</label>
-									<select name="purpose">
-									    <option value="internelMeeting">내부회의</option>
-									    <option value="customerMeeting">고객미팅</option>
-									    <option value="education">교육</option>
-									</select>
-								</li>
-								<li>
-									<label>참여인원</label>
+								</div>
+								<div class="col-xs-9 col-sm-9">
+									<input type="text" class="form-control" name="name"/>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
+									<label>회의 구분</label>
+								</div>
+								<div class="col-xs-9 col-sm-9">
+									<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					                   회의 선택
+					                 </button>
+					                 <div id="typeDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
+					                 	<input type="hidden" name="purpose" id="purpose">
+					                    <a class="dropdown-item" value="internelMeeting">내부회의</a>
+					                    <a class="dropdown-item" value="customerMeeting">고객미팅</a>
+					                    <a class="dropdown-item" value="education">교육</a>
+					                 </div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
+									<label>참여 인원</label>
+								</div>
+								<div class="col-xs-9 col-sm-9">
 									<a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
 									<div id="final-participation-list-div"></div>
-								</li>
-								<li>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
 									<label>주관부서</label>
+								</div>
+								<div class="col-xs-9 col-sm-9">
 									<a class="btn btn-primary" href="#" id="chooseMainDeptBtn"  data-toggle="modal" data-target="#chooseDeptModal">검색</a>
 									<div id="final-mainDept-list-div">
 										<ul id="final-mainDept-list"></ul>
 									</div>
-								</li>
-								<li>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-2 col-sm-2 text-center">
 									<label>협조부서</label>
+								</div>
+								<div class="col-xs-9 col-sm-9">
 									<div id="final-subDept-list-div"><ul></ul></div>
-								</li>
-							</ul>
+								</div>
+							</div>
 						</form>
 					</div>
 					
@@ -157,9 +186,9 @@
 <jsp:include page="include/chooseParticipation.jsp" />
 <jsp:include page="include/chooseDepartment.jsp" />
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery_cookie.js" type="text/javascript"></script>
+<script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
+
 	// 회의 참여자 사원번호를 담은 배열
 	var participation=new Array();
 	var chosung;
@@ -225,7 +254,7 @@
 		if(chosung!=null && keyword==null){
 			$.ajax({
 				type:"get",
-				url:"${pageContext.request.contextPath}/reservation/getEmployeeListByChosung",
+				url:"/reservation/getEmployeeListByChosung",
 				data : {"chosung" : chosung},
 				success: function(data){
 					var employeeList=data.employeeList;
@@ -250,7 +279,7 @@
 		} else{ // 키워드에 의한 검색일 경우
 			$.ajax({
 				type:"get",
-				url:"${pageContext.request.contextPath}/reservation/getEmployeeListBySearching",
+				url:"/reservation/getEmployeeListBySearching",
 				data : {"keyword" : keyword},
 				success: function(data){
 					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
@@ -357,7 +386,7 @@
 			})
 			$.ajax({
 				type:"post",
-				url:"${pageContext.request.contextPath}/reservation/getDepartmentList",
+				url:"/reservation/getDepartmentList",
 				traditional:true,
 				data : {"employeeNoArr" : employeeNoArr},
 				success: function(data){
@@ -521,5 +550,10 @@
 		$("#option_form").submit();
 	});
 	
+	/* 회의 구분 드롭박스 선택 시 텍스트 변경 */
+	$('#typeDropdown a').on('click', function() {
+	    $('#dropdownMenuButton').text($(this).text());
+	    $('#purpose').val($(this).attr('value'));
+	});
+	
 </script>
-</html>

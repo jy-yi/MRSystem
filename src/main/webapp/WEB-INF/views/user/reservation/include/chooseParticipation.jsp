@@ -73,57 +73,49 @@
 		<div class="modal-content">
 			
 			<div class="modal-body">
-				<div class="row">
-					<div class="col-md-2" id="ganada-list-div">
-						<ul id="ganada-list">
-							<li>ㄱ</li>
-							<li>ㄴ</li>
-							<li>ㄷ</li>
-							<li>ㄹ</li>
-							<li>ㅁ</li>
-							<li>ㅂ</li>
-							<li>ㅅ</li>
-							<li>ㅇ</li>
-							<li>ㅈ</li>
-							<li>ㅊ</li>
-							<li>ㅋ</li>
-							<li>ㅌ</li>
-							<li>ㅍ</li>
-							<li>ㅎ</li>
-						</ul>
-					</div>
-			        <div class="col-md-10">
-			        	<div id="particaption-list-div">
-			    			<ul class="participation-list"></ul>
-			        	</div>
-			        	
-			            <div id="custom-search-input">
-				            <div class="input-group md-form form-sm form-2 pl-0">
-								<input type="text" id="searchByName" class="form-control input-lg my-0 py-1" placeholder="성명을 입력하세요." />
-								<div class="input-group-append">
-									<span class="input-group-text lighten-2" id="searchBtn">
-										<i class="fas fa-search" aria-hidden="true"></i>
-									</span>
+				<form>
+					<div class="row">
+						<div class="col-md-2" id="ganada-list-div">
+							<ul id="ganada-list">
+								<li>ㄱ</li>
+								<li>ㄴ</li>
+								<li>ㄷ</li>
+								<li>ㄹ</li>
+								<li>ㅁ</li>
+								<li>ㅂ</li>
+								<li>ㅅ</li>
+								<li>ㅇ</li>
+								<li>ㅈ</li>
+								<li>ㅊ</li>
+								<li>ㅋ</li>
+								<li>ㅌ</li>
+								<li>ㅍ</li>
+								<li>ㅎ</li>
+							</ul>
+						</div>
+				        <div class="col-md-10">
+				        	<div id="particaption-list-div">
+				    			<ul class="participation-list"></ul>
+				        	</div>
+				        	
+				            <div id="custom-search-input">
+					            <div class="input-group md-form form-sm form-2 pl-0">
+									<input type="text" id="searchByName" class="form-control input-lg my-0 py-1" placeholder="성명을 입력하세요." />
+									<div class="input-group-append">
+										<span class="input-group-text lighten-2" id="searchBtn">
+											<i class="fas fa-search" aria-hidden="true"></i>
+										</span>
+									</div>
 								</div>
-							</div>
-							<!-- 
-							 <div class="input-group col-md-12">
-				                    <input type="text" id="searchByName" class="form-control input-lg" placeholder="성명을 입력하세요." />
-				                    <span class="input-group-btn">
-				                        <button class="btn btn-info btn-lg" type="button" id="searchBtn">
-				                            <i class="fas fa-search"></i>
-				                        </button>
-				                    </span>
-				             </div>	
-						 	-->
-			                <div id="search-employee-list">
-			                	<ul></ul>
-			                </div>
-			            </div>
-			            
-
-			        </div>
-			      </div>
+				                <div id="search-employee-list">
+				                	<ul></ul>
+				                </div>
+				            </div>
+				            
+	
+				        </div>
+				      </div>
+			      </form>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled="disabled">확인</button>
@@ -132,3 +124,10 @@
 		</div>
 	</div>
 </div>
+
+<script>
+/* 모달 사라졌을 때 입력 값 초기화 */
+$('.modal').on('hidden.bs.modal', function (e) {
+  $(this).find('form')[0].reset();
+});
+</script>
