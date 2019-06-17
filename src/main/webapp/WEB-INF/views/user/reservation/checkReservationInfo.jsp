@@ -1,13 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page session="false"%>
-<!DOCTYPE html>
-<html>
 
-<link rel= "stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/user/reservation-checkReservationInfo.css">
+<link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-checkReservationInfo.css">
 
 <!-- Main Content -->
-<!-- 이 안에 내용 채우시면 됩니당 -->
 	
 <div id="content">
 
@@ -42,8 +38,4 @@
 	</div>
 	</div>
 </div>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery_cookie.js" type="text/javascript"></script>
-<script>
-
-</script>
+<script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>

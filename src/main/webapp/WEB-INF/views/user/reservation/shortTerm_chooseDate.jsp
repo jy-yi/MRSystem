@@ -1,19 +1,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page session="false"%>
-<!DOCTYPE html>
-<html>
 
-<link rel= "stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/user/reservation-chooseDate.css">
-<link href='${pageContext.request.contextPath}/resources/css/core/main.css' rel='stylesheet' />
-<link href='${pageContext.request.contextPath}/resources/css/daygrid/main.css' rel='stylesheet' />
-
-<script src='${pageContext.request.contextPath}/resources/js/core/main.js'></script>
-<script src='${pageContext.request.contextPath}/resources/js/daygrid/main.js'></script>
+<link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-chooseDate.css">
+<script src='/resources/js/core/main.js'></script>
+<script src='/resources/js/daygrid/main.js'></script>
 
 <!-- Main Content -->
-<!-- 이 안에 내용 채우시면 됩니당 -->
-	
 <div id="content">
 
 	<!-- Begin Page Content -->
@@ -29,18 +21,11 @@
 				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 일자 선택 </h1>
 			</div>
 
-			<div class="row">
-				<div class="card-body py-2 text-right">
-					<span class="pull-right text-lg"> 본사 </span>
-
-				</div>
-			</div>
-
 			<!-- Content Row -->
 			
 			<div class="row">
 				<div class="col-sm-6 left-padding-zero" >
-					<img id="room_img" alt="본사 몰디브 회의실의 사진" src="${pageContext.request.contextPath}/resources/img/maldives.jpg">	
+					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE }">	
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
 						<h1 class="align-center color-title">${roomInfo.ROOMNAME }</h1>
 						<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>
@@ -73,14 +58,15 @@
 					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
 						<h4 class="color-title">옵션 선택</h4>
 						<hr>
-						<form action="${pageContext.request.contextPath}/reservation/InputReservationInfo" id="option_form" method="get">
+						<form action="/reservation/InputReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
 							<input type="hidden" name="employeeNo" value=""/>
 							<input type="hidden" name="startDate" value="">
 							<input type="hidden" name="endDate" value="">
 							<input type="hidden" name="equipments" value="">
 							<c:forEach var="equip" items="${equipmentList}" >
-								<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment"><span class="font-checkbox">${equip.NAME} 대여</span><br>
+								<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment" id="equipment${equip.EQUIP_NO}">
+									<span class="font-checkbox"><label for="equipment${equip.EQUIP_NO}">${equip.NAME} 대여</label> </span><br>
 							</c:forEach>
 								<input type="checkbox" name="snackWant"><span class="font-checkbox">간식준비 여부</span><br>
 						</form>
@@ -98,8 +84,7 @@
 <!-- Modal -->
 <jsp:include page="include/chooseTime.jsp" />
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/jquery_cookie.js" type="text/javascript"></script>
+<script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
 	// 사용자가 캘린더에서 선택한 날짜
 	var startDate=null;
@@ -302,5 +287,3 @@
 		$("#option_form").submit();
 	});
 </script>
-</html>
-

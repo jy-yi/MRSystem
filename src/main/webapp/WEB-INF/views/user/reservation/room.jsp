@@ -1,11 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page session="false"%>
 
 <link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-room.css">
 
 <!-- Main Content -->
-
 <div id="content">
 
 	<!-- Begin Page Content -->
@@ -21,7 +19,7 @@
 				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 회의실 선택 </h1>
 			</div>
 
-			<!-- Content Row -->
+		<!-- Content Row -->
 		<div class="row">
 
 			<ul class="nav nav-tabs">
@@ -47,7 +45,7 @@
 									
 								</div>
 								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/room1.jpg" width="80%"></div>
 									<p>
 									<div>구분 : 회의실</div>
 									<div>위치 : 본사 2층</div>
@@ -71,7 +69,7 @@
 									
 								</div>
 								<div class="card-body">
-									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room1.jpg" width="80%"></div>
+									<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/room1.jpg" width="80%"></div>
 									<p>
 									<div>구분 : 회의실</div>
 									<div>위치 : 본사 2층</div>
