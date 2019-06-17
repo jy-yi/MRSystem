@@ -3,6 +3,7 @@ package com.gsitm.mrs.reservation;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -185,6 +186,45 @@ public class ReservationDaoTest {
 			logger.info(map);
 		}
 		
+	}
+	
+	/** 사원들의 정보 조회 */
+	@Test
+	public void TestGetEmployeeList() {
+		String[] emps= {"it1226", "it1227"};
+		List<String> empNos=new ArrayList<>();
+		Collections.addAll(empNos, emps);
+		
+		List<Map<String, Object>> maps=dao.getEmployeeList(empNos);
+		for (Map<String, Object> map : maps) {
+			logger.info(map);
+		}
+	}
+	
+	/** 부서번호에 해당하는 부서 정보 조회 */
+	@Test
+	public void TestGetDepartmentListByDeptNo() {
+		String[] depts= {"23", "24"};
+		List<String> departmentNos=new ArrayList<>();
+		Collections.addAll(departmentNos, depts);
+		
+		List<Map<String, Object>> maps=dao.getDepartmentListByDeptNo(departmentNos);
+		for (Map<String, Object> map : maps) {
+			logger.info(map);
+		}
+	}
+	
+	/** 비품번호에 해당하는 비품 정보 조회  */
+	@Test
+	public void TestGetEquipmentsByEquipNo() {
+		Integer[] equips= {12, 13, 14};
+		List<Integer> equipNos=new ArrayList<>();
+		Collections.addAll(equipNos, equips);
+		
+		List<Map<String, Object>> maps=dao.getEquipmentsByEquipNo(equipNos);
+		for (Map<String, Object> map : maps) {
+			logger.info(map);
+		}
 	}
 	
 }

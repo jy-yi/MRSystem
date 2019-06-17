@@ -57,7 +57,6 @@ public class ReservationServiceImpl implements ReservationService {
 				}
 			}
 		}
-		System.out.println(equipmentList);
 		model.addAttribute("equipmentList",equipmentList);
 		
 		// 예약 정보
@@ -99,19 +98,20 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 회의실 예약 입력 정보 조회 */
 	@Override
 	public void checkReservationInfo(HttpServletRequest request, Model model, 
-			List<String> participation, List<String> mainDept, List<String> subDept, List<String> equipments) {
+			List<String> participation, List<String> mainDept, List<String> subDept, List<Map<String, Object>> equipments) {
 		final int ROOM_PRICE_PER_30MINUTES=5000;
 		
 		// 사용자 정보
 		String employeeNo=request.getParameter("employeeNo");
 		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
 		model.addAttribute("employeeDto",employeeDto);
-		
+
+		System.out.println("employeeDto : "+employeeDto);
 		// 방 정보
 		int roomNo=Integer.parseInt(request.getParameter("roomNo"));
 		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
 		model.addAttribute("roomInfo",roomInfo);
-		
+		System.out.println("roomNo : "+roomNo);
 		long diff=0;
 		int price=0;
 		String date=null;
@@ -132,9 +132,11 @@ public class ReservationServiceImpl implements ReservationService {
 			e.printStackTrace();
 		}
 
+		System.out.println("date : "+date);
+		System.out.println("price : "+price);
 		model.addAttribute("date",date);
 		model.addAttribute("price",price);
-		
+
 		// 회의 정보
 		model.addAttribute("meetingName",request.getParameter("name"));
 		model.addAttribute("purpose",request.getParameter("purpose"));
@@ -145,7 +147,17 @@ public class ReservationServiceImpl implements ReservationService {
 		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDept));
 		model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDept));
 		// 비품 목록
-		model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipments));
+		/*List<Integer> equipmentNos=new ArrayList<>();
+		for(Map<String, Object> equip:equipments) {
+			if((boolean)equip.get("need")) {
+				equipmentNos.add((Integer)equip.get("EQUIP_NO"));
+			}
+		}
+		System.out.println(participation);
+		System.out.println(mainDept);
+		System.out.println(subDept);
+		System.out.println(equipmentNos);*/
+		//model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipmentNos));
 	}
 	/* ------------- 마이페이지 ------------- */
 	

@@ -61,7 +61,7 @@ public interface ReservationDAO {
 	public List<Map<String, Object>> getDepartmentListByDeptNo(List<String> departmentNos);
 	
 	/** 비품번호에 해당하는 비품 정보 조회  */
-	public List<Map<String, Object>> getEquipmentsByEquipNo(List<String> equipmentNos);
+	public List<Map<String, Object>> getEquipmentsByEquipNo(List<Integer> equipmentNos);
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

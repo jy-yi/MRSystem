@@ -117,7 +117,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 비품번호에 해당하는 비품 정보 조회  */
 	@Override
-	public List<Map<String, Object>> getEquipmentsByEquipNo(List<String> equipmentNos) {
+	public List<Map<String, Object>> getEquipmentsByEquipNo(List<Integer> equipmentNos) {
 		return sqlSession.selectList(namespace + ".getEquipmentsByEquipNo", equipmentNos);
 	}
 

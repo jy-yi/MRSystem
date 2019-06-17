@@ -540,14 +540,12 @@
 		var subDeptNoArr=departmentList.map(function(a){
 			return a.deptNo;
 		});
-		var equipmentArr=participation.map(function(a){
-			return a.employeeNo;
-		});
 		// 참여사원, 주관부서, 협조부서를 폼에 전달
 		$("input[name=participation]").val(employeeNoArr);
 		$("input[name=mainDept]").val(mainDeptNoArr);
 		$("input[name=subDept]").val(subDeptNoArr);
 		// 폼 제출
+		alert("제출!"); 
 		$("#option_form").submit();
 	});
 	

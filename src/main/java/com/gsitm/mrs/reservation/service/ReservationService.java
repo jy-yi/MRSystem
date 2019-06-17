@@ -63,7 +63,7 @@ public interface ReservationService {
 	
 	/** 회의실 예약 입력 정보 조회 */
 	public void checkReservationInfo(HttpServletRequest request, Model model, 
-			List<String> participation, List<String> mainDept, List<String> subDept, List<String> equipments);
+			List<String> participation, List<String> mainDept, List<String> subDept, List<Map<String, Object>> equipments);
 	
 	/* ------------- 관리자 ------------- */
 	
