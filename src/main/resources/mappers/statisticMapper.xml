@@ -6,7 +6,7 @@
 
 	<!-- #### 사용자 #### -->
 
-	<!-- 개인 예약 통계 -->
+	<!-- 개인 비용/횟수 전체 통계 -->
 	<select id="getIndividual" resultType="map">
 		SELECT	r.emp_no,
 				count(*)			AS count,
@@ -18,8 +18,22 @@
         GROUP BY ROLLUP(r.emp_no)
         HAVING GROUPING_ID(r.emp_no) IN(0,3)
 	</select>
+	
+	<!-- 개인 횟수/비용 날짜 통계 -->
+	<select id="getIndividualDate" resultType="map">
+		SELECT	r.emp_no,
+				count(*)			AS count,
+				sum(money)			AS sum
+        FROM 	reservation r, 
+        		participation p
+        WHERE 	r.res_no = p.res_no
+        AND 	r.emp_no= #{employeeNo}
+        AND		(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+        GROUP BY ROLLUP(r.emp_no)
+        HAVING GROUPING_ID(r.emp_no) IN(0,3)
+	</select>
 
-
+	<!-- 소속부서 횟수/비용 전체 통계 -->
 	<select id="getDepartment" resultType="map">
 		SELECT	r.emp_no,
         		count(*)			AS count,
@@ -36,6 +50,25 @@
 		HAVING GROUPING_ID(r.emp_no) IN(0,3)
 	</select>
 	
+	<!-- 소속부서 횟수/비용 날짜 통계 -->
+	<select id="getDepartmentDate" resultType="map">
+		SELECT	r.emp_no,
+        		count(*)			AS count,
+       			sum(money)			AS sum
+		FROM 	reservation r, 
+        		participation p,
+        		department d,
+        		employee e
+		WHERE 	d.dept_no = e.dept_no
+		AND     e.emp_no = p.emp_no
+		AND     p.res_no = r.res_no
+		AND 	r.emp_no= #{employeeNo}
+		AND		(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+		GROUP BY ROLLUP(r.emp_no)
+		HAVING GROUPING_ID(r.emp_no) IN(0,3)
+	</select>
+	
+	<!-- 사용자 전체 예약 통계 -->
 	<select id="getUserAllList" resultType="map">
 		SELECT  r.name										AS reservationName, 
 				purpose, 
@@ -52,6 +85,7 @@
 		AND 	r.emp_no = #{employeeNo}
 	</select>
 	
+	<!-- 사용자 날짜 예약 통계 -->
 	<select id="getUserSearchList" resultType="map">
 		SELECT  r.name										AS reservationName, 
 				purpose, 

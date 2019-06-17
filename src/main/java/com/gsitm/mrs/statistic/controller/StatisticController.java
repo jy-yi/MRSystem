@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.WebUtils;
 
@@ -46,30 +48,46 @@ public class StatisticController {
 	
 	/* ------------- 사용자 ------------- */
 	 
-	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
+	@RequestMapping(value = "/mypage", method = {RequestMethod.GET})
 	public String mypage(HttpSession session, Model model) {
 		
-		logger.info("사용자 - 예약 통계");
+		logger.info("사용자 - 예약 통계 페이지");
+		
+		return "user/mypage/statistic";
+	}
+	
+	/** 전체 예약 통계 검색 */
+	@RequestMapping(value = "/getUserAllList", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getUserAllList(HttpSession session, Model model) {
+		
+		logger.info("사용자 - 전체 리스트");
 		
 		Object user = session.getAttribute("login");
 		EmployeeDTO employee = (EmployeeDTO) user;
 		
-		List<Map<String, Object>> getIndividual = service.getIndividual(employee.getEmployeeNo());
-		List<Map<String, Object>> getDepartment = service.getDepartment(employee.getEmployeeNo());
 		List<Map<String, Object>> userAllList = service.getUserAllList(employee.getEmployeeNo());
+		Map<String, Object> getIndividual = service.getIndividual(employee.getEmployeeNo());
+		Map<String, Object> getDepartment = service.getDepartment(employee.getEmployeeNo());
 		
+		Map<String, Object> map = new HashMap<>();
 		
-		model.addAttribute("getIndividual", getIndividual);
-		model.addAttribute("getDepartment", getDepartment);
-		model.addAttribute("userAllList", userAllList);
+		map.put("userAllList", userAllList);
+		map.put("getIndividual", getIndividual);
+		map.put("getDepartment", getDepartment);
 		
-		return "user/mypage/statistic";
+		logger.info(getIndividual+"");
+		logger.info(getDepartment+"");
+		
+		return map;
 	}
 	
 	/** 날짜 선택하여 예약 통계 검색 */
 	@RequestMapping(value = "/getUserSearchList", method = RequestMethod.POST)
 	public ModelAndView getUserSearchList(HttpSession session, String startDate, String endDate) {
 
+		logger.info("사용자 - 검색 리스트");
+		
 		Object user = session.getAttribute("login");	
 		EmployeeDTO employee = (EmployeeDTO) user;
 		
@@ -81,16 +99,20 @@ public class StatisticController {
 		searchMap.put("endDate", endDate);
 		
 		List<Map<String, Object>> userSearchList = service.getUserSearchList(searchMap);
-
+		Map<String, Object> getIndividualDate = service.getIndividualDate(searchMap);
+		Map<String, Object> getDepartmentDate = service.getDepartmentDate(searchMap);
+		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("userSearchList", userSearchList);
+		mav.addObject("getIndividualDate", getIndividualDate);
+		mav.addObject("getDepartmentDate", getDepartmentDate);
 		mav.setViewName("jsonView");
+		
+		logger.info(getIndividualDate+"");
+		logger.info(getDepartmentDate+"");
 
 		return mav;
 	}
-	
-	
-	
 	
 	/* ------------- 관리자 ------------- */
 	

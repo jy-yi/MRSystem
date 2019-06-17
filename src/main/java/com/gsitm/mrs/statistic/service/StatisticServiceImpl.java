@@ -27,13 +27,25 @@ public class StatisticServiceImpl implements StatisticService {
 	
 	/** 마이페이지 개인 예약 통계 */ 
 	@Override
-	public List<Map<String, Object>> getIndividual(String employeeNo) {
+	public Map<String, Object> getIndividual(String employeeNo) {
 		return dao.getIndividual(employeeNo);
 	}
 	
+	/** 마이페이지 개인 날짜 예약 통계 */ 
+	@Override
+	public Map<String, Object> getIndividualDate(Map<String, Object> searchMap) {
+		return dao.getIndividualDate(searchMap);
+	}
+	
 	/** 마이페이지 소속 부서 예약 통계 */ 
-	public List<Map<String, Object>> getDepartment(String employeeNo) {
+	public Map<String, Object> getDepartment(String employeeNo) {
 		return dao.getDepartment(employeeNo);
+	}
+	
+	/** 마이페이지 소속 부서 날짜 예약 통계 */ 
+	@Override
+	public Map<String, Object> getDepartmentDate(Map<String, Object> searchMap) {
+		return dao.getDepartmentDate(searchMap);
 	}
 
 	/** 마이페이지 전쳬 예약 통계 */
@@ -68,6 +80,7 @@ public class StatisticServiceImpl implements StatisticService {
 		return dao.getRoomListByWorkplaceNo(workplaceNo);
 	}
 
+	
 
 	
 

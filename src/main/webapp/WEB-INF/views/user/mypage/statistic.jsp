@@ -18,10 +18,6 @@
 <!-- Main Content -->
 <!-- Begin Page Content -->
 <div class="container-fluid">
-<c:forEach items="userSearchList" var="list" varStatus="status">
-	${list }
-	${status.count }
-</c:forEach>
 	<!-- Page Heading -->
 	<div class="d-sm-flex align-items-center justify-content-between mb-4">
 		<h1 class="h5 mb-0 text-gray-800">
@@ -38,31 +34,30 @@
 		<div class="card-body">
 
 			<table class="table" border="2">
-				<tr class="rHeader">
-					<td colspan="2">개인</td>
-					<td colspan="2">부서</td>
-				</tr>
-
-				<tr>
-					<td>횟수</td>
-					<td>비용</td>
-					<td>횟수</td>
-					<td>비용</td>
-				</tr>
-				<tr>
-					<c:forEach items="${getIndividual}" var="list" varStatus="status">
-						<td>${list.COUNT}</td>
-						<td>${list.SUM}</td>
-					</c:forEach>
-					<c:forEach items="${getDepartment}" var="list" varStatus="status">
-						<td>${list.COUNT}</td>
-						<td>${list.SUM}</td>
-					</c:forEach>
-				</tr>
-
+				<thead>
+					<tr class="rHeader">
+						<th colspan="2">개인</th>
+						<th colspan="2">부서</th>
+					</tr>
+					<tr>
+						<td>횟수</td>
+						<td>비용</td>
+						<td>횟수</td>
+						<td>비용</td>
+					</tr>
+				</thead>
+				<tbody id="tableBody2">
+					<tr>
+						<td id="countIn"></td>
+						<td id="sumIn"></td>
+						<td id="countDe"></td>
+						<td id="sumDe"></td>
+					</tr>
+				</tbody>
 			</table>
 		</div>
 	</div>
+	
 	
 	<!-- 개인 및 부서 통계 표 끝 -->
 	<div>
@@ -99,80 +94,20 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-bordered" id="dataTable" width="100%"
-							cellspacing="0">
+						<table class="table table-bordered text-center" >
 							<thead>
 								<tr>
 									<th>No</th>
 									<th>회의명</th>
 									<th>회의 목적</th>
-									<th>회의실</th>
+									<th>회의실번호</th>
 									<th>기간</th>
 									<th>주관부서</th>
 									<th>승인 상태</th>
-									<th>취소</th>
 								</tr>
 							</thead>
-							<tbody>
-								<c:choose>
-										<c:when test="${empty userAllList}">
-											<td colspan="9" class="text-center"> 예약이 존재하지 않습니다.</td>
-										</c:when>
-										<c:otherwise>
-											<c:forEach items="${userAllList}" var="list" varStatus="status">
-												<tr>
-													<td> ${status.count} </td>
-													<td> ${list.RESERVATIONNAME}</td>
-													<td> ${list.PURPOSE}</td>
-													<td> ${list.ROOMNO}</td>
-													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
-													<td> ${list.DEPARTMENTNAME}</td>
-													
-													<td>
-														<c:if test="${list.STATUS eq 0 }">
-															<span class="text-success"> 대기 </span>
-														</c:if>
-													
-														<c:if test="${list.STATUS eq 1 }">
-															<span class="text-primary"> 승인 </span> 
-														</c:if>
-													
-														<c:if test="${list.STATUS eq 2 }">
-															 <span class="text-danger"> 반려 </span>
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 3 }">
-															 <span class="text-warning"> 예약 취소 </span>
-														</c:if>
-														
-													</td>
-													
-													
-													<td>
-														<c:if test="${list.STATUS eq 0 }">
-															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 1 }">
-															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 2 }">
-															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 3	 }">
-															<span class="text-warning"> 취소 완료 </span>
-														</c:if>
-													</td>
-												</tr>
-											</c:forEach>
-										</c:otherwise>
-									</c:choose>
-							</tbody>
+							
+							<tbody id="tableBody"></tbody>
 						</table>
 					</div>
 				</div>
@@ -183,11 +118,11 @@
 
 	</div>
 </div>
-
 <script type="text/javascript">
 
 $(function() {
 	
+	var employeeNo = "";
 	var startDate = "";
 	var endDate = "";
 	
@@ -210,12 +145,41 @@ $(function() {
 	
 	$('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
 	      $(this).val('');
-	  });
+	});
 
+	/* 검색 조건 미설정 시 모든 예약 정보 조회 */
+	$(function allList() {
+		resetData(); 
+		
+		employeeNo = $(this).attr('value');
+		
+		$.ajax({
+	        url : "/statistic/getUserAllList",
+	        data : {"employeeNo": employeeNo},
+	        type : "POST",
+	        success : function(data){
+	        	//alert(JSON.stringify(data.getIndividual));
+	        	var table = '';
+	        	if (data.userAllList.length == 0) {
+	        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
+	        	} else {
+	        		table += makeTable(data.userAllList);
+	        	}
+	        	$("#tableBody").empty().append(table);
+				$('#countIn').text(data.getIndividual.COUNT);
+				$('#sumIn').text(data.getIndividual.SUM);
+				$('#countDe').text(data.getDepartment.COUNT);
+				$('#sumDe').text(data.getDepartment.SUM);
+	        },
+	        error : function(){
+	            alert("전체 예약 현황 조회 에러");
+	        }
+	    });
+	});
 	
 	/* 검색 버튼 클릭 */
 	$("#searchBtn").click(function() {
-	
+		
 		/* 검색 조건 하나라도 선택 안 했을 경우 */
 		if($('input[name="daterange"]').val()=='') {
 			swal('잠깐!', '검색 조건을 선택하세요', 'warning');
@@ -228,22 +192,55 @@ $(function() {
 		        type : "POST",
 		        dataType : "json",
 		        success : function(data){
+		        	alert(JSON.stringify(data.getIndividualDate));
 		        	var table = '';
 		        	if (data.userSearchList.length == 0) {
 		        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
 		        	} else {
 		        		table += makeTable(data.userSearchList);
 		        	}
-		        	//$("#tableBody").empty().append(table);
-		        	//makeChart(workplaceNo, data.searchList);
+		        	$("#tableBody").empty().append(table);
+		        	$('#countIn').text(data.getIndividualDate.COUNT);
+					$('#sumIn').text(data.getIndividualDate.SUM);
+					$('#countDe').text(data.getDepartmentDate.COUNT);
+					$('#sumDe').text(data.getDepartmentDate.SUM);
 		        },
 		        error : function(){
 		            alert("검색 예약 현황 조회 에러");
 		        }
 			});
 		}
+	});
+	/* 초기화 버튼 클릭 */
+	$("#resetBtn").on("click", function() {
+		resetData();
 		
 	});
+	
+	/* 리스트 table 삽입 */
+	function makeTable(list, table) {
+		$.each(list , function(i, item){
+    		table += '<tr>'
+    		table += '<td> ' + (i+1) + ' </td>';
+    		table += '<td> ' + item.RESERVATIONNAME + ' </td>';
+    		table += '<td> ' + item.PURPOSE + ' </td>';
+    		table += '<td> ' + item.ROOMNO + ' </td>';
+    		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
+    		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
+    		
+    		if (item.STATUS == 0)
+        		table += '<td class="text-success"> 승인 대기 </td>';
+    		else if (item.STATUS == 1)
+    			table += '<td class="text-primary"> 예약 완료 </td>';
+			else if (item.STATUS == 2)
+    			table += '<td class="text-danger"> 예약 반려 </td>';
+			else
+				table += '<td class="text-warning"> 예약 취소 </td>';
+    		table += '</tr>';
+       });
+		
+		return table;
+	}
 	
 	/* 검색 옵션 초기화 */
 	function resetData() {

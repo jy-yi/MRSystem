@@ -30,14 +30,26 @@ public class StatisticDAOImpl implements StatisticDAO {
 	
 	/** 마이페이지 개인 예약 통계 */ 
 	@Override
-	public List<Map<String, Object>> getIndividual(String employeeNo) {
-		return sqlSession.selectList(namespace + ".getIndividual", employeeNo);
+	public Map<String, Object> getIndividual(String employeeNo) {
+		return sqlSession.selectOne(namespace + ".getIndividual", employeeNo);
+	}
+	
+	/** 마이페이지 개인 날짜 예약 통계 */ 
+	@Override
+	public Map<String, Object> getIndividualDate(Map<String, Object> searchMap) {
+		return sqlSession.selectOne(namespace+".getIndividualDate", searchMap);
 	}
 
 	/** 마이페이지 소속 부서 예약 통계 */
 	@Override
-	public List<Map<String, Object>> getDepartment(String employeeNo) {
-		return sqlSession.selectList(namespace + ".getDepartment", employeeNo);
+	public Map<String, Object> getDepartment(String employeeNo) {
+		return sqlSession.selectOne(namespace + ".getDepartment", employeeNo);
+	}
+
+	/** 마이페이지 소속 부서 날짜 예약 통계 */
+	@Override
+	public Map<String, Object> getDepartmentDate(Map<String, Object> searchMap) {
+		return sqlSession.selectOne(namespace+".getDepartmentDate", searchMap);
 	}
 	
 	/** 마이페이지 전쳬 예약 통계 */
@@ -72,6 +84,7 @@ public class StatisticDAOImpl implements StatisticDAO {
 		return sqlSession.selectList(namespace + ".getRoomListByWorkplaceNo", workplaceNo);
 	}
 
+	
 
 	
 

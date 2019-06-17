@@ -28,21 +28,18 @@ public class StatisticDaoTest {
 	@Test
 	public void TestIndividual() {
 		
-		List<Map<String, Object>> list = dao.getIndividual("it1228");
+		Map<String, Object> list = dao.getIndividual("it1228");
 		
-		for (Map<String, Object> map : list) {
-			logger.info(map);
-		}
+		logger.info(list);
 	}
+	
 	/** 소속 부서 예약 통계 테스트 */
 	@Test
 	public void TestDepartment() {
 		
-		List<Map<String, Object>> list = dao.getDepartment("it1228");
+		Map<String, Object> list = dao.getDepartment("it1228");
 		
-		for (Map<String, Object> map : list) {
-			logger.info(map);
-		}
+		logger.info(list);
 	}
 	
 	/** 전체 예약 통계 테스트 */

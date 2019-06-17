@@ -18,12 +18,18 @@ public interface StatisticDAO {
 	/* ------------- 사용자 ------------- */
 	
 	/** 마이페이지 개인 예약 통계 */ 
-	public List<Map<String, Object>> getIndividual(String employeeNo);
+	public Map<String, Object> getIndividual(String employeeNo);
+	
+	/** 마이페이지 개인 날짜 예약 통계 */ 
+	public Map<String, Object> getIndividualDate(Map<String, Object> searchMap);
 	
 	/** 마이페이지 소속 부서 예약 통계 */ 
-	public List<Map<String, Object>> getDepartment(String employeeNo);
+	public Map<String, Object> getDepartment(String employeeNo);
 	
-	/** 마이페이지 전쳬 예약 통계 */
+	/** 마이페이지 소속 부서 날짜 예약 통계 */ 
+	public Map<String, Object> getDepartmentDate(Map<String, Object> searchMap);
+	
+	/** 마이페이지 전체 예약 통계 */
 	public List<Map<String, Object>> getUserAllList(String employeeNo);
 	
 	/** 마이페이지 날짜 검색 */
