@@ -81,6 +81,23 @@ public class ResevationController {
 		
 	}
 	
+	@RequestMapping(value = "/statusList", method = RequestMethod.GET)
+	public String statusList(HttpSession session, String employeeNo, Model model) {
+		
+		logger.info("(사용자) 마이페이지 - 예약 현황 달력");
+		
+		Object user = session.getAttribute("login");
+		EmployeeDTO employee = (EmployeeDTO) user;
+		
+		employeeNo = employee.getEmployeeNo();
+		
+		List<Map<String, Object>> reservationList = service.getReservationList(employeeNo);
+		
+		model.addAttribute("reservationList", reservationList);
+		
+		return "user/mypage/statusList";
+	}
+	
 	
 	@RequestMapping(value = "/updateReservation", method = RequestMethod.POST)
 	public String updateReservation(String reservationNo) throws Exception {
