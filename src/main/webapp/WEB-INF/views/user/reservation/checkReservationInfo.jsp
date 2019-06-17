@@ -30,7 +30,7 @@
 				<h1>예약 확인</h1>
 				<ul>
 					<li><b>회의실 명</b><span>${roomInfo.ROOMNAME }</span>
-					<li><b>시간</b><span>${useTime }분</span>
+					<li><b>일자</b><span>${date }</span>
 					<li><b>가격</b><span>${price }원</span>
 					<li><b>예약자 명</b><span>${employeeDto.name }</span>
 					<li><b>연락처</b><span>${employeeDto.phone }</span>

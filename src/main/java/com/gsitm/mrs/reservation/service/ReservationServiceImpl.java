@@ -1,7 +1,5 @@
 package com.gsitm.mrs.reservation.service;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +7,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -20,10 +17,8 @@ import org.springframework.ui.Model;
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
-import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
-import freemarker.log.Logger;
 
 /**
  * ReservationService 인터페이스 구현 클래스
@@ -115,25 +110,26 @@ public class ReservationServiceImpl implements ReservationService {
 		model.addAttribute("roomInfo",roomInfo);
 		
 		// 사용시간 정보
+		SimpleDateFormat basicFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
 		String startDate=request.getParameter("startDate");
 		String endDate=request.getParameter("endDate");
-		System.out.println("startDate : "+startDate);
-		System.out.println("endDate : "+endDate);
-		SimpleDateFormat transFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
+		long diff=0;
 		try {
-			Date start=transFormat.parse(startDate);
-			Date end=transFormat.parse(endDate);
-			long diff=(end.getTime()-start.getTime())/60000;
-			// 30분당 5000천원 적용
-			int price=((int)(diff/30)*5000);
-			model.addAttribute("startDate",startDate);
-			model.addAttribute("endDate",endDate);
-			model.addAttribute("useTime",diff);
-			model.addAttribute("price",price);
+			Date start=basicFormat.parse(startDate);
+			Date end=basicFormat.parse(endDate);
+			// 분 구하기
+			diff=(end.getTime()-start.getTime())/60000;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		// 30분당 5000천원 적용
+		int price=((int)(diff/30)*5000);
+		
+		SimpleDateFormat transFormat=new SimpleDateFormat("yyyy년 mm월 dd일 hh:mm");
+		String date=transFormat.format(startDate).toString()+"~"+transFormat.format(endDate).toString()+"("+diff+"분)";
+		model.addAttribute("date",date);
+		model.addAttribute("price",price);
 	}
 	/* ------------- 마이페이지 ------------- */
 	
