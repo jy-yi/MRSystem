@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 
 <body id="page-top">
 
@@ -36,5 +34,3 @@
 	<!-- End of Page Wrapper -->
 
 </body>
-
-</html>
