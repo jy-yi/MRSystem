@@ -48,6 +48,12 @@ public class ResourceDAOImpl implements ResourceDAO {
 		sqlSession.update(namespace + ".editWorkplace", workplaceDTO);
 	}
 	
+	/** 지사 삭제 */
+	@Override
+	public void deleteWorkplace(int workplaceNo) {
+		sqlSession.update(namespace + ".deleteWorkplace", workplaceNo);
+	}
+	
 	
 	/* ------------- 회의실 ------------- */
 	
@@ -67,6 +73,12 @@ public class ResourceDAOImpl implements ResourceDAO {
 	@Override
 	public void editRoom(RoomDTO roomDTO) {
 		sqlSession.update(namespace + ".editRoom", roomDTO);
+	}
+	
+	/** 회의실 삭제 */
+	@Override
+	public void deleteRoom(int roomNo) {
+		sqlSession.update(namespace + ".deleteRoom", roomNo);
 	}
 
 	/* ------------- 비품 ------------- */

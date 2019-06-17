@@ -28,6 +28,9 @@ public interface ResourceDAO {
 	/** 지사 수정 */
 	public void editWorkplace(WorkplaceDTO workplaceDTO);
 	
+	/** 지사 삭제 */
+	public void deleteWorkplace(int workplaceNo);
+	
 	
 	/* ------------- 회의실 ------------- */
 	
@@ -39,6 +42,9 @@ public interface ResourceDAO {
 	
 	/** 회의실 수정 */
 	public void editRoom(RoomDTO roomDTO);
+	
+	/** 회의실 삭제 */
+	public void deleteRoom(int roomNo);
 
 	
 	/* ------------- 비품 ------------- */

@@ -46,6 +46,12 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.editWorkplace(workplaceDTO);
 	}
 	
+	/** 지사 삭제 */
+	@Override
+	public void deleteWorkplace(int workplaceNo) {
+		dao.deleteWorkplace(workplaceNo);
+	}
+	
 	/* ------------- 회의실 ------------- */
 	
 	/** 회의실 목록 조회 */
@@ -66,6 +72,11 @@ public class ResourceServiceImpl implements ResourceService {
 		dao.editRoom(roomDTO);
 	}
 	
+	/** 회의실 삭제 */
+	@Override
+	public void deleteRoom(int roomNo) {
+		dao.deleteRoom(roomNo);
+	}
 	
 	/* ------------- 비품 ------------- */
 

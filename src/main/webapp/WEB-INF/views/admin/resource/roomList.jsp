@@ -116,28 +116,36 @@ $(function() {
 });
 
 
-$(function() {
+/* 삭제 버튼 클릭 */
+$(document).on("click", ".fa-trash-alt", function() {
+	var roomNo = $(this).parent().next().val();	// 삭제 버튼을 클릭한 비품의 번호
 	
-	/* 휴지통 아이콘 클릭 */
-	$(".fa-trash-alt").click(function() {
-		Swal.fire({
-			  title: 'Are you sure?',
-			  text: "You won't be able to revert this!",
-			  type: 'warning',
-			  showCancelButton: true,
-			  confirmButtonColor: '#3085d6',
-			  cancelButtonColor: '#d33',
-			  confirmButtonText: 'Yes, delete it!'
-			}).then((result) => {
-			  if (result.value) {
-			    Swal.fire(
-			      'Deleted!',
-			      'Your file has been deleted.',
-			      'success'
-			    )
-			  }
+	swal({
+		title: '정말 삭제하시겠습니까?',
+		text: "이후 복구는 불가능합니다.",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		    confirmButtonText: 'Yes',
+		    cancelButtonText: 'No',
+		}).then( (result) => {
+			if (result.value) {
+  			$.ajax({
+				url : "/resource/deleteRoom",
+				type : "POST",
+				data : {
+					roomNo : roomNo
+				}, success : function(data) {
+					swal('Success!', '회의실 삭제가 완료되었습니다.', 'success'
+			    		).then(function(){
+  		    		    	location.href="/resource/roomList";
+  		    		    });
+				}
 			});
-		
-	});
+			}
+			  
+		});
 });
+
 </script>

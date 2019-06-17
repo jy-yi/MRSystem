@@ -103,6 +103,21 @@ public class ResourceController {
 
 		return "redirect:/resource/workplaceList";
 	}
+	
+	/**
+	 * 지사 삭제
+	 * 
+	 * @param workplaceNo	삭제할 지사 번호
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/deleteWorkplace", method = RequestMethod.POST)
+	public String deleteWorkplace(String workplaceNo) throws Exception {
+		
+		service.deleteWorkplace(Integer.parseInt(workplaceNo));
+
+		return "redirect:/resource/workplaceList";
+	}
 
 	/* ------------- 회의실 ------------- */
 
@@ -221,6 +236,21 @@ public class ResourceController {
 		roomDTO.setImage(savedName);
 		
 		service.editRoom(roomDTO);
+
+		return "redirect:/resource/roomList";
+	}
+	
+	/**
+	 * 회의실 삭제
+	 * 
+	 * @param roomNo	삭제할 회의실 번호
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/deleteRoom", method = RequestMethod.POST)
+	public String deleteRoom(String roomNo) throws Exception {
+		
+		service.deleteRoom(Integer.parseInt(roomNo));
 
 		return "redirect:/resource/roomList";
 	}

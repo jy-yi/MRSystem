@@ -1,9 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html>
-
 <!-- Main Content -->
 <div id="content">
 
@@ -62,7 +59,10 @@
 													<td> ${list.address}</td>
 													<td><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editWorkplaceModal" id="editBtn" 
 															data-workplaceNo="${list.workplaceNo}" data-workplaceName="${list.name}" data-workplaceAddress="${list.address}"> <span class="text">수정</span> </a></td>
-													<td><a href="#" class="btn btn-danger"> <span class="text">삭제</span> </a></td>
+													<td>
+														<a href="#" class="btn btn-danger"> <span class="text">삭제</span> </a>
+														<input type="hidden" id="workplaceNo" name="workplaceNo" value="${list. workplaceNo}">
+													</td>
 												</tr>
 											</c:forEach>
 										</c:otherwise>
@@ -90,6 +90,37 @@
 <jsp:include page="include/addWorkplace.jsp" />
 <jsp:include page="include/editWorkplace.jsp" />
 
-</body>
-
-</html>
+<script type="text/javascript">
+	
+	/* 삭제 버튼 클릭 */
+	$(document).on("click", ".btn-danger", function() {
+		var workplaceNo = $(this).next().val();	// 삭제 버튼을 클릭한 지사의 번호
+		
+		swal({
+			title: '정말 삭제하시겠습니까?',
+			text: "이후 복구는 불가능합니다.",
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+  		    confirmButtonText: 'Yes',
+  		    cancelButtonText: 'No',
+  		}).then( (result) => {
+  			if (result.value) {
+	  			$.ajax({
+					url : "/resource/deleteWorkplace",
+					type : "POST",
+					data : {
+						"workplaceNo" : workplaceNo
+					}, success : function(data) {
+						swal('Success!', '지사 삭제가 완료되었습니다.', 'success'
+				    		).then(function(){
+	  		    		    	location.href="/resource/workplaceList";
+	  		    		    });
+					}
+				});
+  			}
+  			  
+  		});
+	});
+</script>
