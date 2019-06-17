@@ -103,6 +103,24 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getDepartmentList", participation);
 	}
 	
+	/** 사원들의 정보 조회 */
+	@Override
+	public List<Map<String, Object>> getEmployeeList(List<String> employees) {
+		return sqlSession.selectList(namespace + ".getEmployeeList", employees);
+	}
+	
+	/** 부서번호에 해당하는 부서 정보 조회 */
+	@Override
+	public List<Map<String, Object>> getDepartmentListByDeptNo(List<String> departmentNos) {
+		return sqlSession.selectList(namespace + ".getDepartmentListByDeptNo", departmentNos);
+	}
+	
+	/** 비품번호에 해당하는 비품 정보 조회  */
+	@Override
+	public List<Map<String, Object>> getEquipmentsByEquipNo(List<String> equipmentNos) {
+		return sqlSession.selectList(namespace + ".getEquipmentsByEquipNo", equipmentNos);
+	}
+
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -146,5 +164,4 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-
 }

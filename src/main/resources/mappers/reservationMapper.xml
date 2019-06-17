@@ -232,6 +232,39 @@
 		</foreach>
 	</select>
 	
+	<!-- 사원번호에 해당하는 사원들 정보 조회 -->
+	<select id="getEmployeeList" parameterType="java.util.ArrayList" resultType="Map">
+		SELECT  employee.name 		AS name, 
+				employee.emp_no 	AS empNo, 
+				department.name 	AS departmentName
+		FROM department
+		JOIN employee
+		USING(dept_no)
+		WHERE emp_no in
+		<foreach collection="list" item="empNo" separator="," open="(" close=")">
+			#{empNo}
+		</foreach>
+	</select>
+	
+	<!-- 부서번호에 해당하는 부서 정보 조회 -->
+	<select id="getDepartmentListByDeptNo" parameterType="java.util.ArrayList" resultType="Map">
+		SELECT dept_no, department.name AS name
+		FROM department
+		WHERE dept_no in
+		<foreach collection="list" item="deptNo" separator="," open="(" close=")">
+			#{deptNo}
+		</foreach>
+	</select>
+	
+	<!-- 비품번호에 해당하는 비품 정보 조회 -->
+	<select id="getEquipmentsByEquipNo" parameterType="java.util.ArrayList" resultType="Map">
+		SELECT *
+		FROM equipment
+		WHERE equip_no in
+		<foreach collection="list" item="equipNo" separator="," open="(" close=")">
+			#{equipNo}
+		</foreach>
+	</select>
 	
 	<!-- #### 관리자 #### -->
 	

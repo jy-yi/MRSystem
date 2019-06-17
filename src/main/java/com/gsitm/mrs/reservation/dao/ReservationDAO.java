@@ -54,6 +54,14 @@ public interface ReservationDAO {
 	/** 사원들의 부서 정보 조회 */
 	public List<Map<String, Object>> getDepartmentList(List<String> participation);
 	
+	/** 사원들의 정보 조회 */
+	public List<Map<String, Object>> getEmployeeList(List<String> employees);
+
+	/** 부서번호에 해당하는 부서 정보 조회 */
+	public List<Map<String, Object>> getDepartmentListByDeptNo(List<String> departmentNos);
+	
+	/** 비품번호에 해당하는 비품 정보 조회  */
+	public List<Map<String, Object>> getEquipmentsByEquipNo(List<String> equipmentNos);
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

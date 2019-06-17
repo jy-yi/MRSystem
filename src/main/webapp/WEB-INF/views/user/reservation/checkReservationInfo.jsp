@@ -31,7 +31,24 @@
 					<li><b>예약자 명</b><span>${employeeDto.name }</span>
 					<li><b>연락처</b><span>${employeeDto.phone }</span>
 					<li><b>이메일</b><span>${employeeDto.email }</span>
-					
+					<li><b>회의 명</b><span>${meetingName }</span>
+					<li><b>회의목적</b><span>${purpose }</span>
+					<li><b>참여인원</b>
+						<c:forEach items="${participation }" var="emp">
+							<span>${emp }</span>
+						</c:forEach>
+					<li><b>주관부서</b>
+						<c:forEach items="${mainDept }" var="dept">
+							<span>${dept }</span>
+						</c:forEach>
+					<li><b>협조부서</b>
+						<c:forEach items="${subDept }" var="dept">
+							<span>${dept }</span>
+						</c:forEach>
+					<li><b>선택내역</b>
+						<c:forEach items="${equipments }" var="equipment">
+							<span>${equipment }</span>
+						</c:forEach>
 				</ul>
 			</div>
 		</div>

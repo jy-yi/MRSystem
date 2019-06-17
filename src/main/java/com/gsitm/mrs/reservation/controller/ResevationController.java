@@ -195,11 +195,11 @@ public class ResevationController {
 	@RequestMapping(value="/checkReservationInfo", method=RequestMethod.GET)
 	public String checkReservation(HttpServletRequest request, Model model, 
 			@RequestParam List<String> participation, @RequestParam List<String> mainDept
-			,@RequestParam List<String> subDept) {
+			,@RequestParam List<String> subDept, @RequestParam List<String> equipments) {
 		
 		logger.info("(사용자) 예약 - 회의실 예약 정보 입력 내역 조회");
 		
-		service.checkReservationInfo(request, model);
+		service.checkReservationInfo(request, model, participation, mainDept, subDept, equipments);
 		return "user/reservation/checkReservationInfo";
 	}
 	

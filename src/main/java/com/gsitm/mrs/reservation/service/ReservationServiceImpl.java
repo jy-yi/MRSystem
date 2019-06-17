@@ -29,7 +29,6 @@ import com.gsitm.mrs.user.dto.EmployeeDTO;
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
-	
 	@Inject
 	private ReservationDAO dao;
 	
@@ -58,6 +57,7 @@ public class ReservationServiceImpl implements ReservationService {
 				}
 			}
 		}
+		System.out.println(equipmentList);
 		model.addAttribute("equipmentList",equipmentList);
 		
 		// 예약 정보
@@ -98,7 +98,10 @@ public class ReservationServiceImpl implements ReservationService {
 
 	/** 회의실 예약 입력 정보 조회 */
 	@Override
-	public void checkReservationInfo(HttpServletRequest request, Model model) {
+	public void checkReservationInfo(HttpServletRequest request, Model model, 
+			List<String> participation, List<String> mainDept, List<String> subDept, List<String> equipments) {
+		final int ROOM_PRICE_PER_30MINUTES=5000;
+		
 		// 사용자 정보
 		String employeeNo=request.getParameter("employeeNo");
 		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
@@ -109,27 +112,40 @@ public class ReservationServiceImpl implements ReservationService {
 		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
 		model.addAttribute("roomInfo",roomInfo);
 		
-		// 사용시간 정보
-		SimpleDateFormat basicFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
-		String startDate=request.getParameter("startDate");
-		String endDate=request.getParameter("endDate");
 		long diff=0;
+		int price=0;
+		String date=null;
 		try {
-			Date start=basicFormat.parse(startDate);
-			Date end=basicFormat.parse(endDate);
+			// 사용시간 정보
+			SimpleDateFormat basicFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
+			Date start=basicFormat.parse(request.getParameter("startDate"));
+			Date end=basicFormat.parse(request.getParameter("endDate"));
 			// 분 구하기
 			diff=(end.getTime()-start.getTime())/60000;
+			
+			// 30분당 5000천원 적용
+			price=((int)(diff/30)*ROOM_PRICE_PER_30MINUTES);
+			SimpleDateFormat transFormat=new SimpleDateFormat("yyyy년 mm월 dd일 hh:mm");
+			date=transFormat.format(start).toString()+" ~ "+transFormat.format(end).toString()+"("+diff+"분)";
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// 30분당 5000천원 적용
-		int price=((int)(diff/30)*5000);
-		
-		SimpleDateFormat transFormat=new SimpleDateFormat("yyyy년 mm월 dd일 hh:mm");
-		String date=transFormat.format(startDate).toString()+"~"+transFormat.format(endDate).toString()+"("+diff+"분)";
+
 		model.addAttribute("date",date);
 		model.addAttribute("price",price);
+		
+		// 회의 정보
+		model.addAttribute("meetingName",request.getParameter("name"));
+		model.addAttribute("purpose",request.getParameter("purpose"));
+
+		// 참여인원
+		model.addAttribute("participation", dao.getEmployeeList(participation));
+		// 주관부서&협조부서
+		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDept));
+		model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDept));
+		// 비품 목록
+		model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipments));
 	}
 	/* ------------- 마이페이지 ------------- */
 	
