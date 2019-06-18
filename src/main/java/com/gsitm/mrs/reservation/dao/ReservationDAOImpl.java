@@ -38,7 +38,7 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 마이페이지 캘린더 상세 조회 */
 	@Override
-	public List<ReservationDTO> getCalendarInfo(int reservationNo) {
+	public Map<String, Object> getCalendarInfo(int reservationNo) {
 		return sqlSession.selectOne(namespace +".getCalendarInfo", reservationNo);
 	}
 	

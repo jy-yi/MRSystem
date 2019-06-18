@@ -28,20 +28,19 @@
 	</select>
 	
 	<!-- 마이페이지 캘린더 상세 조회 -->
-	<select id="getCalendarInfo" resultType="Reservation">
-		SELECT res_no                            AS reservationNo, 
-		       e.name                            AS empName,
-		       room_no                           AS roomNo, 
-		       r.NAME 							 AS reservationName,
-		       purpose, 
-		       To_char(start_date, 'YYYY-MM-DD') AS startDate, 
-		       To_char(end_date, 'YYYY-MM-DD')   AS endDate, 
-		       snack_want                        AS snackWant, 
-		       status 
-		FROM   reservation r,
-			   employee e
-		WHERE  r.emp_no = e.emp_no
-			   AND e.emp_no = #{employeeNo}
+	<select id="getCalendarInfo" resultType="map">
+		SELECT	e.name                            AS empName,
+		       	rm.name                           AS roomName, 
+		       	r.name 							  AS reservationName,
+		       	purpose, 
+		       	To_char(start_date, 'YYYY-MM-DD') AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD')   AS endDate 
+		FROM   	employee e,
+			   	reservation r,
+			   	room rm
+		WHERE  	e.emp_no = r.emp_no
+		AND	   	r.room_no = rm.room_no
+		AND	   	r.res_no = #{reservationNo} 
 	</select>
 	
 	<!-- 마이페이지 목록형 조회 -->

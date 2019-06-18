@@ -122,26 +122,31 @@
 									], eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
-										var name = info.event.title;
-										var start = info.event.start;
-										var end = info.event.end;
-										
 										console.log(reservationNo);
-										console.log(name);
-										console.log(start);
-										console.log(end);
 										
-										$("#reservationNo").val(reservationNo);
-						        		$("#employeeNo").val(name); 	
-						        	 	$("#roomNo").val(name);
-							        	$("#name").val(name);
-							    	 	$("#purpose").val(name);
-							    	    $("#startDate").val(start);
-							    	    $("#endDate").val(end);
-							    	    $("#snackWant").val(name);
-							    	    $("#status").val(name);
-						        	 	
-						        	 	$("#infoReservationModal").modal('show');
+										$.ajax({
+									        url : "/reservation/getCalendar",
+									        data : {"reservationNo": reservationNo},
+									        type : "GET",
+									        success : function(data){
+												
+									        	//alert(data.calendarInfo.EMPNAME);
+									        	
+									        	console.log(data);
+									        	
+												$("#employeeName").val(data.EMPNAME);
+								        	 	$("#roomName").val(data.ROOMNAME);
+									        	$("#reservationName").val(data.RESERVATIONNAME);
+									    	 	$("#purpose").val(data.PURPOSE);
+									    	    $("#startDate").val(data.STARTDATE +" ~ "+data.ENDDATE);
+								        	 	
+								        	 	$("#infoReservationModal").modal('show');
+									        },
+									        error : function(){
+									            alert("전체 예약 현황 조회 에러");
+									        }
+									    });
+										
 									}									
 								});
 

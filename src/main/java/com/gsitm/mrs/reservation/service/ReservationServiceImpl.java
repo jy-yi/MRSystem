@@ -196,7 +196,7 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 마이페이지 캘린더 상세 조회 */
 	@Override
-	public List<ReservationDTO> getCalendarInfo(int reservationNo) {
+	public Map<String, Object> getCalendarInfo(int reservationNo) {
 		return dao.getCalendarInfo(reservationNo);
 	}
 	

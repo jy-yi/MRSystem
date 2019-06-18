@@ -22,7 +22,7 @@ public interface ReservationDAO {
 	public List<Map<String, Object>> getReservationInfo(String employeeNo);
 	
 	/** 마이페이지 캘린더 상세 조회 */
-	public List<ReservationDTO> getCalendarInfo(int reservationNo);
+	public Map<String, Object> getCalendarInfo(int reservationNo);
 	
 	/** 마이페이지 예약 현황 리스트*/
 	public List<Map<String, Object>> getReservationList(String employeeNo);

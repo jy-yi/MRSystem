@@ -53,7 +53,7 @@ public class ResevationController {
 	
 	/* ------------- 사용자 ------------- */
 	
-	@RequestMapping(value = "/statusCalendar", method = RequestMethod.GET)
+	@RequestMapping(value = "/statusCalendar", method = {RequestMethod.GET, RequestMethod.POST})
 	public String statusCalendar(HttpSession session, String employeeNo, Model model) {
 		
 		logger.info("(사용자) 마이페이지 - 예약 현황 달력");
@@ -73,17 +73,16 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/getCalendar", method = RequestMethod.GET)
-	public String getCalendar(int reservationNo, Model model) {
+	@ResponseBody
+	public Map<String, Object> getCalendar(int reservationNo, Model model) {
 		
 		logger.info("(사용자) 마이페이지 - 캘린더 상세 정보");
 		
-		List<ReservationDTO> calendarInfo = service.getCalendarInfo(reservationNo);
+		Map<String, Object> calendarInfo = service.getCalendarInfo(reservationNo);
 		
 		logger.info(calendarInfo+"");
 		
-		model.addAttribute("calendarInfo", calendarInfo);
-		
-		return "user/mypage/statusCalendar";
+		return calendarInfo;
 		
 	}
 	

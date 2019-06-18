@@ -18,7 +18,7 @@
 							<label> 신청자 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="employeeNo"/>
+							<input type="text" class="form-control" id="employeeName"/>
 						</div>
 					
 						<div class="clearfix"></div>
@@ -31,7 +31,7 @@
 							<label> 회의실 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="roomNo"/>
+							<input type="text" class="form-control" id="roomName"/>
 						</div>
 					
 						<div class="clearfix"></div>
@@ -44,7 +44,7 @@
 							<label> 회의명 </label>
 						</div>
 						<div class="col-xs-9 col-sm-9">
-							<input type="text" class="form-control" id="name" />
+							<input type="text" class="form-control" id="reservationName" />
 						</div>
 					
 						<div class="clearfix"></div>
