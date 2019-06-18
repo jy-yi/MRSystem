@@ -220,15 +220,21 @@
 		WHERE employee.name LIKE '%' || #{keyword} || '%'
 	</select>
 	
-	<select id="getDepartmentList" parameterType="java.util.ArrayList" resultType="Map">
+	<select id="getDepartmentList" parameterType="Map" resultType="Map">
 		SELECT DISTINCT(dept_no) AS dept_no, department.name AS name
 		FROM department
 		JOIN employee
 		USING(dept_no)
-		WHERE emp_no in
-		<foreach collection="list" item="empNo" separator="," open="(" close=")">
+		WHERE emp_no IN
+		<foreach collection="employeeNoArr" item="empNo" separator="," open="(" close=")">
 			#{empNo}
 		</foreach>
+		<if test="mainDeptList.size==0">
+			AND dept_no NOT IN
+		<foreach collection="mainDeptList" item="deptNo" separator="," open="(" close=")">
+			#{deptNo}
+		</foreach>
+		</if>
 	</select>
 	
 	<!-- 사원번호에 해당하는 사원들 정보 조회 -->
