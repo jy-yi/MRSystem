@@ -105,6 +105,17 @@ th {
 									</td>
 								</tr>
 							</c:if>
+							<tr>
+								<th>간식준비 여부</th>
+								<c:choose>
+									<c:when test="${snackWant eq 'Y'}">
+										<td>O</td>
+									</c:when>
+									<c:otherwise>
+										<td>X</td>
+									</c:otherwise>
+								</c:choose>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -120,8 +131,62 @@ th {
 		<br>
 	</div>
 </div>
+
+<script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
 	function doReserve() {
 		alert("예약이 완료되었습니다.");
+		
+
+		var startDate=new Date("${reservationInfo.startDate}");
+		var empNo=$.cookie('loginCookie');
+		var roomNo="${roomInfo.ROOMNO}";
+		var name="${meetingName}";
+		var purpose="${purpose}";
+		var startDate="${startDate}";
+		var endDate="${endDate}";
+		var snackWant="${snackWant}";
+		var mainDept="$";
+		var subDept=;
+		var equipments=;
+		// 정보를 ajax로 DB에 넣는다.
+		/*
+			reservation DB
+				res_no,
+				*emp_no,
+				*room_no,
+				*name,
+				*purpose,
+				*start_date,
+				*end_date,
+				*snack_want,
+				*status->default?
+			waiting DB
+				res_no
+				mgr_approval
+				admin_approval
+			Lead_Department DB
+				res_no
+				*dept_no
+				is_main
+			borrowed_equipment DB
+				*equip_no
+				res_no
+		*/
+		
+		$.ajax({
+				type:"post",
+				url:"/reservation/doReserve",
+				data : ,
+				success: function(data){
+					
+				},
+				error: function(xhr, status, error) {
+					alert(error);
+				}	
+			});
+			
+		// 예약 확인 페이지로 이동
+		location.href="/reservation/statusCalendar";
 	}
 </script>

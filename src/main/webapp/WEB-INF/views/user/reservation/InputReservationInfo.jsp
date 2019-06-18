@@ -68,6 +68,7 @@
 							<input type="hidden" name="participation" value="">
 							<input type="hidden" name="mainDept" value="">
 							<input type="hidden" name="subDept" value="">
+							<input type="hidden" name="snackWant" value="${reservationInfo.snackWant }"/>	
 							
 							<div class="row">
 								<div class="col-xs-2 col-sm-2 text-center">
@@ -488,7 +489,6 @@
 	$("#dept-choose-complete-btn").on("click",function(){
 		// MainDept 요소들을 화면에 뿌려준다.
 		appendMainDept();
-		//$("#final-mainDept-list-div>ul").attr("id","final-mainDept-list");
 		// 남은 부서들을 협조부서에 뿌려준다.
 		appendSubDept();
 	});

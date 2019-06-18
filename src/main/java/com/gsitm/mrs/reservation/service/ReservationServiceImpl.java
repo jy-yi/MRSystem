@@ -126,8 +126,7 @@ public class ReservationServiceImpl implements ReservationService {
 			SimpleDateFormat orginFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date start=orginFormat.parse(request.getParameter("startDate"));
 			Date end=orginFormat.parse(request.getParameter("endDate"));
-			System.out.println(request.getParameter("startDate")+"~"+request.getParameter("endDate"));
-			System.out.println(start+"~"+end);
+			
 			// 분 구하기
 			diff=(end.getTime()-start.getTime())/60000;
 			
@@ -135,11 +134,13 @@ public class ReservationServiceImpl implements ReservationService {
 			price=((int)(diff/30)*ROOM_PRICE_PER_30MINUTES);
 			SimpleDateFormat transFormat=new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm");
 			date=transFormat.format(start).toString()+" ~ "+transFormat.format(end).toString()+"("+diff+"분)";
-			System.out.println(date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		model.addAttribute("startDate",date);
+		model.addAttribute("endDate",date);
 		model.addAttribute("date",date);
 		model.addAttribute("price",price);
 
@@ -184,6 +185,10 @@ public class ReservationServiceImpl implements ReservationService {
 			}
 			model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipList));
 		}
+		// 간식 여부
+
+		model.addAttribute("snackWant", request.getParameter("snackWant"));
+		System.out.println(request.getParameter("snackWant"));
 	}
 	/* ------------- 마이페이지 ------------- */
 	

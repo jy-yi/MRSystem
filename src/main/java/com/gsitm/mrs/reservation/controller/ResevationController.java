@@ -216,6 +216,12 @@ public class ResevationController {
 		return "user/reservation/checkReservationInfo";
 	}
 	
+	@RequestMapping(value="/doReserve", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> doReservation(){
+		return null;
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/**
