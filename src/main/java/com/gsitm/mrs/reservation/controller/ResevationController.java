@@ -199,7 +199,6 @@ public class ResevationController {
 												 @RequestParam List<String> mainDeptList){
 		System.out.println(employeeNoArr);
 		System.out.println(mainDeptList);
-		System.out.println(mainDeptList==null);
 		logger.info("(사용자) 예약 - 사원들의 부서 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> map=new HashMap<>();

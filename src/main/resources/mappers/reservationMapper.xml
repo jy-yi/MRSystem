@@ -249,7 +249,7 @@
 		<foreach collection="employeeNoArr" item="empNo" separator="," open="(" close=")">
 			#{empNo}
 		</foreach>
-		<if test="mainDeptList.size==0">
+		<if test="mainDeptList.size()!=0">
 			AND dept_no NOT IN
 		<foreach collection="mainDeptList" item="deptNo" separator="," open="(" close=")">
 			#{deptNo}

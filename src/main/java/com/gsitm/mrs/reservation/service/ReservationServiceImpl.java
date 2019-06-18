@@ -100,7 +100,6 @@ public class ReservationServiceImpl implements ReservationService {
 		Map<String, Object> map=new HashMap<>();
 		map.put("employeeNoArr", employeeNoArr);
 		map.put("mainDeptList", mainDeptList);
-		System.out.println(dao.getDepartmentList(map));
 		return dao.getDepartmentList(map);
 	}
 

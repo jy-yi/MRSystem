@@ -394,13 +394,21 @@
 		var employeeNoArr=participation.map(function(a){
 			return a.employeeNo;
 		})
-		var sendDate=new Array();
+		
+		// mainDept배열에서 deptNo 값으로만 배열 생성
+		var mainDeptNoArr=null;
+		if(mainDept!=null){
+			mainDeptNoArr=mainDept.map(function(a){
+				return a.deptNo;
+			});
+		}
+			
 		$.ajax({
 			type:"get",
 			url:"/reservation/getDepartmentList",
 			traditional:true,
 			data : {"employeeNoArr" : employeeNoArr,
-					"mainDeptList" : mainDept},
+					"mainDeptList" : mainDeptNoArr},
 			success: function(data){
 				$.each(data.departmentList, function(index, item){
 					departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
