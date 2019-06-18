@@ -56,7 +56,17 @@
 				</ul>
 			</div>
 		</div>
+		<div class="Row">
+			<div class="col-xs-6">
+				<button class="btn btn-primary" onclick="doReserve()">예약완료</button>
+			</div>
+		</div>
 	</div>
 	</div>
 </div>
-<script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
+<script>
+	function doReserve(){
+		alert("예약이 완료되었습니다.");
+		
+	}
+</script>
