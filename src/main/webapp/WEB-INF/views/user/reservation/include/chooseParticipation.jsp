@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<link rel="stylesheet" href="/resources/css/style.css">
 <style>
 	.modal-header{
 		display: inline-block;
@@ -7,20 +8,14 @@
 	.modal-footer{
 		text-align: center !important;
 	}
-
-	#ganada-list-div{
-	    overflow: scroll;
-    	height: 300px;
-    	overflow-x: hidden;
-	}
 	
-	#ganada-list-div:hover{
-		cursor: pointer;
-	}
-	
-	#ganada-list-div>ul>li{
+	#ganada-list {
 		list-style: none;
 		line-height: 2;
+	}
+
+	#ganada-list-div:hover{
+		cursor: pointer;
 	}
 
 	#particaption-list-div{
@@ -28,7 +23,7 @@
 	}
 	
 	#custom-search-input{
-		margin-top: 20px;
+		margin-top: 3%;
 	}
 	
 	#search-employee-list>ul{
@@ -47,7 +42,10 @@
 	
 	.participation-list{
 		list-style: none;
-	    display: flex;
+		line-height: 2;
+    	overflow-x: hidden;
+	    display: inline-block;
+	    width: 100%;
 	    padding: 0;
 	}
 	
@@ -67,7 +65,7 @@
 	
 </style>
 
-<!-- Add Work place Modal-->
+<!-- 회의 참여 인원 검색 모달 -->
 <div class="modal fade" id="chooseParticipationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -76,27 +74,28 @@
 				<form>
 					<div class="row">
 						<div class="col-md-2" id="ganada-list-div">
-							<ul id="ganada-list">
-								<li>ㄱ</li>
-								<li>ㄴ</li>
-								<li>ㄷ</li>
-								<li>ㄹ</li>
-								<li>ㅁ</li>
-								<li>ㅂ</li>
-								<li>ㅅ</li>
-								<li>ㅇ</li>
-								<li>ㅈ</li>
-								<li>ㅊ</li>
-								<li>ㅋ</li>
-								<li>ㅌ</li>
-								<li>ㅍ</li>
-								<li>ㅎ</li>
-							</ul>
+							<div class="scrollbar" id="style-7">
+						      <div class="force-overflow">
+					      		<ul id="ganada-list">
+									<li>ㄱ</li>
+									<li>ㄴ</li>
+									<li>ㄷ</li>
+									<li>ㄹ</li>
+									<li>ㅁ</li>
+									<li>ㅂ</li>
+									<li>ㅅ</li>
+									<li>ㅇ</li>
+									<li>ㅈ</li>
+									<li>ㅊ</li>
+									<li>ㅋ</li>
+									<li>ㅌ</li>
+									<li>ㅍ</li>
+									<li>ㅎ</li>
+								</ul>
+						      </div>
+						    </div>
 						</div>
-				        <div class="col-md-10">
-				        	<div id="particaption-list-div">
-				    			<ul class="participation-list"></ul>
-				        	</div>
+				        <div class="col-md-7">
 				        	
 				            <div id="custom-search-input">
 					            <div class="input-group md-form form-sm form-2 pl-0">
@@ -111,9 +110,14 @@
 				                	<ul></ul>
 				                </div>
 				            </div>
-				            
-	
 				        </div>
+				        <div class="col-md-3" id="particaption-list-div">
+				        	<div class="scrollbar2" id="style-7">
+						      <div class="force-overflow">
+					      		<ul class="participation-list"></ul>
+						      </div>
+						    </div>
+						</div>
 				      </div>
 			      </form>
 			</div>
