@@ -83,7 +83,6 @@ public class ResevationController {
 		logger.info(calendarInfo+"");
 		
 		return calendarInfo;
-		
 	}
 	
 	@RequestMapping(value = "/statusList", method = RequestMethod.GET)
