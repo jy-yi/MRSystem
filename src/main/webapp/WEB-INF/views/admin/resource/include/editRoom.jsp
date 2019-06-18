@@ -65,6 +65,27 @@
 						
 						<div class="row">
 							<div class="col-xs-2 col-sm-2 text-center">
+								<label>유형</label>
+							</div>
+							<div class="col-xs-9 col-sm-9">
+								<button class="btn btn-light dropdown-toggle" type="button" id="editDropdownMenuRoomType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			                      회의실 유형 선택 
+			                    </button>
+		                      	<input type="hidden" name="type" id="editRoomType">
+			                    <div id="editRoomTypeDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="editDropdownMenuRoomType">
+				                      <a class="dropdown-item" value="회의실">회의실</a>
+				                      <a class="dropdown-item" value="교육실">교육실</a>
+				                      <a class="dropdown-item" value="대회의실">대회의실</a>
+			                    </div>
+							</div>
+						
+							<div class="clearfix"></div>
+						</div>
+						
+						<br>
+						
+						<div class="row">
+							<div class="col-xs-2 col-sm-2 text-center">
 								<label> 인원 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
@@ -107,6 +128,7 @@
 	var workplaceName="";
 	var image="";
 	var name="";
+	var type="";
     var capacity="";
     var nwAvailable="";
     
@@ -117,6 +139,7 @@
         	workplaceName = $(event.relatedTarget).data('workplacename');
         	image = $(event.relatedTarget).data('image');
         	name = $(event.relatedTarget).data('name');
+        	type = $(event.relatedTarget).data('type');
         	capacity = $(event.relatedTarget).data('capacity');
         	nwAvailable = $(event.relatedTarget).data('nwavailable');
         	
@@ -125,6 +148,7 @@
 //         	 $("#editImage").val(name);
         	 $("#editName").val(name);
         	 $('#editDropdownMenuButton').text(workplaceName);
+        	 $('#editDropdownMenuRoomType').text(type);
     	     $("#editCapacity").val(capacity);
     	     
     	     if (nwAvailable === 'Y') 
@@ -138,5 +162,11 @@
 	$('#editWorkplaceDropdown a').on('click', function() {
 	    $('#editDropdownMenuButton').text($(this).text());
 	    $('#editWorkplaceNo').val($(this).attr('value'));
+	});
+	
+	/* 회의실 유형 드롭박스 선택 시 텍스트 변경 */
+	$('#editRoomTypeDropdown a').on('click', function() {
+	    $('#editDropdownMenuRoomType').text($(this).text());
+	    $('#editRoomType').val($(this).attr('value'));
 	});
 </script>

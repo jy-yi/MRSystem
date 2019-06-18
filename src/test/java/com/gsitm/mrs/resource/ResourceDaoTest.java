@@ -214,7 +214,7 @@ public class ResourceDaoTest {
 	@Test
 	public void TestAddRoom() {
 		
-		RoomDTO roomDTO = new RoomDTO(1, 1, "Test222", 10, "Y", "0f2e7167-5412-4080-8d4a-23cc9bdceb47_hawaii.jpg", "admin_it0003");
+		RoomDTO roomDTO = new RoomDTO(1, 1, "Test222", "회의실", 10, "Y", "0f2e7167-5412-4080-8d4a-23cc9bdceb47_hawaii.jpg", "admin_it0003");
 		dao.addRoom(roomDTO);
 		logger.info("현재 시퀀스 : " + roomDTO.getRoomNo());
 		logger.info("회의실 추가 완료");

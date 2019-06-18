@@ -43,6 +43,7 @@
 		       r.workplace_no AS workplaceNo, 
 		       w.name         AS workplaceName, 
 		       r.name         AS roomName, 
+		       r.type		  AS roomType,
 		       r.capacity, 
 		       r.nw_available AS nwAvailable, 
 		       r.image, 
@@ -63,8 +64,8 @@
 	
 	<!-- 회의실 추가 -->
 	<insert id="addRoom">
-		INSERT INTO Room(room_no, workplace_no, name, capacity, nw_available, image, admin_id)
-		VALUES (Room_Seq.nextVal, #{workplaceNo}, #{name}, #{capacity}, #{nwAvailable}, #{image}, #{adminId})
+		INSERT INTO Room(room_no, workplace_no, name, type, capacity, nw_available, image, admin_id)
+		VALUES (Room_Seq.nextVal, #{workplaceNo}, #{name}, #{type}, #{capacity}, #{nwAvailable}, #{image}, #{adminId})
 		
 		<selectKey keyProperty="roomNo" resultType="Integer" order="AFTER"> 
 			SELECT Max(Room_no) FROM Room 
