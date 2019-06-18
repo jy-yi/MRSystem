@@ -191,7 +191,8 @@
 	var keyword;
 	// 부서를 담은 배열
 	var departmentList;
-	var mainDept=new Array();
+	var mainDept=null;
+	var neverChosenMainDept=true;
 	
 	/* 예약 일자 */
 	$(function(){
@@ -393,14 +394,13 @@
 		var employeeNoArr=participation.map(function(a){
 			return a.employeeNo;
 		})
-		var sendData = { "employeeNoArr":employeeNoArr, "mainDeptList", mainDept };
+		var sendDate=new Array();
 		$.ajax({
 			type:"get",
 			url:"/reservation/getDepartmentList",
 			traditional:true,
-			/*data : {"employeeNoArr" : employeeNoArr,
-					"mainDeptList" : mainDept},*/
-			data : {"sendData":sendData},
+			data : {"employeeNoArr" : employeeNoArr,
+					"mainDeptList" : mainDept},
 			success: function(data){
 				$.each(data.departmentList, function(index, item){
 					departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
@@ -443,6 +443,10 @@
 	
 	// 부서 선택 이벤트
 	$(document).on("click","#department-list>ul>li",function(){
+		if(neverChosenMainDept){
+			mainDept=new Array();
+			neverChosenMainDept=false;
+		};
 		var deptNo=$(this).prev().text();
 		var deptName=$(this).text();
 		var deptInfo={"deptNo":deptNo, "name":deptName};
