@@ -112,9 +112,9 @@
 					                 </button>
 					                 <div id="typeDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
 					                 	<input type="hidden" name="purpose" id="purpose">
-					                    <a class="dropdown-item" value="internelMeeting">내부회의</a>
-					                    <a class="dropdown-item" value="customerMeeting">고객미팅</a>
-					                    <a class="dropdown-item" value="education">교육</a>
+					                    <a class="dropdown-item" value="내부회의">내부회의</a>
+					                    <a class="dropdown-item" value="고객미팅">고객미팅</a>
+					                    <a class="dropdown-item" value="교육">교육</a>
 					                 </div>
 								</div>
 							</div>

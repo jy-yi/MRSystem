@@ -139,8 +139,8 @@ public class ReservationServiceImpl implements ReservationService {
 			e.printStackTrace();
 		}
 
-		model.addAttribute("startDate",date);
-		model.addAttribute("endDate",date);
+		model.addAttribute("startDate",request.getParameter("startDate"));
+		model.addAttribute("endDate",request.getParameter("endDate"));
 		model.addAttribute("date",date);
 		model.addAttribute("price",price);
 

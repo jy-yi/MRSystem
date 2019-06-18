@@ -81,6 +81,7 @@ th {
 								<th>주관 부서</th>
 								<td>
 									<c:forEach items="${mainDept}" var="dept">
+										<input type="hidden" class="mainDept" value="${dept.DEPT_NO}"/>
 										${dept.NAME}
 									</c:forEach> 
 								</td>
@@ -90,17 +91,19 @@ th {
 									<th>협조 부서</th>
 									<td>
 										<c:forEach items="${subDept}" var="dept">
+											<input type="hidden" class="subDept" value="${dept.DEPT_NO}"/>
 											${dept.NAME}
 										</c:forEach> 
 									</td>
 								</tr>
 							</c:if>
-							<c:if test="!empty ${equipments }">
+							<c:if test="${!empty equipments }">
 								<tr>
 									<th>비품 대여 신청 목록</th>
 									<td>
 										<c:forEach items="${equipments }" var="equipment">
 											${equipment.NAME}
+											<input type="hidden" class="equipments" value="${equipment.EQUIP_NO}"/>
 										</c:forEach>
 									</td>
 								</tr>
@@ -136,19 +139,7 @@ th {
 <script>
 	function doReserve() {
 		alert("예약이 완료되었습니다.");
-		
 
-		var startDate=new Date("${reservationInfo.startDate}");
-		var empNo=$.cookie('loginCookie');
-		var roomNo="${roomInfo.ROOMNO}";
-		var name="${meetingName}";
-		var purpose="${purpose}";
-		var startDate="${startDate}";
-		var endDate="${endDate}";
-		var snackWant="${snackWant}";
-		var mainDept="$";
-		var subDept=;
-		var equipments=;
 		// 정보를 ajax로 DB에 넣는다.
 		/*
 			reservation DB
@@ -173,11 +164,46 @@ th {
 				*equip_no
 				res_no
 		*/
+		var empNo=$.cookie('loginCookie');
+		var roomNo="${roomInfo.ROOMNO}";
+		var name="${meetingName}";
+		var purpose="${purpose}";
+		var startDate="${startDate}";
+		var endDate="${endDate}";
+		var snackWant="${snackWant}";
+		var mainDept=$(".mainDept").map(function() {
+			   return $(this).val();
+		}).get();
+		var subDept=$(".subDept").map(function() {
+			   return $(this).val();
+		}).get();
+		var equipments= $(".equipments").map(function() {
+			   return $(this).val();
+		}).get();
 		
+		var resData={
+				empNo:empNo,
+				roomNo:roomNo,
+				name:name,
+				purpose:purpose,
+				startDate:startDate,
+				endDate:endDate,
+				snackWant:snackWant,
+				mainDept:mainDept,
+				subDept:subDept,
+				equipments:equipments
+				};
+		var jsonData = JSON.stringify(resData);
+	console.log(resData);
+	console.log(jsonData);
+	
 		$.ajax({
 				type:"post",
-				url:"/reservation/doReserve",
-				data : ,
+				url:"${pageContext.request.contextPath}/reservation/doReserve",
+				data:jsonData,
+				contentType: "application/json; charset=utf-8",
+				dataType: "json",
+				traditional:true,
 				success: function(data){
 					
 				},
@@ -187,6 +213,6 @@ th {
 			});
 			
 		// 예약 확인 페이지로 이동
-		location.href="/reservation/statusCalendar";
+		//location.href="/reservation/statusCalendar";
 	}
 </script>

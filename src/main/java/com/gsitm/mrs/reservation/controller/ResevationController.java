@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -218,8 +219,9 @@ public class ResevationController {
 	
 	@RequestMapping(value="/doReserve", method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String, Object> doReservation(){
-		return null;
+	public void doReserve(@RequestBody List<Map<String, Object>> list){
+		System.out.println("doReserve");
+		System.out.println(list);
 	}
 	
 	/* ------------- 관리자 ------------- */
