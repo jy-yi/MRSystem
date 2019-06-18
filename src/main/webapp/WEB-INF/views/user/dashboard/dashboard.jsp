@@ -66,6 +66,9 @@ $(function() {
 		$("#workplaceNameTitle").text($(this).text());
 
 		// TODO : 탭 눌렀을 때 이벤트 다 지워버리고 다시 ajax로 뿌려주셈~ 화이팅!
+		
+		
+		
 	});
 	
 	/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
@@ -73,54 +76,68 @@ $(function() {
 	
 });
 </script>
+<!-- Modal -->
+<jsp:include page="include/infoReservation.jsp" />
+
+</body>
 <script>
-document.addEventListener('DOMContentLoaded',function() {
-				 
-	var calendarEl = document.getElementById('calendar');
-	var calendar = new FullCalendar.Calendar(
-			calendarEl,
-			{
-				plugins : [ 'interaction', 'dayGrid' ],	
-				defaultDate : new Date(),
-				editable : true,
-				eventLimit : true, // allow "more" link when too many events
-				events : [
-					<c:forEach items="${reservationInfo}" var="list" varStatus="status">
-						<c:if test="${list.STATUS ne 3 }">
-						{ 
-							id : '${list.RESERVATIONNO}',
-							title : '${list.RESERVATIONNAME}',
-							start : '${list.STARTDATE}',
-							end : '${list.ENDDATE}'
-						},
-						</c:if>
-					</c:forEach>
-				], eventClick: function(info) {
-					
-					var reservationNo = info.event.id;
-					var name = info.event.title;
-					var start = info.event.start;
-					var end = info.event.end;
-					
-					console.log(reservationNo);
-					console.log(name);
-					console.log(start);
-					console.log(end);
-					
-					$("#reservationNo").val(reservationNo);
-	        		$("#employeeNo").val(name); 	
-	        	 	$("#roomNo").val(name);
-		        	$("#name").val(name);
-		    	 	$("#purpose").val(name);
-		    	    $("#startDate").val(start);
-		    	    $("#endDate").val(end);
-		    	    $("#snackWant").val(name);
-		    	    $("#status").val(name);
-	        	 	
-	        	 	$("#infoReservationModal").modal('show');
-				}									
-			});
-	calendar.render();
-	calendar.setOption('locale', 'ko'); // 달력 한국어 설정
-});	
+	document.addEventListener('DOMContentLoaded',function() {
+					 
+						var calendarEl = document.getElementById('calendar');
+
+						var calendar = new FullCalendar.Calendar(
+								calendarEl,
+								{
+									plugins : [ 'interaction', 'dayGrid' ],	
+									defaultDate : new Date(),
+									editable : true,
+									eventLimit : true, // allow "more" link when too many events
+
+									events : [
+										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+											<c:if test="${list.STATUS ne 3 }">
+											{ 
+												id : '${list.RESERVATIONNO}',
+												title : '${list.RESERVATIONNAME}',
+												start : '${list.STARTDATE}',
+												end : '${list.ENDDATE}'
+											},
+											</c:if>
+										</c:forEach>
+									], eventClick: function(info) {
+										
+										var reservationNo = info.event.id;
+										console.log(reservationNo);
+										
+										$.ajax({
+									        url : "/reservation/getCalendar",
+									        data : {"reservationNo": reservationNo},
+									        type : "GET",
+									        success : function(data){
+												
+									        	//alert(data.calendarInfo.EMPNAME);
+									        	
+									        	console.log(data);
+									        	
+												$("#employeeName").val(data.EMPNAME);
+								        	 	$("#roomName").val(data.ROOMNAME);
+									        	$("#reservationName").val(data.RESERVATIONNAME);
+									    	 	$("#purpose").val(data.PURPOSE);
+									    	    $("#startDate").val(data.STARTDATE +" ~ "+data.ENDDATE);
+								        	 	
+								        	 	$("#infoReservationModal").modal('show');
+									        },
+									        error : function(){
+									            alert("전체 예약 현황 조회 에러");
+									        }
+									    });
+										
+									}									
+								});
+
+						calendar.render();
+
+						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
+
+					});	
 </script>
