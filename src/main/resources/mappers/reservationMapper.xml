@@ -88,7 +88,7 @@
 	
 	<!-- 대시보드 -->
 	<select id="getDashBoard" resultType="map">
-		SELECT  r.res_no                        AS resNo,
+		SELECT  r.res_no                        AS reservationNo,
                 e.name                          AS empName,
 				r.name							AS reservationName,
 				purpose,

@@ -78,9 +78,11 @@ $(function() {
 </script>
 <!-- Modal -->
 <jsp:include page="include/infoReservation.jsp" />
-
+<c:forEach items="${dashboardList}" var="list" varStatus="status">
+	${list.RESERVATIONNAME }
+</c:forEach>
 </body>
-<script>
+<!-- <script>
 	document.addEventListener('DOMContentLoaded',function() {
 					 
 						var calendarEl = document.getElementById('calendar');
@@ -94,7 +96,7 @@ $(function() {
 									eventLimit : true, // allow "more" link when too many events
 
 									events : [
-										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+										<c:forEach items="${dashboardList}" var="list" varStatus="status">
 											<c:if test="${list.STATUS ne 3 }">
 											{ 
 												id : '${list.RESERVATIONNO}',
@@ -109,7 +111,7 @@ $(function() {
 										var reservationNo = info.event.id;
 										console.log(reservationNo);
 										
-										$.ajax({
+										/* $.ajax({
 									        url : "/reservation/getCalendar",
 									        data : {"reservationNo": reservationNo},
 									        type : "GET",
@@ -130,7 +132,7 @@ $(function() {
 									        error : function(){
 									            alert("전체 예약 현황 조회 에러");
 									        }
-									    });
+									    }); */
 										
 									}									
 								});
@@ -140,4 +142,4 @@ $(function() {
 						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
 
 					});	
-</script>
+</script> -->
