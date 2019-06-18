@@ -118,15 +118,17 @@ public class ResevationController {
 		
 		logger.info("(사용자) 마이페이지 - 예약 통계");
 		
-		
-		
 		return "user/mypage/statistic";
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String dashboard() {
+	public String dashboard(int workplaceNo, Model model) {
 		
 		logger.info("(사용자) 대시보드");
+		
+		List<Map<String, Object>> dashboardList = service.getDashBoard(workplaceNo);
+		
+		model.addAttribute("dashboardList", dashboardList);
 		
 		return "user/dashboard/dashboard";
 	}

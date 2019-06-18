@@ -64,6 +64,27 @@
 						
 						<div class="row">
 							<div class="col-xs-2 col-sm-2 text-center">
+								<label>유형</label>
+							</div>
+							<div class="col-xs-9 col-sm-9">
+								<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuRoomType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			                      회의실 유형 선택 
+			                    </button>
+		                      	<input type="hidden" name="type" id="roomType">
+			                    <div id="roomTypeDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuRoomType">
+				                      <a class="dropdown-item" value="회의실">회의실</a>
+				                      <a class="dropdown-item" value="교육실">교육실</a>
+				                      <a class="dropdown-item" value="대회의실">대회의실</a>
+			                    </div>
+							</div>
+						
+							<div class="clearfix"></div>
+						</div>
+						
+						<br>
+						
+						<div class="row">
+							<div class="col-xs-2 col-sm-2 text-center">
 								<label> 인원 </label>
 							</div>
 							<div class="col-xs-9 col-sm-9">
@@ -132,6 +153,12 @@
 	$('#workplaceDropdown a').on('click', function() {
 	    $('#dropdownMenuButton').text($(this).text());
 	    $('#workplaceNo').val($(this).attr('value'));
+	});
+	
+	/* 회의실 유형 드롭박스 선택 시 텍스트 변경 */
+	$('#roomTypeDropdown a').on('click', function() {
+	    $('#dropdownMenuRoomType').text($(this).text());
+	    $('#roomType').val($(this).attr('value'));
 	});
 	
 	var arrSelected = [];

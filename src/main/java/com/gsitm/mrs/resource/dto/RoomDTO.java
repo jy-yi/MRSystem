@@ -12,17 +12,19 @@ public class RoomDTO {
 	private int roomNo;
 	private int workplaceNo;
 	private String name;
+	private String type;
 	private int capacity;
 	private String nwAvailable;
 	private String image;
 	private String adminId;
 
 	public RoomDTO() {}
-
-	public RoomDTO(int roomNo, int workplaceNo, String name, int capacity, String nwAvailable, String image, String adminId) {
+	
+	public RoomDTO(int roomNo, int workplaceNo, String name, String type, int capacity, String nwAvailable,String image, String adminId) {
 		this.roomNo = roomNo;
 		this.workplaceNo = workplaceNo;
 		this.name = name;
+		this.type = type;
 		this.capacity = capacity;
 		this.nwAvailable = nwAvailable;
 		this.image = image;
@@ -51,6 +53,14 @@ public class RoomDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public int getCapacity() {
@@ -87,8 +97,9 @@ public class RoomDTO {
 
 	@Override
 	public String toString() {
-		return "RoomDTO [roomNo=" + roomNo + ", workplaceNo=" + workplaceNo + ", name=" + name + ", capacity="
-				+ capacity + ", nwAvailable=" + nwAvailable + ", image=" + image + ", adminId=" + adminId + "]";
+		return "RoomDTO [roomNo=" + roomNo + ", workplaceNo=" + workplaceNo + ", name=" + name + ", type=" + type
+				+ ", capacity=" + capacity + ", nwAvailable=" + nwAvailable + ", image=" + image + ", adminId="
+				+ adminId + "]";
 	}
 
 }
