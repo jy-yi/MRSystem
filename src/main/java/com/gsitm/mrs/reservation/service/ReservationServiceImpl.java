@@ -218,6 +218,10 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getLatestReservation(employeeNo);
 	}
 	
+	/** 대시보드 */
+	public List<Map<String, Object>> getDashBoard(int workplaceNo) {
+		return dao.getDashBoard(workplaceNo);
+	}
 	
 	/* ------------- 회의실 ------------- */
 

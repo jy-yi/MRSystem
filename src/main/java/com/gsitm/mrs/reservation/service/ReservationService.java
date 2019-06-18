@@ -38,6 +38,9 @@ public interface ReservationService {
 	/** 마이페이지 가장 최근 예약 표시 */
 	public ReservationDTO getLatestReservation(String employeeNo);
 	
+	/** 대시보드 */
+	public List<Map<String, Object>> getDashBoard(int workplaceNo);
+	
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);
 

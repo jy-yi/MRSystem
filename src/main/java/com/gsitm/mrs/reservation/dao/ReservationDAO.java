@@ -33,6 +33,9 @@ public interface ReservationDAO {
 	/** 마이페이지 가장 최근 예약 표시 */
 	public ReservationDTO getLatestReservation(String employeeNo);
 	
+	/** 대시보드 */
+	public List<Map<String, Object>> getDashBoard(int workplaceNo);
+	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	

@@ -86,6 +86,26 @@
                             	AND emp_no = #{employeeNo})
 	</select>
 	
+	<!-- 대시보드 -->
+	<select id="getDashBoard" resultType="map">
+		SELECT  r.res_no                        AS resNo,
+                e.name                          AS empName,
+				r.name							AS reservationName,
+				purpose,
+				rm.name							AS roomName,
+				To_char(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
+		       	To_char(r.end_date, 'YYYY-MM-DD HH:mm') 	AS endDate
+		FROM    workplace w,
+                room rm,    
+                reservation r,
+			   	employee e
+		WHERE  	w.workplace_no = rm.workplace_no
+        and     rm.room_no = r.room_no
+        and     r.emp_no = e.emp_no
+		AND     w.workplace_no = #{workplaceNo};
+	</select>
+	
+	
 	<!-- 회의실 정보 조회 -->
 	<select id="getRoomInfo" parameterType="int" resultType="Map">
 		SELECT <include refid="roomInfo_columns"/>, 
