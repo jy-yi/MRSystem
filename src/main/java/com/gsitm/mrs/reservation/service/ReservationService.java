@@ -62,8 +62,7 @@ public interface ReservationService {
 	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr);
 	
 	/** 회의실 예약 입력 정보 조회 */
-	public void checkReservationInfo(HttpServletRequest request, Model model, 
-			List<String> participation, List<String> mainDept, List<String> subDept, List<Map<String, Object>> equipments);
+	public void checkReservationInfo(HttpServletRequest request, Model model);
 	
 	/* ------------- 관리자 ------------- */
 	

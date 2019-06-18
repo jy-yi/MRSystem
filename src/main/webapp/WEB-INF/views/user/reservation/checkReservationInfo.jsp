@@ -35,20 +35,24 @@
 					<li><b>회의목적</b><span>${purpose }</span>
 					<li><b>참여인원</b>
 						<c:forEach items="${participation }" var="emp">
-							<span>${emp }</span>
+							<span>${emp.NAME}(${emp.DEPARTMENTNAME})</span>
 						</c:forEach>
 					<li><b>주관부서</b>
 						<c:forEach items="${mainDept }" var="dept">
-							<span>${dept }</span>
+							<span>${dept.NAME }</span>
 						</c:forEach>
-					<li><b>협조부서</b>
+					<c:if test="!empty ${subDept }">
+						<li><b>협조부서</b>
 						<c:forEach items="${subDept }" var="dept">
-							<span>${dept }</span>
+							<span>${dept.NAME }</span>
 						</c:forEach>
-					<li><b>선택내역</b>
+					</c:if>
+					<c:if test="!empty ${equipments }">
+						<li><b>선택내역</b>
 						<c:forEach items="${equipments }" var="equipment">
-							<span>${equipment }</span>
+							<span>${equipment.NAME }</span>
 						</c:forEach>
+					</c:if>
 				</ul>
 			</div>
 		</div>

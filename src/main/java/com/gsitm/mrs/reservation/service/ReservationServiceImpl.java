@@ -1,5 +1,7 @@
 package com.gsitm.mrs.reservation.service;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,6 +9,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +21,8 @@ import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
+
+import freemarker.log.Logger;
 
 
 /**
@@ -93,47 +98,49 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr) {
 		return dao.getDepartmentList(employeeNoArr);
 	}
+	
+	/**
+	 * 
+	 */
 
 
 	/** 회의실 예약 입력 정보 조회 */
 	@Override
-	public void checkReservationInfo(HttpServletRequest request, Model model, 
-			List<String> participation, List<String> mainDept, List<String> subDept, List<Map<String, Object>> equipments) {
+	public void checkReservationInfo(HttpServletRequest request, Model model) {
 		final int ROOM_PRICE_PER_30MINUTES=5000;
 		
 		// 사용자 정보
 		String employeeNo=request.getParameter("employeeNo");
-		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
-		model.addAttribute("employeeDto",employeeDto);
-
-		System.out.println("employeeDto : "+employeeDto);
+		model.addAttribute("employeeDto",dao.getEmployeeInfo(employeeNo));
+		
 		// 방 정보
 		int roomNo=Integer.parseInt(request.getParameter("roomNo"));
 		Map<String, Object> roomInfo=dao.getRoomInfo(roomNo);
 		model.addAttribute("roomInfo",roomInfo);
-		System.out.println("roomNo : "+roomNo);
+
+		// 사용 시간 정보
 		long diff=0;
 		int price=0;
 		String date=null;
 		try {
 			// 사용시간 정보
-			SimpleDateFormat basicFormat=new SimpleDateFormat("yyyy-mm-dd hh:mm");
-			Date start=basicFormat.parse(request.getParameter("startDate"));
-			Date end=basicFormat.parse(request.getParameter("endDate"));
+			SimpleDateFormat orginFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			Date start=orginFormat.parse(request.getParameter("startDate"));
+			Date end=orginFormat.parse(request.getParameter("endDate"));
+			System.out.println(request.getParameter("startDate")+"~"+request.getParameter("endDate"));
+			System.out.println(start+"~"+end);
 			// 분 구하기
 			diff=(end.getTime()-start.getTime())/60000;
 			
 			// 30분당 5000천원 적용
 			price=((int)(diff/30)*ROOM_PRICE_PER_30MINUTES);
-			SimpleDateFormat transFormat=new SimpleDateFormat("yyyy년 mm월 dd일 hh:mm");
+			SimpleDateFormat transFormat=new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm");
 			date=transFormat.format(start).toString()+" ~ "+transFormat.format(end).toString()+"("+diff+"분)";
+			System.out.println(date);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		System.out.println("date : "+date);
-		System.out.println("price : "+price);
 		model.addAttribute("date",date);
 		model.addAttribute("price",price);
 
@@ -142,22 +149,42 @@ public class ReservationServiceImpl implements ReservationService {
 		model.addAttribute("purpose",request.getParameter("purpose"));
 
 		// 참여인원
-		model.addAttribute("participation", dao.getEmployeeList(participation));
-		// 주관부서&협조부서
-		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDept));
-		model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDept));
-		// 비품 목록
-		/*List<Integer> equipmentNos=new ArrayList<>();
-		for(Map<String, Object> equip:equipments) {
-			if((boolean)equip.get("need")) {
-				equipmentNos.add((Integer)equip.get("EQUIP_NO"));
-			}
+		StringTokenizer token = new StringTokenizer(request.getParameter("participation"), ",");
+		List<String> participationList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			participationList.add(token.nextToken());
 		}
-		System.out.println(participation);
-		System.out.println(mainDept);
-		System.out.println(subDept);
-		System.out.println(equipmentNos);*/
-		//model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipmentNos));
+		model.addAttribute("participation", dao.getEmployeeList(participationList));
+
+		// 주관 부서
+		token = new StringTokenizer(request.getParameter("mainDept"), ",");
+		List<String> mainDeptList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			mainDeptList.add(token.nextToken());
+		}
+		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDeptList));
+
+		// 협조 부서
+		String subDept=request.getParameter("subDept");
+		if(!subDept.equals("")) {
+			token = new StringTokenizer(subDept, ",");
+			List<String> subDeptList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				subDeptList.add(token.nextToken());
+			}
+			model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDeptList));
+		}
+		
+		// 비품 목록
+		String equipments=request.getParameter("equipments");
+		if(!equipments.equals("")) {
+			token = new StringTokenizer(equipments, ",");
+			List<Integer> equipList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				equipList.add(Integer.parseInt(token.nextToken()));
+			}
+			model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipList));
+		}
 	}
 	/* ------------- 마이페이지 ------------- */
 	

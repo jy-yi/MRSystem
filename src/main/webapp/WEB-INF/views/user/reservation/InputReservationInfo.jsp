@@ -64,7 +64,7 @@
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
 							<input type="hidden" name="startDate" value="${reservationInfo.startDate}">
 							<input type="hidden" name="endDate" value="${reservationInfo.endDate}">
-							<input type="hidden" name="equipments" value="${equipmentList}">
+							<input type="hidden" name="equipments" value="">
 							<input type="hidden" name="employeeNo" value=""/>
 							<input type="hidden" name="participation" value="">
 							<input type="hidden" name="mainDept" value="">
@@ -154,16 +154,15 @@
 						<hr>
 						<ul id="option_list">
 							<c:forEach var="equip" items="${equipmentList}" >
-								<li>${equip.NAME} 대여
-									<c:choose>
-										<c:when test="${!(empty equip.need) and (equip.need eq true)}">
-											Y
-										</c:when>
-										<c:otherwise>
-											N
-										</c:otherwise>
-									</c:choose>
-								</li>
+								<c:choose>
+									<c:when test="${!(empty equip.need) and (equip.need eq true)}">
+										<li>${equip.NAME} 대여 Y</li>
+										<input type="hidden" class="needEquip" value="${equip.EQUIP_NO}"/>
+									</c:when>
+									<c:otherwise>
+										<li>${equip.NAME} 대여 N</li>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 							<li>간식준비 여부 ${reservationInfo.snackWant }
 							</li>
@@ -544,11 +543,13 @@
 		$("input[name=participation]").val(employeeNoArr);
 		$("input[name=mainDept]").val(mainDeptNoArr);
 		$("input[name=subDept]").val(subDeptNoArr);
+		// 필요한 equipment 목록을 폼에 전달
+		var equipments=new Array();
+		$(".needEquip").each(function(){
+			equipments.push($(this).val());
+		});
+		$("input[name=equipments]").val(equipments);
 		// 폼 제출
-		alert("제출!"); 
-		alert("employeeNoArr!" + employeeNoArr); 
-		alert("mainDeptNoArr!" + mainDeptNoArr); 
-		alert("subDeptNoArr!" + subDeptNoArr); 
 		$("#option_form").submit();
 	});
 	
