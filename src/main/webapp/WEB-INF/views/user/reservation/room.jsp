@@ -36,12 +36,12 @@
 							<c:forEach items="${roomList}" var="list">
 								<c:if test="${workplaceList.workplaceNo eq list.WORKPLACENO}">
 									<div class="col-xl-4 col-md-4 mb-4">
-										<div class="card shadow mb-4">
+										<div class="card shadow mb-4" style="height: 30em">
 											<div class="card-header py-3">
 												<h5 class="m-0 font-weight-bold text-primary"> ${list.ROOMNAME}
 												 
 												<span style="float:right"> 
-													<a href="/reservation/shortTerm_chooseDate/1" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
+													<a href="/reservation/shortTerm_chooseDate/${list.ROOMNO}" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
 													<a href="#" class="btn btn-primary"> <span class="text">장기 예약</span> </a>
 												</span> 
 												
@@ -50,9 +50,9 @@
 												
 											</div>
 											<div class="card-body">
-												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%"></div>
+												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%" height="200em"></div>
 												<p>
-												<div>구분 : 회의실</div>
+												<div>구분 : ${list.ROOMTYPE}</div>
 												<div>수용 인원 : ${list.CAPACITY}명</div>
 												<div>비치 물품 : <span id="equipList"></span></div>
 												<div>네트워크 : ${list.NWAVAILABLE eq 'Y' ? "사용 가능":"사용 불가능" }</div>

@@ -25,7 +25,7 @@
 			
 			<div class="row">
 				<div class="col-sm-6 left-padding-zero" >
-					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE }">	
+					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE}">	
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
 						<h1 class="align-center color-title">${roomInfo.ROOMNAME }</h1>
 						<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>

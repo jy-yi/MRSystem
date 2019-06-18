@@ -43,7 +43,7 @@
 						<div class="row">
 							<c:forEach items="${roomList}" var="list">
 								<c:if test="${workplaceList.workplaceNo eq list.WORKPLACENO}">
-									<div class="col-xl-4 col-md-4 mb-4">
+									<div class="col-xl-4 col-md-4 mb-4" style="height: 30em">
 										<div class="card shadow mb-4">
 											<div class="card-header py-3">
 												<h5 class="m-0 font-weight-bold text-primary"> ${list.ROOMNAME} 
@@ -60,7 +60,7 @@
 												
 											</div>
 											<div class="card-body">
-												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%"></div>
+												<div class="text-center"><img alt="회의실 사진" src="/resources/img/room/${list.IMAGE}" width="80%" height="200em"></div>
 												<p>
 												<div>회의실 구분 : ${list.ROOMTYPE}</div>
 												<div>수용 인원 : ${list.CAPACITY}명</div>
