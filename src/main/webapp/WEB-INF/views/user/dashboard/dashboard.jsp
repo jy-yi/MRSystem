@@ -1,10 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ page session="false"%>
-
-<!DOCTYPE html>
-<html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <style>
 #calendar {
@@ -20,8 +15,6 @@
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 
-		<div class="row">
-
 			<!-- Begin Page Content -->
 			<div class="container-fluid">
 
@@ -29,7 +22,7 @@
 				<div
 					class="d-sm-flex align-items-center justify-content-between mb-4">
 					<h1 id="name" class="h5 mb-0 text-gray-800">
-						<i class="fas fa-user"></i> 대시보드 > 재동 본사
+						<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span>
 					</h1>
 				</div>
 
@@ -37,104 +30,97 @@
 				<div class="row">
 
 					<ul class="nav nav-tabs">
-						<li class="nav-item"><a class="nav-link active" id="wp1"
-							data-toggle="tab" href="#workplace1">재동 본사</a></li>
-						<li class="nav-item"><a class="nav-link" id="wp2"
-							data-toggle="tab" href="#workplace2">삼환빌딩</a></li>
-						<li class="nav-item"><a class="nav-link" id="wp3"
-							data-toggle="tab" href="#workplace3">GS 강남타워</a></li>
-						<li class="nav-item"><a class="nav-link" id="wp4"
-							data-toggle="tab" href="#workplace4">GS 강서타워</a></li>
+						<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+						<c:forEach items="${workplaceList}" var="list" varStatus="status">
+							<li class="nav-item">
+								<a class="nav-link workplace-list ${status.index eq 0 ? 'active':''}" data-toggle="tab" href="#workplace${list.workplaceNo}" value="${list.workplaceNo}">${list.name}</a>
+							</li>
+						</c:forEach>
 					</ul>
 
 					<div class="tab-content">
-						<div id="calendar"></div>
+<%-- 						<c:forEach items="${workplaceList}" var="workplaceList" varStatus="status"> --%>
+<%-- 							<div class="tab-pane fade show ${status.index eq 0 ? 'active':''}" id="workplace${workplaceList.workplaceNo}"> --%>
+								<div id="calendar"></div>
+<!-- 							</div> -->
+<%-- 						</c:forEach> --%>
 					</div>
 				</div>
 
 			</div>
 			<!-- /.container-fluid -->
 		</div>
-	</div>
-
 </div>
 <!-- End of Main Content -->
 
-
 <script type="text/javascript">
-	$(function() {
-		$("#wp1").click(function() {
-			$("#name").text(" 대시보드 > 재동 본사 ");
-		});
-		$("#wp2").click(function() {
-			$("#name").text(" 대시보드 > 삼환빌딩 ");
-		});
-		$("#wp3").click(function() {
-			$("#name").text(" 대시보드 > GS 강남타워 ");
-		});
-		$("#wp4").click(function() {
-			$("#name").text(" 대시보드 > GS 강서타워 ");
-		});
+$(function() {
+	
+	var workplaceNo = "";
+	
+	/* 지사 탭 클릭 이벤트 */
+	$(".workplace-list").on("click", function() {
+		workplaceNo = $(this).attr('value');
+		
+		// 대시보드 > XXX (지사 이름 동적 변경)
+		$("#workplaceNameTitle").text($(this).text());
+
+		// TODO : 탭 눌렀을 때 이벤트 다 지워버리고 다시 ajax로 뿌려주셈~ 화이팅!
 	});
+	
+	/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
+	$(".workplace-list:first").trigger("click");
+	
+});
 </script>
-
 <script>
-	document.addEventListener('DOMContentLoaded',function() {
-					 
-						var calendarEl = document.getElementById('calendar');
-
-						var calendar = new FullCalendar.Calendar(
-								calendarEl,
-								{
-									plugins : [ 'interaction', 'dayGrid' ],	
-									defaultDate : new Date(),
-									editable : true,
-									eventLimit : true, // allow "more" link when too many events
-
-									events : [
-										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
-											<c:if test="${list.STATUS ne 3 }">
-											{ 
-												id : '${list.RESERVATIONNO}',
-												title : '${list.RESERVATIONNAME}',
-												start : '${list.STARTDATE}',
-												end : '${list.ENDDATE}'
-											},
-											</c:if>
-										</c:forEach>
-									], eventClick: function(info) {
-										
-										var reservationNo = info.event.id;
-										var name = info.event.title;
-										var start = info.event.start;
-										var end = info.event.end;
-										
-										console.log(reservationNo);
-										console.log(name);
-										console.log(start);
-										console.log(end);
-										
-										$("#reservationNo").val(reservationNo);
-						        		$("#employeeNo").val(name); 	
-						        	 	$("#roomNo").val(name);
-							        	$("#name").val(name);
-							    	 	$("#purpose").val(name);
-							    	    $("#startDate").val(start);
-							    	    $("#endDate").val(end);
-							    	    $("#snackWant").val(name);
-							    	    $("#status").val(name);
-						        	 	
-						        	 	$("#infoReservationModal").modal('show');
-									}									
-								});
-
-						calendar.render();
-
-						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
-
-					});	
+document.addEventListener('DOMContentLoaded',function() {
+				 
+	var calendarEl = document.getElementById('calendar');
+	var calendar = new FullCalendar.Calendar(
+			calendarEl,
+			{
+				plugins : [ 'interaction', 'dayGrid' ],	
+				defaultDate : new Date(),
+				editable : true,
+				eventLimit : true, // allow "more" link when too many events
+				events : [
+					<c:forEach items="${reservationInfo}" var="list" varStatus="status">
+						<c:if test="${list.STATUS ne 3 }">
+						{ 
+							id : '${list.RESERVATIONNO}',
+							title : '${list.RESERVATIONNAME}',
+							start : '${list.STARTDATE}',
+							end : '${list.ENDDATE}'
+						},
+						</c:if>
+					</c:forEach>
+				], eventClick: function(info) {
+					
+					var reservationNo = info.event.id;
+					var name = info.event.title;
+					var start = info.event.start;
+					var end = info.event.end;
+					
+					console.log(reservationNo);
+					console.log(name);
+					console.log(start);
+					console.log(end);
+					
+					$("#reservationNo").val(reservationNo);
+	        		$("#employeeNo").val(name); 	
+	        	 	$("#roomNo").val(name);
+		        	$("#name").val(name);
+		    	 	$("#purpose").val(name);
+		    	    $("#startDate").val(start);
+		    	    $("#endDate").val(end);
+		    	    $("#snackWant").val(name);
+		    	    $("#status").val(name);
+	        	 	
+	        	 	$("#infoReservationModal").modal('show');
+				}									
+			});
+	calendar.render();
+	calendar.setOption('locale', 'ko'); // 달력 한국어 설정
+});	
 </script>
-
-</body>
-
-</html>
