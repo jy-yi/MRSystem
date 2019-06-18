@@ -26,7 +26,6 @@
 			
 			<div class="row">
 				<div class="col-sm-6" >
-				
 					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE }" width="90%">
 					<br>
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
@@ -365,6 +364,12 @@
 		$(".participation-list").clone().appendTo("#final-participation-list-div");
 		$("#final-participation-list-div").show();
 		$("#final-participation-list-div>ul").attr("id","user-chosen-participation");
+		
+		// 부서 목록 업데이트
+		if(departmentList!=null){
+			// DB에서 다시 departmentList를 가져옴
+			getDepartmentListFromDb();
+		}
 	});
 	
 	
@@ -376,30 +381,37 @@
 	$("#chooseMainDeptBtn").on("click",function(){
 		if(departmentList==null){
 			departmentList=new Array();
-			
-			// participation배열에서 employeeNo 값으로만 배열 생성
-			var employeeNoArr=participation.map(function(a){
-				return a.employeeNo;
-			})
-			$.ajax({
-				type:"post",
-				url:"/reservation/getDepartmentList",
-				traditional:true,
-				data : {"employeeNoArr" : employeeNoArr},
-				success: function(data){
-					$.each(data.departmentList, function(index, item){
-						departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
-					})
-					getDepartmentList();
-				},
-				error: function(xhr, status, error) {
-					alert(error);
-				}	
-			});
+			getDepartmentListFromDb();
 		} else{
 			getDepartmentList();
 		}
 	});
+	
+	// DB에서 ajax를 이용해 부서정보를 가져오는 함수
+	function getDepartmentListFromDb(){
+		// participation배열에서 employeeNo 값으로만 배열 생성
+		var employeeNoArr=participation.map(function(a){
+			return a.employeeNo;
+		})
+		var sendData = { "employeeNoArr":employeeNoArr, "mainDeptList", mainDept };
+		$.ajax({
+			type:"get",
+			url:"/reservation/getDepartmentList",
+			traditional:true,
+			/*data : {"employeeNoArr" : employeeNoArr,
+					"mainDeptList" : mainDept},*/
+			data : {"sendData":sendData},
+			success: function(data){
+				$.each(data.departmentList, function(index, item){
+					departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
+				})
+				getDepartmentList();
+			},
+			error: function(xhr, status, error) {
+				alert(error);
+			}	
+		});
+	}
 	
 	// 부서정보를 가져오는 함수
 	function getDepartmentList(){

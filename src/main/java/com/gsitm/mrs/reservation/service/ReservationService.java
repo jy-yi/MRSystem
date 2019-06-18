@@ -62,7 +62,7 @@ public interface ReservationService {
 	public List<Map<String, Object>> getEmployeeListBySearching(String keyword);
 	
 	/** 사원들의 부서 정보 조회 */
-	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr);
+	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr, List<String> mainDeptList);
 	
 	/** 회의실 예약 입력 정보 조회 */
 	public void checkReservationInfo(HttpServletRequest request, Model model);

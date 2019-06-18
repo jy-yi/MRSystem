@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -105,7 +106,12 @@ public class ReservationDaoTest {
 	public void getDepartmentList() {
 		String[] strArr= {"it1226", "it1227"};
 		List<String> participation=new ArrayList<>(Arrays.asList(strArr));
-		List<Map<String, Object>> list=dao.getDepartmentList(participation);
+		Integer[] deptArr= {23, 24};
+		List<Integer> mainDeptList=new ArrayList<>(Arrays.asList(deptArr));
+		Map<String, Object> map=new HashMap<>();
+		map.put("employeeNoArr", participation);
+		map.put("mainDeptList", mainDeptList);
+		List<Map<String, Object>> list=dao.getDepartmentList(map);
 		logger.info(list.toString());
 	}
 	

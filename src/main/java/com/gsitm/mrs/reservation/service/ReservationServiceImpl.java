@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -95,14 +96,13 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 사원들의 부서 정보 조회 */
 	@Override
-	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr) {
-		return dao.getDepartmentList(employeeNoArr);
+	public List<Map<String, Object>> getDepartmentList(List<String> employeeNoArr, List<String> mainDeptList) {
+		Map<String, Object> map=new HashMap<>();
+		map.put("employeeNoArr", employeeNoArr);
+		map.put("mainDeptList", mainDeptList);
+		System.out.println(dao.getDepartmentList(map));
+		return dao.getDepartmentList(map);
 	}
-	
-	/**
-	 * 
-	 */
-
 
 	/** 회의실 예약 입력 정보 조회 */
 	@Override
