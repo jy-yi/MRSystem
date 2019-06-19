@@ -220,7 +220,6 @@ public class ResevationController {
 	@RequestMapping(value="/doReserve", method=RequestMethod.POST)
 	@ResponseBody
 	public void doReserve(@RequestBody Map<String, Object> reserveData){
-		System.out.println("doReserve : "+reserveData);
 		service.doReserve(reserveData);
 	}
 	

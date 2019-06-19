@@ -194,8 +194,6 @@ th {
 				equipments:equipments
 				};
 		var jsonData = JSON.stringify(resData);
-	console.log(resData);
-	console.log(jsonData);
 	
 		$.ajax({
 				type:"post",

@@ -229,16 +229,17 @@ public class ReservationServiceImpl implements ReservationService {
 		String startDate=(String)reserveData.get("startDate");
 		String endDate=(String)reserveData.get("endDate");
 		String snackWant=(String)reserveData.get("snackWant");
-		List<Integer> mainDept=(List<Integer>)reserveData.get("mainDept"); 
+		List<String> mainDept=(List<String>)reserveData.get("mainDept"); 
 		List<Integer> subDept=(List<Integer>)reserveData.get("subDept"); 
 		List<Integer> equipments=(List<Integer>)reserveData.get("equipments"); 
-		
+
 		// reservation number를 받아온다
-		int reservationNo=dao.getReservationNo();
+		int resNo=dao.getReservationNo();
+		System.out.println(mainDept);
 		
 		// reservation DB에 넣을 데이터를 담은 dto
 		ReservationDTO reservationDto=new ReservationDTO();
-		reservationDto.setReservationNo(reservationNo);
+		reservationDto.setReservationNo(resNo);
 		reservationDto.setEmployeeNo(empNo);
 		reservationDto.setRoomNo(roomNo);
 		reservationDto.setName(name);
@@ -246,23 +247,67 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationDto.setStartDate(startDate);
 		reservationDto.setEndDate(endDate);
 		reservationDto.setSnackWant(snackWant);
+		dao.insertReservation(reservationDto);
 		
 		// Lead_Department DB에 넣을 데이터를 담은 map
 		Map<String, Object> leadDepartmentMap=new HashMap<>();
-		leadDepartmentMap.put("reservationNo",reservationNo);
-		leadDepartmentMap.put("deptNo", mainDept);
-		dao.insertReservation();
+		leadDepartmentMap.put("resNo",resNo);
+		leadDepartmentMap.put("isMain","Y");
+		for(String deptNo:mainDept) {
+			leadDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
+			dao.insertParticipateDepartment(leadDepartmentMap);
+		}
 		
 		// Sub_Department DB에 넣을 데이터를 담은 map
 		Map<String, Object> subDepartmentMap=new HashMap<>();
-		subDepartmentMap.put("reservationNo",reservationNo);
-		subDepartmentMap.put("deptNo", subDept);
-		
+		subDepartmentMap.put("resNo",resNo);
+		subDepartmentMap.put("isMain","N");
+		subDepartmentMap.put("롸?????????", "롸!!!!!");
+		for(Integer deptNo:subDept) {
+			subDepartmentMap.put("deptNo", deptNo);
+			dao.insertParticipateDepartment(subDepartmentMap);
+		}
+		/*StringTokenizer token = new StringTokenizer(mainDept, ",");
+		List<String> participationList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			participationList.add(token.nextToken());
+		}
+		model.addAttribute("participation", dao.getEmployeeList(participationList));
+
+		// 주관 부서
+		token = new StringTokenizer(request.getParameter("mainDept"), ",");
+		List<String> mainDeptList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			mainDeptList.add(token.nextToken());
+		}
+		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDeptList));
+
+		// 협조 부서
+		String subDept=request.getParameter("subDept");
+		if(!subDept.equals("")) {
+			token = new StringTokenizer(subDept, ",");
+			List<String> subDeptList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				subDeptList.add(token.nextToken());
+			}
+			model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDeptList));
+		}
+		if(!equipments.equals("")) {
+			token = new StringTokenizer(equipments, ",");
+			List<Integer> equipList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				equipList.add(Integer.parseInt(token.nextToken()));
+			}
+			model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipList));
+		}
 		// borrowed_equipment DB에 넣을 데이터를 담은 map
 		Map<String, Object> borrwedEquipmentMap=new HashMap<>();
-		borrwedEquipmentMap.put("reservationNo",reservationNo);
+		borrwedEquipmentMap.put("resNo",resNo);
 		borrwedEquipmentMap.put("equipments", equipments);
-		
+		for(Integer equipNo:equipments) {
+			borrwedEquipmentMap.put("equipNo", equipNo);
+			dao.insertBorrowedEquipments(borrwedEquipmentMap);
+		}*/
 	}
 	
 	/* ------------- 마이페이지 ------------- */
@@ -302,7 +347,7 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getDashBoard(workplaceNo);
 	}
 	
-	/* ------------- 회의실 ------------- */
+	/* ------------- 회의실 -------------정형이왔다감 */
 
 	/** 회의실 정보 조회 */
 	@Override
@@ -323,6 +368,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	/** 사용자가 선택한 비품 목록 EquipmentDto에 담기 */
+	
 	@Override
 	public EquipmentDTO putIntoEuipmentDto(HttpServletRequest request) {
 		// 서비스에서 해야 하는 일

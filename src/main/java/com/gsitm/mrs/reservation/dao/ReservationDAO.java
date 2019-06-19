@@ -70,16 +70,16 @@ public interface ReservationDAO {
 	public int getReservationNo();
 	
 	/** 예약정보 DB에 삽입 */
-	public void insertReservation();
+	public void insertReservation(ReservationDTO reservation);
 	
 	/** 대기 예약 DB에 삽입 */
-	public void insertWaiting();
+	public void insertWaiting(int resNo);
 	
 	/** 회의 참여 부서 DB에 삽입 */
-	public void insertParticipateDepartment();
+	public void insertParticipateDepartment(Map<String, Object> departmentMap);
 	
 	/** 회의 대여 비품 DB에 삽입 */
-	public void insertBorrowedEquipments();
+	public void insertBorrowedEquipments(Map<String, Object> borrwedEquipmentMap);
 	
 	/* ------------- 관리자 ------------- */
 	
