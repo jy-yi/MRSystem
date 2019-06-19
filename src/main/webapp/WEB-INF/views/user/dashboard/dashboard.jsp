@@ -140,7 +140,7 @@
 					$.each(data.roomList, function(index, item){
 						//$("#roomList").append("<p>"+item.roomNo+" - "+item.name+"</p>");
 						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
-						$("#roomList").append('<a href="#" class="btn btn-primary"> '+item.name+' </a>');
+						$("#roomList").append('<a href="#" class="btn btn-primary roomBtn"> '+item.name+' </a>');
 					});
 				},
 				error : function() {
@@ -156,7 +156,7 @@
 		var roomNo;
 		
 		/* 회의실 버튼 눌렀을 때 */
-		$(document).on("click", ".btn-primary", function() {
+		$(document).on("click", ".roomBtn", function() {
 			roomNo = $(this).prev().val();
 			console.log(roomNo);
 			
