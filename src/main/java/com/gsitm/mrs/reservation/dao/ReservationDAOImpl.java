@@ -65,13 +65,8 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 대시보드 */
 	@Override
-	public List<Map<String, Object>> getDashBoard(int workplaceNo) {
-		return sqlSession.selectList(namespace +".getDashBoard", workplaceNo);
-	}
-	
-	/** 대시보드 지사별 회의실 목록 */
-	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
-		return sqlSession.selectList(namespace + ".getRoomListByWorkplaceNo", workplaceNo);
+	public List<Map<String, Object>> getDashBoard(int roomNo) {
+		return sqlSession.selectList(namespace +".getDashBoard", roomNo);
 	}
 	
 	/** 회의실 목록 조회 */

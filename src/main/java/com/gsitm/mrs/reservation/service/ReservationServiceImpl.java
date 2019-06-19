@@ -344,13 +344,8 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	/** 대시보드 */
-	public List<Map<String, Object>> getDashBoard(int workplaceNo) {
-		return dao.getDashBoard(workplaceNo);
-	}
-	
-	/** 대시보드 지사별 회의실 목록 */
-	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
-		return dao.getRoomListByWorkplaceNo(workplaceNo);
+	public List<Map<String, Object>> getDashBoard(int roomNo) {
+		return dao.getDashBoard(roomNo);
 	}
 	
 	/* ------------- 회의실 ------------- */

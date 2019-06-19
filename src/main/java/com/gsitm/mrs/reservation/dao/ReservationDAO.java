@@ -35,10 +35,7 @@ public interface ReservationDAO {
 	public ReservationDTO getLatestReservation(String employeeNo);
 	
 	/** 대시보드 */
-	public List<Map<String, Object>> getDashBoard(int workplaceNo);
-	
-	/** 대시보드 지사별 회의실 목록 */
-	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo);
+	public List<Map<String, Object>> getDashBoard(int roomNo);
 	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);

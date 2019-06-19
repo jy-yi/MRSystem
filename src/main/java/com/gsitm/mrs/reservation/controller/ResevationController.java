@@ -125,38 +125,30 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String dashboard() {
+	public String dashboard(Model model, String roomNo) {
 		
 		logger.info("(사용자) 대시보드");
+		
+		List<Map<String, Object>> roomDashBoard = service.getDashBoard(1);
+		
+		model.addAttribute("roomDashBoard", roomDashBoard);
 		
 		return "user/dashboard/dashboard";
 	}
 	
-	@RequestMapping(value="/getWorkplaceDashBoard", method = RequestMethod.POST)
-	public ModelAndView getWorkplaceDashBoard(String workplaceNo) {
+	@RequestMapping(value="/getRoomDashBoard", method = RequestMethod.POST)
+	public ModelAndView getRoomDashBoard(String roomNo) {
 		
 		logger.info("(사용자) 대시보드 - 탭 클릭");
-		logger.info("workplaceNo : " + workplaceNo);
+		logger.info("roomNo : " + roomNo);
 		
-		List<Map<String, Object>> workplaceDashBoard = service.getDashBoard(Integer.parseInt(workplaceNo));
+		List<Map<String, Object>> roomDashBoard = service.getDashBoard(Integer.parseInt(roomNo));
 		
 		ModelAndView mav = new ModelAndView();
 		
-		mav.addObject("workplaceDashBoard", workplaceDashBoard);
+		mav.addObject("roomDashBoard", roomDashBoard);
 		mav.setViewName("jsonView");
 		
-		return mav;
-	}
-	
-	@RequestMapping(value = "/getRoomListByWorkplaceNo", method = RequestMethod.POST)
-	public ModelAndView getRoomListByWorkplaceNo(String workplaceNo) {
-
-		List<RoomDTO> roomList = service.getRoomListByWorkplaceNo(Integer.parseInt(workplaceNo));
-
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("roomList", roomList);
-		mav.setViewName("jsonView");
-
 		return mav;
 	}
 	

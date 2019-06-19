@@ -9,7 +9,6 @@
 	background-color: white;
 }
 </style>
-
 <!-- Main Content -->
 <div id="content">
 
@@ -41,29 +40,7 @@
 				</ul>
 
 				<div class="tab-content">
-					<%-- <c:forEach items="${workplaceList}" var="workplaceList"
-						varStatus="status">
-						<div class="tab-pane fade show ${status.index eq 0 ? 'active':''}"
-							id="workplace${workplaceList.workplaceNo}">
- --%>
-							<%-- <div class="row">
-								<c:forEach items="${roomList}" var="list">
-									<c:if test="${workplaceList.workplaceNo eq list.WORKPLACENO}">
-										<div class="col-xl-4 col-md-4 mb-4" style="height: 30em">
-											<div class="card shadow mb-4">
-												<div class="card-header py-3">
-													<h5 class="m-0 font-weight-bold text-primary">
-														${list.ROOMNAME}
-														<input type="hidden" id="roomNo" name="roomNo" value="${list.ROOMNO}">
-													</h5>
-												</div>
-											</div>
-										</div>
-									</c:if>
-								</c:forEach>
-							</div> --%>
-					<%-- 	</div>
-					</c:forEach> --%>
+					<div id="roomList"></div>
 					<div id="calendar"></div>
 				</div>
 			</div>
@@ -73,105 +50,37 @@
 	</div>
 </div>
 <!-- End of Main Content -->
-
-<script type="text/javascript">
-	$(function() {
-
-		var workplaceNo = "";
-
-		/* 지사 탭 클릭 이벤트 */
-		$(".workplace-list").on("click", function() {
-			workplaceNo = $(this).attr('value');
-
-			// 대시보드 > XXX (지사 이름 동적 변경)
-			$("#workplaceNameTitle").text($(this).text());
-
-			// TODO : 탭 눌렀을 때 이벤트 다 지워버리고 다시 ajax로 뿌려주셈~ 화이팅!
-			
-			$.ajax({
-				url : "/reservation/getRoomListByWorkplaceNo",
-				data : {
-					"workplaceNo" : workplaceNo
-				},
-				type : "POST",
-				dataType : 'json',
-				success : function(data) {
-					//console.log(data.roomList[0]);
-					var roomNo = '';
-					for (var i = 0; i < data.roomList.length; i++) {
-						roomNo = data.roomList[i].roomNo;
-						console.log(roomNo);
-					}
-					//var roomNo = data.roomList.roomNo;
-					
-					//console.log(data);
-				},
-				error : function() {
-					alert("지사별 해당 회의실 조회 에러");
-				}
-			});
-			
-			/* $.ajax({
-				url : "/reservation/getWorkplaceDashBoard",
-				data : {
-					"workplaceNo" : workplaceNo
-				},
-				type : "POST",
-				dataType : 'json',
-				success : function(data) {
-					console.log(data.workplaceDashBoard[0]);
-
-					console.log(data);
-
-				},
-				error : function() {
-					alert("전체 예약 현황 조회 에러");
-				}
-			}); */
-
-		});
-
-		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
-		$(".workplace-list:first").trigger("click");
-
-	});
-</script>
-<!-- Modal -->
-<jsp:include page="include/infoReservation.jsp" />
-<%-- <c:forEach items="${dashboardList}" var="list" varStatus="status">
-	${list.RESERVATIONNAME }
-</c:forEach> --%>
-</body>
-<!-- <script>
-	document.addEventListener('DOMContentLoaded',function() {
-					 
+<script>
+		var calendar;
+		document.addEventListener('DOMContentLoaded',function() {
 						var calendarEl = document.getElementById('calendar');
-
-						var calendar = new FullCalendar.Calendar(
+	
+						calendar = new FullCalendar.Calendar(
 								calendarEl,
 								{
 									plugins : [ 'interaction', 'dayGrid' ],	
 									defaultDate : new Date(),
 									editable : true,
 									eventLimit : true, // allow "more" link when too many events
-
+	
 									events : [
-										<c:forEach items="${dashboardList}" var="list" varStatus="status">
-											<c:if test="${list.STATUS ne 3 }">
+										
+										<c:forEach items="${roomDashBoard}" var="list" varStatus="status">
+// 											<c:if test="${list.STATUS ne 3 }">
 											{ 
 												id : '${list.RESERVATIONNO}',
 												title : '${list.RESERVATIONNAME}',
 												start : '${list.STARTDATE}',
 												end : '${list.ENDDATE}'
 											},
-											</c:if>
+// 											</c:if>
 										</c:forEach>
 									], eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
 										console.log(reservationNo);
 										
-										/* $.ajax({
+										$.ajax({
 									        url : "/reservation/getCalendar",
 									        data : {"reservationNo": reservationNo},
 									        type : "GET",
@@ -192,14 +101,98 @@
 									        error : function(){
 									            alert("전체 예약 현황 조회 에러");
 									        }
-									    }); */
-										
+									    });
 									}									
 								});
-
+	
 						calendar.render();
-
+	
 						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
-
+	
 					});	
-</script> -->
+</script>
+<script type="text/javascript">
+
+
+	$(function() {
+
+		var workplaceNo = "";
+
+		/* 지사 탭 클릭 이벤트 */
+		$(".workplace-list").on("click", function() {
+			workplaceNo = $(this).attr('value');
+
+			// 대시보드 > XXX (지사 이름 동적 변경)
+			$("#workplaceNameTitle").text($(this).text());
+
+			// TODO : 탭 눌렀을 때 이벤트 다 지워버리고 다시 ajax로 뿌려주셈~ 화이팅!
+			
+			$.ajax({
+				url : "/statistic/getRoomListByWorkplaceNo",
+				data : {
+					"workplaceNo" : workplaceNo
+				},
+				type : "POST",
+				dataType : 'json',
+				success : function(data) {
+					console.log("success");
+					$("#roomList").empty();
+					$.each(data.roomList, function(index, item){
+						//$("#roomList").append("<p>"+item.roomNo+" - "+item.name+"</p>");
+						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
+						$("#roomList").append('<a href="#" class="btn btn-primary"> '+item.name+' </a>');
+					});
+				},
+				error : function() {
+					alert("지사별 해당 회의실 조회 에러");
+				}
+			});
+			
+		});
+
+		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
+		$(".workplace-list:first").trigger("click");
+		
+		var roomNo;
+		
+		/* 회의실 버튼 눌렀을 때 */
+		$(document).on("click", ".btn-primary", function() {
+			roomNo = $(this).prev().val();
+			console.log(roomNo);
+			
+			$.ajax({
+				url : "/reservation/getRoomDashBoard",
+				data : {
+					"roomNo" : roomNo
+				},
+				type : "POST",
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+					
+					calendar.removeAllEvents();
+					
+					$.each(data.roomDashBoard, function(index, item){
+						var obj = { 
+								id : item.RESNO,
+								title : item.RESERVATIONNAME,
+								start : item.STARTDATE,
+								end : item.ENDDATE
+							};
+						calendar.addEvent(obj);
+					})
+				},
+				error : function() {
+					alert("회의실별 대쉬보드 조회 에러");
+				}
+			});
+			
+		});
+		
+
+	});
+</script>
+<!-- Modal -->
+<jsp:include page="include/infoReservation.jsp" />
+
+</body>

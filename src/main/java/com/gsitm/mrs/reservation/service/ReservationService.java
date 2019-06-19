@@ -43,10 +43,7 @@ public interface ReservationService {
 	public ReservationDTO getLatestReservation(String employeeNo);
 	
 	/** 대시보드 */
-	public List<Map<String, Object>> getDashBoard(int workplaceNo);
-	
-	/** 대시보드 지사별 회의실 목록 */
-	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo);
+	public List<Map<String, Object>> getDashBoard(int roomNo);
 	
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);
