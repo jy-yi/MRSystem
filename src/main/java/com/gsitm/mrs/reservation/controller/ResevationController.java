@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
@@ -123,15 +125,39 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
-	public String dashboard(int workplaceNo, Model model) {
+	public String dashboard() {
 		
 		logger.info("(사용자) 대시보드");
 		
-		List<Map<String, Object>> dashboardList = service.getDashBoard(workplaceNo);
-		
-		model.addAttribute("dashboardList", dashboardList);
-		
 		return "user/dashboard/dashboard";
+	}
+	
+	@RequestMapping(value="/getWorkplaceDashBoard", method = RequestMethod.POST)
+	public ModelAndView getWorkplaceDashBoard(String workplaceNo) {
+		
+		logger.info("(사용자) 대시보드 - 탭 클릭");
+		logger.info("workplaceNo : " + workplaceNo);
+		
+		List<Map<String, Object>> workplaceDashBoard = service.getDashBoard(Integer.parseInt(workplaceNo));
+		
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("workplaceDashBoard", workplaceDashBoard);
+		mav.setViewName("jsonView");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value = "/getRoomListByWorkplaceNo", method = RequestMethod.POST)
+	public ModelAndView getRoomListByWorkplaceNo(String workplaceNo) {
+
+		List<RoomDTO> roomList = service.getRoomListByWorkplaceNo(Integer.parseInt(workplaceNo));
+
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("roomList", roomList);
+		mav.setViewName("jsonView");
+
+		return mav;
 	}
 	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)

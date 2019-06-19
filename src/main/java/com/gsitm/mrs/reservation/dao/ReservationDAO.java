@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 
@@ -35,6 +36,9 @@ public interface ReservationDAO {
 	
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int workplaceNo);
+	
+	/** 대시보드 지사별 회의실 목록 */
+	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo);
 	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);

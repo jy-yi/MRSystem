@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 import freemarker.log.Logger;
@@ -225,6 +226,11 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int workplaceNo) {
 		return dao.getDashBoard(workplaceNo);
+	}
+	
+	/** 대시보드 지사별 회의실 목록 */
+	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo) {
+		return dao.getRoomListByWorkplaceNo(workplaceNo);
 	}
 	
 	/* ------------- 회의실 ------------- */

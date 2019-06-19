@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
+import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
@@ -40,6 +41,9 @@ public interface ReservationService {
 	
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int workplaceNo);
+	
+	/** 대시보드 지사별 회의실 목록 */
+	public List<RoomDTO> getRoomListByWorkplaceNo(int workplaceNo);
 	
 	/** 회의실 정보 조회 */
 	public Map<String, Object> getRoomInfo(int roomNo);
@@ -89,5 +93,7 @@ public interface ReservationService {
 
 	/** 예약 취소 목록 조회 */
 	public List<Map<String, Object>> getReservationCancelList();
+
+	
 
 }

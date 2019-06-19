@@ -102,9 +102,16 @@
 		WHERE  	w.workplace_no = rm.workplace_no
         and     rm.room_no = r.room_no
         and     r.emp_no = e.emp_no
-		AND     w.workplace_no = #{workplaceNo};
+		AND     w.workplace_no = #{workplaceNo}
 	</select>
 	
+	<!-- 지사별 회의실 목록 조회  -->
+	<select id="getRoomListByWorkplaceNo" resultType="Room">
+		SELECT room_no, workplace_no, name 
+		FROM Room
+		WHERE workplace_no = #{workplaceNo}
+		ORDER BY room_no
+	</select>
 	
 	<!-- 회의실 정보 조회 -->
 	<select id="getRoomInfo" parameterType="int" resultType="Map">
