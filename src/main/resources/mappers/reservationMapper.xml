@@ -305,7 +305,7 @@
 	</select>
 	
 	<!-- 예약정보 DB에 삽입 -->
-	<insert id="insertReservation" parameterType="reservation"> 
+	<insert id="insertReservation" parameterType="Reservation"> 
 		INSERT INTO reservation(res_no, emp_no, room_no, name, purpose, start_date, end_date, snack_want) 
 		VALUES (#{reservationNo}, #{employeeNo}, #{roomNo}, #{name}, #{purpose}, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI'), #{snackWant})
 	</insert>
