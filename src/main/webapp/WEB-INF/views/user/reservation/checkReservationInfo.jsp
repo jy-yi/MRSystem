@@ -202,7 +202,7 @@ th {
 				url:"${pageContext.request.contextPath}/reservation/doReserve",
 				data:jsonData,
 				contentType: "application/json; charset=utf-8",
-				dataType: "json",
+				dataType: "text",
 				traditional:true,
 				success: function(data){
 					
