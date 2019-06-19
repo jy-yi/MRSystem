@@ -175,12 +175,24 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value = "/shortTerm_chooseDate/{roomNo}", method = RequestMethod.GET)
-	public String chooseDate(@PathVariable int roomNo, Model model) {
-		
+	public String chooseDate(@PathVariable int roomNo, Model model, HttpServletRequest request) {
 		logger.info("(사용자) 예약 - 단기 예약 일자 선택");
 		
 		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
 		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
+		
+		model.addAttribute("roomInfo", roomInfo);
+		model.addAttribute("equipmentList", equipmentList);
+		
+		// 뒤로 가기를 통해 이 페이지에 돌아온 경우 미리 선택한 예약 정보를 저장하는 map
+		Map<String, Object> savedRoomInfo=new HashMap<>();
+		if(request.getParameter("startDate")!=null) {
+			savedRoomInfo.put("startDate", request.getParameter("startDate"));
+			savedRoomInfo.put("endDate", request.getParameter("endDate"));
+			savedRoomInfo.put("snackWant", request.getParameter("snackWant"));
+			savedRoomInfo.put("equipments", request.getParameter("equipments"));
+			model.addAttribute("savedRoomInfo", savedRoomInfo);
+		}
 		
 		model.addAttribute("roomInfo", roomInfo);
 		model.addAttribute("equipmentList", equipmentList);
@@ -224,8 +236,6 @@ public class ResevationController {
 	@RequestMapping(value = "/getDepartmentList", method = RequestMethod.GET)
 	public Map<String, Object> getDepartmentList(@RequestParam List<String> employeeNoArr,
 												 @RequestParam List<String> mainDeptList){
-		System.out.println(employeeNoArr);
-		System.out.println(mainDeptList);
 		logger.info("(사용자) 예약 - 사원들의 부서 목록 조회");
 		// 사원번호, 이름 조회
 		Map<String, Object> map=new HashMap<>();
@@ -239,7 +249,6 @@ public class ResevationController {
 		logger.info("(사용자) 예약 - 회의실 예약 정보 입력 내역 조회");
 		
 		service.checkReservationInfo(request, model);
-		System.out.println(model.containsAttribute("equipments"));
 		return "user/reservation/checkReservationInfo";
 	}
 	
