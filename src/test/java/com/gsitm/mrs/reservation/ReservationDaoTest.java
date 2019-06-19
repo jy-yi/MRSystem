@@ -233,4 +233,9 @@ public class ReservationDaoTest {
 		}
 	}
 	
+	/** 예약번호 조회 */
+	@Test
+	public void testgetReservationNo() {
+		logger.info(dao.getReservationNo());
+	}
 }

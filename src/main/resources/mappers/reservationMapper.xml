@@ -298,6 +298,36 @@
 		</foreach>
 	</select>
 	
+	<!-- 예약 번호 조회 -->
+	<select id="getReservationNo" resultType="int">
+		SELECT Reservation_Seq.NEXTVAL
+		FROM DUAL
+	</select>
+	
+	<!-- 예약정보 DB에 삽입 -->
+	<insert id="insertReservation" parameterType="reservation"> 
+		INSERT INTO reservation(res_no, emp_no, room_no, name, purpose, start_date, end_date, snack_want) 
+		VALUES (#{reservationNo}, #{employeeNo}, #{roomNo}, #{name}, #{purpose}, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI'), #{snackWant})
+	</insert>
+	
+	<!-- 대기 예약 DB에 삽입  -->
+	<insert id="insertWaiting" parameterType="int">
+		INSERT INTO waiting(res_no) 
+		VALUES (#{resNo})
+	</insert>
+	
+	<!-- 회의 참여 부서 DB에 삽입 -->
+	<insert id="insertParticipateDepartment" parameterType="Map">
+		INSERT INTO lead_department(res_no, dept_no, is_main) 
+		VALUES (#{resNo}, #{deptNo}, #{isMain})
+	</insert>
+	
+	<!-- 회의 대여 비품 DB에 삽입 -->
+	<insert id="insertBorrowedEquipments" parameterType="Map">
+		INSERT INTO borrowed_equipment(equip_no, res_no) 
+		VALUES (#{equipNo}, #{resNo})
+	</insert>
+	
 	<!-- #### 관리자 #### -->
 	
 	<!-- 승인 대기 목록 조회 -->

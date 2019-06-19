@@ -19,6 +19,9 @@ import com.gsitm.mrs.user.dto.EmployeeDTO;
  * @Package : com.gsitm.mrs.reservation.service
  * @date : 2019. 5. 8.
  * @author : 이종윤
+ * 
+ * @date : 2019. 5. 24.
+ * @author : 김나윤
  */
 public interface ReservationService {
 	
@@ -70,6 +73,9 @@ public interface ReservationService {
 	
 	/** 회의실 예약 입력 정보 조회 */
 	public void checkReservationInfo(HttpServletRequest request, Model model);
+	
+	/** 예약 정보 DB에 저장 */
+	public void  doReserve(Map<String, Object> reserveData);
 	
 	/* ------------- 관리자 ------------- */
 	

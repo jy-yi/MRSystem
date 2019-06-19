@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
@@ -33,6 +34,9 @@ import freemarker.log.Logger;
  * @Package : com.gsitm.mrs.reservation.service
  * @date : 2019. 5. 8.
  * @author : 이종윤
+ * 
+ * @date : 2019. 5. 24.
+ * @author : 김나윤
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -191,6 +195,122 @@ public class ReservationServiceImpl implements ReservationService {
 		model.addAttribute("snackWant", request.getParameter("snackWant"));
 		System.out.println(request.getParameter("snackWant"));
 	}
+	
+	/** 예약 정보 DB에 저장 */
+	@Override
+	@Transactional
+	public void doReserve(Map<String, Object> reserveData) {
+		/*
+		reservation DB
+			res_no,
+			*emp_no,
+			*room_no,
+			*name,
+			*purpose,
+			*start_date,
+			*end_date,
+			*snack_want,
+			*status->default?
+		waiting DB
+			res_no
+			mgr_approval
+			admin_approval
+		Lead_Department DB
+			res_no
+			*dept_no
+			is_main
+		borrowed_equipment DB
+			*equip_no
+			res_no
+	*/
+		String empNo=(String)reserveData.get("empNo");
+		int roomNo=Integer.parseInt((String)reserveData.get("roomNo"));
+		String name=(String)reserveData.get("name");
+		String purpose=(String)reserveData.get("purpose");
+		String startDate=(String)reserveData.get("startDate");
+		String endDate=(String)reserveData.get("endDate");
+		String snackWant=(String)reserveData.get("snackWant");
+		List<String> mainDept=(List<String>)reserveData.get("mainDept"); 
+		List<Integer> subDept=(List<Integer>)reserveData.get("subDept"); 
+		List<Integer> equipments=(List<Integer>)reserveData.get("equipments"); 
+
+		// reservation number를 받아온다
+		int resNo=dao.getReservationNo();
+		System.out.println(mainDept);
+		
+		// reservation DB에 넣을 데이터를 담은 dto
+		ReservationDTO reservationDto=new ReservationDTO();
+		reservationDto.setReservationNo(resNo);
+		reservationDto.setEmployeeNo(empNo);
+		reservationDto.setRoomNo(roomNo);
+		reservationDto.setName(name);
+		reservationDto.setPurpose(purpose);
+		reservationDto.setStartDate(startDate);
+		reservationDto.setEndDate(endDate);
+		reservationDto.setSnackWant(snackWant);
+		dao.insertReservation(reservationDto);
+		
+		// Lead_Department DB에 넣을 데이터를 담은 map
+		Map<String, Object> leadDepartmentMap=new HashMap<>();
+		leadDepartmentMap.put("resNo",resNo);
+		leadDepartmentMap.put("isMain","Y");
+		for(String deptNo:mainDept) {
+			leadDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
+			dao.insertParticipateDepartment(leadDepartmentMap);
+		}
+		
+		// Sub_Department DB에 넣을 데이터를 담은 map
+		Map<String, Object> subDepartmentMap=new HashMap<>();
+		subDepartmentMap.put("resNo",resNo);
+		subDepartmentMap.put("isMain","N");
+		subDepartmentMap.put("롸?????????", "롸!!!!!");
+		for(Integer deptNo:subDept) {
+			subDepartmentMap.put("deptNo", deptNo);
+			dao.insertParticipateDepartment(subDepartmentMap);
+		}
+		/*StringTokenizer token = new StringTokenizer(mainDept, ",");
+		List<String> participationList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			participationList.add(token.nextToken());
+		}
+		model.addAttribute("participation", dao.getEmployeeList(participationList));
+
+		// 주관 부서
+		token = new StringTokenizer(request.getParameter("mainDept"), ",");
+		List<String> mainDeptList = new ArrayList<>();
+		while(token.hasMoreTokens()) {
+			mainDeptList.add(token.nextToken());
+		}
+		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDeptList));
+
+		// 협조 부서
+		String subDept=request.getParameter("subDept");
+		if(!subDept.equals("")) {
+			token = new StringTokenizer(subDept, ",");
+			List<String> subDeptList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				subDeptList.add(token.nextToken());
+			}
+			model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDeptList));
+		}
+		if(!equipments.equals("")) {
+			token = new StringTokenizer(equipments, ",");
+			List<Integer> equipList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				equipList.add(Integer.parseInt(token.nextToken()));
+			}
+			model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipList));
+		}
+		// borrowed_equipment DB에 넣을 데이터를 담은 map
+		Map<String, Object> borrwedEquipmentMap=new HashMap<>();
+		borrwedEquipmentMap.put("resNo",resNo);
+		borrwedEquipmentMap.put("equipments", equipments);
+		for(Integer equipNo:equipments) {
+			borrwedEquipmentMap.put("equipNo", equipNo);
+			dao.insertBorrowedEquipments(borrwedEquipmentMap);
+		}*/
+	}
+	
 	/* ------------- 마이페이지 ------------- */
 	
 	/** 마이페이지 예약 현황 캘린더 */
@@ -254,6 +374,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	/** 사용자가 선택한 비품 목록 EquipmentDto에 담기 */
+	
 	@Override
 	public EquipmentDTO putIntoEuipmentDto(HttpServletRequest request) {
 		// 서비스에서 해야 하는 일

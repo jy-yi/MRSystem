@@ -69,6 +69,22 @@ public interface ReservationDAO {
 	
 	/** 비품번호에 해당하는 비품 정보 조회  */
 	public List<Map<String, Object>> getEquipmentsByEquipNo(List<Integer> equipmentNos);
+	
+	/** 예약번호 조회 */
+	public int getReservationNo();
+	
+	/** 예약정보 DB에 삽입 */
+	public void insertReservation(ReservationDTO reservation);
+	
+	/** 대기 예약 DB에 삽입 */
+	public void insertWaiting(int resNo);
+	
+	/** 회의 참여 부서 DB에 삽입 */
+	public void insertParticipateDepartment(Map<String, Object> departmentMap);
+	
+	/** 회의 대여 비품 DB에 삽입 */
+	public void insertBorrowedEquipments(Map<String, Object> borrwedEquipmentMap);
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
