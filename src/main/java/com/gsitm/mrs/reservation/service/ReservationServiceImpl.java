@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
@@ -196,8 +197,71 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 예약 정보 DB에 저장 */
 	@Override
+	@Transactional
 	public void doReserve(Map<String, Object> reserveData) {
-		// TODO Auto-generated method stub
+		/*
+		reservation DB
+			res_no,
+			*emp_no,
+			*room_no,
+			*name,
+			*purpose,
+			*start_date,
+			*end_date,
+			*snack_want,
+			*status->default?
+		waiting DB
+			res_no
+			mgr_approval
+			admin_approval
+		Lead_Department DB
+			res_no
+			*dept_no
+			is_main
+		borrowed_equipment DB
+			*equip_no
+			res_no
+	*/
+		String empNo=(String)reserveData.get("empNo");
+		int roomNo=Integer.parseInt((String)reserveData.get("roomNo"));
+		String name=(String)reserveData.get("name");
+		String purpose=(String)reserveData.get("purpose");
+		String startDate=(String)reserveData.get("startDate");
+		String endDate=(String)reserveData.get("endDate");
+		String snackWant=(String)reserveData.get("snackWant");
+		List<Integer> mainDept=(List<Integer>)reserveData.get("mainDept"); 
+		List<Integer> subDept=(List<Integer>)reserveData.get("subDept"); 
+		List<Integer> equipments=(List<Integer>)reserveData.get("equipments"); 
+		
+		// reservation number를 받아온다
+		int reservationNo=dao.getReservationNo();
+		
+		// reservation DB에 넣을 데이터를 담은 dto
+		ReservationDTO reservationDto=new ReservationDTO();
+		reservationDto.setReservationNo(reservationNo);
+		reservationDto.setEmployeeNo(empNo);
+		reservationDto.setRoomNo(roomNo);
+		reservationDto.setName(name);
+		reservationDto.setPurpose(purpose);
+		reservationDto.setStartDate(startDate);
+		reservationDto.setEndDate(endDate);
+		reservationDto.setSnackWant(snackWant);
+		
+		// Lead_Department DB에 넣을 데이터를 담은 map
+		Map<String, Object> leadDepartmentMap=new HashMap<>();
+		leadDepartmentMap.put("reservationNo",reservationNo);
+		leadDepartmentMap.put("deptNo", mainDept);
+		dao.insertReservation();
+		
+		// Sub_Department DB에 넣을 데이터를 담은 map
+		Map<String, Object> subDepartmentMap=new HashMap<>();
+		subDepartmentMap.put("reservationNo",reservationNo);
+		subDepartmentMap.put("deptNo", subDept);
+		
+		// borrowed_equipment DB에 넣을 데이터를 담은 map
+		Map<String, Object> borrwedEquipmentMap=new HashMap<>();
+		borrwedEquipmentMap.put("reservationNo",reservationNo);
+		borrwedEquipmentMap.put("equipments", equipments);
 		
 	}
 	

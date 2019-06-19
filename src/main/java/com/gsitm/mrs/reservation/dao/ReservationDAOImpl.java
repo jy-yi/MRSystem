@@ -128,6 +128,40 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getEquipmentsByEquipNo", equipmentNos);
 	}
 
+	/** 예약 번호 조회 */
+	@Override
+	public int getReservationNo() {
+		return sqlSession.selectOne(namespace + ".getReservationNo");
+	}
+
+	/** 예약정보 DB에 삽입 */
+	@Override
+	public void insertReservation() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/** 대기 예약 DB에 삽입 */
+	@Override
+	public void insertWaiting() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/** 회의 참여 부서 DB에 삽입 */
+	@Override
+	public void insertParticipateDepartment() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/** 회의 대여 비품 DB에 삽입 */
+	@Override
+	public void insertBorrowedEquipments() {
+		// TODO Auto-generated method stub
+		
+	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

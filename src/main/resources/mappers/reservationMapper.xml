@@ -291,6 +291,24 @@
 		</foreach>
 	</select>
 	
+	<!-- 예약 번호 조회 -->
+	<select id="getReservationNo" resultType="int">
+		SELECT Reservation_Seq.NEXTVAL
+		FROM DUAL
+	</select>
+	
+	<!-- 예약정보 DB에 삽입 -->
+	<insert id="insertReservation"></insert>
+	
+	<!-- 대기 예약 DB에 삽입  -->
+	<insert id="insertWaiting"></insert>
+	
+	<!-- 회의 참여 부서 DB에 삽입 -->
+	<insert id="insertParticipateDepartment"></insert>
+	
+	<!-- 회의 대여 비품 DB에 삽입 -->
+	<insert id="insertBorrowedEquipments"></insert>
+	
 	<!-- #### 관리자 #### -->
 	
 	<!-- 승인 대기 목록 조회 -->
