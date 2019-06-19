@@ -32,6 +32,9 @@ import freemarker.log.Logger;
  * @Package : com.gsitm.mrs.reservation.service
  * @date : 2019. 5. 8.
  * @author : 이종윤
+ * 
+ * @date : 2019. 5. 24.
+ * @author : 김나윤
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -190,6 +193,14 @@ public class ReservationServiceImpl implements ReservationService {
 		model.addAttribute("snackWant", request.getParameter("snackWant"));
 		System.out.println(request.getParameter("snackWant"));
 	}
+	
+	/** 예약 정보 DB에 저장 */
+	@Override
+	public void doReserve(Map<String, Object> reserveData) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/* ------------- 마이페이지 ------------- */
 	
 	/** 마이페이지 예약 현황 캘린더 */
