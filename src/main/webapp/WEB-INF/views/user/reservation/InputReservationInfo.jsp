@@ -4,9 +4,13 @@
 <link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-chooseDate.css">
 <link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-inputReservationInfo.css">
 
+<style>
+.nav-link {
+	display: inline-block;
+}
+</style>
+
 <!-- Main Content -->
-<!-- 이 안에 내용 채우시면 됩니당 -->
-	
 <div id="content">
 
 	<!-- Begin Page Content -->
@@ -124,19 +128,28 @@
 									<label>참여 인원</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
-									<div id="final-participation-list-div" class="card mb-4 py-3 border-left-primary">
-	                                  <div class="card-body">
-	                                  </div>
-	                                </div>
+						              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						                <i class="fas fa-user-friends"></i>
+						                <!-- 참여 사원 수 -->
+						                <span class="badge badge-danger badge-counter">7</span>
+						              </a>
+						              <a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
+	                                
+						              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow" aria-labelledby="messagesDropdown">
+						                <h6 class="dropdown-header">
+						                  참여 인원
+						                </h6>
+						                  <div class="dropdown-item d-flex align-items-center" id="final-participation-list-div">
+						                    <div class="text-truncate">참여 인원 없음</div>
+						                  </div>
+						              </div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-2 col-sm-2 text-center">
-									<label>주관부서</label>
+									<label>주관 부서</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<a class="btn btn-primary" href="#" id="chooseMainDeptBtn"  data-toggle="modal" data-target="#chooseDeptModal">검색</a>
 									<div id="final-mainDept-list-div">
 										<ul id="final-mainDept-list"></ul>
 									</div>
@@ -144,7 +157,7 @@
 							</div>
 							<div class="row">
 								<div class="col-xs-2 col-sm-2 text-center">
-									<label>협조부서</label>
+									<label>협조 부서</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
 									<div id="final-subDept-list-div"><ul></ul></div>
@@ -185,7 +198,6 @@
 
 <!-- Modal -->
 <jsp:include page="include/chooseParticipation.jsp" />
-<jsp:include page="include/chooseDepartment.jsp" />
 
 <script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
@@ -376,22 +388,15 @@
 			// DB에서 다시 departmentList를 가져옴
 			getDepartmentListFromDb();
 		}
+		
+		departmentList=[];
+		getDepartmentListFromDb();
 	});
 	
 	
 	/******************
 		부서
 	*******************/
-	
-	// 주관부서 버튼 클릭 이벤트
-	$("#chooseMainDeptBtn").on("click",function(){
-		if(departmentList==null){
-			departmentList=new Array();
-			getDepartmentListFromDb();
-		} else{
-			getDepartmentList();
-		}
-	});
 	
 	// DB에서 ajax를 이용해 부서정보를 가져오는 함수
 	function getDepartmentListFromDb(){
@@ -418,7 +423,9 @@
 				$.each(data.departmentList, function(index, item){
 					departmentList.push({"deptNo":item.DEPT_NO,"name":item.NAME});
 				})
-				getDepartmentList();
+				mainDept=new Array();
+				appendSubDept();
+				appendMainDept();
 			},
 			error: function(xhr, status, error) {
 				alert(error);
@@ -426,21 +433,13 @@
 		});
 	}
 	
-	// 부서정보를 가져오는 함수
-	function getDepartmentList(){
-		$("#department-list>ul").empty();
-		$.each(departmentList, function(index, item){
-			$("#department-list>ul").append("<i style='display:none'>"+item.deptNo+"</i><li>"+item.name+"</li>");
-		});
-	};
-	
 	// 주관부서를 append하는 함수
 	function appendMainDept(){
 		$("#final-mainDept-list").empty();
 		$.each(mainDept, function(index, item){
 			$("#final-mainDept-list").append("<li>"+item.name
 					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
+					+"<button type='button' class='btn btn-default delete-department-btn'>↓</button></li>");
 		});
 	};
 	
@@ -450,52 +449,18 @@
 		$.each(departmentList, function(index, item){
 			$("#final-subDept-list-div>ul").append("<li>"+item.name
 					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
+					+"<button type='button' class='btn btn-default delete-department-btn'>↑</button></li>");
 		});
+		
 	}
 	
-	// 부서 선택 이벤트
-	$(document).on("click","#department-list>ul>li",function(){
-		if(neverChosenMainDept){
-			mainDept=new Array();
-			neverChosenMainDept=false;
-		};
-		var deptNo=$(this).prev().text();
-		var deptName=$(this).text();
-		var deptInfo={"deptNo":deptNo, "name":deptName};
-		
-		// 선택한 부서를 departmentList에서 삭제한다.
-		departmentList.splice(deptInfo,1);
-		// 선택한 부서를 mainDept 배열에 넣는다.
-		mainDept.push(deptInfo);
-		// 주관 부서 정보를 모달에 뿌려준다.
-		$("#MainDept-list").empty();
-		$.each(mainDept, function(index, item){
-			$("#MainDept-list").append("<li>"+item.name
-					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-department-btn'>x</button></li>");
-		});
-		// 부서 목록을 업데이트한다.
-		getDepartmentList();
-		// 선택한 부서가 1개 이상이면 확인 버튼 active
-		if(mainDept.length>=1){
-			$("#dept-choose-complete-btn").addClass("btn-primary").attr("disabled",false);
-		} else{
-			$("#dept-choose-complete-btn").addClass("btn-primary").attr("disabled",true);
-		}
-
-		// 폼을 다 채웠는지 확인하는 함수
-		checkFormInput();
-	});
-	
-	
 	// 부서 선택 완료 이벤트
-	$("#dept-choose-complete-btn").on("click",function(){
+ 	$("#dept-choose-complete-btn").on("click",function(){
 		// MainDept 요소들을 화면에 뿌려준다.
 		appendMainDept();
 		// 남은 부서들을 협조부서에 뿌려준다.
 		appendSubDept();
-	});
+	}); 
 	
 	// 부서 삭제 이벤트
 	$(document).on("click",".delete-department-btn",function(){
@@ -531,7 +496,6 @@
 			mainDept.push({"deptNo":deptNo,"name":deptName});
 		}
 		// 화면에 반영
-		getDepartmentList();
 		appendMainDept();
 		appendSubDept();
 	});
@@ -597,6 +561,5 @@
 		$("input[name=equipments]").val(equipments);
 		
 		$("#option_form").attr("action","/reservation/shortTerm_chooseDate/"+"${roomInfo.ROOMNO}").submit();
-		//location.href="/reservation/shortTerm_chooseDate/${roomInfo.ROOMNO}";
 	})
 </script>
