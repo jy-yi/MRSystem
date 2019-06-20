@@ -90,7 +90,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="time-label"> 4. 18. (목), 시간을 선택하세요.</h5>
+				<h5 class="modal-title" id="time-label"></h5>
 				<p id="reservation-info">30분 단위 예약가능 </p>
 				<button type="button" class="close" data-dismiss="modal"> &times;</button>
 			</div>

@@ -1,5 +1,9 @@
 @charset "EUC-KR";
 
+.nav-link {
+	display: inline-block;
+}
+
 #option_list{
 	padding-left: 20px;
     line-height: 2;
@@ -7,11 +11,6 @@
 }
 	
 #final-participation-list-div{
-	display:none;
-	margin: 0 60px;
-    padding: 10px;
-    overflow: scroll;
-    height: 200px;
     overflow-x: hidden;
 }
 
