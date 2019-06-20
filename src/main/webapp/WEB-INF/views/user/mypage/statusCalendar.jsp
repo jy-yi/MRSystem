@@ -25,7 +25,6 @@
 		</div>
 		
 		<!-- Content Row -->
-		
 
 		<div class="row">
 
@@ -46,13 +45,12 @@
 									<div class="row no-gutters align-items-center">
 
 										<div class="col-auto">
-											<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+											<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">70%</div>
 										</div>
 										<div class="col">
 											<div class="progress progress-sm mr-2">
-												<div class="progress-bar bg-info" role="progressbar"
-													style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-													aria-valuemax="100"></div>	
+												<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0"
+													aria-valuemax="100">70%</div>	
 											</div>
 										</div>
 									</div>
@@ -61,7 +59,7 @@
 
 							</div>
 
-							<button id="startBtn" class="btn btn-secondary btn-icon-split">
+							<button id="startBtn" class="btn btn-secondary btn-icon-split" style="display: none">
 								<span id="spanText" class="text">시작</span>
 							</button>
 
@@ -130,8 +128,6 @@
 									        type : "GET",
 									        success : function(data){
 												
-									        	//alert(data.calendarInfo.EMPNAME);
-									        	
 									        	console.log(data);
 									        	
 												$("#employeeName").val(data.EMPNAME);
@@ -158,7 +154,51 @@
 </script>
 
 
+
 <script type="text/javascript">
+	
+	// sysdate가 startDate의 10분전이라면 시작 버튼 표시
+	/*  sysdate = TO_CHAR(start_date-10/24/60, 'YYYYMMDD HH24:MI:SS') */
+	var date = "${latestReservation.startDate}";
+	
+	var year = date.substring(0, 4);
+	var month = date.substring(5, 7);
+	var day = date.substring(8, 10);
+	var hour = date.substring(11, 13);
+	var minute = date.substring(14, 16);
+
+	var myDate = new Date(year, month, day, hour, minute);
+	console.log("분 : " + minute);
+	console.log("나의 가장 최근 날짜 : "+ myDate);
+	
+	var d = new Date();
+    var currentDate = new Date(d.getFullYear(),(d.getMonth() + 1), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+    
+    console.log("현재 분 : " + d.getMinutes());
+    console.log("현재 날짜 및 시간 : " + currentDate);
+    
+    var testDate = myDate - currentDate;
+    
+    console.log(testDate/1000);
+    
+    // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
+   	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
+    // 예약시간의 +10분까지 띄워줌
+    
+    //if(currentDate <){
+    	var startBtn = document.getElementById("startBtn");
+    	
+    	if (startBtn.style.display == 'none') {
+    		startBtn.style.display = 'block';
+			$("#spanText").text('시작');
+
+		} else {
+			startBtn.style.display = 'none';
+			$("#spanText").text('종료');
+		}
+  //  }
+	
+	/* // 시작 버튼을 눌렀을 때
 	$("#startBtn").click(function() {
 		var bar = document.getElementById("bar");
 
@@ -171,5 +211,9 @@
 			$("#spanText").text('시작');
 		}
 
-	});
+	}); */
+	
+
+		
 </script>
+

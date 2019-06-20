@@ -17,8 +17,8 @@
 		       room_no                           AS roomNo, 
 		       r.NAME 							 AS reservationName,
 		       purpose, 
-		       To_char(start_date, 'YYYY-MM-DD') AS startDate, 
-		       To_char(end_date, 'YYYY-MM-DD')   AS endDate, 
+		       To_char(start_date, 'YYYY-MM-DD HH24:MI') AS startDate, 
+		       To_char(end_date, 'YYYY-MM-DD HH24:MI')   AS endDate, 
 		       snack_want                        AS snackWant, 
 		       status 
 		FROM   reservation r,
@@ -33,8 +33,8 @@
 		       	rm.name                           AS roomName, 
 		       	r.name 							  AS reservationName,
 		       	purpose, 
-		       	To_char(start_date, 'YYYY-MM-DD') AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD')   AS endDate 
+		       	To_char(start_date, 'YYYY-MM-DD HH24:MI') AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI')   AS endDate 
 		FROM   	employee e,
 			   	reservation r,
 			   	room rm
@@ -49,8 +49,8 @@
 				r.name							AS reservationName,
 				purpose,
 				room_no							AS roomNo,
-				To_char(start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD HH:mm') 		AS endDate,
+				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate,
 				d.name							AS departmentName,
 				status
 		FROM	reservation r,
@@ -75,8 +75,8 @@
 				room_no,
 				name,
 				purpose,
-				To_char(start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD HH:mm') 		AS endDate,
+				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
 				status
         FROM	reservation
         WHERE 	emp_no = #{employeeNo}
@@ -93,8 +93,8 @@
 				r.name							AS reservationName,
 				purpose,
 				rm.name							AS roomName,
-				To_char(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		       	To_char(r.end_date, 'YYYY-MM-DD HH:mm') 	AS endDate 
+				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate 
         FROM 	room rm, reservation r, employee e
         WHERE 	rm.room_no = r.room_no
         AND 	r.emp_no = e.emp_no
