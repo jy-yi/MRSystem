@@ -195,7 +195,6 @@ public class ResevationController {
 	@RequestMapping(value = "/InputReservationInfo", method = RequestMethod.GET)
 	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto, 
 			HttpServletRequest request, Model model) {
-			
 		logger.info("(사용자) 예약 - 예약 정보 입력");
 		
 		service.InputReservationInfo(request, reservationDto, model);
@@ -247,7 +246,22 @@ public class ResevationController {
 	@RequestMapping(value="/doReserve", method=RequestMethod.POST)
 	@ResponseBody
 	public void doReserve(@RequestBody Map<String, Object> reserveData){
+		
+		logger.info("(사용자) 예약 - 회의실 예약 정보 DB에 insert");
+		
 		service.doReserve(reserveData);
+	}
+	
+	@RequestMapping(value="/getParticipations", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> getParticipations(@RequestParam(value="participationNos") List<String> participationNos){
+		System.out.println(participationNos);
+		logger.info("(사용자) 예약 - 사원번호로 회의 참여자 정보 얻어오기");
+		
+		Map<String, Object> result=new HashMap<>();
+		result.put("participations", service.getParticipations(participationNos));
+		
+		return result;
 	}
 	
 	/* ------------- 관리자 ------------- */

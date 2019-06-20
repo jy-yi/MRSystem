@@ -1,5 +1,6 @@
 package com.gsitm.mrs.reservation.service;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.text.ParseException;
@@ -85,6 +86,23 @@ public class ReservationServiceImpl implements ReservationService {
 		EmployeeDTO employeeDto=dao.getEmployeeInfo(employeeNo);
 		model.addAttribute("employeeInfo", employeeDto);
 		
+		// checkReservationInfo.jsp에서 이전페이지 이동으로 온건지 확인
+		boolean clickPrevBtn=Boolean.parseBoolean(request.getParameter("clickPrevBtn"));
+		if(clickPrevBtn) {
+			// 회의명, 회의구분, 참여인원, 주관부서, 협조부서 정보를 담아간다.
+			model.addAttribute("savedData", true);
+			model.addAttribute("name", request.getParameter("name"));
+			model.addAttribute("purpose", request.getParameter("purpose"));
+			String participation=request.getParameter("participation").substring(1, request.getParameter("participation").length()-1);
+			/*StringTokenizer token = new StringTokenizer(participation, ",");
+			List<String> participationList = new ArrayList<>();
+			while(token.hasMoreTokens()) {
+				participationList.add(token.nextToken());
+			}*/
+			model.addAttribute("participation", participation);
+			model.addAttribute("mainDept", request.getParameter("mainDept"));
+			model.addAttribute("subDept", request.getParameter("subDept"));
+		}
 	}
 	
 	/** 초성에 해당하는 사원 목록 조회 */
@@ -160,6 +178,8 @@ public class ReservationServiceImpl implements ReservationService {
 			participationList.add(token.nextToken());
 		}
 		model.addAttribute("participation", dao.getEmployeeList(participationList));
+		// 이전 페이지 기능 구현을 위해 empNo로 구성된 List도 model에 담는다
+		model.addAttribute("participationEmpNos", participationList);
 
 		// 주관 부서
 		token = new StringTokenizer(request.getParameter("mainDept"), ",");
@@ -171,13 +191,13 @@ public class ReservationServiceImpl implements ReservationService {
 
 		// 협조 부서
 		String subDept=request.getParameter("subDept");
-		if(!subDept.equals("")) {
-			token = new StringTokenizer(subDept, ",");
+		if(subDept.length()!=0) {
+			token = new StringTokenizer(request.getParameter("subDept"), ",");
 			List<String> subDeptList = new ArrayList<>();
 			while(token.hasMoreTokens()) {
 				subDeptList.add(token.nextToken());
 			}
-			model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDeptList));
+			model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDeptList));	
 		}
 		
 		// 비품 목록
@@ -232,7 +252,7 @@ public class ReservationServiceImpl implements ReservationService {
 		List<String> mainDept=(List<String>)reserveData.get("mainDept"); 
 		List<String> subDept=(List<String>)reserveData.get("subDept"); 
 		List<String> equipments=(List<String>)reserveData.get("equipments"); 
-
+		
 		// reservation number를 받아온다
 		int resNo=dao.getReservationNo();
 		
@@ -247,10 +267,10 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationDto.setEndDate(endDate);
 		reservationDto.setSnackWant(snackWant);
 		dao.insertReservation(reservationDto);
-		
+
 		// waiting DB에 예약 정보를 담는다
 		dao.insertWaiting(resNo);
-		
+
 		// Lead_Department DB에 넣을 데이터를 담은 map
 		Map<String, Object> leadDepartmentMap=new HashMap<>();
 		leadDepartmentMap.put("resNo",resNo);
@@ -259,25 +279,35 @@ public class ReservationServiceImpl implements ReservationService {
 			leadDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
 			dao.insertParticipateDepartment(leadDepartmentMap);
 		}
+		
+		// subDept는 필수 입력 항목X
+		if(subDept.size()!=0) {
+			// Sub_Department DB에 넣을 데이터를 담은 map
+			Map<String, Object> subDepartmentMap=new HashMap<>();
+			subDepartmentMap.put("resNo",resNo);
+			subDepartmentMap.put("isMain","N");
+			for(String deptNo:subDept) {
+				subDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
+				dao.insertParticipateDepartment(subDepartmentMap);
+			}
+		}
 
-		// Sub_Department DB에 넣을 데이터를 담은 map
-		Map<String, Object> subDepartmentMap=new HashMap<>();
-		subDepartmentMap.put("resNo",resNo);
-		subDepartmentMap.put("isMain","N");
-		for(String deptNo:subDept) {
-			subDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
-			dao.insertParticipateDepartment(subDepartmentMap);
+		// equipment는 필수 입력 항목X
+		if(equipments.size()!=0) {
+			// borrowed_equipment DB에 넣을 데이터를 담은 map
+			Map<String, Object> borrwedEquipmentMap=new HashMap<>();
+			borrwedEquipmentMap.put("resNo",resNo);
+			for(String equipNo:equipments) {
+				borrwedEquipmentMap.put("equipNo", Integer.parseInt(equipNo));
+				dao.insertBorrowedEquipments(borrwedEquipmentMap);
+			}
 		}
-		System.out.println("subDept Input 끝");
-		
-		// borrowed_equipment DB에 넣을 데이터를 담은 map
-		Map<String, Object> borrwedEquipmentMap=new HashMap<>();
-		//borrwedEquipmentMap.put("resNo",resNo);
-		for(String equipNo:equipments) {
-			borrwedEquipmentMap.put("equipNo", Integer.parseInt(equipNo));
-			dao.insertBorrowedEquipments(borrwedEquipmentMap);
-		}
-		
+	}
+	
+	/** 사원번호로 회의 참여자 정보 얻어오기 */
+	@Override
+	public List<Map<String, Object>> getParticipations(List<String> participationNos) {
+		return dao.getEmployeeList(participationNos);
 	}
 	
 	/* ------------- 마이페이지 ------------- */
@@ -389,5 +419,5 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return dao.getReservationCancelList();
 	}
-
+	
 }

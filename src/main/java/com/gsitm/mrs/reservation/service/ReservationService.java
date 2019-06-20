@@ -72,8 +72,10 @@ public interface ReservationService {
 	public void checkReservationInfo(HttpServletRequest request, Model model);
 	
 	/** 예약 정보 DB에 저장 */
-	public void  doReserve(Map<String, Object> reserveData);
+	public void doReserve(Map<String, Object> reserveData);
 	
+	/** 사원번호로 회의 참여자 정보 얻어오기 */
+	public List<Map<String, Object>> getParticipations(List<String> participationNos);
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
