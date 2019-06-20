@@ -86,6 +86,11 @@
 
 <script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
+/**
+ 고쳐야 할 점
+ 1) 모달을 통해 예약시간을 선택한 후 다른 날짜의 모달을 켜도 예약시간이 남아있다.->다른 날짜를 선택할 경우 모달 초기화할 필요 있음
+ 2) 30분만 예약하여 다음페이지로 넘어간 후 다시 이 페이지로 돌아오면 예약시간에 변화가 생김 ex)10:00 선택 후 돌아오면 10:00~10:30으로 처리돼 시간 선택 모달도 달라져 있다.
+ */
 	// 사용자가 캘린더에서 선택한 날짜
 	var startDate=null;
 	var startDay=null;
@@ -119,18 +124,38 @@
 			endDate="${savedRoomInfo.endDate}".split(" ")[0];
 			endTime="${savedRoomInfo.endDate}".split(" ")[1];
 			
+			var endTime_object=$('.can-reserve-time:contains("'+endTime+'")');
+			
 			/* 모달에 선택한 시간에 표시하기*/
-			// 시작시간, 종료시간 클릭한 효과
+			// 시작시간, 종료시간 선택한 효과
 			$('.can-reserve-time:contains("'+startTime+'")').trigger("click");
-			$('.can-reserve-time:contains("'+endTime+'")').trigger("click");
-			console.log(startTime);
-			console.log(endTime);
-			// 모달 라벨에 시간 표시
-			//$("#time-label").text(modalTitle+startTime+"~"+endTime);
-			//$("#time-label").text("-----------------------");
+	
+			endTime_object.attr("id","endTime");
+			// chosenTime 클래스를 추가한다.
+			endTime_object.addClass("chosenTime");
+			// #startTime객체부터 #endTime객체까지 chosenTime 클래스를 추가해준다.
+			var tmp_time_si=startTime.split(":")[0];
+			var tmp_time_bun=startTime.split(":")[1];
+			
+			while(true){
+				tmp_time_bun=parseInt(tmp_time_bun)+30;
+				
+				if(tmp_time_bun==60){
+					tmp_time_si=parseInt(tmp_time_si)+1;
+					tmp_time_bun='00';
+				}
+				if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == endTime){
+					break;
+				}
+				$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass('chosenTime');
+			};
+
 			// 선택한 날짜를 #chosen-date에 띄어준다.
-			var reserveDate=startDate.split('-'); console.log(reserveDate);
-			$("#chosen-date").text(reserveDate[0]+". "+reserveDate[1]+". "+ reserveDate[2]+". "); //+"("+$(".fc-today").data("day")+") "
+			startDay=$('.fc-day-top[data-date="'+startDate+'"]').data("day");
+			var startDateSplit=startDate.split('-');
+			modalTitle=startDateSplit[0]+". "+startDateSplit[1]+". "+ startDateSplit[2]+". "+"("+startDay+") ";
+			var reserveDate=startDate.split('-');
+			$("#chosen-date").text(modalTitle+" "+startTime+"~"+endTime);
 			
 		};
 	});
@@ -149,13 +174,22 @@
 		
 		// 캘린더 상 날짜의 클릭 이벤트
 		$(".fc-day-top").on("click", function(){
-			startDate=$(this).data("date");
-			console.log("startDate:"+startDate);
-			startDay=$(this).data("day");
+			if(!clickedPrevBtn){
+				startDate=$(this).data("date");
+				startDay=$(this).data("day");
+			}
 			var startDateSplit=startDate.split('-');
-			modalTitle=startDateSplit[0]+". "+startDateSplit[1]+". "+ startDateSplit[2]+". "+"("+startDay+") ";
+			
+			console.log(modalTitle);
 			// 모달에 반영한다.
-			$("#time-label").text(modalTitle+"시간을 선택하세요.");
+			if(clickedPrevBtn){
+				$("#time-label").text(modalTitle+startTime+"~"+endTime);
+				clickedPrevBtn=false;
+			} else{
+				modalTitle=startDateSplit[0]+". "+startDateSplit[1]+". "+ startDateSplit[2]+". "+"("+startDay+") ";
+				$("#time-label").text(modalTitle+"시간을 선택하세요.");
+			}
+			
 		});
 		
 		// 오늘 날짜를 #chosen-date에 띄어준다.
