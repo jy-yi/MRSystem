@@ -193,7 +193,6 @@ public class ReservationServiceImpl implements ReservationService {
 		// 간식 여부
 
 		model.addAttribute("snackWant", request.getParameter("snackWant"));
-		System.out.println(request.getParameter("snackWant"));
 	}
 	
 	/** 예약 정보 DB에 저장 */
@@ -231,12 +230,11 @@ public class ReservationServiceImpl implements ReservationService {
 		String endDate=(String)reserveData.get("endDate");
 		String snackWant=(String)reserveData.get("snackWant");
 		List<String> mainDept=(List<String>)reserveData.get("mainDept"); 
-		List<Integer> subDept=(List<Integer>)reserveData.get("subDept"); 
-		List<Integer> equipments=(List<Integer>)reserveData.get("equipments"); 
+		List<String> subDept=(List<String>)reserveData.get("subDept"); 
+		List<String> equipments=(List<String>)reserveData.get("equipments"); 
 
 		// reservation number를 받아온다
 		int resNo=dao.getReservationNo();
-		System.out.println(mainDept);
 		
 		// reservation DB에 넣을 데이터를 담은 dto
 		ReservationDTO reservationDto=new ReservationDTO();
@@ -250,6 +248,9 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationDto.setSnackWant(snackWant);
 		dao.insertReservation(reservationDto);
 		
+		// waiting DB에 예약 정보를 담는다
+		dao.insertWaiting(resNo);
+		
 		// Lead_Department DB에 넣을 데이터를 담은 map
 		Map<String, Object> leadDepartmentMap=new HashMap<>();
 		leadDepartmentMap.put("resNo",resNo);
@@ -258,57 +259,25 @@ public class ReservationServiceImpl implements ReservationService {
 			leadDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
 			dao.insertParticipateDepartment(leadDepartmentMap);
 		}
-		
+
 		// Sub_Department DB에 넣을 데이터를 담은 map
 		Map<String, Object> subDepartmentMap=new HashMap<>();
 		subDepartmentMap.put("resNo",resNo);
 		subDepartmentMap.put("isMain","N");
-		subDepartmentMap.put("롸?????????", "롸!!!!!");
-		for(Integer deptNo:subDept) {
-			subDepartmentMap.put("deptNo", deptNo);
+		for(String deptNo:subDept) {
+			subDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
 			dao.insertParticipateDepartment(subDepartmentMap);
 		}
-		/*StringTokenizer token = new StringTokenizer(mainDept, ",");
-		List<String> participationList = new ArrayList<>();
-		while(token.hasMoreTokens()) {
-			participationList.add(token.nextToken());
-		}
-		model.addAttribute("participation", dao.getEmployeeList(participationList));
-
-		// 주관 부서
-		token = new StringTokenizer(request.getParameter("mainDept"), ",");
-		List<String> mainDeptList = new ArrayList<>();
-		while(token.hasMoreTokens()) {
-			mainDeptList.add(token.nextToken());
-		}
-		model.addAttribute("mainDept", dao.getDepartmentListByDeptNo(mainDeptList));
-
-		// 협조 부서
-		String subDept=request.getParameter("subDept");
-		if(!subDept.equals("")) {
-			token = new StringTokenizer(subDept, ",");
-			List<String> subDeptList = new ArrayList<>();
-			while(token.hasMoreTokens()) {
-				subDeptList.add(token.nextToken());
-			}
-			model.addAttribute("subDept", dao.getDepartmentListByDeptNo(subDeptList));
-		}
-		if(!equipments.equals("")) {
-			token = new StringTokenizer(equipments, ",");
-			List<Integer> equipList = new ArrayList<>();
-			while(token.hasMoreTokens()) {
-				equipList.add(Integer.parseInt(token.nextToken()));
-			}
-			model.addAttribute("equipments", dao.getEquipmentsByEquipNo(equipList));
-		}
+		System.out.println("subDept Input 끝");
+		
 		// borrowed_equipment DB에 넣을 데이터를 담은 map
 		Map<String, Object> borrwedEquipmentMap=new HashMap<>();
-		borrwedEquipmentMap.put("resNo",resNo);
-		borrwedEquipmentMap.put("equipments", equipments);
-		for(Integer equipNo:equipments) {
-			borrwedEquipmentMap.put("equipNo", equipNo);
+		//borrwedEquipmentMap.put("resNo",resNo);
+		for(String equipNo:equipments) {
+			borrwedEquipmentMap.put("equipNo", Integer.parseInt(equipNo));
 			dao.insertBorrowedEquipments(borrwedEquipmentMap);
-		}*/
+		}
+		
 	}
 	
 	/* ------------- 마이페이지 ------------- */

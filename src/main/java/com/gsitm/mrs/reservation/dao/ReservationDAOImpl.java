@@ -139,26 +139,26 @@ public class ReservationDAOImpl implements ReservationDAO {
 	/** 예약정보 DB에 삽입 */
 	@Override
 	public void insertReservation(ReservationDTO reservation) {
-		sqlSession.selectOne(namespace + ".insertReservation", reservation);
+		sqlSession.insert(namespace + ".insertReservation", reservation);
 	}
 
 
 	/** 대기 예약 DB에 삽입 */
 	@Override
 	public void insertWaiting(int resNo) {
-		sqlSession.selectOne(namespace + ".insertWaiting");
+		sqlSession.insert(namespace + ".insertWaiting", resNo);
 	}
 
 	/** 회의 참여 부서 DB에 삽입 */
 	@Override
 	public void insertParticipateDepartment(Map<String, Object> departmentMap) {
-		sqlSession.selectOne(namespace + ".insertParticipateDepartment");
+		sqlSession.insert(namespace + ".insertParticipateDepartment", departmentMap);
 	}
 
 	/** 회의 대여 비품 DB에 삽입 */
 	@Override
 	public void insertBorrowedEquipments(Map<String, Object> borrwedEquipmentMap) {
-		sqlSession.selectOne(namespace + ".insertBorrowedEquipments");
+		sqlSession.insert(namespace + ".insertBorrowedEquipments", borrwedEquipmentMap);
 	}
 	/* ------------- 관리자 ------------- */
 	

@@ -52,6 +52,7 @@
 							<li>관리자 : ${roomInfo.ADMINNAME}
 						</ul>	
 					</div>
+					<button class="btn btn-warning" id="prevBtn">이전 단계</button>
 				</div>
 				
 				<div class="col-sm-6">
@@ -124,7 +125,10 @@
 								</div>
 								<div class="col-xs-9 col-sm-9">
 									<a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
-									<div id="final-participation-list-div"></div>
+									<div id="final-participation-list-div" class="card mb-4 py-3 border-left-primary">
+	                                  <div class="card-body">
+	                                  </div>
+	                                </div>
 								</div>
 							</div>
 							<div class="row">
@@ -583,4 +587,16 @@
 	    $('#purpose').val($(this).attr('value'));
 	});
 	
+	/* 이전 버튼 클릭 시 이전 페이지로 이동 */
+	$("#prevBtn").on("click",function(){
+		// 필요한 equipment 목록을 폼에 전달
+		var equipments=new Array();
+		$(".needEquip").each(function(){
+			equipments.push($(this).val());
+		});
+		$("input[name=equipments]").val(equipments);
+		
+		$("#option_form").attr("action","/reservation/shortTerm_chooseDate/"+"${roomInfo.ROOMNO}").submit();
+		//location.href="/reservation/shortTerm_chooseDate/${roomInfo.ROOMNO}";
+	})
 </script>

@@ -15,7 +15,6 @@
 
 		<!-- Begin Page Content -->
 		<div class="container-fluid">
-
 			<!-- Page Heading -->
 			<div class="d-sm-flex align-items-center justify-content-between mb-4">
 				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 일자 선택 </h1>
@@ -67,7 +66,9 @@
 								<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment" id="equipment${equip.EQUIP_NO}">
 									<span class="font-checkbox"><label for="equipment${equip.EQUIP_NO}">${equip.NAME} 대여</label> </span><br>
 							</c:forEach>
-								<input type="checkbox" name="snackWant" id="snackWant"><span class="font-checkbox"> <label for="snackWant">간식준비 여부</label></span><br>
+								<input type="checkbox" name="snackWant" id="snackWant" <c:if test="${!empty savedRoomInfo && (savedRoomInfo.snackWant eq 'Y')}">checked</c:if>>
+								<span class="font-checkbox"><label for="snackWant">간식준비 여부</label></span>
+								<br>
 						</form>
 					</div>
 					<button class="btn btn-disabled" id="nextBtn">다음 단계</button>
@@ -102,6 +103,37 @@
 	var si=0;
 	var bun=0;
 	
+	/* 이전페이지를 통해 돌아왔다면 데이터 넣기 */
+	// 이전페이지를 통해 돌아왔다면 true
+	var clickedPrevBtn=("${savedRoomInfo}"!="");
+	
+	$(document).ready(function(){
+		if(clickedPrevBtn){
+			// equipments 정보 넣기
+			var savedEquipments="${savedRoomInfo.equipments}".split(',');
+			$.each(savedEquipments, function(index, item){ 
+				$("input:checkbox[value='"+item+"']").attr("checked", true);
+			});
+			startDate="${savedRoomInfo.startDate}".split(" ")[0];
+			startTime="${savedRoomInfo.startDate}".split(" ")[1];
+			endDate="${savedRoomInfo.endDate}".split(" ")[0];
+			endTime="${savedRoomInfo.endDate}".split(" ")[1];
+			
+			/* 모달에 선택한 시간에 표시하기*/
+			// 시작시간, 종료시간 클릭한 효과
+			$('.can-reserve-time:contains("'+startTime+'")').trigger("click");
+			$('.can-reserve-time:contains("'+endTime+'")').trigger("click");
+			console.log(startTime);
+			console.log(endTime);
+			// 모달 라벨에 시간 표시
+			//$("#time-label").text(modalTitle+startTime+"~"+endTime);
+			//$("#time-label").text("-----------------------");
+			// 선택한 날짜를 #chosen-date에 띄어준다.
+			var reserveDate=startDate.split('-'); console.log(reserveDate);
+			$("#chosen-date").text(reserveDate[0]+". "+reserveDate[1]+". "+ reserveDate[2]+". "); //+"("+$(".fc-today").data("day")+") "
+			
+		};
+	});
 	
 	document.addEventListener('DOMContentLoaded', function() {
 		var calendarEl = document.getElementById('calendar');
@@ -118,6 +150,7 @@
 		// 캘린더 상 날짜의 클릭 이벤트
 		$(".fc-day-top").on("click", function(){
 			startDate=$(this).data("date");
+			console.log("startDate:"+startDate);
 			startDay=$(this).data("day");
 			var startDateSplit=startDate.split('-');
 			modalTitle=startDateSplit[0]+". "+startDateSplit[1]+". "+ startDateSplit[2]+". "+"("+startDay+") ";
@@ -129,8 +162,9 @@
 		var today=$(".fc-today").data("date").split('-');
 		$("#chosen-date").text(today[0]+". "+today[1]+". "+ today[2]+". "+"("+$(".fc-today").data("day")+") ");
 		
-	  //calendar.setOption('locale','ko');
-	});// 모달-날짜 선택
+	});
+	
+	// 모달-날짜 선택
 	$(".can-reserve-time").on("click",function(){
 		// 선택한 일자 색상 변경
 		if(!clickedStartTime){ // 시작시간 선택
@@ -142,8 +176,6 @@
 		}
 	});
      
-    
-	
 	// 시작시간을 처리하는 함수
 	function setStartTime(startTime_object){
 		clickedStartTime=true;
@@ -255,6 +287,7 @@
 		}
 		return true;
 	}
+	
 	var checkedEquipmentList=$("input[name='checkbox-equipment']:checked").val();
 	// 시간 선택 완료 버튼 클릭 이벤트
 	$("#choose-complete-btn").on("click",function(){
