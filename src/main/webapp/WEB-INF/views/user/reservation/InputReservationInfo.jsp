@@ -472,7 +472,7 @@
 		$.each(mainDept, function(index, item){
 			$("#final-mainDept-list").append("<li>"+item.name
 					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-move-btn'>↓</button></li>");
+					+"<button type='button' class='btn btn-default delete-move-btn'><i class='fas fa-arrow-down'></i></button></li>");
 		});
 	};
 	
@@ -482,7 +482,7 @@
 		$.each(departmentList, function(index, item){
 			$("#final-subDept-list-div>ul").append("<li>"+item.name
 					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-move-btn'>↑</button></li>");
+					+"<button type='button' class='btn btn-default delete-move-btn'><i class='fas fa-arrow-up'></i></button></li>");
 		});
 		
 	}
