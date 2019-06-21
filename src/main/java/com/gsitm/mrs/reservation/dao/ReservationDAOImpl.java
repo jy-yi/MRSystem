@@ -160,6 +160,13 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public void insertBorrowedEquipments(Map<String, Object> borrwedEquipmentMap) {
 		sqlSession.insert(namespace + ".insertBorrowedEquipments", borrwedEquipmentMap);
 	}
+	
+	/** 해당 방의 예약정보 조회 */
+	@Override
+	public List<Map<String, Object>> getReservationsByRoomNo(int roomNo) {
+		return sqlSession.selectList(namespace + ".getReservationsByRoomNo", roomNo);
+	}
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -203,5 +210,6 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
+	
 
 }

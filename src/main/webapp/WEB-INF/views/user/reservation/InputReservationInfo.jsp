@@ -104,7 +104,7 @@
 									<label>회의명</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<input type="text" class="form-control" name="name"/>
+									<input type="text" class="form-control" name="name" id="resName" <c:if test="${!empty name}">value="${name}"</c:if>/>
 								</div>
 							</div>
 							<div class="row">
@@ -112,14 +112,15 @@
 									<label>회의 구분</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					                   회의 선택
-					                 </button>
+									<button class="btn btn-light dropdown-toggle" type="button" 
+										id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" 
+										aria-expanded="false">회의 선택</button>
 					                 <div id="typeDropdown" class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton">
 					                 	<input type="hidden" name="purpose" id="purpose">
 					                    <a class="dropdown-item" value="내부회의">내부회의</a>
 					                    <a class="dropdown-item" value="고객미팅">고객미팅</a>
 					                    <a class="dropdown-item" value="교육">교육</a>
+					                    <a class="dropdown-item" value="기타">기타</a>
 					                 </div>
 								</div>
 							</div>
@@ -131,7 +132,7 @@
 						              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						                <i class="fas fa-user-friends"></i>
 						                <!-- 참여 사원 수 -->
-						                <span class="badge badge-danger badge-counter">7</span>
+						                <span class="badge badge-danger badge-counter" id="participationCount"> 0 </span>
 						              </a>
 						              <a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
 	                                
@@ -211,8 +212,39 @@
 	var mainDept=null;
 	var neverChosenMainDept=true;
 	
+	/******************
+		이전 페이지 처리
+	*******************/
+	// 이전 페이지에서 뒤로 가기를 통해 돌아온건지 확인(저장된 예약정보가 있는지 확인)
+	var savedData="${savedData}"=="true";
 	/* 예약 일자 */
 	$(function(){
+		// 뒤로가기를 통해 돌아온 경우
+		if(savedData){
+			// 회의 구분 데이터 넣기
+			$(".dropdown-item[value='"+"${purpose}"+"']").trigger("click");
+			// 사원 번호로 참여인원 정보 얻어오기
+			var participationNos="${participation}".replace(" ","").split(",");
+			$.ajax({
+				type:"get",
+				url:"/reservation/getParticipations",
+				data:{"participationNos" : participationNos},
+				traditional:true,
+				success: function(data){
+					$.each(data.participations, function(index, item){
+						console.log(item);
+						// 참여자 목록에 추가해준다.
+						participation.push({"employeeNo":item.EMPNO, "name":item.NAME, "departmentName":item.DEPARTMENTNAME});
+					})
+					updateParticipationList();
+					$("#choose-complete-btn").trigger("click");
+				},
+				error: function(xhr, status, error) {
+					alert(error);
+				}	
+			});
+		};
+		
 		// 예약 일자 값을 설정
 		Date.prototype.format = function (f) {
 		    if (!this.valueOf()) return " ";
@@ -383,6 +415,9 @@
 		$("#final-participation-list-div").show();
 		$("#final-participation-list-div>ul").attr("id","user-chosen-participation");
 		
+		// 참여 인원 수 업데이트
+		$("#participationCount").text(participation.length);
+		
 		// 부서 목록 업데이트
 		if(departmentList!=null){
 			// DB에서 다시 departmentList를 가져옴
@@ -404,7 +439,7 @@
 		var employeeNoArr=participation.map(function(a){
 			return a.employeeNo;
 		})
-		
+		console.log("mainDept:"+participation);
 		// mainDept배열에서 deptNo 값으로만 배열 생성
 		var mainDeptNoArr=null;
 		if(mainDept!=null){
@@ -439,7 +474,7 @@
 		$.each(mainDept, function(index, item){
 			$("#final-mainDept-list").append("<li>"+item.name
 					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-department-btn'>↓</button></li>");
+					+"<button type='button' class='btn btn-default delete-move-btn'><i class='fas fa-arrow-down'></i></button></li>");
 		});
 	};
 	
@@ -449,7 +484,7 @@
 		$.each(departmentList, function(index, item){
 			$("#final-subDept-list-div>ul").append("<li>"+item.name
 					+"<i style='display:none'>"+item.deptNo+"</i>"
-					+"<button type='button' class='btn btn-default delete-department-btn'>↑</button></li>");
+					+"<button type='button' class='btn btn-default delete-move-btn'><i class='fas fa-arrow-up'></i></button></li>");
 		});
 		
 	}
@@ -463,7 +498,7 @@
 	}); 
 	
 	// 부서 삭제 이벤트
-	$(document).on("click",".delete-department-btn",function(){
+	$(document).on("click",".delete-move-btn",function(){
 		var deptName;
 		var deptNo=$(this).prev().text();
 		var index;
@@ -498,24 +533,34 @@
 		// 화면에 반영
 		appendMainDept();
 		appendSubDept();
+		// 폼을 다 채웠는지 확인
+		checkFormInput();
 	});
 	
 	// 회의명 작성 이벤트
-	$("input[name='name']").on("propertychange change keyup paste input",function(){
+	$("#resName").on("propertychange, change, keyup, paste, input",function(){
 		checkFormInput();
 	});
 	
 	// 폼을 다 채웠는지 확인하는 함수
 	function checkFormInput(){
 		// 회의명을 채웠는지 확인
-		if($("input[name='name']").val()!=''){
-			// 참여인원과 주관부서를 선택했는지 확인
-			if(participation.length!=0 && mainDept.length!=0){
-				// 폼의 모든 요소를 채웠으면 버튼 active
-				$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+		if($.trim($("#resName").val()) != ''){
+			// 회의구분을 선택했는지 확인
+			/////////////수정 필요!! selectbox값이 change된 경우로!!
+			if($("#dropdownMenuButton").text()!="회의 선택"){
+				// 참여인원과 주관부서를 선택했는지 확인(참여 인원을 선택해야 주관부서가 나오므로 주관부서만 확인)
+				if(mainDept!=null && mainDept.length!=0){
+					// 폼의 모든 요소를 채웠으면 버튼 active
+					$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+				}
 			}
+		}else {
+			$("#nextBtn").addClass("btn-disabled").removeClass("btn-active").attr("disabled",true);
 		}
-	}
+	};
+	
+	///////// selectbox값이 change 된 경우 checkFormInput() 함수를 호출해야 한다!!
 	
 	// 회의실 예약 내역을 다 입력하면 active로 전환
 	$("#nextBtn").on("click",function(){
@@ -549,6 +594,7 @@
 	$('#typeDropdown a').on('click', function() {
 	    $('#dropdownMenuButton').text($(this).text());
 	    $('#purpose').val($(this).attr('value'));
+	    checkFormInput();
 	});
 	
 	/* 이전 버튼 클릭 시 이전 페이지로 이동 */

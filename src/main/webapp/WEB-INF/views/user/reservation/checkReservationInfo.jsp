@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<link rel= "stylesheet" type="text/css" href="/resources/css/user/reservation-checkReservationInfo.css">
 <style>
 th {
 	width: 20%;
@@ -86,7 +87,7 @@ th {
 									</c:forEach> 
 								</td>
 							</tr>
-							<c:if test="!empty ${subDept }">
+								<c:if test="${!empty subDept }">
 								<tr>
 									<th>협조 부서</th>
 									<td>
@@ -96,7 +97,7 @@ th {
 										</c:forEach> 
 									</td>
 								</tr>
-							</c:if>
+								</c:if>
 							<c:if test="${!empty equipments }">
 								<tr>
 									<th>비품 대여 신청 목록</th>
@@ -122,12 +123,26 @@ th {
 						</table>
 					</div>
 				</div>
-				
+				<!-- 이전 페이지로 이동시 데이터를 넘겨주는 부분 -->
+				<form action="/reservation/InputReservationInfo" id="reservationInfoForm">
+					<input type="hidden" name="clickPrevBtn" value="true">
+					<input type="hidden" name="employeeNo" value="">
+					<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}">
+					<input type="hidden" name="name" value="${meetingName}">
+					<input type="hidden" name="purpose" value="${purpose}">
+					<input type="hidden" name="startDate" value="${startDate}">
+					<input type="hidden" name="endDate" value="${endDate}">
+					<input type="hidden" name="snackWant" value="${snackWant}">
+					<input type="hidden" name="participation" value="">
+					<input type="hidden" name="mainDept" value="">
+					<input type="hidden" name="subDept" value="">
+					<input type="hidden" name="equipments" value="">
+				</form>
 				<hr>
-				
 				<div class="text-center">
-					<button class="btn btn-primary col-lg-1" onclick="doReserve()">신청</button>
-					<button class="btn btn-danger col-lg-1" onclick="">취소</button>
+					<button class="btn btn-warning col-lg-3 btn-margin" id="prevBtn">이전 단계</button>
+					<button class="btn btn-primary col-lg-3 btn-margin" onclick="doReserve()">예약 하기</button>
+					<button class="btn btn-danger col-lg-3 btn-margin" id="cancelBtn">예약 취소</button>
 				</div>
 			</div>
 		</div>
@@ -137,64 +152,43 @@ th {
 
 <script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
+	// 예약에 필요한 정보
+	var empNo=$.cookie('loginCookie');
+	var roomNo="${roomInfo.ROOMNO}";
+	var name="${meetingName}";
+	var purpose="${purpose}";
+	var startDate="${startDate}";
+	var endDate="${endDate}";
+	var snackWant="${snackWant}";
+	var mainDept=$(".mainDept").map(function() {
+		   return $(this).val();
+	}).get();
+	var subDept=$(".subDept").map(function() {
+		   return $(this).val();
+	}).get();
+	var equipments= $(".equipments").map(function() {
+		   return $(this).val();
+	}).get();
+	var participation= "${participationEmpNos}";
+	
+	var resData={
+			empNo:empNo,
+			roomNo:roomNo,
+			name:name,
+			purpose:purpose,
+			startDate:startDate,
+			endDate:endDate,
+			snackWant:snackWant,
+			mainDept:mainDept,
+			subDept:subDept,
+			equipments:equipments
+			};
+	var jsonData = JSON.stringify(resData);
+	
+	// 예약에 필요한 데이터를 DB에 담아주는 함수
 	function doReserve() {
 		alert("예약이 완료되었습니다.");
-
-		// 정보를 ajax로 DB에 넣는다.
-		/*
-			reservation DB
-				res_no,
-				*emp_no,
-				*room_no,
-				*name,
-				*purpose,
-				*start_date,
-				*end_date,
-				*snack_want,
-				*status->default?
-			waiting DB
-				res_no
-				mgr_approval
-				admin_approval
-			Lead_Department DB
-				res_no
-				*dept_no
-				is_main
-			borrowed_equipment DB
-				*equip_no
-				res_no
-		*/
-		var empNo=$.cookie('loginCookie');
-		var roomNo="${roomInfo.ROOMNO}";
-		var name="${meetingName}";
-		var purpose="${purpose}";
-		var startDate="${startDate}";
-		var endDate="${endDate}";
-		var snackWant="${snackWant}";
-		var mainDept=$(".mainDept").map(function() {
-			   return $(this).val();
-		}).get();
-		var subDept=$(".subDept").map(function() {
-			   return $(this).val();
-		}).get();
-		var equipments= $(".equipments").map(function() {
-			   return $(this).val();
-		}).get();
 		
-		var resData={
-				empNo:empNo,
-				roomNo:roomNo,
-				name:name,
-				purpose:purpose,
-				startDate:startDate,
-				endDate:endDate,
-				snackWant:snackWant,
-				mainDept:mainDept,
-				subDept:subDept,
-				equipments:equipments
-				};
-		var jsonData = JSON.stringify(resData);
-	
 		$.ajax({
 				type:"post",
 				url:"${pageContext.request.contextPath}/reservation/doReserve",
@@ -211,6 +205,28 @@ th {
 			});
 			
 		// 예약 확인 페이지로 이동
-		//location.href="/reservation/statusCalendar";
+		location.href="/reservation/statusCalendar";
 	}
+	
+	// 취소 버튼 클릭 이벤트
+	$("#cancelBtn").on("click", function(){
+		var wantCancel=confirm("정말 예약을 취소하시겠습니까?");
+		if(wantCancel){
+			// 회의실 목록으로 이동
+			location.href="/reservation/room";
+		}
+	});
+	
+	// 이전페이지로 이동시켜주는 이벤트
+	$("#prevBtn").on("click", function(){
+		// 폼에 필요한 input값을 넣는다.
+		$("input[name='employeeNo']").val(empNo);
+		$("input[name='mainDept']").val(mainDept);
+		$("input[name='subDept']").val(subDept);
+		$("input[name='equipments']").val(equipments);
+		$("input[name='participation']").val(participation);
+		// inputReservationInfo로 이동
+		$("#reservationInfoForm").submit();
+	});
+	
 </script>

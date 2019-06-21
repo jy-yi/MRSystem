@@ -83,6 +83,10 @@
 <!--         <beans:constructor-arg value="C:/Users/IT1903001/git/MRSystem/src/main/webapp/resources/img/room"/> -->
     </beans:bean>
     
-    <context:component-scan base-package="com.gsitm.mrs" />
+    <!-- dao와 service를 제외한 controller scan -->
+	<context:component-scan base-package="com.gsitm.mrs">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
 	
 </beans:beans>

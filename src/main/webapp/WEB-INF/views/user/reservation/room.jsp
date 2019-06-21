@@ -42,7 +42,7 @@
 												 
 												<span style="float:right"> 
 													<a href="/reservation/shortTerm_chooseDate/${list.ROOMNO}" class="btn btn-warning"> <span class="text">단기 예약</span> </a>
-													<a href="#" class="btn btn-primary"> <span class="text">장기 예약</span> </a>
+													<a href="/reservation/longTerm_chooseDate/${list.ROOMNO}" class="btn btn-primary"> <span class="text">장기 예약</span> </a>
 												</span> 
 												
 													<input type="hidden" id="roomNo" name="roomNo" value="${list.ROOMNO}">

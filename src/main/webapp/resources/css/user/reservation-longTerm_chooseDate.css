@@ -1,0 +1,80 @@
+@charset "EUC-KR";
+#room_img{
+	max-width: 100%;
+}
+
+#room_info_div{
+	line-height: 150%;
+	margin-top: 20px;
+}
+
+.left-padding-zero{
+	padding-left: 0;
+}
+
+.align-center{
+	text-align: center;
+}
+
+#option_div{
+	margin-top: 20px;
+}
+
+.background-lightgrey{
+	background-color:rgb(255,255,255);
+}
+
+.btn-disabled.btn-active{
+	margin-top: 20px;
+	width: 100%;
+	border: 2px solid rgb(54,93,205);
+	
+}
+
+.btn-disabled{
+	color: lightgrey;
+}
+
+.btn-active{
+	color: rgb(54,93,205);
+}
+
+.btn-active{
+	margin-top: 20px;
+	width: 100%;
+	background-color: rgb(54,93,205);
+	color: white;
+}
+
+.padding-content{
+	padding: 10px;
+}
+
+.color-title{
+	color: #464646;
+}
+
+.div-border{
+   border: 1px solid #efefef;
+}
+
+.font-checkbox{
+	margin-left: 5px;
+}
+
+.fc-left>h2{
+	color: #464646;
+}
+
+#option_form{
+    line-height: 250%;
+}
+
+.reserved-time{
+	background-color: lightgrey;
+	color: gray;
+}
+
+.chosenTime{
+	background-color: rgb(54,93,205) !important;
+}
