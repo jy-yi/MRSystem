@@ -67,7 +67,7 @@ public class ResevationController {
 		employeeNo = employee.getEmployeeNo();
 		
 		List<Map<String, Object>> reservationInfo = service.getReservationInfo(employeeNo);
-		ReservationDTO latestReservation = service.getLatestReservation(employeeNo);
+		List<Map<String, Object>> latestReservation = service.getLatestReservation(employeeNo);
 		
 		model.addAttribute("reservationInfo", reservationInfo);
 		model.addAttribute("latestReservation", latestReservation);

@@ -69,7 +69,7 @@
 	</update>
 	
 	<!-- 마이페이지 가장 최근 일자 표시 -->
-	<select id="getLatestReservation" resultType="Reservation">
+	<select id="getLatestReservation" resultType="map">
 		SELECT	res_no,
 				emp_no,
 				room_no,
@@ -77,13 +77,11 @@
 				purpose,
 				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
 		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
-				status
+				status,
+				ROUND((start_date - sysdate) *24 *60)		AS wowDate
         FROM	reservation
         WHERE 	emp_no = #{employeeNo}
-        AND 	start_date = (	SELECT MIN(start_date) 
-                            	FROM reservation 
-                            	WHERE start_date >= sysdate 
-                            	AND emp_no = #{employeeNo})
+		AND		(ROUND((start_date - sysdate))) = 0
 	</select>
 	
 	<!-- 대시보드 -->

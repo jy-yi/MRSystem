@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
-import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/**/root-context.xml"})
@@ -58,9 +57,12 @@ public class ReservationDaoTest {
 	@Test
 	public void TestLastestReservation() {
 		
-		ReservationDTO reservation = dao.getLatestReservation("it1228");
+		List<Map<String, Object>> reservation = dao.getLatestReservation("it1228");
 		
-		logger.info(reservation);
+		for (Map<String, Object> map : reservation) {
+			logger.info(map);
+			
+		}
 	}
 	
 	/** 회의실 정보 조회 테스트 */

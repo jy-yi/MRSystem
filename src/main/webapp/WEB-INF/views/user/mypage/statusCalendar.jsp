@@ -36,8 +36,17 @@
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 								
-									가장 최근 회의 일정 -	${latestReservation.name} / ${latestReservation.startDate} ~ ${latestReservation.endDate}
-									
+									가장 최근 회의 일정 -	
+									<c:forEach items="${latestReservation}" var="list">
+										${list.WOWDATE}
+										<c:if test="${list.WOWDATE}">
+											
+										</c:if>
+										<%-- <c:if test="(-10 le ${list.WOWDATE}) &&  (${list.WOWDATE} gt 10)">
+										</c:if> --%>
+									</c:forEach>
+									<%-- ${latestReservation.NAME} / ${latestReservation.STARTDATE} ~ ${latestReservation.ENDDATE}
+									 --%>
 								</div>
 
 								<!-- 프로그레스 바 -->
@@ -155,37 +164,58 @@
 
 
 
-<script type="text/javascript">
+ <script type="text/javascript">
 	
 	// sysdate가 startDate의 10분전이라면 시작 버튼 표시
 	/*  sysdate = TO_CHAR(start_date-10/24/60, 'YYYYMMDD HH24:MI:SS') */
-	var date = "${latestReservation.startDate}";
+	var reservationName = '';
+	var startDate = '';
+	var endDate = '';
 	
-	var year = date.substring(0, 4);
-	var month = date.substring(5, 7);
-	var day = date.substring(8, 10);
-	var hour = date.substring(11, 13);
-	var minute = date.substring(14, 16);
+	<c:forEach items="${latestReservation}" var="list">
+		reservationName = "${list.NAME}";
+		startDate = "${list.STARTDATE}";
+		endDate = "${list.ENDDATE}";
+	</c:forEach>
+	
+	var startYear = startDate.substring(0, 4);
+	var startMonth = startDate.substring(5, 7);
+	var startDay = startDate.substring(8, 10);
+	var startHour = startDate.substring(11, 13);
+	var startMinute = startDate.substring(14, 16);
+	
+	var endYear = endDate.substring(0, 4);
+	var endMonth = endDate.substring(5, 7);
+	var endDay = endDate.substring(8, 10);
+	var endHour = endDate.substring(11, 13);
+	var endMinute = endDate.substring(14, 16);
 
-	var myDate = new Date(year, month, day, hour, minute);
-	console.log("분 : " + minute);
-	console.log("나의 가장 최근 날짜 : "+ myDate);
+	var myStartDate = new Date(startYear, startMonth, startDay, startHour, startMinute);
+	var myEndDate = new Date(endYear, endMonth, endDay, endHour, endMinute);
 	
-	var d = new Date();
-    var currentDate = new Date(d.getFullYear(),(d.getMonth() + 1), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds());
+	console.log("회의 예약명 : " + reservationName);
+	console.log("나의 가장 최근 예약 회의 시작 날짜 및 시간 : "+ myStartDate);
+	console.log("나의 가장 최근 예약 회의 끝 날짜 및 시간 : "+ myEndDate);
+	
+	var date = new Date();
+    var currentDate = new Date(date.getFullYear(),(date.getMonth() + 1), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
     
-    console.log("현재 분 : " + d.getMinutes());
+    console.log("현재 분 : " + date.getMinutes());
     console.log("현재 날짜 및 시간 : " + currentDate);
     
-    var testDate = myDate - currentDate;
+    var testDate = myStartDate - currentDate;
     
-    console.log(testDate/1000);
+    
+    //console.log("회의 시작까지 " + testDate/1000 + "초가 남았습니다.");
+    console.log("회의 시작까지 " + Math.round((testDate/1000)/60) + "분이 남았습니다.");
+    
+    var temp = Math.round((testDate/1000)/60);
     
     // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
     // 예약시간의 +10분까지 띄워줌
     
-    //if(currentDate <){
+    if(temp <= 8 && temp > -2){
     	var startBtn = document.getElementById("startBtn");
     	
     	if (startBtn.style.display == 'none') {
@@ -196,7 +226,7 @@
 			startBtn.style.display = 'none';
 			$("#spanText").text('종료');
 		}
-  //  }
+    }
 	
 	/* // 시작 버튼을 눌렀을 때
 	$("#startBtn").click(function() {
@@ -216,4 +246,3 @@
 
 		
 </script>
-
