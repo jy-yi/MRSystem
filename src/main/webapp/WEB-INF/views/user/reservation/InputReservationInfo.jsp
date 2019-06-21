@@ -104,8 +104,7 @@
 									<label>회의명</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<input type="text" class="form-control" name="name" 
-										<c:if test="${!empty name}">value="${name}"</c:if>/>
+									<input type="text" class="form-control" name="name" id="resName" <c:if test="${!empty name}">value="${name}"</c:if>/>
 								</div>
 							</div>
 							<div class="row">
@@ -133,7 +132,7 @@
 						              <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						                <i class="fas fa-user-friends"></i>
 						                <!-- 참여 사원 수 -->
-						                <span class="badge badge-danger badge-counter">7</span>
+						                <span class="badge badge-danger badge-counter" id="participationCount"> 0 </span>
 						              </a>
 						              <a class="btn btn-primary" href="#" id="chooseParticipationBtn"  data-toggle="modal" data-target="#chooseParticipationModal">검색</a>
 	                                
@@ -416,6 +415,9 @@
 		$("#final-participation-list-div").show();
 		$("#final-participation-list-div>ul").attr("id","user-chosen-participation");
 		
+		// 참여 인원 수 업데이트
+		$("#participationCount").text(participation.length);
+		
 		// 부서 목록 업데이트
 		if(departmentList!=null){
 			// DB에서 다시 departmentList를 가져옴
@@ -536,14 +538,14 @@
 	});
 	
 	// 회의명 작성 이벤트
-	$("input[name='name']").on("propertychange change keyup paste input",function(){
+	$("#resName").on("propertychange, change, keyup, paste, input",function(){
 		checkFormInput();
 	});
 	
 	// 폼을 다 채웠는지 확인하는 함수
 	function checkFormInput(){
 		// 회의명을 채웠는지 확인
-		if($("input[name='name']").val()!=''){
+		if($.trim($("#resName").val()) != ''){
 			// 회의구분을 선택했는지 확인
 			/////////////수정 필요!! selectbox값이 change된 경우로!!
 			if($("#dropdownMenuButton").text()!="회의 선택"){
@@ -553,6 +555,8 @@
 					$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 				}
 			}
+		}else {
+			$("#nextBtn").addClass("btn-disabled").removeClass("btn-active").attr("disabled",true);
 		}
 	};
 	
@@ -590,6 +594,7 @@
 	$('#typeDropdown a').on('click', function() {
 	    $('#dropdownMenuButton').text($(this).text());
 	    $('#purpose').val($(this).attr('value'));
+	    checkFormInput();
 	});
 	
 	/* 이전 버튼 클릭 시 이전 페이지로 이동 */
