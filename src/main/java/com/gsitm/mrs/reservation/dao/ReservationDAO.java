@@ -82,6 +82,8 @@ public interface ReservationDAO {
 	/** 회의 대여 비품 DB에 삽입 */
 	public void insertBorrowedEquipments(Map<String, Object> borrwedEquipmentMap);
 	
+	/** 해당 방의 예약정보 조회 */
+	public List<Map<String, Object>> getReservationsByRoomNo(int roomNo);
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

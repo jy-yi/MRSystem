@@ -309,7 +309,14 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getParticipations(List<String> participationNos) {
 		return dao.getEmployeeList(participationNos);
 	}
-	
+
+	/** 예약 날짜 선택 페이지 서비스 */
+	@Override
+	public void shortTerm_chooseDate(Model model, int roomNo) {
+		
+		System.out.println(dao.getReservationsByRoomNo(roomNo));
+		
+	}
 	/* ------------- 마이페이지 ------------- */
 	
 	/** 마이페이지 예약 현황 캘린더 */

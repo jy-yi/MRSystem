@@ -432,4 +432,10 @@
        	ORDER BY r.res_no
 	</select>
 	
+	<!-- 해당 방의 예약정보 조회 -->
+	<select id="getReservationsByRoomNo" parameterType="int">
+		SELECT TO_CHAR(start_date,'YYYY-MM-DD HH24:MI') "start_date", TO_CHAR(end_date,'YYYY-MM-DD HH24:MI') "end_date"
+		FROM reservation
+		WHERE room_no=#{roomNo}
+	</select>
 </mapper>

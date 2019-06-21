@@ -76,6 +76,10 @@ public interface ReservationService {
 	
 	/** 사원번호로 회의 참여자 정보 얻어오기 */
 	public List<Map<String, Object>> getParticipations(List<String> participationNos);
+	
+	/** 예약 날짜 선택 페이지 서비스 */
+	public void shortTerm_chooseDate(Model model, int roomNo);
+	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
