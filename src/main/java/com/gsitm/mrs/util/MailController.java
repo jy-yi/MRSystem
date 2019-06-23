@@ -10,18 +10,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/mail")
 public class MailController {
 	
 	@Inject
 	private JavaMailSender mailSender;
 	
 	@RequestMapping(value="/mailSend")
-	public String mailSend(HttpServletRequest request) {
+	public String mailSend(String tomail) {
 		
-		String setfrom = "";
-		String tomail = request.getParameter("tomail");		// 받는 사람 이메일
-		String title = "";
-		String content = "";
+		String setfrom = "jy.yi.9515@gmail.com";
+//		String tomail = email;		// 받는 사람 이메일
+		String title = "메일 테스트";
+		String content = "테스트~~~~";
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -38,6 +39,6 @@ public class MailController {
 			System.out.println(e);
 		}
 		
-		return "";
+		return "redirect:/";
 	}
 }
