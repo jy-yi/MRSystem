@@ -186,6 +186,7 @@
 				startDay=$(this).data("day");
 			}
 			var startDateSplit=startDate.split('-');
+			var chosenDateSplit=$(this).data("date").split('-');
 			
 			// 모달에 반영한다.
 			if(clickedPrevBtn){
@@ -250,14 +251,121 @@
 				data:{roomNo:roomNo, chosenDate:chosenDate},
 				traditional:true,
 				success: function(data){
-					console.log(data.reservations);
+					// 해당 날짜에 예약내역들이 있는지 확인
 					if(data.reservations.length>0){
 						$.each(data.reservations, function(index, item){
+							console.log(item);
+							var startDateArr=item.STARTDATE.split(" ")[0].split("-");
+							var endDateArr=item.ENDDATE.split(" ")[0].split("-");
+							
+							var startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2]);
+							var endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2]);
+							var chosenDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2]);
+							
+							var startTimeArr=item.STARTDATE.split(" ")[1].split(":");
+							var endTimeArr=item.ENDDATE.split(" ")[1].split(":");
+							
+							if(chosenDate-startDate==0){
+								if(chosenDate-endDate==0){
+									// 1. 선택한 날짜==startDate && 선택한 날짜==endDate -> 단기 예약(시작시간~끝시간)
+									startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2],startTimeArr[0],startTimeArr[1]);
+									endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2],endTimeArr[0],endTimeArr[1]);
+									// 예약 앞뒤로 30분 간격을 준다
+									startDate.setMinutes(startDate.getMinutes()-30);
+									endDate.setMinutes(endDate.getMinutes()+30);
+									var tmp_time_bun;
+									
+									/** 모든 시간 예약 가능하도록 초기화 */
+									while(true){
+										tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+										// can-reserve-time 클래스 추가
+										$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										
+										startDate.setMinutes(startDate.getMinutes()+30)
+										if(endDate-startDate==0){
+											tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+											$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+											break;
+										}
+									};
+								} else{
+									// 2. 선택한 날짜==startDate && 선택한 날짜!=endDate -> 장기 예약(시작시간~)
+									startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2],startTimeArr[0],startTimeArr[1]);
+									endOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],18,0);
+									// 예약 앞에 30분 간격을 준다
+									startDate.setMinutes(startDate.getMinutes()-30);
+									var tmp_time_bun;
+									
+									while(true){
+										tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+										// can-reserve-time 클래스 추가
+										$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										
+										startDate.setMinutes(startDate.getMinutes()+30)
+										if(startDate-endOfDate==0){
+											tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+											$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+											break;
+										}
+									};
+								}
+							} else{ 
+								if(chosenDate-endDate==0){
+									// 3. 선택한 날짜!=startDate && 선택한 날짜==endDate -> 장기 예약(~끝시간)
+									endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2],endTimeArr[0],endTimeArr[1]);
+									startOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],9,0);
+									// 예약 뒤에 30분 간격을 준다
+									endDate.setMinutes(endDate.getMinutes()+30);
+									var tmp_time_bun;
+									
+									while(true){
+										tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+										// can-reserve-time 클래스 추가
+										$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										
+										startOfDate.setMinutes(startOfDate.getMinutes()+30)
+										if(startOfDate-endDate==0){
+											tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+											$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+											break;
+										}
+									};
+								} else{
+									// 4. 선택한 날짜!=startDate && 선택한 날짜!=endDate -> 장기 예약(~)
+									startOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],9,0);
+									endOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],18,0);
+									var tmp_time_bun;
+									
+									while(true){
+										tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+										// can-reserve-time 클래스 추가
+										$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										
+										startOfDate.setMinutes(startOfDate.getMinutes()+30)
+										if(startOfDate-endOfDate==0){
+											tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+											$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+											break;
+										}
+									};
+								}
+							}
+							
+							var d=new Date();
+							var year=d.getYear();
+							var month=d.getMonth();
+							var day=d.getDay();
+							
+							var date=new Date(year,month,day,9,0);
+							var now=new Date(year,month,day,d.getHours(),d.getMinutes());
+							var end=new Date(year,month,day,18,0);
+							var tmp_time_bun;
+							
 							// 이미 예약된 날짜는 예약불가
 							var tmp_time_si=item.STARTDATE.split(":")[0];
 							var tmp_time_bun=item.STARTDATE.split(":")[1];
 
-							while(true){
+							/*while(true){
 								// cant-reserve-time 클래스 추가
 								$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').removeClass("can-reserve-time").addClass('cant-reserve-time');
 								
@@ -272,7 +380,7 @@
 									break;
 								}
 								
-							};
+							};*/
 						});
 						
 					};

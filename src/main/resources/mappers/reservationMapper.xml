@@ -439,7 +439,7 @@
 	
 	<!-- 해당 날짜의 예약정보 조회 -->
 	<select id="getReservationsByDate" parameterType="Map" resultType="Map">
-		SELECT TO_CHAR(start_date, 'HH24:MI') AS startDate, TO_CHAR(end_date, 'HH24:MI') AS endDate
+		SELECT TO_CHAR(start_date, 'YYYY-MM-DD HH24:MI') AS startDate, TO_CHAR(end_date, 'YYYY-MM-DD HH24:MI') AS endDate
 		FROM reservation
 		WHERE room_no=#{roomNo} AND 
 			  start_date<![CDATA[<=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')+1 AND
