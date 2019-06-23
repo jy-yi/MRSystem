@@ -135,7 +135,7 @@ $(function() {
 	/* 검색 조건 미설정 시 모든 예약 정보 조회 */
 	$(function allList() {
 		resetData(); 
-		
+		//&& data.getIndividual.size() == 0 && data.getDepartment.size() == 0
 		employeeNo = $(this).attr('value');
 		
 		$.ajax({
@@ -145,7 +145,7 @@ $(function() {
 	        success : function(data){
 	        	//alert(JSON.stringify(data.getIndividual));
 	        	var table = '';
-	        	if (data.userAllList.length == 0) {
+	        	if (data.userAllList.length == 0 ) {
 	        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
 	        	} else {
 	        		table += makeTable(data.userAllList);
@@ -178,9 +178,15 @@ $(function() {
 		        dataType : "json",
 		        success : function(data){
 		        	alert(JSON.stringify(data.getIndividualDate));
+		        	//console.log(JSON.stringify(data.getIndividualDate.size()) +", " + JSON.stringify(data.getIndividualDate.size()));
+		 			//&& data.getIndividualDate.length == 0 && data.getDepartmentDate.length == 0
 		        	var table = '';
-		        	if (data.userSearchList.length == 0) {
+		        	if (data.userSearchList.length == 0 ) {
 		        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
+		        		$("#countIn").text('');
+		        		$("#sumIn").text('');
+		        		$("#countDe").text('');
+		        		$("#sumDe").text('');
 		        	} else {
 		        		table += makeTable(data.userSearchList);
 		        	}
