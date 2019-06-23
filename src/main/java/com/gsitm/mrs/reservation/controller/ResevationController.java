@@ -154,7 +154,6 @@ public class ResevationController {
 	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String room(Model model) {
-		
 		logger.info("(사용자) 회의실 정보");
 		
 		List<Map<String, Object>> roomList = resourceService.getRoomList();
@@ -170,12 +169,6 @@ public class ResevationController {
 	public String chooseDate(@PathVariable int roomNo, Model model, HttpServletRequest request) {
 		logger.info("(사용자) 예약 - 단기 예약 일자 선택");
 		
-		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
-		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
-		
-		model.addAttribute("roomInfo", roomInfo);
-		model.addAttribute("equipmentList", equipmentList);
-		
 		// 뒤로 가기를 통해 이 페이지에 돌아온 경우 미리 선택한 예약 정보를 저장하는 map
 		Map<String, Object> savedRoomInfo=new HashMap<>();
 		if(request.getParameter("startDate")!=null) {
@@ -188,34 +181,12 @@ public class ResevationController {
 		
 		service.shortTerm_chooseDate(model, roomNo);
 		
-		model.addAttribute("roomInfo", roomInfo);
-		model.addAttribute("equipmentList", equipmentList);
-		
 		return "user/reservation/shortTerm_chooseDate";
 	}
 	
 	@RequestMapping(value = "/longTerm_chooseDate/{roomNo}", method = RequestMethod.GET)
 	public String longTermChooseDate(@PathVariable int roomNo, Model model, HttpServletRequest request) {
 		logger.info("(사용자) 예약 - 장기 예약 일자 선택");
-		
-		Map<String, Object> roomInfo=service.getRoomInfo(roomNo);
-		List<Map<String, Object>> equipmentList=service.getEquipmentList(roomNo);
-		
-		model.addAttribute("roomInfo", roomInfo);
-		model.addAttribute("equipmentList", equipmentList);
-		
-		// 뒤로 가기를 통해 이 페이지에 돌아온 경우 미리 선택한 예약 정보를 저장하는 map
-		Map<String, Object> savedRoomInfo=new HashMap<>();
-		if(request.getParameter("startDate")!=null) {
-			savedRoomInfo.put("startDate", request.getParameter("startDate"));
-			savedRoomInfo.put("endDate", request.getParameter("endDate"));
-			savedRoomInfo.put("snackWant", request.getParameter("snackWant"));
-			savedRoomInfo.put("equipments", request.getParameter("equipments"));
-			model.addAttribute("savedRoomInfo", savedRoomInfo);
-		}
-		
-		model.addAttribute("roomInfo", roomInfo);
-		model.addAttribute("equipmentList", equipmentList);
 		
 		return "user/reservation/longTerm_chooseDate";
 	}
@@ -283,6 +254,30 @@ public class ResevationController {
 		return result;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/getReservationsByDate", method=RequestMethod.GET)
+	public Map<String, Object> getReservationsByDate(String roomNo, String chosenDate){
+		
+		logger.info("(사용자) 예약 - 해당 날짜에 예약된 정보 얻어오기");
+		
+		Map<String, Object> roomData=new HashMap<>();
+		roomData.put("roomNo", Integer.parseInt(roomNo));
+		roomData.put("chosenDate", chosenDate);
+		
+		Map<String, Object> result=new HashMap<>();
+		result.put("reservations", service.getReservationsByDate(roomData));
+		return result;
+	}
+	
+	@RequestMapping(value = "/InputReservationInfo", method = RequestMethod.GET)
+	public String InputReservationInfo(@ModelAttribute ReservationDTO reservationDto, 
+			HttpServletRequest request, Model model) {
+		logger.info("(사용자) 예약 - 예약 정보 입력");
+		
+		service.InputReservationInfo(request, reservationDto, model);
+		return "user/reservation/InputReservationInfo";
+	}
+		
 	/* ------------- 관리자 ------------- */
 	
 	/**
@@ -422,5 +417,4 @@ public class ResevationController {
 		
 		return "admin/reservation/reservationCancelList";
 	}
-	
 }

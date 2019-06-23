@@ -313,9 +313,16 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 예약 날짜 선택 페이지 서비스 */
 	@Override
 	public void shortTerm_chooseDate(Model model, int roomNo) {
+		model.addAttribute("anotherReservationInfo",dao.getReservationsByRoomNo(roomNo));
+		model.addAttribute("roomInfo",dao.getRoomInfo(roomNo));
+		model.addAttribute("equipmentList", dao.getEquipmentList(roomNo));
 		
-		System.out.println(dao.getReservationsByRoomNo(roomNo));
-		
+	}
+	
+	/** 해당 날짜의 예약정보들 조회 */
+	@Override
+	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData) {
+		return dao.getReservationsByDate(roomData);
 	}
 	/* ------------- 마이페이지 ------------- */
 	
@@ -356,12 +363,6 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/* ------------- 회의실 ------------- */
 
-	/** 회의실 정보 조회 */
-	@Override
-	public Map<String, Object> getRoomInfo(int roomNo) {
-		return dao.getRoomInfo(roomNo);
-	}
-	
 	/** 회의실 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getRoomList(int workplaceNo) {
@@ -426,5 +427,4 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return dao.getReservationCancelList();
 	}
-	
 }

@@ -232,7 +232,6 @@
 				traditional:true,
 				success: function(data){
 					$.each(data.participations, function(index, item){
-						console.log(item);
 						// 참여자 목록에 추가해준다.
 						participation.push({"employeeNo":item.EMPNO, "name":item.NAME, "departmentName":item.DEPARTMENTNAME});
 					})
@@ -303,6 +302,8 @@
 				url:"/reservation/getEmployeeListByChosung",
 				data : {"chosung" : chosung},
 				success: function(data){
+					console.log("ajax");
+					console.log(data);
 					var employeeList=data.employeeList;
 					// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
 					$("#search-employee-list > ul").empty();

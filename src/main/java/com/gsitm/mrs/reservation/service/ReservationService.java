@@ -45,9 +45,6 @@ public interface ReservationService {
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int roomNo);
 	
-	/** 회의실 정보 조회 */
-	public Map<String, Object> getRoomInfo(int roomNo);
-
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	
@@ -80,6 +77,9 @@ public interface ReservationService {
 	/** 예약 날짜 선택 페이지 서비스 */
 	public void shortTerm_chooseDate(Model model, int roomNo);
 	
+	/** 해당 날짜의 예약정보들 조회 */
+	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData);
+
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -103,6 +103,5 @@ public interface ReservationService {
 	/** 예약 취소 목록 조회 */
 	public List<Map<String, Object>> getReservationCancelList();
 
-	
 
 }

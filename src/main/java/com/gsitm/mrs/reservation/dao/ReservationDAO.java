@@ -84,6 +84,9 @@ public interface ReservationDAO {
 	
 	/** 해당 방의 예약정보 조회 */
 	public List<Map<String, Object>> getReservationsByRoomNo(int roomNo);
+	
+	/** 해당 날짜의 예약 정보 조회 */
+ 	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData);
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

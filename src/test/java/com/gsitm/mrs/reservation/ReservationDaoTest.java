@@ -117,6 +117,15 @@ public class ReservationDaoTest {
 		logger.info(list.toString());
 	}
 	
+	/** */
+	@Test
+	public void TestGetReservationsByDate() {
+		Map<String, Object> map=new HashMap<>();
+		map.put("roomNo", 1);
+		map.put("chosenDate", "2019-06-23");
+		logger.info(dao.getReservationsByDate(map));
+	}
+	
 	/*********** 관리자 ************/
 	
 	/** 승인 대기 목록 조회 테스트 */

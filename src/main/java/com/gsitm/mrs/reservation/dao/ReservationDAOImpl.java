@@ -167,6 +167,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getReservationsByRoomNo", roomNo);
 	}
 	
+	/** 해당 날짜의 예약 정보 조회 */
+	@Override
+	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData) {
+		return sqlSession.selectList(namespace + ".getReservationsByDate", roomData);
+	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -210,6 +215,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-	
 
 }

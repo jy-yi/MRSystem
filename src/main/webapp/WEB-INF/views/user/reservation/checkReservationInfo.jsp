@@ -187,8 +187,6 @@ th {
 	
 	// 예약에 필요한 데이터를 DB에 담아주는 함수
 	function doReserve() {
-		alert("예약이 완료되었습니다.");
-		
 		$.ajax({
 				type:"post",
 				url:"${pageContext.request.contextPath}/reservation/doReserve",
@@ -197,7 +195,7 @@ th {
 				dataType: "text",
 				traditional:true,
 				success: function(data){
-					
+					alert("예약이 완료되었습니다.");
 				},
 				error: function(xhr, status, error) {
 					alert(error);

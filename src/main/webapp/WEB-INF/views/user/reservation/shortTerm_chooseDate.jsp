@@ -170,7 +170,14 @@
 		calendar.render();
 	  
 		// 오늘 이전의 날짜는 클릭 금지
-		$(".fc-past").click(false);
+		$(".fc-past").click(false).children("span");
+		// 다른 달의 날짜는 클릭 금지
+		$(".fc-other-month").click(false);
+		
+		// .fc-button으로 달력 날짜 이동시 과거 날짜는 선택 못하도록 설정
+		$(".fc-button").on("click",function(){
+			$(".fc-past").click(false).children("span");
+		});
 		
 		// 캘린더 상 날짜의 클릭 이벤트
 		$(".fc-day-top").on("click", function(){
@@ -180,7 +187,6 @@
 			}
 			var startDateSplit=startDate.split('-');
 			
-			console.log(modalTitle);
 			// 모달에 반영한다.
 			if(clickedPrevBtn){
 				$("#time-label").text(modalTitle+startTime+"~"+endTime);
@@ -189,6 +195,92 @@
 				modalTitle=startDateSplit[0]+". "+startDateSplit[1]+". "+ startDateSplit[2]+". "+"("+startDay+") ";
 				$("#time-label").text(modalTitle+"시간을 선택하세요.");
 			}
+			
+			var tmp_time_si="9";
+			var tmp_time_bun="00";
+			
+			/** 모든 시간 예약 가능하도록 초기화 */
+			while(true){
+				// can-reserve-time 클래스 추가
+				$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass("can-reserve-time").removeClass('cant-reserve-time');
+				
+				tmp_time_bun=parseInt(tmp_time_bun)+30;
+				
+				if(tmp_time_bun==60){
+					tmp_time_si=parseInt(tmp_time_si)+1;
+					tmp_time_bun='00';
+				}
+				if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == "18:00"){
+					$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass("can-reserve-time").removeClass('cant-reserve-time');
+					break;
+				}
+				
+			};
+			
+			// 오늘 날짜를 클릭할 경우
+			if($(this).hasClass("fc-today")){
+				// 현재 시각 이전의 시간은 선택 불가
+				var d=new Date();
+				var year=d.getYear();
+				var month=d.getMonth();
+				var day=d.getDay();
+				
+				var date=new Date(year,month,day,9,0);
+				var now=new Date(year,month,day,d.getHours(),d.getMinutes());
+				var end=new Date(year,month,day,18,0);
+				var tmp_time_bun;
+				
+				/** 모든 시간 예약 가능하도록 초기화 */
+				while(now-date>0 && date-end!=0){
+					tmp_time_bun=date.getMinutes()==0?"00":date.getMinutes();
+					// can-reserve-time 클래스 추가
+					$('.time:contains("'+date.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+					
+					date.setMinutes(date.getMinutes()+30)
+					
+				};
+			}
+			
+			// 해당 날짜에 예약된 정보를 가져온다.
+			var roomNo="${roomInfo.ROOMNO}";
+			var chosenDate=$(this).data("date");
+			$.ajax({
+				type:"get",
+				url:"${pageContext.request.contextPath}/reservation/getReservationsByDate",
+				data:{roomNo:roomNo, chosenDate:chosenDate},
+				traditional:true,
+				success: function(data){
+					console.log(data.reservations);
+					if(data.reservations.length>0){
+						$.each(data.reservations, function(index, item){
+							// 이미 예약된 날짜는 예약불가
+							var tmp_time_si=item.STARTDATE.split(":")[0];
+							var tmp_time_bun=item.STARTDATE.split(":")[1];
+
+							while(true){
+								// cant-reserve-time 클래스 추가
+								$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').removeClass("can-reserve-time").addClass('cant-reserve-time');
+								
+								tmp_time_bun=parseInt(tmp_time_bun)+30;
+								
+								if(tmp_time_bun==60){
+									tmp_time_si=parseInt(tmp_time_si)+1;
+									tmp_time_bun='00';
+								}
+								if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == item.ENDDATE){
+									$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').removeClass("can-reserve-time").addClass('cant-reserve-time');
+									break;
+								}
+								
+							};
+						});
+						
+					};
+				},
+				error: function(request,status, error) {
+					alert(error);
+				}	
+			});
 			
 		});
 		
@@ -199,7 +291,7 @@
 	});
 	
 	// 모달-날짜 선택
-	$(".can-reserve-time").on("click",function(){
+	$(document).on("click",".can-reserve-time",function(){
 		// 선택한 일자 색상 변경
 		if(!clickedStartTime){ // 시작시간 선택
 			setStartTime($(this));
@@ -210,6 +302,10 @@
 		}
 	});
      
+	$("#chooseTimeModal").click(function(){
+		//console.log("모달@");
+	});
+	
 	// 시작시간을 처리하는 함수
 	function setStartTime(startTime_object){
 		clickedStartTime=true;

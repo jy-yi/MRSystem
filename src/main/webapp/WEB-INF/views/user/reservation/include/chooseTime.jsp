@@ -32,15 +32,7 @@
 	 }
 	
 	 .can-reserve-time{
-	 	width: 70px; 
-	    height: 40px;	    
-   		padding-top: 8px;
-	    margin-top: 20px;
 	    background-color: rgb(221,227,247);
-	    color: white;
-	    display: inline-block;
-	    text-align: center;
-	    border: 1px solid darkgray;
 	 }
 	 
 	 #amTimeScheduleList span:hover, #pmTimeScheduleList span:hover{
@@ -98,30 +90,30 @@
 		        <div id="amTimeSchedule">
 		        	<span>오전</span>
 		        	<ul id="amTimeScheduleList">
-		        		<li><span class="can-reserve-time">9:00</span></li>
-		        		<li><span class="can-reserve-time">9:30</span></li>
-		        		<li><span class="can-reserve-time">10:00</span></li>
-		        		<li><span class="can-reserve-time">10:30</span></li>
-		        		<li><span class="can-reserve-time">11:00</span></li>
-		        		<li><span class="can-reserve-time">11:30</span></li>
+		        		<li><span class="time can-reserve-time">9:00</span></li>
+		        		<li><span class="time can-reserve-time">9:30</span></li>
+		        		<li><span class="time can-reserve-time">10:00</span></li>
+		        		<li><span class="time can-reserve-time">10:30</span></li>
+		        		<li><span class="time can-reserve-time">11:00</span></li>
+		        		<li><span class="time can-reserve-time">11:30</span></li>
 		        	</ul>
 		        </div>
 		        <div id="pmTimeSchedule">
 		        	<span>오후</span>
 		        	<ul id="pmTimeScheduleList">
-		        		<li><span class="can-reserve-time">12:00</span></li>
-		        		<li><span class="can-reserve-time">12:30</span></li>
-		        		<li><span class="can-reserve-time">13:00</span></li>
-		        		<li><span class="can-reserve-time">13:30</span></li>
-		        		<li><span class="can-reserve-time">14:00</span></li>
-		        		<li><span class="can-reserve-time">14:30</span></li>
-		        		<li><span class="can-reserve-time">15:00</span></li>
-		        		<li><span class="can-reserve-time">15:30</span></li>
-		        		<li><span class="can-reserve-time">16:00</span></li>
-		        		<li><span class="can-reserve-time">16:30</span></li>
-		        		<li><span class="can-reserve-time">17:00</span></li>
-		        		<li><span class="can-reserve-time">17:30</span></li>
-		        		<li><span class="can-reserve-time">18:00</span></li>
+		        		<li><span class="time can-reserve-time">12:00</span></li>
+		        		<li><span class="time can-reserve-time">12:30</span></li>
+		        		<li><span class="time can-reserve-time">13:00</span></li>
+		        		<li><span class="time can-reserve-time">13:30</span></li>
+		        		<li><span class="time can-reserve-time">14:00</span></li>
+		        		<li><span class="time can-reserve-time">14:30</span></li>
+		        		<li><span class="time time can-reserve-time">15:00</span></li>
+		        		<li><span class="time can-reserve-time">15:30</span></li>
+		        		<li><span class="time can-reserve-time">16:00</span></li>
+		        		<li><span class="time can-reserve-time">16:30</span></li>
+		        		<li><span class="time can-reserve-time">17:00</span></li>
+		        		<li><span class="time can-reserve-time">17:30</span></li>
+		        		<li><span class="time can-reserve-time">18:00</span></li>
 		        	</ul>
 		        </div>
 			</div>
