@@ -102,6 +102,12 @@ public interface ReservationService {
 
 	/** 예약 취소 목록 조회 */
 	public List<Map<String, Object>> getReservationCancelList();
+	
+	
+	/* ------------- 공통 ------------- */
+	
+	/** 메일 전송 */
+	public boolean mailSend(String email, String title, String content);
 
 
 }

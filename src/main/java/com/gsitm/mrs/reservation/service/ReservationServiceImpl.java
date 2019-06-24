@@ -1,8 +1,5 @@
 package com.gsitm.mrs.reservation.service;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,8 +11,11 @@ import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.inject.Inject;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -23,11 +23,7 @@ import org.springframework.ui.Model;
 import com.gsitm.mrs.reservation.dao.ReservationDAO;
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
-import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
-
-import freemarker.log.Logger;
-
 
 /**
  * ReservationService 인터페이스 구현 클래스
@@ -41,8 +37,12 @@ import freemarker.log.Logger;
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
+	
 	@Inject
 	private ReservationDAO dao;
+	
+	@Inject
+	private JavaMailSender mailSender;
 	
 	/* ------------- 사용자 ------------- */
 
@@ -426,5 +426,33 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<Map<String, Object>> getReservationCancelList() {
 		return dao.getReservationCancelList();
+	}
+	
+	
+	/* ------------- 공통 ------------- */
+
+	@Override
+	public boolean mailSend(String email, String title, String content) {
+		
+		String setfrom = "jy.yi.9515@gmail.com";
+		
+		System.out.println("email : " + email + "\t" + title + "\t" + content);
+		
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+			
+			messageHelper.setFrom(setfrom);		// 보내는 사람 이메일
+			messageHelper.setTo(email);			// 받는 사람 이메일
+			messageHelper.setSubject(title);	// 메일 제목 (생략 가능)
+			messageHelper.setText(content);		// 메일 내용
+			
+			mailSender.send(message);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		return false;
 	}
 }

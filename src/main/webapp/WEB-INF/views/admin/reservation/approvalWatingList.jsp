@@ -55,7 +55,8 @@
 													<td> ${list.PURPOSE}</td>
 													<td> ${list.ROOMNAME}</td>
 													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
-													<td> ${list.EMPNAME}</td>
+													<td> ${list.EMPNAME} <input type="hidden" id="email" value="${list.EMAIL }"></td>
+													
 													
 													<c:choose>
 														<c:when test="${list.MANAGERAPPROVAL eq 'W'}">
@@ -131,6 +132,8 @@ $(document).on("click", ".btn-primary", function() {
 /* 반려 버튼 클릭 */
 $(document).on("click", ".btn-danger", function() {
 	var reservationNo = $(this).parent().next().val();	// 반려할 예약 번호
+	var empName = $(this).parent().prev().prev().prev().text();
+	var email = $(this).parent().prev().prev().prev().children().val();
 	
 	swal({
 		title: '정말 빈려하시겠습니까?',
@@ -165,7 +168,9 @@ $(document).on("click", ".btn-danger", function() {
 								data : {
 									reservationNo : reservationNo,
 									reason : result.value[0],
-									status : 2
+									status : 2,
+									name : empName,
+									email : email
 								}, success : function(data) {
 									swal('Success!', '반려가 완료되었습니다.', 'success'
 						    		).then(function(){
