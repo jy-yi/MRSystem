@@ -74,8 +74,11 @@ public interface ReservationService {
 	/** 사원번호로 회의 참여자 정보 얻어오기 */
 	public List<Map<String, Object>> getParticipations(List<String> participationNos);
 	
-	/** 예약 날짜 선택 페이지 서비스 */
+	/** 단기 예약 날짜 선택 페이지 서비스 */
 	public void shortTerm_chooseDate(Model model, int roomNo);
+	
+	/** 장기 예약 날짜 선택 페이지 서비스 */
+	public void longTerm_chooseDate(Model model, int roomNo);
 	
 	/** 해당 날짜의 예약정보들 조회 */
 	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData);
@@ -107,7 +110,7 @@ public interface ReservationService {
 	/* ------------- 공통 ------------- */
 	
 	/** 메일 전송 */
-	public boolean mailSend(String email, String title, String content);
+	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName);
 
 
 }

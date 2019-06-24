@@ -55,7 +55,11 @@
 													<td> ${list.PURPOSE}</td>
 													<td> ${list.ROOMNAME}</td>
 													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
-													<td> ${list.EMPNAME} <input type="hidden" id="email" value="${list.EMAIL }"></td>
+													<td> 
+														${list.EMPNAME} 
+														<input type="hidden" value="${list.EMAIL }">
+														<input type="hidden" value="${list.EMPNO }">
+													</td>
 													
 													
 													<c:choose>
@@ -134,6 +138,9 @@ $(document).on("click", ".btn-danger", function() {
 	var reservationNo = $(this).parent().next().val();	// 반려할 예약 번호
 	var empName = $(this).parent().prev().prev().prev().text();
 	var email = $(this).parent().prev().prev().prev().children().val();
+	var empNo = $(this).parent().prev().prev().prev().children().next().val();
+	var term = $(this).parent().prev().prev().prev().prev().text();
+	var reservationName = $(this).parent().prev().prev().prev().prev().prev().prev().prev().text();
 	
 	swal({
 		title: '정말 반려하시겠습니까?',
@@ -170,7 +177,10 @@ $(document).on("click", ".btn-danger", function() {
 									reason : result.value[0],
 									status : 2,
 									name : empName,
-									email : email
+									email : email,
+									empNo : empNo,
+									term : term,
+									reservationName : reservationName
 								}, success : function(data) {
 									swal('Success!', '반려가 완료되었습니다.', 'success'
 						    		).then(function(){
