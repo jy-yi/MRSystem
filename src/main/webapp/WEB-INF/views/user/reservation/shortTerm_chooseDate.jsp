@@ -180,7 +180,8 @@
 		});
 		
 		// 캘린더 상 날짜의 클릭 이벤트
-		$(".fc-day-top").on("click", function(){
+		$(document).on("click",".fc-day-top",function(){
+			console.log($(this).data("date"));
 			if(!clickedPrevBtn){
 				startDate=$(this).data("date");
 				startDay=$(this).data("day");
