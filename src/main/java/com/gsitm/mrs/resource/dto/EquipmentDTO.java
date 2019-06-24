@@ -1,6 +1,8 @@
 package com.gsitm.mrs.resource.dto;
 
-import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 비품 관련 객체 선언 및 getter(), setter() 메소드 정의
@@ -9,57 +11,13 @@ import java.util.Date;
  * @date : 2019. 5. 8.
  * @author : 이종윤
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class EquipmentDTO {
 
 	private int equipmentNo;
 	private int roomNo;
 	private String name;
 	private String buyDate;
-
-	public EquipmentDTO() {}
-
-	public EquipmentDTO(int equipmentNo, int roomNo, String name, String buyDate) {
-		this.equipmentNo = equipmentNo;
-		this.roomNo = roomNo;
-		this.name = name;
-		this.buyDate = buyDate;
-	}
-
-	public int getEquipmentNo() {
-		return equipmentNo;
-	}
-
-	public void setEquipmentNo(int equipmentNo) {
-		this.equipmentNo = equipmentNo;
-	}
-
-	public int getRoomNo() {
-		return roomNo;
-	}
-
-	public void setRoomNo(int roomNo) {
-		this.roomNo = roomNo;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getBuyDate() {
-		return buyDate;
-	}
-
-	public void setBuyDate(String buyDate) {
-		this.buyDate = buyDate;
-	}
-
-	@Override
-	public String toString() {
-		return "EquipmentDTO [equipmentNo=" + equipmentNo + ", roomNo=" + roomNo + ", name=" + name + ", buyDate=" + buyDate + "]";
-	}
-
 }

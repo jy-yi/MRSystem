@@ -1,5 +1,9 @@
 package com.gsitm.mrs.user.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * 부서 관련 객체 선언 및 getter(), setter() 메소드 정의
  * 
@@ -7,38 +11,12 @@ package com.gsitm.mrs.user.dto;
  * @date : 2019. 5. 8.
  * @author : 이종윤
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DepartmentDTO {
 
 	private int departmentNo;
 	private String name;
 	
-
-	public DepartmentDTO() {}
-
-	public DepartmentDTO(int departmentNo, String name) {
-		this.departmentNo = departmentNo;
-		this.name = name;
-	}
-
-	public int getDepartmentNo() {
-		return departmentNo;
-	}
-
-	public void setDepartmentNo(int departmentNo) {
-		this.departmentNo = departmentNo;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return "DepartmentDTO [departmentNo=" + departmentNo + ", name=" + name + "]";
-	}
-
 }
