@@ -23,7 +23,7 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의 일정</div>
+								<!-- <div class="text-xs font-weight-bold text-info text-uppercase mb-1">오늘의 일정</div>
 								<div class="row no-gutters align-items-center">
 									<div class="col-auto">
 										<div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
@@ -34,7 +34,7 @@
 											</div>
 										</div>
 									</div>
-								</div>
+								</div> -->
 							</div>
 							<a href="/reservation/statusCalendar" class="btn btn-primary btn-icon-split">
 			                    <span class="text">달력형</span>

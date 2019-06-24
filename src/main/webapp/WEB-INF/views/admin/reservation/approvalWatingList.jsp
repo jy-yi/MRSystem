@@ -136,7 +136,7 @@ $(document).on("click", ".btn-danger", function() {
 	var email = $(this).parent().prev().prev().prev().children().val();
 	
 	swal({
-		title: '정말 빈려하시겠습니까?',
+		title: '정말 반려하시겠습니까?',
 		text: "이후 복구는 불가능합니다.",
 		type: 'warning',
 		showCancelButton: true,

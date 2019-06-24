@@ -8,125 +8,120 @@
 
 	<!-- 개인 비용/횟수 전체 통계 -->
 	<select id="getIndividual" resultType="map">
-		SELECT	r.emp_no,
-				count(*)			AS count,
+		SELECT	count(*)			AS count,
 				sum(money)			AS sum
         FROM 	reservation r, 
         		participation p
-        WHERE 	r.res_no = p.res_no
-        AND 	r.emp_no= #{employeeNo}
-        GROUP BY ROLLUP(r.emp_no)
-        HAVING GROUPING_ID(r.emp_no) IN(0,3)
+        WHERE 	r.emp_no = p.emp_no
+        AND		r.res_no = p.res_no	
+        AND		r.emp_no= #{employeeNo}
 	</select>
 	
 	<!-- 개인 횟수/비용 날짜 통계 -->
 	<select id="getIndividualDate" resultType="map">
-		SELECT	r.emp_no,
-				count(*)			AS count,
+		SELECT	count(*)			AS count,
 				sum(money)			AS sum
         FROM 	reservation r, 
         		participation p
-        WHERE 	r.res_no = p.res_no
-        AND 	r.emp_no= #{employeeNo}
+        WHERE 	r.emp_no = p.emp_no
+        AND		r.res_no = p.res_no
         AND		(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
-        GROUP BY ROLLUP(r.emp_no)
-        HAVING GROUPING_ID(r.emp_no) IN(0,3)
+        AND		r.emp_no= #{employeeNo}
 	</select>
 
 	<!-- 소속부서 횟수/비용 전체 통계 -->
 	<select id="getDepartment" resultType="map">
-		SELECT	r.emp_no,
-        		count(*)			AS count,
-       			sum(money)			AS sum
-		FROM 	reservation r, 
-        		participation p,
-        		department d,
-        		employee e
-		WHERE 	d.dept_no = e.dept_no
-		AND     e.emp_no = p.emp_no
-		AND     p.res_no = r.res_no
-		AND 	r.emp_no= #{employeeNo}
-		GROUP BY ROLLUP(r.emp_no)
-		HAVING GROUPING_ID(r.emp_no) IN(0,3)
+		SELECT *              
+        FROM 
+            (SELECT count(*) as count
+             FROM 	lead_department ld
+             WHERE	ld.dept_no=(SELECT dept_no
+                         	   FROM employee e
+                           	   WHERE e.emp_no=#{employeeNo})),
+            (SELECT sum(money) as sum
+             FROM employee e, participation p, reservation r
+             WHERE p.emp_no=e.emp_no
+             AND p.res_no=r.res_no
+             AND e.dept_no=(SELECT dept_no
+                            FROM employee e
+                            WHERE e.emp_no=#{employeeNo}))
 	</select>
 	
 	<!-- 소속부서 횟수/비용 날짜 통계 -->
 	<select id="getDepartmentDate" resultType="map">
-		SELECT	r.emp_no,
-        		count(*)			AS count,
-       			sum(money)			AS sum
-		FROM 	reservation r, 
-        		participation p,
-        		department d,
-        		employee e
-		WHERE 	d.dept_no = e.dept_no
-		AND     e.emp_no = p.emp_no
-		AND     p.res_no = r.res_no
-		AND 	r.emp_no= #{employeeNo}
-		AND		(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
-		GROUP BY ROLLUP(r.emp_no)
-		HAVING GROUPING_ID(r.emp_no) IN(0,3)
+		SELECT *              
+        FROM 
+            (SELECT count(*) as count
+             FROM 	lead_department ld, reservation r
+             WHERE 	(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+             AND 	ld.dept_no=(SELECT dept_no
+                         	   FROM employee e
+                           	   WHERE e.emp_no=#{employeeNo})),
+            (SELECT sum(money) as sum
+             FROM employee e, participation p, reservation r
+             WHERE p.emp_no=e.emp_no
+             AND p.res_no=r.res_no
+             AND (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+             AND e.dept_no=(SELECT dept_no
+                            FROM employee e
+                            WHERE e.emp_no=#{employeeNo}))
 	</select>
 	
 	<!-- 사용자 전체 예약 통계 -->
 	<select id="getUserAllList" resultType="map">
-		select distinct *
-        from  (select  
-                r.res_no                        AS res_no,
-                r.name							AS reservationName,
-				purpose,
-				room_no							AS roomNo,
-				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate,
-				status
-        from    reservation r,
-				lead_department ld,
-				department d
-		WHERE	r.res_no = ld.res_no
-				AND ld.dept_no = d.dept_no
-				AND	emp_no = 'it1226') data1,
-                
-            (SELECT	r.res_no						AS res_no,
-                    LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name)
-            FROM	reservation r,
-                    lead_department ld,
-                    department d
-            WHERE	r.res_no = ld.res_no
-                    AND ld.dept_no = d.dept_no
-                    AND	emp_no = 'it1226'
-            group by r.res_no) data2
-        where data1.res_no=data2.res_no;
+		SELECT distinct *
+        FROM  	(SELECT r.res_no                        AS res_no,
+		                r.name							AS reservationName,
+						purpose,
+						room_no							AS roomNo,
+						To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+				       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
+						status
+        		FROM    reservation r,
+						lead_department ld,
+						department d
+				WHERE	r.res_no = ld.res_no
+						AND ld.dept_no = d.dept_no
+						AND	emp_no = #{employeeNo}) data1,
+           		(SELECT	r.res_no						AS res_no,
+                  		LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
+	            FROM	reservation r,
+	                    lead_department ld,
+	                    department d
+	            WHERE	r.res_no = ld.res_no
+	                    AND ld.dept_no = d.dept_no
+	                    AND	emp_no = #{employeeNo}
+	            GROUP BY r.res_no) data2
+        WHERE data1.res_no = data2.res_no
 	</select>
 	
 	<!-- 사용자 날짜 예약 통계 -->
 	<select id="getUserSearchList" resultType="map">
-		select distinct *
-        from  (select  
-                r.res_no                        AS res_no,
-                r.name							AS reservationName,
-				purpose,
-				room_no							AS roomNo,
-				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate,
-				status
-        from    reservation r,
-				lead_department ld,
-				department d
-		WHERE	r.res_no = ld.res_no
-				AND ld.dept_no = d.dept_no
-				AND	emp_no = 'it1226')
-				AND (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate}) data1,
-                
-            (SELECT	r.res_no						AS res_no,
-                    LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name)
-            FROM	reservation r,
-                    lead_department ld,
-                    department d
-            WHERE	r.res_no = ld.res_no
-                    AND ld.dept_no = d.dept_no
-                    AND	emp_no = #{employeeNo}
-            group by r.res_no) data2
-        where data1.res_no=data2.res_no;
+		SELECT distinct *
+        FROM  	(SELECT r.res_no                        AS res_no,
+		                r.name							AS reservationName,
+						purpose,
+						room_no							AS roomNo,
+						To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+				       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
+						status
+        		FROM    reservation r,
+						lead_department ld,
+						department d
+				WHERE	r.res_no = ld.res_no
+						AND ld.dept_no = d.dept_no
+						AND (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+						AND	emp_no = #{employeeNo}) data1,
+            			(SELECT	r.res_no						AS res_no,
+                    			LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
+			            FROM	reservation r,
+			                    lead_department ld,
+			                    department d
+			            WHERE	r.res_no = ld.res_no
+			                    AND ld.dept_no = d.dept_no
+			                    AND	emp_no = #{employeeNo}
+			            group by r.res_no) data2
+        WHERE data1.res_no = data2.res_no
 	</select>
 
 	<!-- #### 관리자 #### -->

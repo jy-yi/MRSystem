@@ -109,8 +109,8 @@ public class StatisticController {
 		mav.setViewName("jsonView");
 		
 		logger.info(mav+"");
-		//logger.info((String) mav.getModel().get(getIndividualDate.size()));
-		//logger.info(getIndividualDate.size() +", " + getDepartmentDate.size());
+		logger.info(getIndividualDate+"");
+		logger.info(getDepartmentDate+"");
 		
 		return mav;
 	}

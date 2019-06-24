@@ -204,7 +204,7 @@ $(function() {
 	});
 	/* 초기화 버튼 클릭 */
 	$("#resetBtn").on("click", function() {
-		resetData();
+		location.href="/statistic/mypage";
 		
 	});
 	
