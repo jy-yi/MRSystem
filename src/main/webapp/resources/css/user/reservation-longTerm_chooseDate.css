@@ -47,7 +47,7 @@
 }
 
 .padding-content{
-	padding: 10px;
+	padding: 20px;
 }
 
 .color-title{
@@ -77,4 +77,37 @@
 
 .chosenTime{
 	background-color: rgb(54,93,205) !important;
+}
+
+.cant-reservation{
+	color: #cecece;
+	text-decoration: line-through;
+}
+
+.fc-future:hover{
+	cursor: pointer;
+}
+
+.fc-today:hover{
+	cursor: pointer;
+}
+
+.fc-past{
+	color: #cecece;
+}
+
+.cant-reserve-time{
+	background-color: #cecece; 
+    text-decoration: line-through;
+}
+
+.time{
+	width: 70px; 
+    height: 40px;	    
+  	padding-top: 8px;
+    margin-top: 20px;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid darkgray;
 }

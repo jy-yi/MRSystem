@@ -324,6 +324,14 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData) {
 		return dao.getReservationsByDate(roomData);
 	}
+	
+	/** 장기 예약 날짜 선택 페이지 서비스 */
+	@Override
+	public void longTerm_chooseDate(Model model, int roomNo) {
+		model.addAttribute("anotherReservationInfo",dao.getReservationsByRoomNo(roomNo));
+		model.addAttribute("roomInfo",dao.getRoomInfo(roomNo));
+		model.addAttribute("equipmentList", dao.getEquipmentList(roomNo));
+	}
 	/* ------------- 마이페이지 ------------- */
 	
 	/** 마이페이지 예약 현황 캘린더 */
@@ -455,4 +463,5 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		return false;
 	}
+	
 }

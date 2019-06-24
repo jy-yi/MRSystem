@@ -188,6 +188,8 @@ public class ResevationController {
 	public String longTermChooseDate(@PathVariable int roomNo, Model model, HttpServletRequest request) {
 		logger.info("(사용자) 예약 - 장기 예약 일자 선택");
 		
+		service.longTerm_chooseDate(model, roomNo);
+		
 		return "user/reservation/longTerm_chooseDate";
 	}
 	

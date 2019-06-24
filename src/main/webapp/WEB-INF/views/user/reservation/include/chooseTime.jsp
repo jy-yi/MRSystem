@@ -118,7 +118,8 @@
 		        </div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-secondary btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled>예약시간 선택</button>
+				<button class="btn btn-secondary btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled>확인</button>
+				<button class="btn btn-secondary btn-md" id="choose-anotherDay-btn" type="button" data-dismiss="modal" disabled>종료 예약일자 선택</button>			
 			</div>
 		</div>
 	</div>
