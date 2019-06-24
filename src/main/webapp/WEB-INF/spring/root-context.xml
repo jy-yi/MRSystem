@@ -55,12 +55,12 @@
 	<!-- Transactional 애노테이션 사용을 위한 설정 -->
 	<tx:annotation-driven />
 		
-	<!-- Gmail -->	
+	<!-- Naver -->	
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="smtp.gmail.com" />
+		<property name="host" value="smtp.naver.com" />
 		<property name="port" value="587" />
-		<property name="username" value="jy.yi.9515@gmail.com" />
-		<property name="password" value="whd1dbs23" />
+		<property name="username" value="a_spree@naver.com" />
+		<property name="password" value="dhwlddj23" />
 		<property name="javaMailProperties">
 		<props>
 			<prop key="mail.transport.protocol">smtp</prop>

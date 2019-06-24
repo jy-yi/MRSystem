@@ -330,7 +330,7 @@ public class ResevationController {
 	 * @return
 	 */
 	@RequestMapping(value = "/adminRefuse", method = RequestMethod.POST)
-	public String adminRefuse(String status, String reservationNo, String reason, String email, String name) {
+	public String adminRefuse(String status, String reservationNo, String empNo, String reason, String email, String name, String term, String reservationName) {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("reservationNo", reservationNo);
@@ -343,9 +343,8 @@ public class ResevationController {
 		service.insertRefuse(map);
 		
 		String title = "[GS ITM] 회의실 예약 반려 안내";
-		String content = name + "님이 신청하신 회의실 예약이 다음과 같은 사유로 반려되었습니다. \n ------- 다음 ------- \n 반려 사유 : " + reason;
 		
-		service.mailSend(email, title, content);
+		service.mailSend(empNo, email, title, name, reason, term, reservationName);
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}
