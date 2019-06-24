@@ -13,10 +13,13 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 import javax.inject.Inject;
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
@@ -435,20 +438,21 @@ public class ReservationServiceImpl implements ReservationService {
 
 	/* ------------- 공통 ------------- */
 
+	/** 메일 전송 */
 	@Override
 	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName) {
 
 		String host = "smtp.naver.com";
+		int port = 587;
 		final String username = "a_spree@naver.com";
 		final String password = "dhwlddj23";
-		int port = 587;
 		
-		String recipient = empNo;
+//		String recipient = empNo;
 		String content = mailUitls.getMailTemplate(name, reason, term, reservationName);
-
-		Properties props = System.getProperties();
 		
 		// 정보를 담기 위한 객체 생성
+		Properties props = System.getProperties();
+		
 		// SMTP 서버 정보 설정
 		props.put("mail.smtp.host", host);
 		props.put("mail.smtp.port", port);
@@ -461,7 +465,7 @@ public class ReservationServiceImpl implements ReservationService {
 			String un = username;
 			String pw = password;
 
-			protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+			protected PasswordAuthentication getPasswordAuthentication() {
 				return new javax.mail.PasswordAuthentication(un, pw);
 			}
 		});
@@ -472,7 +476,7 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		try {
 			mimeMessage.setFrom(new InternetAddress(username));		
-			mimeMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
 			mimeMessage.setSubject(MimeUtility.encodeText(title, "UTF-8", "B"));
 			mimeMessage.setContent(content, "text/html; charset=utf-8");
 			Transport.send(mimeMessage);
@@ -481,24 +485,6 @@ public class ReservationServiceImpl implements ReservationService {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-
-
-/*		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-			Session session = Session.getDefaultInstance(props);
-			MimeMessage msg = new MimeMessage(session);
-
-			messageHelper.setFrom(setfrom); // 보내는 사람 이메일
-			messageHelper.setTo(email); // 받는 사람 이메일
-			messageHelper.setSubject(title); // 메일 제목 (생략 가능)
-			messageHelper.setContent(content, "text/html; charset=utf-8"); // 메일 내용
-
-			mailSender.send(message);
-
-		} catch (Exception e) {
-			System.out.println(e);
-		}*/
 
 		return true;
 	}
