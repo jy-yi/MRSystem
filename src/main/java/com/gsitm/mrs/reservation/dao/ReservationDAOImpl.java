@@ -51,10 +51,16 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace +".getReservationList", employeeNo);
 	}
 	
-	/** 마이페이지 목록형 예약 취소 */
+	/** 취소 사유 추가 */
 	@Override
-	public void updateReservation(int reservationNo) {
-		sqlSession.update(namespace +".updateReservation", reservationNo); 
+	public void insertCancel(Map<String, Object> map) {
+		sqlSession.insert(namespace + ".insertCancel", map);
+	}
+	
+	/** 참여 사원 이메일 리스트 조회 */
+	@Override
+	public List<String> getEmailList(int reservaionNo) {
+		return sqlSession.selectList(namespace + ".getEmailList", reservaionNo);
 	}
 	
 	/** 마이페이지 가장 최근 예약 표시 */

@@ -109,26 +109,19 @@
 														
 													</td>
 													
-													
 													<td>
-														<c:if test="${list.STATUS eq 0 }">
-															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 1 }">
-															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 2 }">
-															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-															<input type="hidden" id="reservationNo" name="reservationNo" value="${list.RESERVATIONNO}">
-														</c:if>
-														
-														<c:if test="${list.STATUS eq 3	 }">
-															<span class="text-warning"> 취소 완료 </span>
-														</c:if>
+														<c:choose>
+															<c:when test="${list.STATUS eq 3}">
+																<span class="text-warning"> 취소 완료 </span>
+															</c:when>
+															<c:otherwise>
+																<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+																<input type="hidden" value="${list.RES_NO}">
+																<input type="hidden" value="${login.employeeNo}">
+																<input type="hidden" value="${login.name}">
+																<input type="hidden" value="${login.email}">
+															</c:otherwise>
+														</c:choose>
 													</td>
 												</tr>
 											</c:forEach>
@@ -156,35 +149,66 @@
 
 <script>
 	
-	/* 취소 버튼 클릭 */
-	$(document).on("click", ".btn-danger", function() {
-		var reservationNo = $(this).next().val();	// 취소 버튼을 클릭한 예약 번호
-		
-		swal({
-			title: '정말 취소하시겠습니까?',
-			text: "이후 변경은 불가능합니다.",
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#3085d6',
-			cancelButtonColor: '#d33',
-  		    confirmButtonText: 'Yes',
-  		    cancelButtonText: 'No',
-  		}).then( (result) => {
-  			if (result.value) {
-	  			$.ajax({
-					url : "/reservation/updateReservation",
-					type : "POST",
-					data : {
-						reservationNo : reservationNo,
-					}, success : function(data) {
-						swal('Success!', '예약 취소가 완료되었습니다.', 'success'
-				    		).then(function(){
-	  		    		    	location.href="/reservation/statusList";
-	  		    		    });
-					}
-				});
-  			}
-  			  
-  		});
-	});
+/* 취소 버튼 클릭 */
+$(document).on("click", ".btn-danger", function() {
+	var reservationNo = $(this).next().val();	// 취소 버튼을 클릭한 예약 번호
+	var empNo = $(this).next().next().val();
+	var empName = $(this).next().next().next().val();
+	var term = $(this).parent().prev().prev().prev().text();
+	var reservationName = $(this).parent().prev().prev().prev().prev().prev().prev().text();
+	
+	swal({
+		title: '정말 취소하시겠습니까?',
+		text: "이후 복구는 불가능합니다.",
+		type: 'warning',
+		showCancelButton: true,
+		confirmButtonColor: '#3085d6',
+		cancelButtonColor: '#d33',
+		    confirmButtonText: 'Yes',
+		    cancelButtonText: 'No',
+		}).then( (result) => {
+			if (result.value) {
+				Swal.mixin({
+					  input: 'text',
+					  confirmButtonText: '확인',
+					  showCancelButton: true
+					}).queue([
+					  {
+					    title: '취소 사유를 작성하세요',
+					    text: '해당 사유는 참석자 전원에게 메일로 전송됩니다.'
+					  },
+					]).then((result) => {
+					  if (result.value) {
+						 
+						  /* 취소 사유 아무것도 작성하지 않았을 경우 */
+						  if ($.trim(result.value[0]) == "") {
+							  return;
+						  } else {
+				  			$.ajax({
+								url : "/reservation/cancelReservation",
+								type : "POST",
+								data : {
+									reservationNo : reservationNo,
+									reason : result.value[0],
+									status : 3,
+									name : empName,
+									empNo : empNo,
+									term : term,									reservationName : reservationName
+
+								}, success : function(data) {
+									swal('Success!', '취소가 완료되었습니다.', 'success'
+						    		).then(function(){
+			  		    		    	location.href="/reservation/statusList";
+			  		    		    });
+								}
+							});
+						  }
+				  			
+					  }
+					})
+			}
+			  
+		});
+});
+
 </script>

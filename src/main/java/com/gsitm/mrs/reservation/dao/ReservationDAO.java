@@ -28,8 +28,11 @@ public interface ReservationDAO {
 	/** 마이페이지 예약 현황 리스트*/
 	public List<Map<String, Object>> getReservationList(String employeeNo);
 	
-	/** 마이페이지 목록형 예약 취소 */
-	public void updateReservation(int reservationNo);
+	/** 취소 사유 추가 */
+	public void insertCancel (Map<String, Object> map);
+	
+	/** 참여 사원 이메일 리스트 조회 */
+	public List<String> getEmailList (int reservaionNo);
 	
 	/** 마이페이지 가장 최근 예약 표시 */
 	public List<Map<String, Object>> getLatestReservation(String employeeNo);

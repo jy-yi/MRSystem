@@ -71,12 +71,20 @@
         WHERE data1.res_no = data2.res_no
 	</select>
 	
-	<!-- 마이페이지 목록형 예약 취소 -->
-	<update id="updateReservation">
-		UPDATE	reservation
-		SET		status = 3
-		WHERE	res_no = #{reservationNo}
-	</update>
+	<!-- 취소 사유 추가 -->
+	<insert id="insertCancel">
+		INSERT INTO cancel(res_no, reason) VALUES (#{reservationNo}, #{reason})
+	</insert>
+	
+	<!-- 참여 사원 이메일 리스트 조회 -->
+	<select id="getEmailList" resultType="String">
+		SELECT email 
+		FROM   employee 
+		WHERE  emp_no IN (SELECT p.emp_no 
+		                  FROM   reservation r, participation p 
+		                  WHERE  r.res_no = p.res_no 
+		                         AND r.res_no = #{reservationNo})
+	</select>
 	
 	<!-- 마이페이지 가장 최근 일자 표시 -->
 	<select id="getLatestReservation" resultType="map">
@@ -381,9 +389,9 @@
 	</update>
 	
 	<!-- 반려 사유 추가 -->
-	<update id="insertRefuse">
+	<insert id="insertRefuse">
 		INSERT INTO refuse(res_no, reason) VALUES (#{reservationNo}, #{reason})
-	</update>
+	</insert>
 	
 	<!-- 승인 반려 목록 조회 -->
 	<select id="getApprovalCancelList" resultType="Map">

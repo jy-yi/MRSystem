@@ -1,17 +1,16 @@
 package com.gsitm.mrs.reservation.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.StringTokenizer;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -27,7 +26,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.reservation.service.ReservationService;
-import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.resource.service.ResourceService;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
 
@@ -105,13 +103,29 @@ public class ResevationController {
 		return "user/mypage/statusList";
 	}
 	
-	
-	@RequestMapping(value = "/updateReservation", method = RequestMethod.POST)
-	public String updateReservation(String reservationNo) throws Exception {
+	/**
+	 * 예약 취소
+	 * @param reservationNo
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/cancelReservation", method = RequestMethod.POST)
+	public String cancelReservation(String status, String reservationNo, String empNo, String reason, String name, String term, String reservationName) throws Exception {
 
-		logger.info("(사용자) 마이페이지 - 예약 현황 리스트 - 상태 취소 변경");
+		Map<String, Object> map = new HashMap<>();
+		map.put("reservationNo", reservationNo);
+		map.put("status", status);
+		map.put("reason", reason);
 		
-		service.updateReservation(Integer.parseInt(reservationNo));
+		service.updateStatus(map);
+		service.insertCancel(map);
+		
+		List<String> emailList = service.getEmailList(Integer.parseInt(reservationNo));
+		
+		String title = "[GS ITM] 회의실 예약 취소 안내";
+		String email = StringUtils.join(emailList, ",");	// 해당 예약에 참여하는 사원의 이메일 목록 콤마(,)로 구분
+		
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "취소");
 
 		return "redirect:/reservation/statusList";
 	}
@@ -344,7 +358,7 @@ public class ResevationController {
 		
 		String title = "[GS ITM] 회의실 예약 반려 안내";
 		
-		service.mailSend(empNo, email, title, name, reason, term, reservationName);
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려");
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}

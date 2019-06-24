@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailUtils {
 	
-	public String getMailTemplate(String name, String reason, String term, String reservationName) {
+	public String getMailTemplate(String name, String reason, String term, String reservationName, String type) {
 		
 		String template =
 				"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" + 
@@ -50,7 +50,7 @@ public class MailUtils {
 				"					</tr>" + 
 				"					<tr>" + 
 				"						<td colspan=\"2\" style=\"padding: 10px 0 10px 0;\">" + 
-				"							" + name + " 님이 신청하신 회의실 예약이 다음과 같은 사유로 반려되었습니다. " + 
+				"							" + name + " 님이 신청하신 회의실 예약이 다음과 같은 사유로 " + type + " 되었습니다. " + 
 				"						</td>" + 
 				"					</tr>" + 
 				"					<tr>" + 
