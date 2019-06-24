@@ -430,9 +430,9 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName) {
 
-		String host = "smtp.gmail.com";
-		final String username = "jy.yi.9515@gmail.com";
-		final String password = "whd1dbs23";
+		String host = "smtp.naver.com";
+		final String username = "a_spree@naver.com";
+		final String password = "dhwlddj23";
 		int port = 587;
 		
 		String recipient = empNo;
