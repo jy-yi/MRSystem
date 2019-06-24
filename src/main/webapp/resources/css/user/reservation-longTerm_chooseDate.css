@@ -111,3 +111,8 @@
     text-align: center;
     border: 1px solid darkgray;
 }
+
+.chosenDate{
+	height:100px;
+	background-color: rgba(166, 166, 239, 0.5);
+}

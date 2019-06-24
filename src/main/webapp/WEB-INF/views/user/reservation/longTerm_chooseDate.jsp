@@ -149,10 +149,10 @@
 					tmp_time_si=parseInt(tmp_time_si)+1;
 					tmp_time_bun='00';
 				}
-				if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == endTime){
+				if(tmp_time_si.toString()+":"+tmp_time_bun == endTime){
 					break;
 				}
-				$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass('chosenTime');
+				$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun+'")').addClass('chosenTime');
 			};
 
 			// 선택한 날짜를 #chosen-date에 띄어준다.
@@ -184,12 +184,12 @@
 			$(".fc-past").click(false).children("span");
 		});
 		
-		// 캘린더 상 날짜의 클릭 이벤트
+		// 캘린더 상 날짜의 클릭 이벤트 ///끌릭
 		$(document).on("click",".fc-day-top",function(){
-			console.log($(this).data("date"));
 			/* 장기 예약 */
 			if(chosenStartDate){ // 시작일자를 선택한 경우
 				$("#choose-complete-btn").text("종료일자 선택");	
+				$("#choose-anotherDay-btn").attr("disabled",true);
 				// 시작일자를 재선택 할 수 있도록 변수 초기화
 				//chosenStartDate=false;
 			}
@@ -200,9 +200,6 @@
 			}
 			var startDateSplit=startDate.split('-');
 			chosenDate=$(this).data("date");
-			console.log("chosenDate:"+chosenDate);
-			var chosenDateSplit=$(this).data("date").split('-');
-			
 			// 모달에 반영한다.
 			if(clickedPrevBtn){
 				$("#time-label").text(modalTitle+startTime+"~"+endTime);
@@ -216,23 +213,8 @@
 			var tmp_time_bun="00";
 			
 			/** 모든 시간 예약 가능하도록 초기화 */
-			while(true){
-				// can-reserve-time 클래스 추가
-				$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass("can-reserve-time").removeClass('cant-reserve-time');
-				
-				tmp_time_bun=parseInt(tmp_time_bun)+30;
-				
-				if(tmp_time_bun==60){
-					tmp_time_si=parseInt(tmp_time_si)+1;
-					tmp_time_bun='00';
-				}
-				if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == "18:00"){
-					$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass("can-reserve-time").removeClass('cant-reserve-time');
-					break;
-				}
-				
-			};
-			
+			$('.time').addClass("can-reserve-time").removeClass("cant-reserve-time").removeClass("chosenTime");
+		
 			// 오늘 날짜를 클릭할 경우
 			if($(this).hasClass("fc-today")){
 				// 현재 시각 이전의 시간은 선택 불가
@@ -250,161 +232,17 @@
 				while(now-date>0 && date-end!=0){
 					tmp_time_bun=date.getMinutes()==0?"00":date.getMinutes();
 					// can-reserve-time 클래스 추가
-					$('.time:contains("'+date.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+					$('.time:contains("'+date.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
 					
 					date.setMinutes(date.getMinutes()+30)
 					
 				};
-			}
+			};
 			
-			// 해당 날짜에 예약된 정보를 가져온다.
-			var roomNo="${roomInfo.ROOMNO}";
-			$.ajax({
-				type:"get",
-				url:"${pageContext.request.contextPath}/reservation/getReservationsByDate",
-				data:{roomNo:roomNo, chosenDate:chosenDate},
-				traditional:true,
-				success: function(data){
-					// 해당 날짜에 예약내역들이 있는지 확인
-					if(data.reservations.length>0){
-						$.each(data.reservations, function(index, item){
-							console.log(item);
-							var startDateArr=item.STARTDATE.split(" ")[0].split("-");
-							var endDateArr=item.ENDDATE.split(" ")[0].split("-");
-							
-							var startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2]);
-							var endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2]);
-							var chosenDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2]);
-							
-							var startTimeArr=item.STARTDATE.split(" ")[1].split(":");
-							var endTimeArr=item.ENDDATE.split(" ")[1].split(":");
-							
-							if(chosenDate-startDate==0){
-								if(chosenDate-endDate==0){
-									// 1. 선택한 날짜==startDate && 선택한 날짜==endDate -> 단기 예약(시작시간~끝시간)
-									startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2],startTimeArr[0],startTimeArr[1]);
-									endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2],endTimeArr[0],endTimeArr[1]);
-									// 예약 앞뒤로 30분 간격을 준다
-									startDate.setMinutes(startDate.getMinutes()-30);
-									endDate.setMinutes(endDate.getMinutes()+30);
-									var tmp_time_bun;
-									
-									/** 모든 시간 예약 가능하도록 초기화 */
-									while(true){
-										tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
-										// can-reserve-time 클래스 추가
-										$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-										
-										startDate.setMinutes(startDate.getMinutes()+30)
-										if(endDate-startDate==0){
-											tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
-											$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-											break;
-										}
-									};
-								} else{
-									// 2. 선택한 날짜==startDate && 선택한 날짜!=endDate -> 장기 예약(시작시간~)
-									startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2],startTimeArr[0],startTimeArr[1]);
-									endOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],18,0);
-									// 예약 앞에 30분 간격을 준다
-									startDate.setMinutes(startDate.getMinutes()-30);
-									var tmp_time_bun;
-									
-									while(true){
-										tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
-										// can-reserve-time 클래스 추가
-										$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-										
-										startDate.setMinutes(startDate.getMinutes()+30)
-										if(startDate-endOfDate==0){
-											tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
-											$('.time:contains("'+startDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-											break;
-										}
-									};
-								}
-							} else{ 
-								if(chosenDate-endDate==0){
-									// 3. 선택한 날짜!=startDate && 선택한 날짜==endDate -> 장기 예약(~끝시간)
-									endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2],endTimeArr[0],endTimeArr[1]);
-									startOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],9,0);
-									// 예약 뒤에 30분 간격을 준다
-									endDate.setMinutes(endDate.getMinutes()+30);
-									var tmp_time_bun;
-									
-									while(true){
-										tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
-										// can-reserve-time 클래스 추가
-										$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-										
-										startOfDate.setMinutes(startOfDate.getMinutes()+30)
-										if(startOfDate-endDate==0){
-											tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
-											$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-											break;
-										}
-									};
-								} else{
-									// 4. 선택한 날짜!=startDate && 선택한 날짜!=endDate -> 장기 예약(~)
-									startOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],9,0);
-									endOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],18,0);
-									var tmp_time_bun;
-									
-									while(true){
-										tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
-										// can-reserve-time 클래스 추가
-										$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-										
-										startOfDate.setMinutes(startOfDate.getMinutes()+30)
-										if(startOfDate-endOfDate==0){
-											tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
-											$('.time:contains("'+startOfDate.getHours().toString()+":"+tmp_time_bun.toString()+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
-											break;
-										}
-									};
-								}
-							}
-							
-							var d=new Date();
-							var year=d.getYear();
-							var month=d.getMonth();
-							var day=d.getDay();
-							
-							var date=new Date(year,month,day,9,0);
-							var now=new Date(year,month,day,d.getHours(),d.getMinutes());
-							var end=new Date(year,month,day,18,0);
-							var tmp_time_bun;
-							
-							// 이미 예약된 날짜는 예약불가
-							var tmp_time_si=item.STARTDATE.split(":")[0];
-							var tmp_time_bun=item.STARTDATE.split(":")[1];
-
-							/*while(true){
-								// cant-reserve-time 클래스 추가
-								$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').removeClass("can-reserve-time").addClass('cant-reserve-time');
-								
-								tmp_time_bun=parseInt(tmp_time_bun)+30;
-								
-								if(tmp_time_bun==60){
-									tmp_time_si=parseInt(tmp_time_si)+1;
-									tmp_time_bun='00';
-								}
-								if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == item.ENDDATE){
-									$('.time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').removeClass("can-reserve-time").addClass('cant-reserve-time');
-									break;
-								}
-								
-							};*/
-						});
-						
-					};
-				},
-				error: function(request,status, error) {
-					alert(error);
-				}	
-			});
-			
+			getReservationsByDate(chosenDate);
 		});
+		
+		
 		
 		// 오늘 날짜를 #chosen-date에 띄어준다.
 		var today=$(".fc-today").data("date").split('-');
@@ -412,15 +250,131 @@
 		
 	});
 	
+	// 해당 날짜에 예약된 정보를 가져오는 함수
+	function getReservationsByDate(chosenDate){
+		var chosenDateSplit=chosenDate.split("-");
+		var roomNo="${roomInfo.ROOMNO}";
+		$.ajax({
+			type:"get",
+			url:"${pageContext.request.contextPath}/reservation/getReservationsByDate",
+			data:{roomNo:roomNo, chosenDate:chosenDate},
+			traditional:true,
+			success: function(data){
+				// 해당 날짜에 예약내역들이 있는지 확인
+				if(data.reservations.length>0){
+					$.each(data.reservations, function(index, item){
+						var startDateArr=item.STARTDATE.split(" ")[0].split("-");
+						var endDateArr=item.ENDDATE.split(" ")[0].split("-");
+						
+						var startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2]);
+						var endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2]);
+						var chosenDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2]);
+						
+						var startTimeArr=item.STARTDATE.split(" ")[1].split(":");
+						var endTimeArr=item.ENDDATE.split(" ")[1].split(":");
+						
+						if(chosenDate-startDate==0){
+							if(chosenDate-endDate==0){
+								// 1. 선택한 날짜==startDate && 선택한 날짜==endDate -> 단기 예약(시작시간~끝시간)
+								startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2],startTimeArr[0],startTimeArr[1]);
+								endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2],endTimeArr[0],endTimeArr[1]);
+								// 예약 앞뒤로 30분 간격을 준다
+								startDate.setMinutes(startDate.getMinutes()-30);
+								endDate.setMinutes(endDate.getMinutes()+30);
+								var tmp_time_bun;
+								
+								while(true){
+									tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+									$('.time:contains("'+startDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+									
+									startDate.setMinutes(startDate.getMinutes()+30)
+									if(endDate-startDate==0){
+										tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+										$('.time:contains("'+startDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										break;
+									}
+								};
+							} else{
+								// 2. 선택한 날짜==startDate && 선택한 날짜!=endDate -> 장기 예약(시작시간~)
+								startDate=new Date(startDateArr[0],startDateArr[1],startDateArr[2],startTimeArr[0],startTimeArr[1]);
+								endOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],18,0);
+								// 예약 앞에 30분 간격을 준다
+								startDate.setMinutes(startDate.getMinutes()-30);
+								var tmp_time_bun;
+								
+								while(true){
+									tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+									// can-reserve-time 클래스 추가
+									$('.time:contains("'+startDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+									
+									startDate.setMinutes(startDate.getMinutes()+30)
+									if(startDate-endOfDate==0){
+										tmp_time_bun=startDate.getMinutes()==0?"00":startDate.getMinutes();
+										$('.time:contains("'+startDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										break;
+									}
+								};
+							}
+						} else{ 
+							if(chosenDate-endDate==0){
+								// 3. 선택한 날짜!=startDate && 선택한 날짜==endDate -> 장기 예약(~끝시간)
+								endDate=new Date(endDateArr[0],endDateArr[1],endDateArr[2],endTimeArr[0],endTimeArr[1]);
+								startOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],9,0);
+								// 예약 뒤에 30분 간격을 준다
+								endDate.setMinutes(endDate.getMinutes()+30);
+								var tmp_time_bun;
+								
+								while(true){
+									tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+									// can-reserve-time 클래스 추가
+									$('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+									
+									startOfDate.setMinutes(startOfDate.getMinutes()+30)
+									if(startOfDate-endDate==0){
+										tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+										$('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										break;
+									}
+								};
+							} else{
+								// 4. 선택한 날짜!=startDate && 선택한 날짜!=endDate -> 장기 예약(~)
+								startOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],9,0);
+								endOfDate=new Date(chosenDateSplit[0],chosenDateSplit[1],chosenDateSplit[2],18,0);
+								var tmp_time_bun;
+								
+								while(true){
+									tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+									// can-reserve-time 클래스 추가
+									$('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+									
+									startOfDate.setMinutes(startOfDate.getMinutes()+30)
+									if(startOfDate-endOfDate==0){
+										tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+										$('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').addClass("cant-reserve-time").removeClass('can-reserve-time');
+										break;
+									}
+								};
+							}
+						}
+					});
+					
+				};
+			},
+			error: function(request,status, error) {
+				alert(error);
+			}	
+		});
+	};
+	
 	// 모달-시간 선택
 	$(document).on("click",".can-reserve-time",function(){
-		console.log("시작일자 선택했니? : "+chosenStartDate);
 		if(!chosenStartDate){
 			// 선택한 일자 색상 변경
 			if(!clickedStartTime){ // 시작시간 선택
 				setStartTime($(this));
 				$("#choose-complete-btn").attr("disabled",false);
 				$("#choose-anotherDay-btn").attr("disabled",false);
+				startTime=$(this).text();
 			} else{ // 종료시간 선택
 				setEndTime($(this));
 				$("#choose-complete-btn").attr("disabled",false);
@@ -428,12 +382,65 @@
 		} else{ // 장기 예약
 			// 현재 날짜를 종료 일자로 처리
 			endTime=$(this).text();
-			console.log("chosenDate:"+chosenDate);
 			endDateForLongterm=new Date(chosenDate.split("-")[0],chosenDate.split("-")[1],chosenDate.split("-")[2],endTime.split(":")[0],endTime.split(":")[1]);
-			console.log("endDateForLongterm"+endDateForLongterm);
+			var endDate=new Date(chosenDate.split("-")[0],chosenDate.split("-")[1],chosenDate.split("-")[2]);
+			// 시작날짜~선택 종료 날짜 사이에 예약내역이 있으면 선택 불가
+			var tmp_date=new Date(startDateForLongterm.getFullYear(),startDateForLongterm.getMonth(),startDateForLongterm.getDate());
+			tmp_date.setDate(tmp_date.getDate() + 1);
+			while(!(tmp_date.getTime()===endDate.getTime())){
+				getReservationsByDate(tmp_date.getFullYear()+"-"+tmp_date.getMonth()+"-"+tmp_date.getDate());
+				if($('.time').hasClass("cant-reserve-time")){
+					alert("예약 불가!");
+					break;
+				}
+
+				tmp_date.setDate(tmp_date.getDate() + 1);
+			};
+			
+			// 시작 시간부터 18:00까지 선택
 		};
 	});
-     
+	
+	// 다른 일자를 선택하는 경우
+	$("#choose-anotherDay-btn").on("click",function(){
+		// 시작 일자
+		startDateForLongterm=new Date(chosenDate.split("-")[0],chosenDate.split("-")[1],chosenDate.split("-")[2],startTime.split(":")[0],startTime.split(":")[1]);
+		
+		// 시작 시간부터 18:00까지 선택
+		var startOfDate=startDateForLongterm;
+		var endOfDate=new Date(chosenDate.split("-")[0],chosenDate.split("-")[1],chosenDate.split("-")[2],18,0);
+		var tmp_time_bun;
+		
+		while(true){
+			tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+			
+			// 중간에 이미 예약된 시간이 있다면 예약 불가
+			if($('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').hasClass("cant-reserve-time")){
+				alert(startOfDate.getHours()+"시 "+startOfDate.getMinutes()+"분에는 예약이 불가합니다.");
+				$('.time').removeClass("chosenTime");
+				clickedStartTime=false;
+				return;
+			};
+			// can-reserve-time 클래스 추가
+			$('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').addClass("chosenTime");
+			
+			startOfDate.setMinutes(startOfDate.getMinutes()+30)
+			if(startOfDate-endOfDate==0){
+				tmp_time_bun=startOfDate.getMinutes()==0?"00":startOfDate.getMinutes();
+				$('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').addClass("chosenTime");
+				break;
+			}
+		};
+		// 시작 일자 선택 완료
+		chosenStartDate=true;
+		// 달력에 시작날짜 표시하기
+		$('.fc-day-top[data-date="'+chosenDate+'"]').css("background-color","rgba(166, 166, 239, 0.5)").text("시작");
+		// 이 버튼 숨김
+		$(this).hide();
+		// 모달 종료
+		$("#chooseTimeModal").modal("hide");
+	});
+	
 	// 시작시간을 처리하는 함수
 	function setStartTime(startTime_object){
 		clickedStartTime=true;
@@ -451,20 +458,6 @@
 		$("#time-label").text(modalTitle+startTime+"~");
 		$("#chosen-date").text(modalTitle+startTime+"~");
 	}
-	
-	// 다른 일자를 선택하는 경우
-	$("#choose-anotherDay-btn").on("click",function(){
-		// 시작 일자
-		console.log("chosenDate : "+chosenDate);
-		startDateForLongterm=new Date(chosenDate.split("-")[0],chosenDate.split("-")[1],chosenDate.split("-")[2],startTime.split(":")[0],startTime.split(":")[1]);
-		// 시작 일자 선택 완료
-		chosenStartDate=true;
-		console.log("시작일자 선택완료 : "+chosenStartDate);
-		// 이 버튼 숨김
-		$(this).hide();
-		// 모달 종료
-		$("#chooseTimeModal").hide();
-	});
 	
 	// 시간 선택 모달이 show되는 이벤트
 	$("#chooseTimeModal").on('shown', function(){
@@ -510,11 +503,11 @@
 							tmp_time_si=parseInt(tmp_time_si)+1;
 							tmp_time_bun='00';
 						}
-						if(tmp_time_si.toString()+":"+tmp_time_bun.toString() == endTime){
+						if(tmp_time_si.toString()+":"+tmp_time_bun == endTime){
 							break;
 						}
 						// chosenTime 클래스 추가
-						$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun.toString()+'")').addClass('chosenTime');
+						$('.can-reserve-time:contains("'+tmp_time_si.toString()+":"+tmp_time_bun+'")').addClass('chosenTime');
 					}
 
 					// 모달 라벨에 시간 표시
