@@ -38,7 +38,7 @@
 								
 									당일 가장 가까운 예약 일정 -->	
 									<c:forEach items="${latestReservation}" var="list">
-										<c:if test="${list.WOWDATE < 10 && list.WOWDATE >= - 10}">
+										<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
 											${list.NAME } : ${list.WOWDATE}분 남았습니다.
 										</c:if>
 									</c:forEach>	
@@ -209,7 +209,7 @@
     // 예약시간의 +10분까지 띄워줌
     
     <c:forEach items="${latestReservation}" var="list">
-		<c:if test="${list.WOWDATE < 10 && list.WOWDATE >= -10}">
+    	<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
 			console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
 			
 			var startBtn = document.getElementById("startBtn");
@@ -220,22 +220,19 @@
 				
 				// 시작 버튼을 눌렀을 때
 				$("#startBtn").click(function() {
-					var bar = document.getElementById("bar");
-
-					if (bar.style.display == 'none') {
-						bar.style.display = 'block';
-						$("#spanText").text('종료');
-
-					} else {
-						bar.style.display = 'none';
-						$("#spanText").text('시작');
-					}
+					alert("시작 버튼 클릭!");
+					/* 
+					$.ajax({
+						url : ,
+						data :,
+						
+					}); */
 				});
 
-			} else {
+			} /* else {
 				startBtn.style.display = 'none';
 				$("#spanText").text('종료');
-			}
+			} */
 			
 		</c:if>
 	</c:forEach>	
