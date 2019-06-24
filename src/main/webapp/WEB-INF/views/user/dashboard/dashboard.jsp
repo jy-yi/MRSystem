@@ -51,6 +51,7 @@
 </div>
 <!-- End of Main Content -->
 <script>
+
 		var calendar;
 		document.addEventListener('DOMContentLoaded',function() {
 						var calendarEl = document.getElementById('calendar');
@@ -117,6 +118,7 @@
 	$(function() {
 
 		var workplaceNo = "";
+		
 
 		/* 지사 탭 클릭 이벤트 */
 		$(".workplace-list").on("click", function() {
@@ -141,6 +143,8 @@
 						//$("#roomList").append("<p>"+item.roomNo+" - "+item.name+"</p>");
 						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
 						$("#roomList").append('<a href="#" class="btn btn-primary roomBtn"> '+item.name+' </a>');
+						
+						$("data.roomList:first").trigger("click");
 					});
 				},
 				error : function() {
@@ -152,6 +156,8 @@
 
 		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 		$(".workplace-list:first").trigger("click");
+		
+		
 		
 		var roomNo;
 		

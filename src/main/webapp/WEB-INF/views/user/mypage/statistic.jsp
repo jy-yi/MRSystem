@@ -177,7 +177,7 @@ $(function() {
 		        type : "POST",
 		        dataType : "json",
 		        success : function(data){
-		        	alert(JSON.stringify(data.getIndividualDate));
+		        	alert(JSON.stringify(data.getIndividualDate),JSON.stringify(data.getDepartmentDate) );
 		        	//console.log(JSON.stringify(data.getIndividualDate.size()) +", " + JSON.stringify(data.getIndividualDate.size()));
 		 			//&& data.getIndividualDate.length == 0 && data.getDepartmentDate.length == 0
 		        	var table = '';

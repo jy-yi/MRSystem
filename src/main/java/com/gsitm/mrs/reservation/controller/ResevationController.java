@@ -91,7 +91,7 @@ public class ResevationController {
 	@RequestMapping(value = "/statusList", method = RequestMethod.GET)
 	public String statusList(HttpSession session, String employeeNo, Model model) {
 		
-		logger.info("(사용자) 마이페이지 - 예약 현황 달력");
+		logger.info("(사용자) 마이페이지 - 예약 현황 리스트");
 		
 		Object user = session.getAttribute("login");
 		EmployeeDTO employee = (EmployeeDTO) user;

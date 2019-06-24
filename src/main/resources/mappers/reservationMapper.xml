@@ -45,20 +45,30 @@
 	
 	<!-- 마이페이지 목록형 조회 -->
 	<select id="getReservationList" resultType="Map">
-		SELECT	r.res_no						AS reservationNo,
-				r.name							AS reservationName,
-				purpose,
-				room_no							AS roomNo,
-				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate,
-				d.name							AS departmentName,
-				status
-		FROM	reservation r,
-				lead_department ld,
-				department d
-		WHERE	r.res_no = ld.res_no
-				AND ld.dept_no = d.dept_no
-				AND	emp_no = #{employeeNo}
+		SELECT distinct *
+        FROM  	(select r.res_no                        AS res_no,
+		                r.name							AS reservationName,
+						purpose,
+						room_no							AS roomNo,
+						To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+				       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
+						status
+        		FROM    reservation r,
+						lead_department ld,
+						department d
+				WHERE	r.res_no = ld.res_no
+						AND ld.dept_no = d.dept_no
+						AND	emp_no = #{employeeNo}) data1,
+            			(SELECT	r.res_no						AS res_no,
+                    			LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
+			            FROM	reservation r,
+			                    lead_department ld,
+			                    department d
+			            WHERE	r.res_no = ld.res_no
+			                    AND ld.dept_no = d.dept_no
+			                    AND	emp_no = #{employeeNo}
+			            group by r.res_no) data2
+        WHERE data1.res_no = data2.res_no
 	</select>
 	
 	<!-- 마이페이지 목록형 예약 취소 -->

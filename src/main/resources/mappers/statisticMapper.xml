@@ -70,37 +70,63 @@
 	
 	<!-- 사용자 전체 예약 통계 -->
 	<select id="getUserAllList" resultType="map">
-		SELECT  r.name										AS reservationName, 
-				purpose, 
-				room_no										AS roomNo, 
-				TO_CHAR(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		      	TO_CHAR(r.end_date, 'YYYY-MM-DD HH:mm') 	AS endDate, 
-				d.name										AS departmentName, 
+		select distinct *
+        from  (select  
+                r.res_no                        AS res_no,
+                r.name							AS reservationName,
+				purpose,
+				room_no							AS roomNo,
+				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate,
 				status
-		FROM 	reservation r, 
-				lead_department ld, 
+        from    reservation r,
+				lead_department ld,
 				department d
-		WHERE 	r.res_no = ld.res_no
-		AND 	ld.dept_no = d.dept_no
-		AND 	r.emp_no = #{employeeNo}
+		WHERE	r.res_no = ld.res_no
+				AND ld.dept_no = d.dept_no
+				AND	emp_no = 'it1226') data1,
+                
+            (SELECT	r.res_no						AS res_no,
+                    LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name)
+            FROM	reservation r,
+                    lead_department ld,
+                    department d
+            WHERE	r.res_no = ld.res_no
+                    AND ld.dept_no = d.dept_no
+                    AND	emp_no = 'it1226'
+            group by r.res_no) data2
+        where data1.res_no=data2.res_no;
 	</select>
 	
 	<!-- 사용자 날짜 예약 통계 -->
 	<select id="getUserSearchList" resultType="map">
-		SELECT  r.name										AS reservationName, 
-				purpose, 
-				room_no										AS roomNo, 
-				TO_CHAR(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		      	TO_CHAR(r.end_date, 'YYYY-MM-DD HH:mm') 	AS endDate, 
-				d.name										AS departmentName, 
+		select distinct *
+        from  (select  
+                r.res_no                        AS res_no,
+                r.name							AS reservationName,
+				purpose,
+				room_no							AS roomNo,
+				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate,
 				status
-		FROM 	reservation r, 
-				lead_department ld, 
+        from    reservation r,
+				lead_department ld,
 				department d
-		WHERE 	r.res_no = ld.res_no
-		AND 	ld.dept_no = d.dept_no
-	    AND 	(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate} )
-		AND 	r.emp_no = #{employeeNo}
+		WHERE	r.res_no = ld.res_no
+				AND ld.dept_no = d.dept_no
+				AND	emp_no = 'it1226')
+				AND (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate}) data1,
+                
+            (SELECT	r.res_no						AS res_no,
+                    LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name)
+            FROM	reservation r,
+                    lead_department ld,
+                    department d
+            WHERE	r.res_no = ld.res_no
+                    AND ld.dept_no = d.dept_no
+                    AND	emp_no = #{employeeNo}
+            group by r.res_no) data2
+        where data1.res_no=data2.res_no;
 	</select>
 
 	<!-- #### 관리자 #### -->
