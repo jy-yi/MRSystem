@@ -193,7 +193,8 @@ $(document).on("click", ".btn-danger", function() {
 									status : 3,
 									name : empName,
 									empNo : empNo,
-									term : term,									reservationName : reservationName
+									term : term,									
+									reservationName : reservationName
 
 								}, success : function(data) {
 									swal('Success!', '취소가 완료되었습니다.', 'success'

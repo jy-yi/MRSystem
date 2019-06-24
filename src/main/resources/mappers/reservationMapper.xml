@@ -88,7 +88,7 @@
 	
 	<!-- 마이페이지 가장 최근 일자 표시 -->
 	<select id="getLatestReservation" resultType="map">
-		SELECT	res_no,
+		SELECT	res_no					AS reservationNo,
 				emp_no,
 				room_no,
 				name,
@@ -110,7 +110,8 @@
 				purpose,
 				rm.name							AS roomName,
 				To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
-		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate 
+		       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
+		       	status 
         FROM 	room rm, reservation r, employee e
         WHERE 	rm.room_no = r.room_no
         AND 	r.emp_no = e.emp_no

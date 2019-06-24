@@ -40,6 +40,7 @@
 									<c:forEach items="${latestReservation}" var="list">
 										<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
 											${list.NAME } : ${list.WOWDATE}분 남았습니다.
+											회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
 										</c:if>
 									</c:forEach>	
 								</div>
@@ -117,11 +118,31 @@
 												id : '${list.RESERVATIONNO}',
 												title : '${list.RESERVATIONNAME}',
 												start : '${list.STARTDATE}',
-												end : '${list.ENDDATE}'
+												end : '${list.ENDDATE}',
+												backgroundColor: 
+													<c:if test="${list.STATUS eq 0 }">
+														'skyblue',
+													</c:if>
+													<c:if test="${list.STATUS eq 1 }">
+														'pink',
+													</c:if>
+													<c:if test="${list.STATUS eq 2 }">
+														'orange',
+													</c:if>
+												borderColor: 
+													<c:if test="${list.STATUS eq 0 }">
+														'skyblue'
+													</c:if>
+													<c:if test="${list.STATUS eq 1 }">
+														'pink'
+													</c:if>
+													<c:if test="${list.STATUS eq 2 }">
+														'orange'
+													</c:if>
 											},
 											</c:if>
 										</c:forEach>
-									], eventClick: function(info) {
+									], 	eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
 										console.log(reservationNo);
@@ -199,6 +220,7 @@
     
     console.log("현재 분 : " + date.getMinutes());
     console.log("현재 날짜 및 시간 : " + currentDate);
+    console.log("${login.name}");
     
     var testDate = myStartDate - currentDate;
     
@@ -207,35 +229,54 @@
     // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
     // 예약시간의 +10분까지 띄워줌
-    
-    <c:forEach items="${latestReservation}" var="list">
-    	<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
-			console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
-			
-			var startBtn = document.getElementById("startBtn");
-	    	
-	    	if (startBtn.style.display == 'none') {
-	    		startBtn.style.display = 'block';
-				$("#spanText").text('시작');
+    <c:set var="loop_flag" value="false"/>
+	    <c:forEach items="${latestReservation}" var="list">
+	    	<c:if test="${not loop_flag }">
+		    	<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
+					console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
+					
+					var startBtn = document.getElementById("startBtn");
+			    	
+			    	if (startBtn.style.display == 'none') {
+			    		startBtn.style.display = 'block';
+						$("#spanText").text('시작');
+		
+						// 시작 버튼을 눌렀을 때
+						$("#startBtn").click(function() {
+							alert("시작 버튼 클릭!");
+							console.log("${list.NAME}"+","+"${list.RESERVATIONNO}");
+							<c:set var="loop_flag" value="true"/>
+						});
+					} 
+				</c:if>
 				
-				// 시작 버튼을 눌렀을 때
-				$("#startBtn").click(function() {
-					alert("시작 버튼 클릭!");
-					/* 
+				<c:if test="${list.WOWDATE <= -10}">
+					//console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
+					
 					$.ajax({
-						url : ,
-						data :,
-						
-					}); */
-				});
-
-			} /* else {
-				startBtn.style.display = 'none';
-				$("#spanText").text('종료');
-			} */
+						url : "/reservation/cancelReservation",
+						type : "POST",
+						data : {
+							reservationNo : "${list.RESERVATIONNO}",
+							reason : "NO-SHOW로 인한 강제 취소",
+							status : 3,
+							name : "${login.name}",
+							empNo : "${list.EMPNO}",
+							term : "${list.STARTDATE}" + " - " + "${list.ENDDATE}",									
+							reservationName : "${list.NAME}"
+		
+						}, success : function(data) {
+							swal('Success!', 'NO-SHOW로 인한 강제 취소', 'success'
+				    		).then(function(){
+				    		    	location.href="/reservation/statusCalendar";
+				    		    });
+						}
+					});
+				</c:if>
+			</c:if>
+			/* 10분 초과 후 NO-SHOW 처리하는 부분 */	
 			
-		</c:if>
-	</c:forEach>	
+		</c:forEach>	
     
 		
 </script>
