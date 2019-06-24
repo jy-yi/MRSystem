@@ -36,17 +36,12 @@
 							<div class="col mr-2">
 								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
 								
-									가장 최근 회의 일정 -	
+									당일 가장 가까운 예약 일정 -->	
 									<c:forEach items="${latestReservation}" var="list">
-										${list.WOWDATE}
-										<c:if test="${list.WOWDATE}">
-											
+										<c:if test="${list.WOWDATE < 10 && list.WOWDATE >= - 10}">
+											${list.NAME } : ${list.WOWDATE}분 남았습니다.
 										</c:if>
-										<%-- <c:if test="(-10 le ${list.WOWDATE}) &&  (${list.WOWDATE} gt 10)">
-										</c:if> --%>
-									</c:forEach>
-									<%-- ${latestReservation.NAME} / ${latestReservation.STARTDATE} ~ ${latestReservation.ENDDATE}
-									 --%>
+									</c:forEach>	
 								</div>
 
 								<!-- 프로그레스 바 -->
@@ -176,7 +171,10 @@
 		reservationName = "${list.NAME}";
 		startDate = "${list.STARTDATE}";
 		endDate = "${list.ENDDATE}";
+		wowDate = "${list.WOWDATE}";
 	</c:forEach>
+	
+	console.log(wowDate);
 	
 	var startYear = startDate.substring(0, 4);
 	var startMonth = startDate.substring(5, 7);
@@ -205,44 +203,43 @@
     
     var testDate = myStartDate - currentDate;
     
-    
-    //console.log("회의 시작까지 " + testDate/1000 + "초가 남았습니다.");
-    console.log("회의 시작까지 " + Math.round((testDate/1000)/60) + "분이 남았습니다.");
-    
     var temp = Math.round((testDate/1000)/60);
     
     // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
     // 예약시간의 +10분까지 띄워줌
     
-    if(temp <= 8 && temp > -2){
-    	var startBtn = document.getElementById("startBtn");
-    	
-    	if (startBtn.style.display == 'none') {
-    		startBtn.style.display = 'block';
-			$("#spanText").text('시작');
+    <c:forEach items="${latestReservation}" var="list">
+		<c:if test="${list.WOWDATE < 10 && list.WOWDATE >= -10}">
+			console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
+			
+			var startBtn = document.getElementById("startBtn");
+	    	
+	    	if (startBtn.style.display == 'none') {
+	    		startBtn.style.display = 'block';
+				$("#spanText").text('시작');
+				
+				// 시작 버튼을 눌렀을 때
+				$("#startBtn").click(function() {
+					var bar = document.getElementById("bar");
 
-		} else {
-			startBtn.style.display = 'none';
-			$("#spanText").text('종료');
-		}
-    }
-	
-	/* // 시작 버튼을 눌렀을 때
-	$("#startBtn").click(function() {
-		var bar = document.getElementById("bar");
+					if (bar.style.display == 'none') {
+						bar.style.display = 'block';
+						$("#spanText").text('종료');
 
-		if (bar.style.display == 'none') {
-			bar.style.display = 'block';
-			$("#spanText").text('종료');
+					} else {
+						bar.style.display = 'none';
+						$("#spanText").text('시작');
+					}
+				});
 
-		} else {
-			bar.style.display = 'none';
-			$("#spanText").text('시작');
-		}
-
-	}); */
-	
-
+			} else {
+				startBtn.style.display = 'none';
+				$("#spanText").text('종료');
+			}
+			
+		</c:if>
+	</c:forEach>	
+    
 		
 </script>
