@@ -29,6 +29,5 @@
 		<typeAlias type="com.gsitm.mrs.reservation.dto.CancelDTO" alias="Cancel"/>
 		
 		<typeAlias type="java.util.Map" alias="Map"/>
-		
 	</typeAliases>
 </configuration> 

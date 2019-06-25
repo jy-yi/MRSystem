@@ -198,7 +198,8 @@ public class ReservationDAOImpl implements ReservationDAO {
 	/** 관리자와 상위결재자의 메일 조회 */
 	@Override
 	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap) {
-		return sqlSession.selectOne(namespace + ".getAdminMgrEmailList", infoMap);
+		System.out.println(infoMap);
+		return sqlSession.selectList(namespace + ".getAdminMgrEmailList", infoMap);
 	}
 	
 	/** 사원의 이름 조회 */
