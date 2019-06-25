@@ -259,7 +259,7 @@
     /* ---------------------------------------------------------------------- */
 
     $("#endBtn").click(function(){
-    	alert("끝 버튼 클릭!");
+    	//alert("끝 버튼 클릭!");
     	
     	$.ajax({
     		url : "/reservation/deleteBorEquip",
