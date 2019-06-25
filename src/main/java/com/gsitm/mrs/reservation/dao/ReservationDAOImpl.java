@@ -198,7 +198,8 @@ public class ReservationDAOImpl implements ReservationDAO {
 	/** 관리자와 상위결재자의 메일 조회 */
 	@Override
 	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap) {
-		return sqlSession.selectOne(namespace + ".getAdminMgrEmailList", infoMap);
+		System.out.println(infoMap);
+		return sqlSession.selectList(namespace + ".getAdminMgrEmailList", infoMap);
 	}
 	
 	/** 사원의 이름 조회 */
@@ -249,8 +250,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-<<<<<<< HEAD
-=======
-	
->>>>>>> branch 'master' of https://github.com/YIJONGYUN/MRSystem.git
+
 }

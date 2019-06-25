@@ -249,4 +249,14 @@ public class ReservationDaoTest {
 	public void testgetReservationNo() {
 		logger.info(dao.getReservationNo());
 	}
+	
+	/** 메일주소 조회 */
+	@Test
+	public void testgetAdminMgrEmailList() {
+		Map<String, Object> map=new HashMap<>();
+		map.put("empNo", "it1226");
+		map.put("roomNo", 1);
+		
+		logger.info(dao.getAdminMgrEmailList(map));
+	}
 }
