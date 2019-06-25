@@ -249,8 +249,4 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-<<<<<<< HEAD
-=======
-	
->>>>>>> branch 'master' of https://github.com/YIJONGYUN/MRSystem.git
 }
