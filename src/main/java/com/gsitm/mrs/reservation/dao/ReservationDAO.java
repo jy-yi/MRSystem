@@ -40,6 +40,9 @@ public interface ReservationDAO {
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int roomNo);
 	
+	/** 끝 버튼 처리 - 대여물품 삭제 */
+	public void deleteBorEquip(int reservationNo);
+	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	
@@ -95,8 +98,13 @@ public interface ReservationDAO {
  	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData);
  	
  	/** 해당 부서의 회의 참여자 수 조회 */
- 	public int getNumOfParticipation(List<String> participation);
+ 	public int getNumOfParticipation(Map<String, Object> infoMap);
 
+ 	/** 관리자와 상위결재자의 메일 조회 */
+ 	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap);
+ 	
+ 	/** 사원의 이름 조회 */
+ 	public String getEmpName(String empNo);
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

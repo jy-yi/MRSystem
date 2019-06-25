@@ -169,6 +169,14 @@ public class ResevationController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/deleteBorEquip", method = RequestMethod.POST)
+	public String deleteBorEquip(String reservationNo) {
+		
+		service.deleteBorEquip(Integer.parseInt(reservationNo));
+
+		return "redirect:/reservation/statusCalendar";
+	}
+	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String room(Model model) {
 		logger.info("(사용자) 회의실 정보");

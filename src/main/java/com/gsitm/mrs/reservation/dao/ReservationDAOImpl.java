@@ -75,6 +75,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace +".getDashBoard", roomNo);
 	}
 	
+	/** 끝 버튼 처리 - 대여물품 삭제 */
+	public void deleteBorEquip(int reservationNo) {
+		sqlSession.delete(namespace+".deleteBorEquip", reservationNo);
+	}
+	
 	/** 회의실 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getRoomList(int workplaceNo) {
@@ -186,10 +191,21 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 해당 부서의 회의 참여자 수 조회 */
 	@Override
-	public int getNumOfParticipation(List<String> participation) {
-		return sqlSession.selectOne(namespace + ".getNumOfParticipation", participation);
+	public int getNumOfParticipation(Map<String, Object> infoMap) {
+		return sqlSession.selectOne(namespace + ".getNumOfParticipation", infoMap);
 	}
-
+	
+	/** 관리자와 상위결재자의 메일 조회 */
+	@Override
+	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap) {
+		return sqlSession.selectOne(namespace + ".getAdminMgrEmailList", infoMap);
+	}
+	
+	/** 사원의 이름 조회 */
+	@Override
+	public String getEmpName(String empNo) {
+		return sqlSession.selectOne(namespace + ".getEmpName", empNo);
+	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -233,5 +249,4 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-
 }

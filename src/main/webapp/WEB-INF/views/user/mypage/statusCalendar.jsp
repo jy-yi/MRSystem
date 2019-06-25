@@ -74,6 +74,10 @@
 							<button id="startBtn" class="btn btn-secondary btn-icon-split" style="display: none">
 								<span id="spanText" class="text">시작</span>
 							</button>
+							<button id="endBtn" class="btn btn-secondary btn-icon-split">
+								<span id="spanText" class="text">끝</span>
+							</button>
+							
 
 							<a href="/reservation/statusList"
 								class="btn btn-primary btn-icon-split"> <span class="text">목록형</span>
@@ -250,7 +254,36 @@
 
     console.log(map.wowDate);
     
-    if (-10 < map.wowDate && map.wowDate <= 10) {
+    /* ---------------------------------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
+    /* ---------------------------------------------------------------------- */
+
+    $("#endBtn").click(function(){
+    	//alert("끝 버튼 클릭!");
+    	
+    	$.ajax({
+    		url : "/reservation/deleteBorEquip",
+			type : "POST",
+			data : {
+				reservationNo : map.reservationNo,
+			}, success : function(data) {
+				
+				console.log(map.reservationNo);
+				
+				swal('끝 버튼 처리!', '대여물품 삭제 및 비용 계산이 됩니다.', 'success'
+	    		).then(function(){
+	    		    	location.href="/reservation/statusCalendar";
+	    		});
+			}, error : function(){
+	            alert("끝 버튼 처리 에러");
+	        }
+    	});
+    	
+    });
+    
+    
+    
+    /* if (-10 < map.wowDate && map.wowDate <= 10) {
     	console.log(map.name + " : " + map.wowDate +"분 남았습니다.");
     
     	var startBtn = document.getElementById("startBtn");
@@ -292,6 +325,6 @@
 				$("#spanText").text('끝');
 			}
 		});
-    }
+    } */
 	
 </script>

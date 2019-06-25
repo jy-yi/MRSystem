@@ -119,6 +119,12 @@
         AND 	rm.room_no = #{roomNo}
 	</select>
 	
+	<!-- 끝 버튼 처리 - 대여물품 삭제 -->
+	<delete id="deleteBorEquip">
+		DELETE FROM borrowed_equipment 
+		WHERE res_no = #{reservationNo}
+	</delete>
+	
 	<!-- 지사별 회의실 목록 조회  -->
 	<select id="getRoomListByWorkplaceNo" resultType="Room">
 		SELECT room_no, workplace_no, name 
@@ -334,14 +340,14 @@
 	
 	<!-- 회의 참여자 DB에 삽입 -->
 	<insert id="insertParticipation" parameterType="Map">
-		INSERT INTO participation(emp_no, res_no, money) 
-		VALUES (#{empNo}, #{resNo}, 50000)
+		INSERT INTO participation(emp_no, res_no) 
+		VALUES (#{empNo}, #{resNo})
 	</insert>
 	
 	<!-- 회의 참여 부서 DB에 삽입 -->
 	<insert id="insertParticipateDepartment" parameterType="Map">
 		INSERT INTO lead_department(res_no, dept_no, is_main, count) 
-		VALUES (#{resNo}, #{deptNo}, #{isMain}, 3)
+		VALUES (#{resNo}, #{deptNo}, #{isMain}, #{count})
 	</insert>
 	
 	<!-- 회의 대여 비품 DB에 삽입 -->
@@ -356,7 +362,7 @@
         FROM employee e
         WHERE e.dept_no=#{deptNo} 
         AND e.emp_no IN
-		<foreach collection="list" item="empNo" separator="," open="(" close=")">
+		<foreach collection="participationList" item="empNo" separator="," open="(" close=")">
 			#{empNo}
 		</foreach>
         GROUP BY dept_no
@@ -486,5 +492,25 @@
 			  end_date<![CDATA[>=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')
 	</select>
 	
+	<!-- 상위결재자와 관리자의 이메일 리스트 조회 -->
+	<select id="getAdminMgrEmailList" parameterType="Map" resultType="String">
+		SELECT e.email
+		FROM room r, admin a, employee e 
+		WHERE r.room_no=#{roomNo}
+		      AND r.admin_id=a.admin_id
+		      AND a.emp_no=e.emp_no
+		UNION
+		SELECT email
+		FROM employee
+		WHERE emp_no=(SELECT mgr_no 
+		              FROM employee 
+		              WHERE emp_no=#{empNo})
+	</select>
 	
+	<!-- 사원의 이름 조회  -->
+	<select id="getEmpName" resultType="String">
+		SELECT name
+		FROM employee
+		WHERE emp_no=#{empNo}
+	</select>
 </mapper>
