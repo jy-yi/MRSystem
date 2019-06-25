@@ -67,14 +67,34 @@
 									events : [
 										
 										<c:forEach items="${roomDashBoard}" var="list" varStatus="status">
- 											<c:if test="${list.STATUS ne 3 }">
+											<c:if test="${list.STATUS ne 3 }">
 											{ 
 												id : '${list.RESERVATIONNO}',
 												title : '${list.RESERVATIONNAME}',
 												start : '${list.STARTDATE}',
-												end : '${list.ENDDATE}'
+												end : '${list.ENDDATE}',
+												backgroundColor: 
+													<c:if test="${list.STATUS eq 0 }">
+														'skyblue',
+													</c:if>
+													<c:if test="${list.STATUS eq 1 }">
+														'pink',
+													</c:if>
+													<c:if test="${list.STATUS eq 2 }">
+														'orange',
+													</c:if>
+												borderColor: 
+													<c:if test="${list.STATUS eq 0 }">
+														'skyblue'
+													</c:if>
+													<c:if test="${list.STATUS eq 1 }">
+														'pink'
+													</c:if>
+													<c:if test="${list.STATUS eq 2 }">
+														'orange'
+													</c:if>
 											},
- 											</c:if>
+											</c:if>
 										</c:forEach>
 									], eventClick: function(info) {
 										
@@ -118,7 +138,6 @@
 	$(function() {
 
 		var workplaceNo = "";
-		
 
 		/* 지사 탭 클릭 이벤트 */
 		$(".workplace-list").on("click", function() {
@@ -140,11 +159,9 @@
 					console.log("success");
 					$("#roomList").empty();
 					$.each(data.roomList, function(index, item){
-						//$("#roomList").append("<p>"+item.roomNo+" - "+item.name+"</p>");
 						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
 						$("#roomList").append('<a href="#" class="btn btn-primary roomBtn"> '+item.name+' </a>');
 						
-						$("data.roomList:first").trigger("click");
 					});
 				},
 				error : function() {
@@ -156,7 +173,6 @@
 
 		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 		$(".workplace-list:first").trigger("click");
-		
 		
 		
 		var roomNo;
@@ -179,11 +195,11 @@
 					calendar.removeAllEvents();
 					
 					$.each(data.roomDashBoard, function(index, item){
-						var obj = { 
-								id : item.RESNO,
-								title : item.RESERVATIONNAME,
-								start : item.STARTDATE,
-								end : item.ENDDATE
+						var obj = {
+									id : item.RESNO,
+									title : item.RESERVATIONNAME,
+									start : item.STARTDATE,
+									end : item.ENDDATE
 							};
 						calendar.addEvent(obj);
 					})
