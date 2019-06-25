@@ -607,6 +607,6 @@
 		});
 		$("input[name=equipments]").val(equipments);
 		
-		$("#option_form").attr("action","/reservation/shortTerm_chooseDate/"+"${roomInfo.ROOMNO}").submit();
+		$("#option_form").attr("action","/reservation/chooseDate/"+"${roomInfo.ROOMNO}").submit();
 	})
 </script>

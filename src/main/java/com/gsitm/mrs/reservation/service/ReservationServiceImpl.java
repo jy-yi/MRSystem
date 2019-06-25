@@ -304,15 +304,6 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getEmployeeList(participationNos);
 	}
 
-	/** 예약 날짜 선택 페이지 서비스 */
-	@Override
-	public void shortTerm_chooseDate(Model model, int roomNo) {
-		model.addAttribute("anotherReservationInfo", dao.getReservationsByRoomNo(roomNo));
-		model.addAttribute("roomInfo", dao.getRoomInfo(roomNo));
-		model.addAttribute("equipmentList", dao.getEquipmentList(roomNo));
-
-	}
-
 	/** 해당 날짜의 예약정보들 조회 */
 	@Override
 	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData) {
@@ -321,7 +312,7 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/** 장기 예약 날짜 선택 페이지 서비스 */
 	@Override
-	public void longTerm_chooseDate(Model model, int roomNo) {
+	public void chooseDate(Model model, int roomNo) {
 		model.addAttribute("anotherReservationInfo",dao.getReservationsByRoomNo(roomNo));
 		model.addAttribute("roomInfo",dao.getRoomInfo(roomNo));
 		model.addAttribute("equipmentList", dao.getEquipmentList(roomNo));

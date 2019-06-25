@@ -9,11 +9,18 @@
 	    font-size: 15px;
 	}
 	
-	#choose-complete-btn{
-	    background-color: rgb(54,93,205);
+	.disable-btn{
+		background-color: grey;
 	    color: white;
 	    display: inline;
-	    width: 50%;
+	    width: 30%;
+	}
+	
+	.active-btn{
+		background-color: rgb(54,93,205);
+	    color: white;
+	    display: inline;
+	    width: 30%;
 	}
 	
 	.modal-footer{
@@ -118,8 +125,8 @@
 		        </div>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-secondary btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled>확인</button>
-				<button class="btn btn-secondary btn-md" id="choose-anotherDay-btn" type="button" disabled>종료 예약일자 선택</button>			
+				<button class="btn btn-secondary btn-md disable-btn" id="choose-complete-btn" type="button" data-dismiss="modal" disabled>확인</button>
+				<button class="btn btn-secondary btn-md disable-btn" id="choose-anotherDay-btn" type="button" disabled>종료일자 선택(장기예약)</button>			
 			</div>
 		</div>
 	</div>

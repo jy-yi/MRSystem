@@ -1,4 +1,6 @@
 @charset "EUC-KR";
+<!-- 모달 -->
+<!-- 예약 페이지 -->
 #room_img{
 	max-width: 100%;
 }
@@ -92,10 +94,6 @@
 	cursor: pointer;
 }
 
-.fc-past{
-	color: #cecece;
-}
-
 .cant-reserve-time{
 	background-color: #cecece; 
     text-decoration: line-through;
@@ -124,4 +122,8 @@
 .end{
 	color: white;
     font-size: small;
+}
+
+.fontColor-grey{
+	color: #cecece;
 }
