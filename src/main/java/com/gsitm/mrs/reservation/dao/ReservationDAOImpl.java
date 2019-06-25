@@ -155,6 +155,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		sqlSession.insert(namespace + ".insertWaiting", resNo);
 	}
 
+	/** 회의 참여자 DB에 삽입  */
+	public void insertParticipation(Map<String, Object> participationMap) {
+		sqlSession.insert(namespace + ".insertParticipation", participationMap);
+	}
+	
 	/** 회의 참여 부서 DB에 삽입 */
 	@Override
 	public void insertParticipateDepartment(Map<String, Object> departmentMap) {
@@ -178,6 +183,13 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData) {
 		return sqlSession.selectList(namespace + ".getReservationsByDate", roomData);
 	}
+	
+	/** 해당 부서의 회의 참여자 수 조회 */
+	@Override
+	public int getNumOfParticipation(List<String> participation) {
+		return sqlSession.selectOne(namespace + ".getNumOfParticipation", participation);
+	}
+
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

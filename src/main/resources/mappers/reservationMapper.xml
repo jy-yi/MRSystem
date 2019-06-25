@@ -332,10 +332,16 @@
 		VALUES (#{resNo})
 	</insert>
 	
+	<!-- 회의 참여자 DB에 삽입 -->
+	<insert id="insertParticipation" parameterType="Map">
+		INSERT INTO participation(emp_no, res_no, money) 
+		VALUES (#{empNo}, #{resNo}, 50000)
+	</insert>
+	
 	<!-- 회의 참여 부서 DB에 삽입 -->
 	<insert id="insertParticipateDepartment" parameterType="Map">
-		INSERT INTO lead_department(res_no, dept_no, is_main) 
-		VALUES (#{resNo}, #{deptNo}, #{isMain})
+		INSERT INTO lead_department(res_no, dept_no, is_main, count) 
+		VALUES (#{resNo}, #{deptNo}, #{isMain}, 3)
 	</insert>
 	
 	<!-- 회의 대여 비품 DB에 삽입 -->
@@ -343,6 +349,18 @@
 		INSERT INTO borrowed_equipment(equip_no, res_no) 
 		VALUES (#{equipNo}, #{resNo})
 	</insert>
+	
+	<!-- 해당 부서의 회의 참여자 수 조회  -->
+	<select id="getNumOfParticipation" parameterType="java.util.ArrayList" resultType="int">
+		SELECT COUNT(*)
+        FROM employee e
+        WHERE e.dept_no=#{deptNo} 
+        AND e.emp_no IN
+		<foreach collection="list" item="empNo" separator="," open="(" close=")">
+			#{empNo}
+		</foreach>
+        GROUP BY dept_no
+	</select>
 	
 	<!-- #### 관리자 #### -->
 	
@@ -467,4 +485,6 @@
 			  start_date<![CDATA[<=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')+1 AND
 			  end_date<![CDATA[>=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')
 	</select>
+	
+	
 </mapper>

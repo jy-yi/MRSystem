@@ -103,12 +103,7 @@ public class ReservationServiceImpl implements ReservationService {
 			model.addAttribute("name", request.getParameter("name"));
 			model.addAttribute("purpose", request.getParameter("purpose"));
 			String participation = request.getParameter("participation").substring(1,
-					request.getParameter("participation").length() - 1);
-			/*
-			 * StringTokenizer token = new StringTokenizer(participation, ","); List<String>
-			 * participationList = new ArrayList<>(); while(token.hasMoreTokens()) {
-			 * participationList.add(token.nextToken()); }
-			 */
+								   request.getParameter("participation").length() - 1);
 			model.addAttribute("participation", participation);
 			model.addAttribute("mainDept", request.getParameter("mainDept"));
 			model.addAttribute("subDept", request.getParameter("subDept"));
@@ -235,6 +230,7 @@ public class ReservationServiceImpl implements ReservationService {
 		 * snack_want, status->default? waiting DB res_no mgr_approval admin_approval
 		 * Lead_Department DB res_no dept_no is_main borrowed_equipment DB equip_no
 		 * res_no
+		 * 
 		 */
 		String empNo = (String) reserveData.get("empNo");
 		int roomNo = Integer.parseInt((String) reserveData.get("roomNo"));
@@ -246,10 +242,11 @@ public class ReservationServiceImpl implements ReservationService {
 		List<String> mainDept = (List<String>) reserveData.get("mainDept");
 		List<String> subDept = (List<String>) reserveData.get("subDept");
 		List<String> equipments = (List<String>) reserveData.get("equipments");
-
+		String p = (String) reserveData.get("participation");
+		String participation=p.substring(1, p.length()-1);
 		// reservation number를 받아온다
 		int resNo = dao.getReservationNo();
-
+		
 		// reservation DB에 넣을 데이터를 담은 dto
 		ReservationDTO reservationDto = new ReservationDTO();
 		reservationDto.setReservationNo(resNo);
@@ -264,13 +261,28 @@ public class ReservationServiceImpl implements ReservationService {
 
 		// waiting DB에 예약 정보를 담는다
 		dao.insertWaiting(resNo);
-
-		// Lead_Department DB에 넣을 데이터를 담은 map
+		// Participation DB에 넣을 데이터를 담은 map
+		// res_no, emp_no, money
+		Map<String, Object> participationMap=new HashMap<>();
+		participationMap.put("resNo", resNo);
+		StringTokenizer token = new StringTokenizer(participation, ",");
+		List<String> participationList = new ArrayList<>();
+		while (token.hasMoreTokens()) {
+			String participationEmpNo=token.nextToken();
+			participationList.add(participationEmpNo);
+			participationMap.put("empNo", participationEmpNo);
+			dao.insertParticipation(participationMap);
+		}
+		System.out.println(participationList.toString());
+		
+		// Lead_Department DB에 넣을 데이터를 담은 map + count
 		Map<String, Object> leadDepartmentMap = new HashMap<>();
 		leadDepartmentMap.put("resNo", resNo);
 		leadDepartmentMap.put("isMain", "Y");
 		for (String deptNo : mainDept) {
 			leadDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
+			// 해당 부서의 participation 수를 구한다
+			//dao.
 			dao.insertParticipateDepartment(leadDepartmentMap);
 		}
 

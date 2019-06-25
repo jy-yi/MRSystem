@@ -79,6 +79,9 @@ public interface ReservationDAO {
 	/** 대기 예약 DB에 삽입 */
 	public void insertWaiting(int resNo);
 	
+	/** 회의 참여자 DB에 삽입  */
+	public void insertParticipation(Map<String, Object> participationMap);
+	
 	/** 회의 참여 부서 DB에 삽입 */
 	public void insertParticipateDepartment(Map<String, Object> departmentMap);
 	
@@ -90,6 +93,10 @@ public interface ReservationDAO {
 	
 	/** 해당 날짜의 예약 정보 조회 */
  	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData);
+ 	
+ 	/** 해당 부서의 회의 참여자 수 조회 */
+ 	public int getNumOfParticipation(List<String> participation);
+
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
