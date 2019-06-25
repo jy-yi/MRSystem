@@ -8,6 +8,14 @@
 	margin: 0 auto;
 	background-color: white;
 }
+.activeBtn{
+	background-color: rgb(54,93,205);
+	color: white;
+}
+.disabledBtn{
+	background-color: #cecece;
+	color: white;
+}
 </style>
 <!-- Main Content -->
 <div id="content">
@@ -19,8 +27,7 @@
 		<div class="container-fluid">
 
 			<!-- Page Heading -->
-			<div
-				class="d-sm-flex align-items-center justify-content-between mb-4">
+			<div class="d-sm-flex align-items-center justify-content-between mb-4">
 				<h1 id="name" class="h5 mb-0 text-gray-800">
 					<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span>
 				</h1>
@@ -32,10 +39,12 @@
 				<ul class="nav nav-tabs">
 					<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
 					<c:forEach items="${workplaceList}" var="list" varStatus="status">
-						<li class="nav-item"><a
-							class="nav-link workplace-list ${status.index eq 0 ? 'active':''}"
-							data-toggle="tab" href="#workplace${list.workplaceNo}"
-							value="${list.workplaceNo}">${list.name}</a></li>
+						<li class="nav-item">
+							<a class="nav-link workplace-list ${status.index eq 0 ? 'active':''}"
+								data-toggle="tab" href="#workplace${list.workplaceNo}"
+								value="${list.workplaceNo}">${list.name}
+							</a>
+						</li>
 					</c:forEach>
 				</ul>
 
@@ -106,8 +115,6 @@
 									        data : {"reservationNo": reservationNo},
 									        type : "GET",
 									        success : function(data){
-												
-									        	//alert(data.calendarInfo.EMPNAME);
 									        	
 									        	console.log(data);
 									        	
@@ -160,9 +167,14 @@
 					$("#roomList").empty();
 					$.each(data.roomList, function(index, item){
 						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
-						$("#roomList").append('<a href="#" class="btn btn-primary roomBtn"> '+item.name+' </a>');
+						$("#roomList").append('<a href="#" class="btn disabledBtn roomBtn"> '+item.name+' </a>');
+						
+						//$(".roomBtn").on("click").css('color','yellow');
+						//$(".roomBtn").css('color','yellow');
 						
 					});
+					
+					$('.roomBtn:first').trigger('click');
 				},
 				error : function() {
 					alert("지사별 해당 회의실 조회 에러");
@@ -171,9 +183,14 @@
 			
 		});
 
+		$(document).on("click",".roomBtn",function(){
+			console.log("크릭!");
+			$(".roomBtn").removeClass("activeBtn").addClass("disabledBtn");
+			$(this).removeClass("disabledBtn").addClass("activeBtn");
+		}); 
+		
 		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 		$(".workplace-list:first").trigger("click");
-		
 		
 		var roomNo;
 		
@@ -195,13 +212,15 @@
 					calendar.removeAllEvents();
 					
 					$.each(data.roomDashBoard, function(index, item){
-						var obj = {
-									id : item.RESNO,
-									title : item.RESERVATIONNAME,
-									start : item.STARTDATE,
-									end : item.ENDDATE
-							};
-						calendar.addEvent(obj);
+						if(item.STATUS!=3) {
+							var obj = {
+										id : item.RESNO,
+										title : item.RESERVATIONNAME,
+										start : item.STARTDATE,
+										end : item.ENDDATE
+								};
+							calendar.addEvent(obj);
+						}
 					})
 				},
 				error : function() {
