@@ -522,7 +522,7 @@ public class ReservationServiceImpl implements ReservationService {
 		return true;
 	}
 
-	// 예약시간 계산(단위:hour)
+	/** 예약시간 계산(단위:hour) */
 	public ReserveTypeVO calcDate(Date startDate, Date endDate) {
 		ReserveTypeVO reserveType = new ReserveTypeVO();
 	  
