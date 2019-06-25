@@ -34,12 +34,20 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+								<div class="text-lg font-weight-bold text-info text-uppercase mb-1">
 								
-									당일 가장 가까운 예약 일정 -->	
+									[당일 가장 가까운 예약 일정]	
 									<c:forEach items="${latestReservation}" var="list">
 										<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
-											${list.NAME } : ${list.WOWDATE}분 남았습니다.
+											<c:choose>
+												<c:when test="${list.WOWDATE >= 0 }">
+													${list.NAME } : ${list.WOWDATE}분 남았습니다. <br>
+												</c:when>
+												<c:otherwise>
+													${list.NAME } : ${list.WOWDATE * -1 }분 지났습니다. <br>
+												</c:otherwise>
+											</c:choose>
+											회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
 										</c:if>
 									</c:forEach>	
 								</div>
@@ -70,6 +78,7 @@
 							<a href="/reservation/statusList"
 								class="btn btn-primary btn-icon-split"> <span class="text">목록형</span>
 							</a>
+							
 						</div>
 
 					</div>
@@ -117,11 +126,31 @@
 												id : '${list.RESERVATIONNO}',
 												title : '${list.RESERVATIONNAME}',
 												start : '${list.STARTDATE}',
-												end : '${list.ENDDATE}'
+												end : '${list.ENDDATE}',
+												backgroundColor: 
+													<c:if test="${list.STATUS eq 0 }">
+														'skyblue',
+													</c:if>
+													<c:if test="${list.STATUS eq 1 }">
+														'pink',
+													</c:if>
+													<c:if test="${list.STATUS eq 2 }">
+														'orange',
+													</c:if>
+												borderColor: 
+													<c:if test="${list.STATUS eq 0 }">
+														'skyblue'
+													</c:if>
+													<c:if test="${list.STATUS eq 1 }">
+														'pink'
+													</c:if>
+													<c:if test="${list.STATUS eq 2 }">
+														'orange'
+													</c:if>
 											},
 											</c:if>
 										</c:forEach>
-									], eventClick: function(info) {
+									], 	eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
 										console.log(reservationNo);
@@ -173,7 +202,7 @@
 		wowDate = "${list.WOWDATE}";
 	</c:forEach>
 	
-	console.log(wowDate);
+	//console.log(wowDate);
 	
 	var startYear = startDate.substring(0, 4);
 	var startMonth = startDate.substring(5, 7);
@@ -199,6 +228,7 @@
     
     console.log("현재 분 : " + date.getMinutes());
     console.log("현재 날짜 및 시간 : " + currentDate);
+    console.log("${login.name}");
     
     var testDate = myStartDate - currentDate;
     
@@ -208,34 +238,53 @@
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
     // 예약시간의 +10분까지 띄워줌
     
-    <c:forEach items="${latestReservation}" var="list">
-    	<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
-			console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
-			
-			var startBtn = document.getElementById("startBtn");
-	    	
-	    	if (startBtn.style.display == 'none') {
-	    		startBtn.style.display = 'block';
-				$("#spanText").text('시작');
-				
-				// 시작 버튼을 눌렀을 때
-				$("#startBtn").click(function() {
-					alert("시작 버튼 클릭!");
-					/* 
-					$.ajax({
-						url : ,
-						data :,
-						
-					}); */
-				});
-
-			} /* else {
-				startBtn.style.display = 'none';
-				$("#spanText").text('종료');
-			} */
-			
-		</c:if>
-	</c:forEach>	
+    var flag = false;
     
-		
+    var map = new Object();
+    map.empNo = "${latestReservation[0].EMPNO}";
+    map.reservationNo = "${latestReservation[0].RESERVATIONNO}";
+    map.name = "${latestReservation[0].NAME}";
+    map.startDate = "${latestReservation[0].STARTDATE}";
+    map.endDate = "${latestReservation[0].ENDDATE}";
+    map.wowDate = "${latestReservation[0].WOWDATE}";
+
+    if (-10 < map.wowDate && map.wowDate <= 10) {
+    	console.log(map.name + " : " + map.wowDate +"분 남았습니다.");
+    	
+    	var startBtn = document.getElementById("startBtn");
+    	
+    	if (startBtn.style.display == 'none') {
+    		startBtn.style.display = 'block';
+			$("#spanText").text('시작');
+
+			// 시작 버튼을 눌렀을 때
+			$("#startBtn").click(function() {
+				alert("시작 버튼 클릭!");
+				console.log(map.name + ", " + map.reservationNo);
+			});
+		}
+    } else if (map.wowDate <= -10) {
+    	$.ajax({
+			url : "/reservation/cancelReservation",
+			type : "POST",
+			data : {
+				reservationNo : map.reservationNo,
+				reason : "NO-SHOW로 인해 예약이 강제 취소되었습니다.",
+				status : 3,
+				name : "${login.name}",
+				empNo : map.empNo,
+				term : map.startDate + " - " + map.endDate,									
+				reservationName : map.name
+
+			}, success : function(data) {
+				swal('예약 취소!', 'NO-SHOW로 인해 예약이 강제 취소되었습니다.', 'error'
+	    		).then(function(){
+	    		    	location.href="/reservation/statusCalendar";
+	    		    });
+			}
+		});
+    }
+	
+
+			
 </script>
