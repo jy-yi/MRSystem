@@ -75,6 +75,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace +".getDashBoard", roomNo);
 	}
 	
+	/** 끝 버튼 처리 - 대여물품 삭제 */
+	public void deleteBorEquip(int reservationNo) {
+		sqlSession.delete(namespace+".deleteBorEquip", reservationNo);
+	}
+	
 	/** 회의실 목록 조회 */
 	@Override
 	public List<Map<String, Object>> getRoomList(int workplaceNo) {
@@ -221,5 +226,4 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
-
 }

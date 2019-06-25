@@ -119,6 +119,12 @@
         AND 	rm.room_no = #{roomNo}
 	</select>
 	
+	<!-- 끝 버튼 처리 - 대여물품 삭제 -->
+	<delete id="deleteBorEquip">
+		DELETE FROM borrowed_equipment 
+		WHERE res_no = #{reservationNo}
+	</delete>
+	
 	<!-- 지사별 회의실 목록 조회  -->
 	<select id="getRoomListByWorkplaceNo" resultType="Room">
 		SELECT room_no, workplace_no, name 

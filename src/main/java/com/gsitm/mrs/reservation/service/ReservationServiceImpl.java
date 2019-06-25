@@ -359,6 +359,11 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getDashBoard(int roomNo) {
 		return dao.getDashBoard(roomNo);
 	}
+	
+	/** 끝 버튼 처리 - 대여물품 삭제 */
+	public void deleteBorEquip(int reservationNo) {
+		dao.deleteBorEquip(reservationNo);
+	}
 
 	/* ------------- 회의실 ------------- */
 

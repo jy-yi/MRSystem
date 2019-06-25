@@ -40,6 +40,9 @@ public interface ReservationDAO {
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int roomNo);
 	
+	/** 끝 버튼 처리 - 대여물품 삭제 */
+	public void deleteBorEquip(int reservationNo);
+	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	
