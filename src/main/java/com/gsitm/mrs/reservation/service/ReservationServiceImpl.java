@@ -243,7 +243,7 @@ public class ReservationServiceImpl implements ReservationService {
 		List<String> subDept = (List<String>) reserveData.get("subDept");
 		List<String> equipments = (List<String>) reserveData.get("equipments");
 		String p = (String) reserveData.get("participation");
-		String participation=p.substring(1, p.length()-1);
+		String participation=p.substring(1, p.length()-1).replaceAll(" ", "");
 		// reservation number를 받아온다
 		int resNo = dao.getReservationNo();
 		
@@ -267,22 +267,28 @@ public class ReservationServiceImpl implements ReservationService {
 		participationMap.put("resNo", resNo);
 		StringTokenizer token = new StringTokenizer(participation, ",");
 		List<String> participationList = new ArrayList<>();
+		
 		while (token.hasMoreTokens()) {
 			String participationEmpNo=token.nextToken();
 			participationList.add(participationEmpNo);
 			participationMap.put("empNo", participationEmpNo);
 			dao.insertParticipation(participationMap);
 		}
-		System.out.println(participationList.toString());
 		
 		// Lead_Department DB에 넣을 데이터를 담은 map + count
 		Map<String, Object> leadDepartmentMap = new HashMap<>();
+		Map<String, Object> infoMap=new HashMap<>();
+		infoMap.put("participationList", participationList);
 		leadDepartmentMap.put("resNo", resNo);
 		leadDepartmentMap.put("isMain", "Y");
+
 		for (String deptNo : mainDept) {
+			if(!infoMap.containsKey("deptNo")) infoMap.put("deptNo", Integer.parseInt(deptNo));
+			else infoMap.replace("deptNo", Integer.parseInt(deptNo));
 			leadDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
+			
 			// 해당 부서의 participation 수를 구한다
-			//dao.
+			leadDepartmentMap.put("count", dao.getNumOfParticipation(infoMap));
 			dao.insertParticipateDepartment(leadDepartmentMap);
 		}
 
@@ -293,7 +299,12 @@ public class ReservationServiceImpl implements ReservationService {
 			subDepartmentMap.put("resNo", resNo);
 			subDepartmentMap.put("isMain", "N");
 			for (String deptNo : subDept) {
+				if(!infoMap.containsKey("deptNo")) infoMap.put("deptNo", Integer.parseInt(deptNo));
+				else infoMap.replace("deptNo", Integer.parseInt(deptNo));
+				
 				subDepartmentMap.put("deptNo", Integer.parseInt(deptNo));
+				subDepartmentMap.put("count", dao.getNumOfParticipation(infoMap));
+
 				dao.insertParticipateDepartment(subDepartmentMap);
 			}
 		}

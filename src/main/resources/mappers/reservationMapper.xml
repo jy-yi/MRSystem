@@ -341,7 +341,7 @@
 	<!-- 회의 참여 부서 DB에 삽입 -->
 	<insert id="insertParticipateDepartment" parameterType="Map">
 		INSERT INTO lead_department(res_no, dept_no, is_main, count) 
-		VALUES (#{resNo}, #{deptNo}, #{isMain}, 3)
+		VALUES (#{resNo}, #{deptNo}, #{isMain}, #{count})
 	</insert>
 	
 	<!-- 회의 대여 비품 DB에 삽입 -->
@@ -356,7 +356,7 @@
         FROM employee e
         WHERE e.dept_no=#{deptNo} 
         AND e.emp_no IN
-		<foreach collection="list" item="empNo" separator="," open="(" close=")">
+		<foreach collection="participationList" item="empNo" separator="," open="(" close=")">
 			#{empNo}
 		</foreach>
         GROUP BY dept_no

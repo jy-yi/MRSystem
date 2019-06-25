@@ -95,7 +95,7 @@ public interface ReservationDAO {
  	public List<Map<String, Object>> getReservationsByDate(Map<String, Object> roomData);
  	
  	/** 해당 부서의 회의 참여자 수 조회 */
- 	public int getNumOfParticipation(List<String> participation);
+ 	public int getNumOfParticipation(Map<String, Object> infoMap);
 
 	/* ------------- 관리자 ------------- */
 	

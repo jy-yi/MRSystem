@@ -186,8 +186,8 @@ public class ReservationDAOImpl implements ReservationDAO {
 	
 	/** 해당 부서의 회의 참여자 수 조회 */
 	@Override
-	public int getNumOfParticipation(List<String> participation) {
-		return sqlSession.selectOne(namespace + ".getNumOfParticipation", participation);
+	public int getNumOfParticipation(Map<String, Object> infoMap) {
+		return sqlSession.selectOne(namespace + ".getNumOfParticipation", infoMap);
 	}
 
 	/* ------------- 관리자 ------------- */
