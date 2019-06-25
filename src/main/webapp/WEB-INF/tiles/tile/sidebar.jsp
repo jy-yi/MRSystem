@@ -7,11 +7,12 @@ $(function(){
 	var url = $(location).attr('pathname');
 	
 	var pageSubmitFn = function(url) {
+		
+		if (url == '/reservation/statusList')
+			url = '/reservation/statusCalendar';	// 예약 현황 - 달력형, 리스트형
+		
 		var aTag = $('a[href="'+url+'"]');
 		if(aTag.hasClass('low-menu')) {
-			if (url == '/reservation/statusList')
-				url = '/reservation/statusCalendar';	// 예약 현황 - 달력형, 리스트형
-			
 			$(".low-menu").removeClass("active"); 
 			$('a[href="'+url+'"]').addClass("active");
 			

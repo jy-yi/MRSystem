@@ -128,8 +128,6 @@
 	
 						calendar.render();
 	
-						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
-	
 					});	
 </script>
 <script type="text/javascript">

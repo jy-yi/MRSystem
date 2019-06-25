@@ -10,74 +10,90 @@
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-
-	<div class="row">
-
-		<!-- Begin Page Content -->
-		<div class="container-fluid">
-			<!-- Page Heading -->
-			<div class="d-sm-flex align-items-center justify-content-between mb-4">
-				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 일자 선택 </h1>
-			</div>
-
-			<!-- Content Row -->
-			
-			<div class="row">
-				<div class="col-sm-6 left-padding-zero" >
-					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE}">	
-					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
-						<h1 class="align-center color-title">${roomInfo.ROOMNAME }</h1>
-						<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>
-						<hr>
-						<ul>
-							<li>회의실 위치 : ${roomInfo.WORKPLACENAME}
-							<li>수용 인원 : ${roomInfo.CAPACITY}명
-							<li>비치 물품 : ${roomInfo.EQUIPMENTS}
-							<li>네트워크 : 
-								<c:choose>
-									<c:when test="${roomInfo.NWAVAILABLE eq 'Y'}">
-										사용가능
-									</c:when>
-									<c:otherwise>
-										사용불가능
-									</c:otherwise>
-								</c:choose>
-							<li>사용요금 : 10,000원 / 시간
-							<li>관리자 : ${roomInfo.ADMINNAME}
-						</ul>	
-					</div>
-				</div>
-				<div class="col-sm-6">
-					<!-- calendar -->
-					<div id="calendar_div" class="background-lightgrey font-black padding-content div-border">
-						<div id='calendar'></div>
-					</div>
-					
-					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
-						<h4 class="color-title">옵션 선택</h4>
-						<hr>
-						<form action="/reservation/InputReservationInfo" id="option_form" method="get">
-							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
-							<input type="hidden" name="employeeNo" value=""/>
-							<input type="hidden" name="startDate" value="">
-							<input type="hidden" name="endDate" value="">
-							<input type="hidden" name="equipments" value="">
-							<c:forEach var="equip" items="${equipmentList}" >
-								<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment" id="equipment${equip.EQUIP_NO}">
-									<span class="font-checkbox"><label for="equipment${equip.EQUIP_NO}">${equip.NAME} 대여</label> </span><br>
-							</c:forEach>
-								<input type="checkbox" name="snackWant" id="snackWant" <c:if test="${!empty savedRoomInfo && (savedRoomInfo.snackWant eq 'Y')}">checked</c:if>>
-								<span class="font-checkbox"><label for="snackWant">간식준비 여부</label></span>
-								<br>
-						</form>
-					</div>
-					<button class="btn btn-disabled" id="nextBtn">다음 단계</button>
-				</div>
-			</div>
+		<!-- Page Heading -->
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 일자 선택 </h1>
 		</div>
-		<!-- /.container-fluid -->
+		
+		<div class="row">
+		
+		<div class="col-lg-6">
+
+             <div class="card shadow mb-4">
+               <div class="card-header py-3">
+                 <h6 class="m-0 font-weight-bold text-primary"> 회의실 정보 </h6>
+               </div>
+               <div class="card-body">
+               	<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE}">	
+				<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
+					<h1 class="align-center color-title">${roomInfo.ROOMNAME }</h1>
+					<p id="chosen-date" class="align-center">4. 18. (목), 시간을 선택하세요</p>
+					<hr>
+					<ul>
+						<li>회의실 위치 : ${roomInfo.WORKPLACENAME}
+						<li>수용 인원 : ${roomInfo.CAPACITY}명
+						<li>비치 물품 : ${roomInfo.EQUIPMENTS}
+						<li>네트워크 : 
+							<c:choose>
+								<c:when test="${roomInfo.NWAVAILABLE eq 'Y'}">
+									사용가능
+								</c:when>
+								<c:otherwise>
+									사용불가능
+								</c:otherwise>
+							</c:choose>
+						<li>사용요금 : 10,000원 / 시간
+						<li>관리자 : ${roomInfo.ADMINNAME}
+					</ul>	
+				</div>
+               </div>
+             </div>
+
+           </div>
+
+           <div class="col-lg-6">
+
+             <!-- Circle Buttons -->
+             <div class="card shadow mb-4">
+               <div class="card-header py-3">
+                 <h6 class="m-0 font-weight-bold text-primary">달력</h6>
+               </div>
+               <div class="card-body">
+                 <div id='calendar'></div>
+               </div>
+             </div>
+
+             <!-- Brand Buttons -->
+             <div class="card shadow mb-4">
+               <div class="card-header py-3">
+                 <h6 class="m-0 font-weight-bold text-primary">옵션 선택</h6>
+               </div>
+               <div class="card-body">
+				<form action="/reservation/InputReservationInfo" id="option_form" method="get">
+					<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
+					<input type="hidden" name="employeeNo" value=""/>
+					<input type="hidden" name="startDate" value="">
+					<input type="hidden" name="endDate" value="">
+					<input type="hidden" name="equipments" value="">
+					
+					<c:forEach var="equip" items="${equipmentList}" >
+						<input type="checkbox" value="${equip.EQUIP_NO}" name="checkbox-equipment" id="equipment${equip.EQUIP_NO}">
+						<span class="font-checkbox"><label for="equipment${equip.EQUIP_NO}">${equip.NAME} 대여</label> </span><br>
+					</c:forEach>
+					
+					<input type="checkbox" name="snackWant" id="snackWant" <c:if test="${!empty savedRoomInfo && (savedRoomInfo.snackWant eq 'Y')}">checked</c:if>>
+					<span class="font-checkbox"><label for="snackWant">간식준비 여부</label></span>
+					<br>
+				</form>
+               </div>
+             <button class="btn btn-disabled" id="nextBtn">다음 단계</button>
+             </div>
+
+           </div>
+
+         </div>
 	</div>
-	</div>
+	<!-- /.container-fluid -->
 
 </div>
 
@@ -172,7 +188,8 @@
 		var calendarEl = document.getElementById('calendar');
 	
 		var calendar = new FullCalendar.Calendar(calendarEl, {
-		   plugins: [ 'dayGrid' ]
+		   plugins: [ 'dayGrid' ],
+		   contentHeight : "auto"
 		});
 		
 		calendar.render();
