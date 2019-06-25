@@ -372,8 +372,8 @@
 		       r.name           					AS resName, 
 		       r.purpose, 
 		       room.name        					AS roomName, 
-		       To_char(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		       To_char(r.end_date, 'YYYY-MM-DD HH:mm') 		AS endDate, 
+		       To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate, 
 		       e.name           					AS empName, 
 		       e2.name          					AS mgrName,
 		       e.email,
@@ -419,8 +419,8 @@
 		       r.name       							 AS resName, 
 		       r.purpose, 
 		       room.name    							 AS roomName, 
-		       To_char(r.start_date, 'YYYY-MM-DD HH:mm') AS startDate, 
-		       To_char(r.end_date, 'YYYY-MM-DD HH:mm')   AS endDate, 
+		       To_char(start_date, 'YYYY-MM-DD HH24:MI') AS startDate, 
+		       To_char(end_date, 'YYYY-MM-DD HH24:MI')   AS endDate, 
 		       e.name       							 AS empName, 
 		       refuse.reason 
 		FROM   reservation r, refuse, room, employee e 
@@ -437,8 +437,8 @@
 		       r.name           					AS resName, 
 		       r.purpose, 
 		       room.name        					AS roomName, 
-		       To_char(r.start_date, 'YYYY-MM-DD HH:mm') 	AS startDate, 
-		       To_char(r.end_date, 'YYYY-MM-DD HH:mm') 		AS endDate, 
+		       To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+		       To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate, 
 		       e.name           					AS empName, 
 		       e2.name          					AS mgrName
 		FROM   reservation r, 
@@ -458,8 +458,8 @@
 		       r.name       							 AS resName, 
 		       r.purpose, 
 		       room.name    							 AS roomName, 
-		       To_char(r.start_date, 'YYYY-MM-DD HH:mm') AS startDate, 
-		       To_char(r.end_date, 'YYYY-MM-DD HH:mm')   AS endDate, 
+		       To_char(start_date, 'YYYY-MM-DD HH24:MI') AS startDate, 
+		       To_char(end_date, 'YYYY-MM-DD HH24:MI')   AS endDate, 
 		       e.name       							 AS empName, 
 		       c.reason 
 		FROM   reservation r, cancel c, room, employee e 

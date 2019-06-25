@@ -225,7 +225,7 @@ $(function() {
     			table += '<td class="text-primary"> 예약 완료 </td>';
 			else if (item.STATUS == 2)
     			table += '<td class="text-danger"> 예약 반려 </td>';
-			else
+			else if (item.STATUS == 3)
 				table += '<td class="text-warning"> 예약 취소 </td>';
     		table += '</tr>';
        });

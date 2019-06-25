@@ -234,11 +234,11 @@
     
     var temp = Math.round((testDate/1000)/60);
     
+    console.log("예약시작시간 - 현재시간 temp >>>>>>  " + temp);
+    
     // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
     // 예약시간의 +10분까지 띄워줌
-    
-    var flag = false;
     
     var map = new Object();
     map.empNo = "${latestReservation[0].EMPNO}";
@@ -248,43 +248,50 @@
     map.endDate = "${latestReservation[0].ENDDATE}";
     map.wowDate = "${latestReservation[0].WOWDATE}";
 
+    console.log(map.wowDate);
+    
     if (-10 < map.wowDate && map.wowDate <= 10) {
     	console.log(map.name + " : " + map.wowDate +"분 남았습니다.");
-    	
+    
     	var startBtn = document.getElementById("startBtn");
     	
-    	if (startBtn.style.display == 'none') {
+			// 시간 비교
+		if (startBtn.style.display == 'none') {
+    		// 시작버튼 활성화
     		startBtn.style.display = 'block';
 			$("#spanText").text('시작');
-
-			// 시작 버튼을 눌렀을 때
-			$("#startBtn").click(function() {
+		}
+		// 시작 버튼 클릭
+		$("#startBtn").click(function() {
+				
+			console.log("startBtn 클릭 안의 temp >>>>>>> " + temp);
+			if (temp <= -10) {
+				console.log("startBtn 클릭 안의 temp가 -10보다 작거나 같을 때의 temp >>>>>>> " + temp);
+				$.ajax({
+					url : "/reservation/cancelReservation",
+					type : "POST",
+					data : {
+						reservationNo : map.reservationNo,
+						reason : "NO-SHOW로 인해 예약이 강제 취소되었습니다.",
+						status : 3,
+						name : "${login.name}",
+						empNo : map.empNo,
+						term : map.startDate + " - " + map.endDate,									
+						reservationName : map.name
+		
+					}, success : function(data) {
+						swal('예약 취소!', 'NO-SHOW로 인해 예약이 강제 취소되었습니다.', 'error'
+			    		).then(function(){
+			    		    	location.href="/reservation/statusCalendar";
+			    		});
+					}
+				});
+			} else {
 				alert("시작 버튼 클릭!");
 				console.log(map.name + ", " + map.reservationNo);
-			});
-		}
-    } else if (map.wowDate <= -10) {
-    	$.ajax({
-			url : "/reservation/cancelReservation",
-			type : "POST",
-			data : {
-				reservationNo : map.reservationNo,
-				reason : "NO-SHOW로 인해 예약이 강제 취소되었습니다.",
-				status : 3,
-				name : "${login.name}",
-				empNo : map.empNo,
-				term : map.startDate + " - " + map.endDate,									
-				reservationName : map.name
-
-			}, success : function(data) {
-				swal('예약 취소!', 'NO-SHOW로 인해 예약이 강제 취소되었습니다.', 'error'
-	    		).then(function(){
-	    		    	location.href="/reservation/statusCalendar";
-	    		    });
+				$("#spanText").text('끝');
 			}
 		});
     }
 	
-
-			
 </script>

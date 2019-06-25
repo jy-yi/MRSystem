@@ -144,7 +144,9 @@ public class ResevationController {
 		
 		logger.info("(사용자) 대시보드");
 		
-		List<Map<String, Object>> roomDashBoard = service.getDashBoard(1);
+		roomNo = "1";
+		
+		List<Map<String, Object>> roomDashBoard = service.getDashBoard(Integer.parseInt(roomNo));
 		
 		model.addAttribute("roomDashBoard", roomDashBoard);
 		
