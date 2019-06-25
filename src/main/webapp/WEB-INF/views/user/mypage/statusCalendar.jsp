@@ -34,12 +34,19 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+								<div class="text-lg font-weight-bold text-info text-uppercase mb-1">
 								
-									당일 가장 가까운 예약 일정 -->	
+									[당일 가장 가까운 예약 일정]	
 									<c:forEach items="${latestReservation}" var="list">
 										<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
-											${list.NAME } : ${list.WOWDATE}분 남았습니다.
+											<c:choose>
+												<c:when test="${list.WOWDATE >= 0 }">
+													${list.NAME } : ${list.WOWDATE}분 남았습니다. <br>
+												</c:when>
+												<c:otherwise>
+													${list.NAME } : ${list.WOWDATE * -1 }분 지났습니다. <br>
+												</c:otherwise>
+											</c:choose>
 											회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
 										</c:if>
 									</c:forEach>	
@@ -71,6 +78,7 @@
 							<a href="/reservation/statusList"
 								class="btn btn-primary btn-icon-split"> <span class="text">목록형</span>
 							</a>
+							
 						</div>
 
 					</div>
@@ -194,7 +202,7 @@
 		wowDate = "${list.WOWDATE}";
 	</c:forEach>
 	
-	console.log(wowDate);
+	//console.log(wowDate);
 	
 	var startYear = startDate.substring(0, 4);
 	var startMonth = startDate.substring(5, 7);
@@ -229,54 +237,54 @@
     // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
     // 예약시간의 +10분까지 띄워줌
-    <c:set var="loop_flag" value="false"/>
-	    <c:forEach items="${latestReservation}" var="list">
-	    	<c:if test="${not loop_flag }">
-		    	<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
-					console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
-					
-					var startBtn = document.getElementById("startBtn");
-			    	
-			    	if (startBtn.style.display == 'none') {
-			    		startBtn.style.display = 'block';
-						$("#spanText").text('시작');
-		
-						// 시작 버튼을 눌렀을 때
-						$("#startBtn").click(function() {
-							alert("시작 버튼 클릭!");
-							console.log("${list.NAME}"+","+"${list.RESERVATIONNO}");
-							<c:set var="loop_flag" value="true"/>
-						});
-					} 
-				</c:if>
-				
-				<c:if test="${list.WOWDATE <= -10}">
-					//console.log("${list.NAME }" + " : " + "${list.WOWDATE}" +"분 남았습니다.");
-					
-					$.ajax({
-						url : "/reservation/cancelReservation",
-						type : "POST",
-						data : {
-							reservationNo : "${list.RESERVATIONNO}",
-							reason : "NO-SHOW로 인한 강제 취소",
-							status : 3,
-							name : "${login.name}",
-							empNo : "${list.EMPNO}",
-							term : "${list.STARTDATE}" + " - " + "${list.ENDDATE}",									
-							reservationName : "${list.NAME}"
-		
-						}, success : function(data) {
-							swal('Success!', 'NO-SHOW로 인한 강제 취소', 'success'
-				    		).then(function(){
-				    		    	location.href="/reservation/statusCalendar";
-				    		    });
-						}
-					});
-				</c:if>
-			</c:if>
-			/* 10분 초과 후 NO-SHOW 처리하는 부분 */	
-			
-		</c:forEach>	
     
-		
+    var flag = false;
+    
+    var map = new Object();
+    map.empNo = "${latestReservation[0].EMPNO}";
+    map.reservationNo = "${latestReservation[0].RESERVATIONNO}";
+    map.name = "${latestReservation[0].NAME}";
+    map.startDate = "${latestReservation[0].STARTDATE}";
+    map.endDate = "${latestReservation[0].ENDDATE}";
+    map.wowDate = "${latestReservation[0].WOWDATE}";
+
+    if (-10 < map.wowDate && map.wowDate <= 10) {
+    	console.log(map.name + " : " + map.wowDate +"분 남았습니다.");
+    	
+    	var startBtn = document.getElementById("startBtn");
+    	
+    	if (startBtn.style.display == 'none') {
+    		startBtn.style.display = 'block';
+			$("#spanText").text('시작');
+
+			// 시작 버튼을 눌렀을 때
+			$("#startBtn").click(function() {
+				alert("시작 버튼 클릭!");
+				console.log(map.name + ", " + map.reservationNo);
+			});
+		}
+    } else if (map.wowDate <= -10) {
+    	$.ajax({
+			url : "/reservation/cancelReservation",
+			type : "POST",
+			data : {
+				reservationNo : map.reservationNo,
+				reason : "NO-SHOW로 인해 예약이 강제 취소되었습니다.",
+				status : 3,
+				name : "${login.name}",
+				empNo : map.empNo,
+				term : map.startDate + " - " + map.endDate,									
+				reservationName : map.name
+
+			}, success : function(data) {
+				swal('예약 취소!', 'NO-SHOW로 인해 예약이 강제 취소되었습니다.', 'error'
+	    		).then(function(){
+	    		    	location.href="/reservation/statusCalendar";
+	    		    });
+			}
+		});
+    }
+	
+
+			
 </script>

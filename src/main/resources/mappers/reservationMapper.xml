@@ -89,7 +89,7 @@
 	<!-- 마이페이지 가장 최근 일자 표시 -->
 	<select id="getLatestReservation" resultType="map">
 		SELECT	res_no					AS reservationNo,
-				emp_no,
+				emp_no					AS empNo,
 				room_no,
 				name,
 				purpose,
@@ -100,6 +100,7 @@
         FROM	reservation
         WHERE 	emp_no = #{employeeNo}
 		AND		(ROUND((start_date - sysdate))) = 0
+		AND     status = 1
 	</select>
 	
 	<!-- 대시보드 -->
