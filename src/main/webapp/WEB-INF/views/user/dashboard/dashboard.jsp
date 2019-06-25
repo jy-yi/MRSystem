@@ -72,7 +72,6 @@
 									defaultDate : new Date(),
 									editable : true,
 									eventLimit : true, // allow "more" link when too many events
-	
 									events : [
 										
 										<c:forEach items="${roomDashBoard}" var="list" varStatus="status">
@@ -105,7 +104,8 @@
 											},
 											</c:if>
 										</c:forEach>
-									], eventClick: function(info) {
+									], 
+									eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
 										console.log(reservationNo);
@@ -130,7 +130,8 @@
 									            alert("전체 예약 현황 조회 에러");
 									        }
 									    });
-									}									
+									},
+									contentHeight: "auto"								
 								});
 	
 						calendar.render();

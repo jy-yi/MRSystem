@@ -122,7 +122,6 @@
 									defaultDate : new Date(),
 									editable : true,
 									eventLimit : true, // allow "more" link when too many events
-
 									events : [
 										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
 											<c:if test="${list.STATUS ne 3 }">
@@ -154,7 +153,8 @@
 											},
 											</c:if>
 										</c:forEach>
-									], 	eventClick: function(info) {
+									], 	
+									eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
 										console.log(reservationNo);
@@ -179,12 +179,11 @@
 									            alert("전체 예약 현황 조회 에러");
 									        }
 									    });
-									}									
+									},
+									contentHeight: "auto"
 								});
 
 						calendar.render();
-
-						calendar.setOption('locale', 'ko'); // 달력 한국어 설정
 
 					});	
 </script>

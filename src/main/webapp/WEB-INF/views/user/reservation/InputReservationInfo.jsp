@@ -15,12 +15,7 @@
 
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
-
-	<div class="row">
-
-		<!-- Begin Page Content -->
-		<div class="container-fluid">
-
+	
 			<!-- Page Heading -->
 			<div class="d-sm-flex align-items-center justify-content-between mb-4">
 				<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 정보 입력 </h1>
@@ -30,7 +25,12 @@
 			
 			<div class="row">
 				<div class="col-sm-6" >
-					<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE }" width="90%">
+	             <div class="card shadow mb-4">
+	               <div class="card-header py-3">
+	                 <h6 class="m-0 font-weight-bold text-primary"> 회의실 정보 </h6>
+	               </div>
+	               <div class="card-body">
+	               	<img id="room_img" alt="회의실 사진" src="/resources/img/room/${roomInfo.IMAGE }" width="90%">
 					<br>
 					<div id="room_info_div" class="background-lightgrey font-black padding-content div-border">
 					
@@ -56,15 +56,19 @@
 							<li>관리자 : ${roomInfo.ADMINNAME}
 						</ul>	
 					</div>
+	               </div>
 					<button class="btn btn-warning" id="prevBtn">이전 단계</button>
+	             </div>
 				</div>
 				
 				<div class="col-sm-6">
-					<!-- calendar -->
-					<div id="calendar_div" class="background-lightgrey font-black padding-content div-border">
-						<h4 class="color-title">예약 정보</h4>
-						<hr>
-						<form action="/reservation/checkReservationInfo" id="option_form" method="get">
+				
+		             <div class="card shadow mb-4">
+		               <div class="card-header py-3">
+		                 <h6 class="m-0 font-weight-bold text-primary">예약 정보</h6>
+		               </div>
+		               <div class="card-body">
+		                 <form action="/reservation/checkReservationInfo" id="option_form" method="get">
 							<input type="hidden" name="roomNo" value="${roomInfo.ROOMNO}"/>
 							<input type="hidden" name="startDate" value="${reservationInfo.startDate}">
 							<input type="hidden" name="endDate" value="${reservationInfo.endDate}">
@@ -165,35 +169,41 @@
 								</div>
 							</div>
 						</form>
-					</div>
+		               </div>
+		             </div>
 					
-					<div id="option_div" class="background-lightgrey font-black padding-content div-border">
-						<h4 class="color-title">선택 내역</h4>
-						<hr>
-						<ul id="option_list">
-							<c:forEach var="equip" items="${equipmentList}" >
-								<c:choose>
-									<c:when test="${!(empty equip.need) and (equip.need eq true)}">
-										<li>${equip.NAME} 대여 Y</li>
-										<input type="hidden" class="needEquip" value="${equip.EQUIP_NO}"/>
-									</c:when>
-									<c:otherwise>
-										<li>${equip.NAME} 대여 N</li>
-									</c:otherwise>
-								</c:choose>
-							</c:forEach>
-							<li>간식준비 여부 ${reservationInfo.snackWant }
-							</li>
-						</ul>
-					</div>
-					<button class="btn btn-disabled" id="nextBtn" disabled>다음 단계</button>
+					<div class="card shadow mb-4">
+		               <div class="card-header py-3">
+		                 <h6 class="m-0 font-weight-bold text-primary">옵션 선택</h6>
+		               </div>
+		               <div class="card-body">
+						<div id="option_div" class="background-lightgrey font-black padding-content div-border">
+							<h4 class="color-title">선택 내역</h4>
+							<hr>
+							<ul id="option_list">
+								<c:forEach var="equip" items="${equipmentList}" >
+									<c:choose>
+										<c:when test="${!(empty equip.need) and (equip.need eq true)}">
+											<li>${equip.NAME} 대여 Y</li>
+											<input type="hidden" class="needEquip" value="${equip.EQUIP_NO}"/>
+										</c:when>
+										<c:otherwise>
+											<li>${equip.NAME} 대여 N</li>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<li>간식 준비 여부 ${reservationInfo.snackWant }
+								</li>
+							</ul>
+						</div>
+		               </div>
+		               
+		             	<button class="btn btn-disabled" id="nextBtn">다음 단계</button>
+		             </div>
 				</div>
 			</div>
 		</div>
 		<!-- /.container-fluid -->
-	</div>
-	</div>
-
 </div>
 
 
