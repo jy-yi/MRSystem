@@ -325,7 +325,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 		
 		// 상위 결제자와 회의실 관리자()에게 예약 확인 메일 전송
-		/*Map<String, Object> mailMap=new HashMap<>();
+		Map<String, Object> mailMap=new HashMap<>();
 		mailMap.put("empNo", empNo);
 		mailMap.put("roomNo", roomNo);
 		List<String> emailList = dao.getAdminMgrEmailList(mailMap);
@@ -337,7 +337,9 @@ public class ReservationServiceImpl implements ReservationService {
 		String term=startDate+endDate;
 		String reservationName=name; // 회의명
 		
-		mailSend(empNo, email, title, applicant, reason, term, reservationName, "신청");*/
+		mailSend(empNo, email, title, applicant, reason, term, reservationName, "신청");
+		
+		System.out.println("메일전송~");
 	}
 
 	/** 사원번호로 회의 참여자 정보 얻어오기 */
