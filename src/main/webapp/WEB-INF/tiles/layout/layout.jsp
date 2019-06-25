@@ -42,9 +42,6 @@
 <!-- Core plugin JavaScript-->
 <script src="/resources/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-<!-- Custom scripts for all pages-->
-<script src="/resources/js/sb-admin-2.min.js"></script>
-
 <!-- Page table plugins -->
 <script src="/resources/vendor/datatables/jquery.dataTables.min.js"></script>
 <script src="/resources/vendor/datatables/dataTables.bootstrap4.min.js"></script>
@@ -106,5 +103,8 @@ body, div, h1, h2, h3, h4, h5, h6 {
 	</div>
 
 </body>
+
+<!-- Custom scripts for all pages-->
+<script src="/resources/js/sb-admin-2.min.js"></script>
 
 </html>
