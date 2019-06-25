@@ -334,8 +334,8 @@
 	
 	<!-- 회의 참여자 DB에 삽입 -->
 	<insert id="insertParticipation" parameterType="Map">
-		INSERT INTO participation(emp_no, res_no, money) 
-		VALUES (#{empNo}, #{resNo}, 50000)
+		INSERT INTO participation(emp_no, res_no) 
+		VALUES (#{empNo}, #{resNo})
 	</insert>
 	
 	<!-- 회의 참여 부서 DB에 삽입 -->
@@ -486,5 +486,25 @@
 			  end_date<![CDATA[>=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')
 	</select>
 	
+	<!-- 상위결재자와 관리자의 이메일 리스트 조회 -->
+	<select id="getAdminMgrEmailList" parameterType="Map" resultType="String">
+		SELECT e.email
+		FROM room r, admin a, employee e 
+		WHERE r.room_no=#{roomNo}
+		      AND r.admin_id=a.admin_id
+		      AND a.emp_no=e.emp_no
+		UNION
+		SELECT email
+		FROM employee
+		WHERE emp_no=(SELECT mgr_no 
+		              FROM employee 
+		              WHERE emp_no=#{empNo})
+	</select>
 	
+	<!-- 사원의 이름 조회  -->
+	<select id="getEmpName" parameterMap="String" resultType="String">
+		SELECT name
+		FROM employee
+		WHERE emp_no=#{empNo}
+	</select>
 </mapper>
