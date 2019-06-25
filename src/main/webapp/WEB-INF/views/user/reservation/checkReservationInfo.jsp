@@ -170,7 +170,7 @@ th {
 		   return $(this).val();
 	}).get();
 	var participation= "${participationEmpNos}";
-	
+	console.log(JSON.stringify(participation));
 	var resData={
 			empNo:empNo,
 			roomNo:roomNo,
@@ -181,7 +181,8 @@ th {
 			snackWant:snackWant,
 			mainDept:mainDept,
 			subDept:subDept,
-			equipments:equipments
+			equipments:equipments,
+			participation:participation
 			};
 	var jsonData = JSON.stringify(resData);
 	
