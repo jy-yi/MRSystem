@@ -108,11 +108,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			Object param = session.getAttribute("param");
 			
 			if (url != null) {
-				logger.info("이전 URL : " + url + " | param : " + param);
-
-				response.sendRedirect(url.toString() + "?" + param.toString());
+				
+				if (param != null) {
+					logger.info("이전 URL : " + url + " | param : " + param);
+					response.sendRedirect(url.toString() + "?" + param.toString());
+					session.removeAttribute("param");
+				} else {
+					logger.info("이전 URL : " + url);
+					response.sendRedirect(url.toString());
+				}
+				
 				session.removeAttribute("prevURL");
-				session.removeAttribute("param");
+				
 			} else {
 				/* 일반 회원일 경우 */
 				if (session.getAttribute("adminId") == null) 
