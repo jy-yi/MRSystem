@@ -194,13 +194,16 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public int getNumOfParticipation(Map<String, Object> infoMap) {
 		return sqlSession.selectOne(namespace + ".getNumOfParticipation", infoMap);
 	}
-	
-	/** 관리자와 상위결재자의 메일 조회 */
-	@Override
-	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap) {
-		System.out.println(infoMap);
-		return sqlSession.selectList(namespace + ".getAdminMgrEmailList", infoMap);
-	}
+
+ 	/** 회의실 관리자 메일 조회 */
+ 	public String getAdminEmailList(int roomNo){
+		return sqlSession.selectOne(namespace + ".getAdminEmailList", roomNo);
+ 	}
+ 	
+ 	/** 예약자의 상위결재자 메일 조회 */
+ 	public String getMgrEmailList(String empNo){
+		return sqlSession.selectOne(namespace + ".getMgrEmailList", empNo);
+ 	}
 	
 	/** 사원의 이름 조회 */
 	@Override

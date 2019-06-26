@@ -100,8 +100,11 @@ public interface ReservationDAO {
  	/** 해당 부서의 회의 참여자 수 조회 */
  	public int getNumOfParticipation(Map<String, Object> infoMap);
 
- 	/** 관리자와 상위결재자의 메일 조회 */
- 	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap);
+ 	/** 회의실 관리자 메일 조회 */
+ 	public String getAdminEmailList(int roomNo);
+ 	
+ 	/** 예약자의 상위결재자 메일 조회 */
+ 	public String getMgrEmailList(String empNo);
  	
  	/** 사원의 이름 조회 */
  	public String getEmpName(String empNo);

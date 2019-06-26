@@ -156,6 +156,7 @@ th {
 	var empNo=$.cookie('loginCookie');
 	var roomNo="${roomInfo.ROOMNO}";
 	var name="${meetingName}";
+	var email="${employeeDto.email}";
 	var purpose="${purpose}";
 	var startDate="${startDate}";
 	var endDate="${endDate}";
@@ -175,6 +176,7 @@ th {
 			empNo:empNo,
 			roomNo:roomNo,
 			name:name,
+			email:email,
 			purpose:purpose,
 			startDate:startDate,
 			endDate:endDate,

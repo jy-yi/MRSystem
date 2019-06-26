@@ -492,14 +492,17 @@
 			  end_date<![CDATA[>=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')
 	</select>
 	
-	<!-- 상위결재자와 관리자의 이메일 리스트 조회 -->
-	<select id="getAdminMgrEmailList" parameterType="Map" resultType="String">
+	<!-- 관리자의 이메일 리스트 조회 -->
+	<select id="getAdminEmailList" resultType="String">
 		SELECT e.email
 		FROM room r, admin a, employee e 
 		WHERE r.room_no=#{roomNo}
 		      AND r.admin_id=a.admin_id
 		      AND a.emp_no=e.emp_no
-		UNION
+	</select>
+	
+	<!-- 상위결재자의 이메일 리스트 조회 -->
+	<select id="getMgrEmailList" resultType="String">
 		SELECT email
 		FROM employee
 		WHERE emp_no=(SELECT mgr_no 

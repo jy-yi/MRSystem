@@ -113,6 +113,6 @@ public interface ReservationService {
 	/* ------------- 공통 ------------- */
 	
 	/** 메일 전송 */
-	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName, String type);
+	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName, String type, String url);
 
 }

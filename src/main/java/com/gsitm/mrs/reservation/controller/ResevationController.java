@@ -126,7 +126,7 @@ public class ResevationController {
 		String title = "[GS ITM] 회의실 예약 취소 안내";
 		String email = StringUtils.join(emailList, ",");	// 해당 예약에 참여하는 사원의 이메일 목록 콤마(,)로 구분
 		
-		service.mailSend(empNo, email, title, name, reason, term, reservationName, "취소");
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "취소", "");
 
 		return "redirect:/reservation/statusList";
 	}
@@ -360,7 +360,7 @@ public class ResevationController {
 		
 		String title = "[GS ITM] 회의실 예약 반려 안내";
 		
-		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려");
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려", "");
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}

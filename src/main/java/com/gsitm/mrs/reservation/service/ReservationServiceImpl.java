@@ -239,6 +239,7 @@ public class ReservationServiceImpl implements ReservationService {
 		String empNo = (String) reserveData.get("empNo");
 		int roomNo = Integer.parseInt((String) reserveData.get("roomNo"));
 		String name = (String) reserveData.get("name");
+		String email = (String) reserveData.get("email");
 		String purpose = (String) reserveData.get("purpose");
 		String startDate = (String) reserveData.get("startDate");
 		String endDate = (String) reserveData.get("endDate");
@@ -325,21 +326,33 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 		
 		// 상위 결제자와 회의실 관리자()에게 예약 확인 메일 전송
+		/**
+		 * 단기 예약 일 경우 -> 신청자/참석자/상위결재자에게 예약 확인 메일 -> reservation status 1로
+		 * 장기 예약 일 경우&교육실 예약 -> 신청자/참석자에게 예약 확인 메일, 상위결재자에게 예약 승인 메일 -> 승인 시 관리자에게 예약 승인 메일
+		 * 					   -> waiting 테이블의 칼럼 y로 -> 둘 다 y면 status 1로 그리고 예약 신청 완료 메일(신청자/참석자/상위결재자)
+		 */
 		Map<String, Object> mailMap=new HashMap<>();
 		mailMap.put("empNo", empNo);
 		mailMap.put("roomNo", roomNo);
-		List<String> emailList = dao.getAdminMgrEmailList(mailMap);
+		String adminEmail=dao.getAdminEmailList(roomNo);
+		String mgrEmail=dao.getMgrEmailList(empNo);
+		
+		List<String> emailList = new ArrayList<>();	// 메일 보내야 할 모든 이메일 목록
+		emailList.add(email);	// 신청자 이메일
+		emailList.addAll(dao.getEmailList(resNo));	// 해당 회의 참석자들의 이메일
+		emailList.add(mgrEmail);	// 신청자의 상위 결재자 이메일
 			
-		String email = StringUtils.join(emailList, ",");	// 이메일 목록 콤마(,)로 구분
+		String emails = StringUtils.join(emailList, ",");	// 이메일 목록 콤마(,)로 구분
 		String title = "[GS ITM] 회의실 예약 신청 안내"; // 메일 제목
 		String applicant=dao.getEmpName(empNo); // 신청자 이름 
-		String reason="회의실 사용 승인을 요청합니다.";
-		String term=startDate+endDate;
-		String reservationName=name; // 회의명
+		String reason="회의실 예약 완료";
+		String term=startDate + " ~ " + endDate;
+		String reservationName = name; // 회의명
 		
-		mailSend(empNo, email, title, applicant, reason, term, reservationName, "신청");
+		String url = "http://localhost:8000/reservation/statusCalendar";
 		
-		System.out.println("메일전송~");
+		mailSend(empNo, emails, title, applicant, reason, term, reservationName, "신청", url);
+		
 	}
 
 	/** 사원번호로 회의 참여자 정보 얻어오기 */
@@ -480,7 +493,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	/** 메일 전송 */
 	@Override
-	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName, String type) {
+	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName, String type, String url) {
 
 		String host = "smtp.naver.com";
 		int port = 587;
@@ -488,7 +501,7 @@ public class ReservationServiceImpl implements ReservationService {
 		final String password = "dhwlddj23";
 		
 //		String recipient = empNo;
-		String content = mailUitls.getMailTemplate(name, reason, term, reservationName, type);
+		String content = mailUitls.getMailTemplate(name, reason, term, reservationName, type, url);
 		
 		// 정보를 담기 위한 객체 생성
 		Properties props = System.getProperties();

@@ -257,6 +257,6 @@ public class ReservationDaoTest {
 		map.put("empNo", "it1226");
 		map.put("roomNo", 1);
 		
-		logger.info(dao.getAdminMgrEmailList(map));
+//		logger.info(dao.getAdminMgrEmailList(map));
 	}
 }
