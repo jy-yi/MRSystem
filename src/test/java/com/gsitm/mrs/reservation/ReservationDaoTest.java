@@ -154,6 +154,18 @@ public class ReservationDaoTest {
 		
 	}
 	
+	/** 승인 반려 목록 조회 테스트 */
+	@Test
+	public void TestgetEmailList() {
+		
+		List<String> list = dao.getEmailList(1);
+		
+		for (String str : list) {
+			logger.info(str);
+		}
+		
+	}
+	
 	/** 예약 완료 목록 조회 테스트 */
 	@Test
 	public void TestSuccessList() {
