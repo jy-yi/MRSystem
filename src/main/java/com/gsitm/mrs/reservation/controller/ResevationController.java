@@ -328,8 +328,6 @@ public class ResevationController {
 		map.put("reservationNo", reservationNo);
 		map.put("mgrApproval", "Y");
 		
-		// TODO : 관리자한테 메일 보내기
-		
 		service.updateMgrApproval(map);
 		
 		return "redirect:/reservation/approvalWaitingList";

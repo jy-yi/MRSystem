@@ -167,7 +167,6 @@ public class ReservationServiceImpl implements ReservationService {
 			date = transFormat.format(start).toString() + " ~ " + transFormat.format(end).toString() + "(" + diff
 					+ "분)";
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -225,6 +224,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	/** 예약 정보 DB에 저장 */
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public void doReserve(Map<String, Object> reserveData) {
@@ -416,6 +416,77 @@ public class ReservationServiceImpl implements ReservationService {
 		model.addAttribute("roomInfo", dao.getRoomInfo(roomNo));
 		model.addAttribute("equipmentList", dao.getEquipmentList(roomNo));
 	}
+	
+	/** 예약시간 계산(단위:hour) */
+	public ReserveTypeVO calcDate(Date startDate, Date endDate) {
+		ReserveTypeVO reserveType = new ReserveTypeVO();
+
+		Calendar calendar = Calendar.getInstance();
+
+		calendar.setTime(endDate);
+		int endYear = calendar.get(Calendar.YEAR);
+		int endMonth = calendar.get(Calendar.MONTH) + 1;
+		int endDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+		int endMinute = calendar.get(Calendar.MINUTE);
+
+		calendar.setTime(startDate);
+		int startYear = calendar.get(Calendar.YEAR);
+		int startMonth = calendar.get(Calendar.MONTH) + 1;
+		int startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+		int startMinute = calendar.get(Calendar.MINUTE);
+
+		double reserveHours = 0.0; // 예약 시간
+
+		if (startDayOfMonth == endDayOfMonth && startMonth == endMonth && startYear == endYear) {
+			// 단기 예약
+			reserveType.setLongTerm(false);
+			reserveHours = (endHour - startHour) + (endMinute - startMinute) / 60.0;
+			if (startHour < 12 && endHour > 12)
+				reserveHours -= 1;
+		} else {
+			// 장기 예약
+			reserveType.setLongTerm(true);
+			for (Calendar cal = calendar; cal.get(Calendar.YEAR) <= endYear && cal.get(Calendar.MONTH) <= endMonth
+					&& cal.get(Calendar.DAY_OF_MONTH) <= endDayOfMonth; cal.add(Calendar.DAY_OF_MONTH, 1)) {
+				// 평일만 계산
+				switch (cal.get(Calendar.DAY_OF_WEEK)) {
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6: {
+					int year = calendar.get(Calendar.YEAR);
+					int month = calendar.get(Calendar.MONTH) + 1;
+					int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+					int hour = calendar.get(Calendar.HOUR_OF_DAY);
+					int minute = calendar.get(Calendar.MINUTE);
+
+					if (dayOfMonth == startDayOfMonth && month == startMonth && year == startYear) { // 첫날 계산
+						reserveHours += (18 - hour) + (0 - minute) / 60.0;
+						if (hour < 12) {
+							reserveHours -= 1;
+						}
+					} else if (dayOfMonth == endDayOfMonth && month == endMonth && year == endYear) { // 마지막날 계산
+						reserveHours += (endHour - 9) + (endMinute - 0) / 60.0;
+						if (endHour > 12) {
+							reserveHours -= 1;
+						}
+					} else { // 중간날 게산
+						reserveHours += 8;
+					}
+				}
+					break;
+				}
+			}
+		}
+		reserveType.setReserveHours(reserveHours);
+		
+		return reserveType;
+	}
+	
+	
 	/* ------------- 마이페이지 ------------- */
 
 	/** 마이페이지 예약 현황 캘린더 */
@@ -483,7 +554,7 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public EquipmentDTO putIntoEuipmentDto(HttpServletRequest request) {
 		// 서비스에서 해야 하는 일
-		// form에서 넘긴 equipmentNo로 equipmentname 알아내기, Y,N 여부
+		//TODO: form에서 넘긴 equipmentNo로 equipmentname 알아내기, Y,N 여부
 		return null;
 	}
 
@@ -504,7 +575,15 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 상위결재자 승인 상태 변경 */
 	@Override
 	public void updateMgrApproval(Map<String, Object> map) {
+		
+		Map<String, Object> reservationMap = dao.getReservationInfoByResNo(Integer.parseInt(map.get("reservationNo").toString()));
+		
+		// TODO : 관리자한테 메일 보내기
+//		mailSend(empNo, email, title, name, "", term, reservationName, "신청", url);
+		
+		
 		dao.updateMgrApproval(map);
+		
 	}
 
 	/** 관리자 승인 상태 변경 */
@@ -589,74 +668,6 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 
 		return true;
-	}
-
-	/** 예약시간 계산(단위:hour) */
-	public ReserveTypeVO calcDate(Date startDate, Date endDate) {
-		ReserveTypeVO reserveType = new ReserveTypeVO();
-
-		Calendar calendar = Calendar.getInstance();
-
-		calendar.setTime(endDate);
-		int endYear = calendar.get(Calendar.YEAR);
-		int endMonth = calendar.get(Calendar.MONTH) + 1;
-		int endDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-		int endHour = calendar.get(Calendar.HOUR_OF_DAY);
-		int endMinute = calendar.get(Calendar.MINUTE);
-
-		calendar.setTime(startDate);
-		int startYear = calendar.get(Calendar.YEAR);
-		int startMonth = calendar.get(Calendar.MONTH) + 1;
-		int startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-		int startHour = calendar.get(Calendar.HOUR_OF_DAY);
-		int startMinute = calendar.get(Calendar.MINUTE);
-
-		double reserveHours = 0.0; // 예약 시간
-
-		if (startDayOfMonth == endDayOfMonth && startMonth == endMonth && startYear == endYear) {
-			// 단기 예약
-			reserveType.setLongTerm(false);
-			reserveHours = (endHour - startHour) + (endMinute - startMinute) / 60.0;
-			if (startHour < 12 && endHour > 12)
-				reserveHours -= 1;
-		} else {
-			// 장기 예약
-			reserveType.setLongTerm(true);
-			for (Calendar cal = calendar; cal.get(Calendar.YEAR) <= endYear && cal.get(Calendar.MONTH) <= endMonth
-					&& cal.get(Calendar.DAY_OF_MONTH) <= endDayOfMonth; cal.add(Calendar.DAY_OF_MONTH, 1)) {
-				// 평일만 계산
-				switch (cal.get(Calendar.DAY_OF_WEEK)) {
-				case 2:
-				case 3:
-				case 4:
-				case 5:
-				case 6: {
-					int year = calendar.get(Calendar.YEAR);
-					int month = calendar.get(Calendar.MONTH) + 1;
-					int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-					int hour = calendar.get(Calendar.HOUR_OF_DAY);
-					int minute = calendar.get(Calendar.MINUTE);
-
-					if (dayOfMonth == startDayOfMonth && month == startMonth && year == startYear) { // 첫날 계산
-						reserveHours += (18 - hour) + (0 - minute) / 60.0;
-						if (hour < 12) {
-							reserveHours -= 1;
-						}
-					} else if (dayOfMonth == endDayOfMonth && month == endMonth && year == endYear) { // 마지막날 계산
-						reserveHours += (endHour - 9) + (endMinute - 0) / 60.0;
-						if (endHour > 12) {
-							reserveHours -= 1;
-						}
-					} else { // 중간날 게산
-						reserveHours += 8;
-					}
-				}
-					break;
-				}
-			}
-		}
-		reserveType.setReserveHours(reserveHours);
-		return reserveType;
 	}
 
 }

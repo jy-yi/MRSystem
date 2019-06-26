@@ -324,6 +324,14 @@
 		FROM DUAL	
 	</select>
 	
+	<!-- 예약 번호로 예약 상세 조회 -->
+	<select id="getReservationInfoByResNo" resultType="Map">
+		SELECT r.res_no, r.emp_no, room_no, r.name as reseName, purpose, start_date, end_date, snack_want, status, e.name AS empName
+		FROM reservation r JOIN employee e
+		ON r.emp_no = e.emp_no
+		WHERE r.res_no = #{reservationNo}
+	</select>
+	
 	<!-- 예약정보 DB에 삽입 -->
 	<insert id="insertReservation" parameterType="Reservation"> 
 		<choose>

@@ -75,6 +75,9 @@ public interface ReservationDAO {
 	/** 예약번호 조회 */
 	public int getReservationNo();
 	
+	/** 예약 번호로 예약 상세 정보 조회 */
+	public Map<String, Object> getReservationInfoByResNo (int reservationNo);
+	
 	/** 예약정보 DB에 삽입 */
 	public void insertReservation(ReservationDTO reservation);
 	
@@ -110,6 +113,8 @@ public interface ReservationDAO {
  	
  	/** 방 정보 조회 */
  	public Map<String, Object> getRoomInfo(int roomNo);
+ 	
+ 	
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

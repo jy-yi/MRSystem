@@ -142,6 +142,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public int getReservationNo() {
 		return sqlSession.selectOne(namespace + ".getReservationNo");
 	}
+	
+	/** 예약 번호로 예약 상세 정보 조회 */
+	@Override
+	public Map<String, Object> getReservationInfoByResNo(int reservationNo) {
+		return sqlSession.selectOne(namespace + ".getReservationInfoByResNo", reservationNo);
+	}
 
 	/** 예약정보 DB에 삽입 */
 	@Override
@@ -260,4 +266,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
+
 }
