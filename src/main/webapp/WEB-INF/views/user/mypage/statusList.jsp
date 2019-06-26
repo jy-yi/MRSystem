@@ -86,7 +86,7 @@
 													<td> ${status.count} </td>
 													<td> ${list.RESERVATIONNAME}</td>
 													<td> ${list.PURPOSE}</td>
-													<td> ${list.ROOMNO}</td>
+													<td> ${list.ROOMNAME}</td>
 													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
 													<td> ${list.DEPARTMENTNAME}</td>
 													

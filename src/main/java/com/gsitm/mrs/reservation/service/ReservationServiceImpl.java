@@ -26,6 +26,7 @@ import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -49,6 +50,7 @@ import com.gsitm.mrs.util.MailUtils;
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
+	
 
 	@Inject
 	private ReservationDAO dao;
@@ -542,6 +544,11 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getDashBoard(int roomNo) {
 		return dao.getDashBoard(roomNo);
 	}
+	
+	/** 시작 버튼 처리 - 승인상태 변경 */
+	public void updateStart(Map<String, Object> map) {
+		dao.updateStart(map);
+	}
 
 	/** 끝 버튼 처리 - 대여물품 삭제 */
 	public void deleteBorEquip(int reservationNo) {
@@ -688,4 +695,69 @@ public class ReservationServiceImpl implements ReservationService {
 		return true;
 	}
 
+	/** 예약시간 계산(단위:hour) */
+	/*public ReserveTypeVO calcDate(Date startDate, Date endDate) {
+		ReserveTypeVO reserveType = new ReserveTypeVO();
+	  
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.setTime(endDate);
+		int endYear = calendar.get(Calendar.YEAR);
+		int endMonth = calendar.get(Calendar.MONTH)+1;
+		int endDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+		int endMinute = calendar.get(Calendar.MINUTE);
+	  
+		calendar.setTime(startDate);
+		int startYear = calendar.get(Calendar.YEAR);
+		int startMonth = calendar.get(Calendar.MONTH)+1;
+		int startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+		int startMinute = calendar.get(Calendar.MINUTE);
+	  
+		double reserveHours = 0.0; // 예약 시간
+	  
+		if(startDayOfMonth==endDayOfMonth && startMonth==endMonth && startYear==endYear) {
+			// 단기 예약
+			reserveType.setLongTerm(false);
+		    reserveHours = (endHour-startHour) + (endMinute-startMinute)/60.0;
+		    if(startHour<12 && endHour>12) reserveHours -= 1;
+		} else {
+			// 장기 예약
+			reserveType.setLongTerm(true);
+			for(Calendar cal = calendar; 
+				cal.get(Calendar.YEAR) <= endYear && cal.get(Calendar.MONTH) <= endMonth && cal.get(Calendar.DAY_OF_MONTH) <= endDayOfMonth;
+				cal.add(Calendar.DAY_OF_MONTH, 1)) {
+			    // 평일만 계산
+				switch (cal.get(Calendar.DAY_OF_WEEK)) {
+					case 2: case 3: case 4: case 5: case 6:{
+					int year = calendar.get(Calendar.YEAR);
+					int month = calendar.get(Calendar.MONTH)+1;
+					int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+					int hour = calendar.get(Calendar.HOUR_OF_DAY);
+					int minute = calendar.get(Calendar.MINUTE);
+		      
+					if(dayOfMonth==startDayOfMonth && month==startMonth && year==startYear) { //첫날 계산
+						reserveHours += (18-hour) + (0-minute)/60.0;
+						if(hour < 12) {
+							reserveHours -= 1;
+						}
+					} else if(dayOfMonth==endDayOfMonth && month==endMonth && year==endYear) { // 마지막날 계산
+						reserveHours += (endHour-9) + (endMinute-0)/60.0;
+						if(endHour > 12) {
+						reserveHours -= 1;
+					}
+					} else { // 중간날 게산
+						reserveHours += 8;
+					}
+					}
+				break;
+			}
+			}
+		}
+		reserveType.setReserveHours(reserveHours);
+	return reserveType;
+	}*/
+	
+	
 }
