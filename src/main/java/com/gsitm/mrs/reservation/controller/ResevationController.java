@@ -369,7 +369,33 @@ public class ResevationController {
 	}
 	
 	/**
-	 * 예약 반려
+	 * 상위결재자 예약 반려
+	 * 
+	 * @param status
+	 * @param reservationNo
+	 * @param reason
+	 * @return
+	 */
+	@RequestMapping(value = "/mgrRefuse", method = RequestMethod.POST)
+	public String mgrRefuse(String status, String reservationNo, String reason) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("reservationNo", reservationNo);
+		map.put("status", status);
+		map.put("mgrApproval", "N");
+		map.put("reason", reason);
+		
+		System.out.println("상위결재자 예약 반려 > " + map);
+		
+		service.updateStatus(map);
+		service.updateMgrApproval(map);
+		service.insertRefuse(map);
+		
+		return "redirect:/reservation/approvalWaitingList";
+	}
+	
+	/**
+	 * 관리자 예약 반려
 	 * 
 	 * @param status		예약 상태 (반려 : 2)
 	 * @param reservationNo	예약 번호
@@ -391,7 +417,7 @@ public class ResevationController {
 		
 		String title = "[GS ITM] 회의실 예약 반려 안내";
 		
-		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려", "");
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려", "http://localhost/reservation/statusList");
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}

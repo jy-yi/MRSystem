@@ -48,6 +48,7 @@
 </div>
 <!-- End of Main Content -->
 <script>
+/* 상위 결재자 요청 승인 메일 통해서 접속 */
 $(function(){
 	var status = getUrlParams();
 	var type = status.type;
@@ -105,31 +106,24 @@ $(function(){
 									  },
 									]).then((result) => {
 									  if (result.value) {
-										 
 										  /* 반려 사유 아무것도 작성하지 않았을 경우 */
 										  if ($.trim(result.value[0]) == "") {
 											  return;
 										  } else {
-											  alert(result.value[0]);
-// 								  			$.ajax({
-// 												url : "/reservation/adminRefuse",
-// 												type : "POST",
-// 												data : {
-// 													reservationNo : reservationNo,
-// 													reason : result.value[0],
-// 													status : 2,
-// 													name : empName,
-// 													email : email,
-// 													empNo : empNo,
-// 													term : term,
-// 													reservationName : reservationName
-// 												}, success : function(data) {
-// 													swal('Success!', '반려가 완료되었습니다.', 'success'
-// 										    		).then(function(){
-// 							  		    		    	location.href="/reservation/approvalWaitingList";
-// 							  		    		    });
-// 												}
-// 											});
+								  			$.ajax({
+												url : "/reservation/mgrRefuse",
+												type : "POST",
+												data : {
+													reservationNo : resNo,
+													reason : result.value[0],
+													status : 2
+												}, success : function(data) {
+													swal('Success!', '반려가 완료되었습니다.', 'success'
+										    		).then(function(){
+							  		    		    	location.href="/reservation/statusCalendar";
+							  		    		    });
+												}
+											});
 										  }
 								  			
 									  }
@@ -144,6 +138,7 @@ $(function(){
 
 });
 
+/* url에 함께 온 파라미터 정보 */
 function getUrlParams() {
     var params = {};
     window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, 
