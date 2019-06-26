@@ -378,7 +378,7 @@
  						
  						swal('종료 버튼 처리!', '대여물품 삭제 및 비용 계산이 됩니다.', 'success');
  						
- 						$.ajax({
+ 						/* $.ajax({
  							url : "/reservation/deleteBorEquip",
  		 					type : "POST",
  		 					data : {
@@ -386,7 +386,7 @@
  		 					}, success : function(data) {
  		 						
  		 					}
- 						});
+ 						}); */
  					}, error : function(){
  			            alert("종료 버튼 처리 에러");
  			        }
