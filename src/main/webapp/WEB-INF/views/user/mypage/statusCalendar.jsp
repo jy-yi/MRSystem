@@ -38,16 +38,18 @@
 								
 									[당일 가장 가까운 예약 일정]	
 									<c:forEach items="${latestReservation}" var="list">
-										<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
-											<c:choose>
-												<c:when test="${list.WOWDATE >= 0 }">
-													${list.NAME } : ${list.WOWDATE}분 남았습니다. <br>
-												</c:when>
-												<c:otherwise>
-													${list.NAME } : ${list.WOWDATE * -1 }분 지났습니다. <br>
-												</c:otherwise>
-											</c:choose>
-											회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
+										<c:if test="${list.STATUS == 1 || list.STATUS == 4}">
+											<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
+												<c:choose>
+													<c:when test="${list.WOWDATE >= 0 }">
+														${list.NAME } : ${list.WOWDATE}분 남았습니다. <br>
+													</c:when>
+													<c:otherwise>
+														${list.NAME } : ${list.WOWDATE * -1 }분 지났습니다. <br>
+													</c:otherwise>
+												</c:choose>
+												회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
+											</c:if>
 										</c:if>
 									</c:forEach>	
 								</div>
@@ -71,13 +73,9 @@
 
 							</div>
 
-							<button id="startBtn" class="btn btn-secondary btn-icon-split" style="display: none">
+							<button id="start_end_Btn" class="btn btn-secondary btn-icon-split" style="display: none">
 								<span id="spanText" class="text">시작</span>
 							</button>
-							<button id="endBtn" class="btn btn-secondary btn-icon-split">
-								<span id="spanText" class="text">끝</span>
-							</button>
-							
 
 							<a href="/reservation/statusList"
 								class="btn btn-primary btn-icon-split"> <span class="text">목록형</span>
@@ -197,15 +195,24 @@
 	var reservationName = '';
 	var startDate = '';
 	var endDate = '';
+	var wowDate = '';
+	var ttt = '';
+	var status = '';
+	var noShow = true;
 	
 	<c:forEach items="${latestReservation}" var="list">
 		reservationName = "${list.NAME}";
+		reservationNo = "${list.RESERVATIONNO}";
 		startDate = "${list.STARTDATE}";
 		endDate = "${list.ENDDATE}";
 		wowDate = "${list.WOWDATE}";
+		status = "${list.STATUS}";
 	</c:forEach>
+	console.log("------------------------------");
 	
-	//console.log(wowDate);
+	console.log("${login.name}" +"님의 예약 정보는 아래와 같습니다.");
+	console.log("[ " + reservationName + " ] 남은 시간 >>>> " + wowDate + "분");
+	console.log("승인 상태 status >>>> " + status);
 	
 	var startYear = startDate.substring(0, 4);
 	var startMonth = startDate.substring(5, 7);
@@ -222,22 +229,23 @@
 	var myStartDate = new Date(startYear, startMonth, startDay, startHour, startMinute);
 	var myEndDate = new Date(endYear, endMonth, endDay, endHour, endMinute);
 	
-	console.log("회의 예약명 : " + reservationName);
-	console.log("나의 가장 최근 예약 회의 시작 날짜 및 시간 : "+ myStartDate);
-	console.log("나의 가장 최근 예약 회의 끝 날짜 및 시간 : "+ myEndDate);
+	/* console.log("나의 가장 최근 예약 회의 시작 날짜 및 시간 : "+ myStartDate);
+	console.log("나의 가장 최근 예약 회의 끝 날짜 및 시간 : "+ myEndDate); */
 	
 	var date = new Date();
     var currentDate = new Date(date.getFullYear(),(date.getMonth() + 1), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
     
     console.log("현재 분 : " + date.getMinutes());
-    console.log("현재 날짜 및 시간 : " + currentDate);
-    console.log("${login.name}");
-    
+    //console.log("현재 날짜 및 시간 : " + currentDate);
+    	
     var testDate = myStartDate - currentDate;
     
-    var temp = Math.round((testDate/1000)/60);
+    /* var betweenDay1 = myStartDate.getTime() - currentDate.getTime();
+    var betweenDay2 = Math.round(betweenDay1/1000); */
     
-    console.log("예약시작시간 - 현재시간 temp >>>>>>  " + temp);
+    var bun = Math.round((testDate/1000)/60);
+    
+    //console.log("예약시작시간 - 현재시간 bun >>>>>>  " + bun);
     
     // 현재시간이 예약시간의 -10분일때 시작버튼 뜨고
    	// -> currentDate == myDate.setMinutes(myDate.getMinute()-10)
@@ -251,79 +259,143 @@
     map.endDate = "${latestReservation[0].ENDDATE}";
     map.wowDate = "${latestReservation[0].WOWDATE}";
 
-    console.log(map.wowDate);
+/*     console.log("--------------map---------------------");
+    console.log("회의 예약명 >>>> " + map.name);
+    console.log("startDate >>>> " + map.startDate);
+    console.log("endDate >>>> " + map.endDate);
+    console.log("wowDate >>>> " + map.wowDate);
+    
+    console.log("--------------c:forEach---------------------");
+    console.log("회의 예약명 : " + reservationName);
+    console.log("startDate >>>> : " + startDate);
+    console.log("endDate >>>> : " + endDate);
+    console.log("wowDate >>>> : " + wowDate);
+    
+    console.log("--------------wowDate < 10---------------------");
+    if(wowDate < 10){
+	    console.log("회의 예약명 : " + reservationName);
+	    console.log("startDate >>>> : " + startDate);
+	    console.log("endDate >>>> : " + endDate);
+	    console.log("wowDate >>>> : " + wowDate);
+    } */
     
     /* ---------------------------------------------------------------------- */
     /* ---------------------------------------------------------------------- */
     /* ---------------------------------------------------------------------- */
-
-    $("#endBtn").click(function(){
-    	//alert("끝 버튼 클릭!");
-    	
-    	$.ajax({
-    		url : "/reservation/deleteBorEquip",
+    var test=1;
+    var interval = '';
+    
+    if(status == 1){
+	    interval = setInterval(() => {
+	    	
+	    	var cd = new Date();
+	    	
+	    	var year = cd.getFullYear();
+	    	var month = cd.getMonth()+1;
+	    	var day = cd.getDate();
+	    	var hour = cd.getHours();
+	    	var minute = cd.getMinutes();
+	    	var second = cd.getSeconds();
+	    	
+	    	var currDate = new Date(year, month, day, hour, minute, second);
+	    	
+	    	var result = Math.round(((myStartDate.getTime()/1000/60) - (currDate.getTime()/1000/60)));
+	    	
+	    	console.log("--------------------------");
+	    	
+	    	if(result >= 0){
+	    		console.log(result+"분 남았습니다.");
+	    	} else{
+	    		console.log((result * -1)+"분 지났습니다.");
+	    	}
+	    	
+	    	console.log(((myStartDate.getTime()/1000/60) - (currDate.getTime()/1000/60)));
+	    	
+	    	console.log("--------------------------");	    
+	    	
+	    	if (-10 < result && result <= 10) {
+	   	    	var start_end_Btn = document.getElementById("start_end_Btn");
+	   	    	
+	   			if (start_end_Btn.style.display == 'none') {
+	   	    		// 시작버튼 활성화
+	   	    		start_end_Btn.style.display = 'block';
+	   				$("#spanText").text('시작');
+	   			}
+	   	    }
+			if(result <= -10){
+				console.log("10분 초과 인터벌 클리어");
+		    	clearInterval(interval);
+		    }
+		}, 1000);
+    } else if(status == 4){
+  		if (start_end_Btn.style.display == 'none') {
+    		start_end_Btn.style.display = 'block';
+			$("#spanText").text('종료');
+  		}
+  		
+  		console.log("status 4");
+   	}
+    
+ 	// 시작 버튼 클릭
+ 	
+	$("#start_end_Btn").click(function() {
+		if(status == 1){
+		
+		console.log("------------시작 버튼이 눌린 후------------");
+		console.log("예약명 > " + map.name + ", " + "예약번호 > " + map.reservationNo);
+		
+		$("#spanText").text('종료');
+		
+		// STATUS를 예약 승인(1) -> 예약 시작(4)로 바꿔줌
+		$.ajax({
+			url : "/reservation/updateStart",
 			type : "POST",
 			data : {
 				reservationNo : map.reservationNo,
+				status : 4
 			}, success : function(data) {
 				
-				console.log(map.reservationNo);
-				
-				swal('끝 버튼 처리!', '대여물품 삭제 및 비용 계산이 됩니다.', 'success'
-	    		).then(function(){
-	    		    	location.href="/reservation/statusCalendar";
-	    		});
-			}, error : function(){
-	            alert("끝 버튼 처리 에러");
-	        }
-    	});
-    	
-    });
-    
-    
-    
-    /* if (-10 < map.wowDate && map.wowDate <= 10) {
-    	console.log(map.name + " : " + map.wowDate +"분 남았습니다.");
-    
-    	var startBtn = document.getElementById("startBtn");
-    	
-			// 시간 비교
-		if (startBtn.style.display == 'none') {
-    		// 시작버튼 활성화
-    		startBtn.style.display = 'block';
-			$("#spanText").text('시작');
-		}
-		// 시작 버튼 클릭
-		$("#startBtn").click(function() {
-				
-			console.log("startBtn 클릭 안의 temp >>>>>>> " + temp);
-			if (temp <= -10) {
-				console.log("startBtn 클릭 안의 temp가 -10보다 작거나 같을 때의 temp >>>>>>> " + temp);
-				$.ajax({
-					url : "/reservation/cancelReservation",
-					type : "POST",
-					data : {
-						reservationNo : map.reservationNo,
-						reason : "NO-SHOW로 인해 예약이 강제 취소되었습니다.",
-						status : 3,
-						name : "${login.name}",
-						empNo : map.empNo,
-						term : map.startDate + " - " + map.endDate,									
-						reservationName : map.name
-		
-					}, success : function(data) {
-						swal('예약 취소!', 'NO-SHOW로 인해 예약이 강제 취소되었습니다.', 'error'
-			    		).then(function(){
-			    		    	location.href="/reservation/statusCalendar";
-			    		});
-					}
-				});
-			} else {
-				alert("시작 버튼 클릭!");
-				console.log(map.name + ", " + map.reservationNo);
-				$("#spanText").text('끝');
+				status = 4;
+				console.log("현재 status:"+status);
+				swal('회의 시작!', '회의가 시작됩니다', 'success');
+				console.log("시작 버튼 눌러서 인터벌 클리어");
+				clearInterval(interval);
 			}
 		});
-    } */
 	
+ 		} else if(status==4){
+ 		// 종료 버튼 클릭
+ 			$("#start_end_Btn").click(function(){
+ 				console.log("종료버튼 클릭!");
+ 				$.ajax({
+ 		    		url : "/reservation/deleteBorEquip",
+ 					type : "POST",
+ 					data : {
+ 						reservationNo : map.reservationNo,
+ 					}, success : function(data) {
+ 						
+ 						console.log(map.reservationNo);
+ 						
+ 						swal('종료 버튼 처리!', '대여물품 삭제 및 비용 계산이 됩니다.', 'success');
+ 						
+ 						$.ajax({
+ 							url : "/reservation/deleteBorEquip",
+ 		 					type : "POST",
+ 		 					data : {
+ 		 						reservationNo : map.reservationNo,
+ 		 					}, success : function(data) {
+ 		 						
+ 		 					}
+ 						});
+ 					}, error : function(){
+ 			            alert("종료 버튼 처리 에러");
+ 			        }
+ 		    	});
+ 			});
+ 		}
+    
+ 	});
+  	
+    
+	 
 </script>

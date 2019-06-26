@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -259,4 +260,11 @@ public class ReservationDaoTest {
 		
 		logger.info(dao.getAdminMgrEmailList(map));
 	}
+	
+	
+	
+	
+	
+	
+	
 }

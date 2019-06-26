@@ -49,16 +49,18 @@
         FROM  	(select r.res_no                        AS res_no,
 		                r.name							AS reservationName,
 						purpose,
-						room_no							AS roomNo,
+						rm.name							AS roomName,
 						To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
 				       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
 						status
         		FROM    reservation r,
 						lead_department ld,
-						department d
+						department d,
+						room rm
 				WHERE	r.res_no = ld.res_no
+						AND rm.room_no = r.room_no
 						AND ld.dept_no = d.dept_no
-						AND	emp_no = #{employeeNo}) data1,
+						AND	r.emp_no = #{employeeNo}) data1,
             			(SELECT	r.res_no						AS res_no,
                     			LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
 			            FROM	reservation r,
@@ -66,7 +68,7 @@
 			                    department d
 			            WHERE	r.res_no = ld.res_no
 			                    AND ld.dept_no = d.dept_no
-			                    AND	emp_no = #{employeeNo}
+			                    AND	r.emp_no = #{employeeNo}
 			            group by r.res_no) data2
         WHERE data1.res_no = data2.res_no
 	</select>
@@ -100,7 +102,7 @@
         FROM	reservation
         WHERE 	emp_no = #{employeeNo}
 		AND		(ROUND((start_date - sysdate))) = 0
-		AND     status = 1
+		<!-- AND     status = 1 -->
 	</select>
 	
 	<!-- 대시보드 -->
@@ -118,6 +120,11 @@
         AND 	r.emp_no = e.emp_no
         AND 	rm.room_no = #{roomNo}
 	</select>
+	
+	<!-- 시작 버튼 처리 - 승인상태 변경 -->
+	<update id="updateStart">
+		UPDATE reservation SET status = #{status} WHERE res_no = #{reservationNo}
+	</update>
 	
 	<!-- 끝 버튼 처리 - 대여물품 삭제 -->
 	<delete id="deleteBorEquip">

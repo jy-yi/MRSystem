@@ -75,6 +75,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace +".getDashBoard", roomNo);
 	}
 	
+	/** 시작 버튼 처리 - 승인상태 변경 */
+	public void updateStart(Map<String, Object> map) {
+		sqlSession.update(namespace+".updateStart", map);
+	}
+	
 	/** 끝 버튼 처리 - 대여물품 삭제 */
 	public void deleteBorEquip(int reservationNo) {
 		sqlSession.delete(namespace+".deleteBorEquip", reservationNo);

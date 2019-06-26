@@ -27,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.SequencedHashMap;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -50,6 +51,7 @@ import com.gsitm.mrs.util.MailUtils;
  */
 @Service
 public class ReservationServiceImpl implements ReservationService {
+	
 
 	@Inject
 	private ReservationDAO dao;
@@ -404,6 +406,11 @@ public class ReservationServiceImpl implements ReservationService {
 		return dao.getDashBoard(roomNo);
 	}
 	
+	/** 시작 버튼 처리 - 승인상태 변경 */
+	public void updateStart(Map<String, Object> map) {
+		dao.updateStart(map);
+	}
+	
 	/** 끝 버튼 처리 - 대여물품 삭제 */
 	public void deleteBorEquip(int reservationNo) {
 		dao.deleteBorEquip(reservationNo);
@@ -592,4 +599,21 @@ public class ReservationServiceImpl implements ReservationService {
 		reserveType.setReserveHours(reserveHours);
 	return reserveType;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

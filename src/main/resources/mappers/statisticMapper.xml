@@ -72,14 +72,16 @@
         FROM  	(SELECT r.res_no                        AS res_no,
 		                r.name							AS reservationName,
 						purpose,
-						room_no							AS roomNo,
+						rm.name							AS roomName,
 						To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
 				       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
 						status
         		FROM    reservation r,
 						lead_department ld,
-						department d
+						department d,
+						room rm
 				WHERE	r.res_no = ld.res_no
+						AND rm.room_no = r.room_no
 						AND ld.dept_no = d.dept_no
 						AND	emp_no = #{employeeNo}) data1,
            		(SELECT	r.res_no						AS res_no,
@@ -100,14 +102,16 @@
         FROM  	(SELECT r.res_no                        AS res_no,
 		                r.name							AS reservationName,
 						purpose,
-						room_no							AS roomNo,
+						rm.name							AS roomName,
 						To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
 				       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
 						status
         		FROM    reservation r,
 						lead_department ld,
-						department d
+						department d,
+						room rm
 				WHERE	r.res_no = ld.res_no
+						AND rm.room_no = r.room_no
 						AND ld.dept_no = d.dept_no
 						AND (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
 						AND	emp_no = #{employeeNo}) data1,

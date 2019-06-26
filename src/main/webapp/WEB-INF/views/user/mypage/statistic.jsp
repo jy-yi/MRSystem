@@ -215,7 +215,7 @@ $(function() {
     		table += '<td> ' + (i+1) + ' </td>';
     		table += '<td> ' + item.RESERVATIONNAME + ' </td>';
     		table += '<td> ' + item.PURPOSE + ' </td>';
-    		table += '<td> ' + item.ROOMNO + ' </td>';
+    		table += '<td> ' + item.ROOMNAME + ' </td>';
     		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
     		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
     		

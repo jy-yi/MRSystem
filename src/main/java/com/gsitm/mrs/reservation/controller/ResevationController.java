@@ -69,7 +69,7 @@ public class ResevationController {
 		
 		model.addAttribute("reservationInfo", reservationInfo);
 		model.addAttribute("latestReservation", latestReservation);
-		
+
 		return "user/mypage/statusCalendar";
 	}
 	
@@ -102,6 +102,20 @@ public class ResevationController {
 		
 		return "user/mypage/statusList";
 	}
+	
+	@RequestMapping(value="/updateStart", method = RequestMethod.POST)
+	public String updateStart(String reservationNo, String status) {
+		
+		Map<String, Object> map = new HashMap<>();
+				
+		map.put("reservationNo", reservationNo);
+		map.put("status", status);
+		
+		service.updateStart(map);
+		
+		return "redirect:/reservation/statusList";
+	}
+	
 	
 	/**
 	 * 예약 취소
