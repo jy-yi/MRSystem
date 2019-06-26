@@ -8,13 +8,52 @@
 	margin: 0 auto;
 	background-color: white;
 }
-.activeBtn{
-	background-color: rgb(54,93,205);
-	color: white;
+
+.panel.with-nav-tabs .panel-heading{
+    padding: 5px 5px 0 5px;
 }
-.disabledBtn{
-	background-color: #cecece;
-	color: white;
+.panel.with-nav-tabs .nav-tabs{
+	border-bottom: none;
+}
+.panel.with-nav-tabs .nav-justified{
+	margin-bottom: -1px;
+}
+
+/********************************************************************/
+/*** PANEL PRIMARY ***/
+.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+	color: #fff;
+	background-color: #3071a9;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
+	color: #428bca;
+	background-color: #fff;
+	border-color: #428bca;
+	border-bottom-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu {
+    background-color: #428bca;
+    border-color: #3071a9;
+}
+/* 회의실 글씨 색 */
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a { 
+    color: #fff;   
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
+    background-color: #3071a9;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > .active > a:focus {
+    background-color: #4a9fe9;
 }
 </style>
 <!-- Main Content -->
@@ -29,31 +68,37 @@
 			<!-- Page Heading -->
 			<div class="d-sm-flex align-items-center justify-content-between mb-4">
 				<h1 id="name" class="h5 mb-0 text-gray-800">
-					<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span>
+					<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span> <span id="roomNameTitle"></span>
 				</h1>
 			</div>
 
 			<!-- Content Row -->
 			<div class="row">
-
-				<ul class="nav nav-tabs">
-					<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
-					<c:forEach items="${workplaceList}" var="list" varStatus="status">
-						<li class="nav-item">
-							<a class="nav-link workplace-list ${status.index eq 0 ? 'active':''}"
-								data-toggle="tab" href="#workplace${list.workplaceNo}"
-								value="${list.workplaceNo}">${list.name}
-							</a>
-						</li>
-					</c:forEach>
-				</ul>
-
-				<div class="tab-content">
-					<div id="roomList"></div>
-					<div id="calendar"></div>
+				<div class="panel with-nav-tabs panel-primary">
+					<div class="panel-heading">
+						<ul class="nav nav-tabs">
+							<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+							<c:forEach items="${workplaceList}" var="list" varStatus="status">
+	<!-- 							<li class="nav-item"> -->
+	<%-- 								<a class="nav-link workplace-list ${status.index eq 0 ? 'active':''}" data-toggle="tab" href="#workplace${list.workplaceNo}" value="${list.workplaceNo}">${list.name} --%>
+	<!-- 								</a> -->
+	<!-- 							</li> -->
+								<li class="dropdown">
+		                            <a href="#workplace${list.workplaceNo}" class="nav-link workplace-list" data-toggle="dropdown" value="${list.workplaceNo}"> ${list.name} <i class="fas fa-caret-down"></i></a>
+		                            <ul class="dropdown-menu" role="menu" id="roomList${list.workplaceNo}">
+		                            </ul>
+		                        </li>
+							</c:forEach>
+						</ul>
+					</div>
+				
+					<div class="panel-body">
+						<div class="tab-content">
+							<div id="calendar"></div>
+						</div>
+					</div>
 				</div>
 			</div>
-
 		</div>
 		<!-- /.container-fluid -->
 	</div>
@@ -152,8 +197,6 @@
 			// 대시보드 > XXX (지사 이름 동적 변경)
 			$("#workplaceNameTitle").text($(this).text());
 
-			// TODO : 탭 눌렀을 때 이벤트 다 지워버리고 다시 ajax로 뿌려주셈~ 화이팅!
-			
 			$.ajax({
 				url : "/statistic/getRoomListByWorkplaceNo",
 				data : {
@@ -162,18 +205,11 @@
 				type : "POST",
 				dataType : 'json',
 				success : function(data) {
-					console.log("success");
-					$("#roomList").empty();
+					console.log(data.roomList);
+					$("#roomList"+workplaceNo).empty();
 					$.each(data.roomList, function(index, item){
-						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
-						$("#roomList").append('<a href="#" class="btn disabledBtn roomBtn"> '+item.name+' </a>');
-						
-						//$(".roomBtn").on("click").css('color','yellow');
-						//$(".roomBtn").css('color','yellow');
-						
+						$("#roomList"+workplaceNo).append('<li style="text-align: center;"><a href="#" data-toggle="tab" value="'+ item.roomNo +'" class="roomBtn">'+ item.name + '</a></li>');
 					});
-					
-					$('.roomBtn:first').trigger('click');
 				},
 				error : function() {
 					alert("지사별 해당 회의실 조회 에러");
@@ -182,21 +218,17 @@
 			
 		});
 
-		$(document).on("click",".roomBtn",function(){
-			console.log("크릭!");
-			$(".roomBtn").removeClass("activeBtn").addClass("disabledBtn");
-			$(this).removeClass("disabledBtn").addClass("activeBtn");
-		}); 
-		
 		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 		$(".workplace-list:first").trigger("click");
-		
-		var roomNo;
+		$('.roomBtn:first').trigger('click');
 		
 		/* 회의실 버튼 눌렀을 때 */
 		$(document).on("click", ".roomBtn", function() {
-			roomNo = $(this).prev().val();
+			var roomNo = $(this).attr('value');
 			console.log(roomNo);
+			
+			// 대시보드 > XXX > YYY (회의실 이름 동적 변경)
+			$("#roomNameTitle").text(" > "+$(this).text());
 			
 			$.ajax({
 				url : "/reservation/getRoomDashBoard",
