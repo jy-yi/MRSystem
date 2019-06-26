@@ -204,6 +204,8 @@ public class ReservationDAOImpl implements ReservationDAO {
  	
  	/** 예약자의 상위결재자 메일 조회 */
  	public String getMgrEmail(String empNo){
+ 		System.out.println("empNo:"+empNo);
+ 		System.out.println("mail:"+sqlSession.selectOne(namespace + ".getMgrEmail", empNo));
 		return sqlSession.selectOne(namespace + ".getMgrEmail", empNo);
  	}
 	
