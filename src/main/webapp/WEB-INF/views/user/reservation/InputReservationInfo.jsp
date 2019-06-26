@@ -571,8 +571,6 @@
 		}
 	};
 	
-	///////// selectbox값이 change 된 경우 checkFormInput() 함수를 호출해야 한다!!
-	
 	// 회의실 예약 내역을 다 입력하면 active로 전환
 	$("#nextBtn").on("click",function(){
 		// 쿠키에 저장된 employeeNo 폼에 전달
