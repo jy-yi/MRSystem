@@ -578,9 +578,14 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		Map<String, Object> reservationMap = dao.getReservationInfoByResNo(Integer.parseInt(map.get("reservationNo").toString()));
 		
-		// TODO : 관리자한테 메일 보내기
-//		mailSend(empNo, email, title, name, "", term, reservationName, "신청", url);
+		String empNo = reservationMap.get("EMP_NO").toString();
+		String email = dao.getAdminEmail(Integer.parseInt(reservationMap.get("ROOM_NO").toString()));
+		String title = "[GS ITM] 회의실 예약 승인 요청";
+		String name = "EMPNAME";
+		String term = reservationMap.get("START_DATE") + " ~ " + reservationMap.get("END_DATE");
+		String reservationName = reservationMap.get("RESENAME").toString();
 		
+		mailSend(empNo, email, title, name, "", term, reservationName, "신청", "http://localhost:8000/reservation/approvalWaitingList");
 		
 		dao.updateMgrApproval(map);
 		

@@ -279,6 +279,7 @@ public class ReservationDaoTest {
 	
 	@Test
 	public void testGetRoomType() {
-		logger.info(dao.getRoomType(1));
+		Map<String, Object> map =dao.getReservationInfoByResNo(1);
+		logger.info(map);
 	}
 }
