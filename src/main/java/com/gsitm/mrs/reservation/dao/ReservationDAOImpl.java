@@ -196,13 +196,13 @@ public class ReservationDAOImpl implements ReservationDAO {
 	}
 
  	/** 회의실 관리자 메일 조회 */
- 	public String getAdminEmailList(int roomNo){
-		return sqlSession.selectOne(namespace + ".getAdminEmailList", roomNo);
+ 	public String getAdminEmail(int roomNo){
+		return sqlSession.selectOne(namespace + ".getAdminEmail", roomNo);
  	}
  	
  	/** 예약자의 상위결재자 메일 조회 */
- 	public String getMgrEmailList(String empNo){
-		return sqlSession.selectOne(namespace + ".getMgrEmailList", empNo);
+ 	public String getMgrEmail(String empNo){
+		return sqlSession.selectOne(namespace + ".getMgrEmail", empNo);
  	}
 	
 	/** 사원의 이름 조회 */
@@ -210,6 +210,11 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public String getEmpName(String empNo) {
 		return sqlSession.selectOne(namespace + ".getEmpName", empNo);
 	}
+	
+	/** 방 정보 조회 */
+ 	public String getRoomType(int roomNo) {
+ 		return sqlSession.selectOne(namespace + ".getRoomType", roomNo);
+ 	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -229,6 +234,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public void updateAdminApproval(Map<String, Object> map) {
 		sqlSession.update(namespace + ".updateAdminApproval", map);
 	}
+	
+	/** 상위결재자 승인 상태 변경 */
+	@Override
+	public void updateMgrApproval(Map<String, Object> map) {
+		sqlSession.update(namespace + ".updateMgrApproval", map);
+	};
 	
 	/** 반려 사유 추가 */
 	@Override

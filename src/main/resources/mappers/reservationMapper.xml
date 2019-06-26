@@ -321,15 +321,21 @@
 	<!-- 예약 번호 조회 -->
 	<select id="getReservationNo" resultType="int">
 		SELECT Reservation_Seq.NEXTVAL
-		FROM DUAL
-		
+		FROM DUAL	
 	</select>
 	
 	<!-- 예약정보 DB에 삽입 -->
 	<insert id="insertReservation" parameterType="Reservation"> 
-		INSERT INTO reservation(res_no, emp_no, room_no, name, purpose, start_date, end_date, snack_want) 
-		VALUES (#{reservationNo}, #{employeeNo}, #{roomNo}, #{name}, #{purpose}, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI'), #{snackWant})
-		
+		<choose>
+			<when test="#{status}.equals('')">
+				INSERT INTO reservation(res_no, emp_no, room_no, name, purpose, start_date, end_date, snack_want, status) 
+				VALUES (#{reservationNo}, #{employeeNo}, #{roomNo}, #{name}, #{purpose}, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI'), #{snackWant}, #{status})	
+			</when>
+			<otherwise>
+				INSERT INTO reservation(res_no, emp_no, room_no, name, purpose, start_date, end_date, snack_want) 
+				VALUES (#{reservationNo}, #{employeeNo}, #{roomNo}, #{name}, #{purpose}, TO_DATE(#{startDate}, 'YYYY-MM-DD HH24:MI'), TO_DATE(#{endDate}, 'YYYY-MM-DD HH24:MI'), #{snackWant})	
+			</otherwise>
+		</choose>
 	</insert>
 	
 	<!-- 대기 예약 DB에 삽입  -->
@@ -414,6 +420,13 @@
 		WHERE res_no = #{reservationNo}
 	</update>
 	
+	<!-- 상위결재자 승인 상태 변경 -->
+	<update id="updateMgrApproval">
+		UPDATE waiting 
+		SET mgr_approval = #{mgrApproval} 
+		WHERE res_no = #{reservationNo}
+	</update>
+	
 	<!-- 반려 사유 추가 -->
 	<insert id="insertRefuse">
 		INSERT INTO refuse(res_no, reason) VALUES (#{reservationNo}, #{reason})
@@ -492,8 +505,8 @@
 			  end_date<![CDATA[>=]]>TO_DATE(#{chosenDate}, 'YYYY-MM-DD')
 	</select>
 	
-	<!-- 관리자의 이메일 리스트 조회 -->
-	<select id="getAdminEmailList" resultType="String">
+	<!-- 관리자의 이메일 조회 -->
+	<select id="getAdminEmail" resultType="String">
 		SELECT e.email
 		FROM room r, admin a, employee e 
 		WHERE r.room_no=#{roomNo}
@@ -501,13 +514,13 @@
 		      AND a.emp_no=e.emp_no
 	</select>
 	
-	<!-- 상위결재자의 이메일 리스트 조회 -->
-	<select id="getMgrEmailList" resultType="String">
+	<!-- 상위결재자의 이메일 조회 -->
+	<select id="getMgrEmail" resultType="String">
 		SELECT email
-		FROM employee
-		WHERE emp_no=(SELECT mgr_no 
-		              FROM employee 
-		              WHERE emp_no=#{empNo})
+        FROM employee
+        WHERE emp_no=(SELECT mgr_no 
+        			  FROM employee 
+        			  WHERE emp_no=#{empNo});
 	</select>
 	
 	<!-- 사원의 이름 조회  -->
@@ -515,5 +528,12 @@
 		SELECT name
 		FROM employee
 		WHERE emp_no=#{empNo}
+	</select>
+	
+	<!-- 회의실 정보 조회  -->
+	<select id="getRoomType" resultType="String">
+		SELECT type
+		FROM room
+		WHERE room_no=#{roomNo}
 	</select>
 </mapper>

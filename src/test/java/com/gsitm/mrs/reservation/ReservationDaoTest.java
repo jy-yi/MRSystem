@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.sound.midi.MidiDevice.Info;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -258,5 +259,26 @@ public class ReservationDaoTest {
 		map.put("roomNo", 1);
 		
 //		logger.info(dao.getAdminMgrEmailList(map));
+	}
+	
+	/** Waiting DB 데이터 삽입 테스팅  */
+	@Test
+	public void testInsertReservation() {
+		ReservationDTO dto=new ReservationDTO();
+		dto.setEmployeeNo("it1226");
+		dto.setStartDate("2019-11-11 12:00");
+		dto.setEndDate("2019-11-12 11:30");
+		dto.setName("장기예약 테스팅");
+		dto.setPurpose("기타");
+		dto.setRoomNo(1);
+		dto.setSnackWant("Y");
+		dto.setReservationNo(9);
+		
+		dao.insertReservation(dto);
+	}
+	
+	@Test
+	public void testGetRoomType() {
+		logger.info(dao.getRoomType(1));
 	}
 }

@@ -229,13 +229,6 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	@Transactional
 	public void doReserve(Map<String, Object> reserveData) {
-		/*
-		 * reservation DB res_no, emp_no, room_no, name, purpose, start_date, end_date,
-		 * snack_want, status->default? waiting DB res_no mgr_approval admin_approval
-		 * Lead_Department DB res_no dept_no is_main borrowed_equipment DB equip_no
-		 * res_no
-		 * 
-		 */
 		String empNo = (String) reserveData.get("empNo");
 		int roomNo = Integer.parseInt((String) reserveData.get("roomNo"));
 		String name = (String) reserveData.get("name");
@@ -251,9 +244,77 @@ public class ReservationServiceImpl implements ReservationService {
 		String participation=p.substring(1, p.length()-1).replaceAll(" ", "");
 		// reservation number를 받아온다
 		int resNo = dao.getReservationNo();
-		
+
 		// reservation DB에 넣을 데이터를 담은 dto
 		ReservationDTO reservationDto = new ReservationDTO();
+		
+		// 상위 결제자와 회의실 관리자()에게 예약 확인 메일 전송
+		/**
+		 * 단기 예약 일 경우 -> 신청자/참석자/상위결재자에게 예약 확인 메일 -> reservation status 1로
+		 * 장기 예약 일 경우&교육실 예약 -> 신청자/참석자에게 예약 확인 메일, 상위결재자에게 예약 승인 메일 -> 승인 시 관리자에게 예약 승인 메일
+		 * 					   -> waiting 테이블의 칼럼 y로 -> 둘 다 y면 status 1로 그리고 예약 신청 완료 메일(신청자/참석자/상위결재자)
+		 */ 
+		
+		// for, 시작 일자와 종료 일자의 정보 얻기
+		SimpleDateFormat orginFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date start=null;
+		Date end=null;
+		try {
+			start=orginFormat.parse(startDate);
+			end=orginFormat.parse(endDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		Calendar calendar = Calendar.getInstance();
+		
+		calendar.setTime(start);
+		int startYear = calendar.get(Calendar.YEAR);
+		int startMonth = calendar.get(Calendar.MONTH)+1;
+		int startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+	  
+		calendar.setTime(end);
+		int endYear = calendar.get(Calendar.YEAR);
+		int endMonth = calendar.get(Calendar.MONTH)+1;
+		int endDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+		
+		// 단기 예약인지 여부
+		boolean isShortTermReservation=(startYear==endYear && startMonth==endMonth && startDayOfMonth==endDayOfMonth);
+		// 교육실인지 여부
+		boolean isEduRoom=(dao.getRoomType(roomNo)).equals("교육실");
+		String applicant=dao.getEmpName(empNo); // 신청자 이름 
+		String term=startDate + " ~ " + endDate;
+		String reservationName = name; // 회의명
+		String mgrEmail=dao.getMgrEmail(empNo);
+		
+		List<String> emailList = new ArrayList<>();	// 메일 보내야 할 모든 이메일 목록
+		emailList.add(email);	// 신청자 이메일
+		emailList.addAll(dao.getEmailList(resNo));	// 해당 회의 참석자들의 이메일
+		if(isShortTermReservation && !isEduRoom) { // 교육실이 아닌 회의실의 단기 예약
+			String title = "[GS ITM] 회의실 예약 안내"; // 메일 제목
+			String reason="회의실 예약 완료";
+
+			emailList.add(mgrEmail);	// 신청자의 상위 결재자 이메일
+			
+			String emails = StringUtils.join(emailList, ",");	// 이메일 목록 콤마(,)로 구분
+			
+			mailSend(empNo, emails, title, applicant, reason, term, reservationName, "신청", "");
+			
+			// 단기 예약일 경우 별도의 승인없이 예약 가능
+			reservationDto.setStatus(1);
+		} else{ // 장기 예약 or 교육실 예약
+			System.out.println("장기예약");
+			// 신청자&참석자에게 예약 확인 메일 보내기 
+			String title = "[GS ITM] 회의실 예약 안내"; // 메일 제목
+			String reason="회의실 예약 신청이 완료되었습니다.";
+			
+			String emails = StringUtils.join(emailList, ",");	// 이메일 목록 콤마(,)로 구분
+			mailSend(empNo, emails, title, applicant, reason, term, reservationName, "신청", "");
+			
+			//상위결재자에게 예약 승인 메일 
+			
+		}
+		
 		reservationDto.setReservationNo(resNo);
 		reservationDto.setEmployeeNo(empNo);
 		reservationDto.setRoomNo(roomNo);
@@ -262,8 +323,9 @@ public class ReservationServiceImpl implements ReservationService {
 		reservationDto.setStartDate(startDate);
 		reservationDto.setEndDate(endDate);
 		reservationDto.setSnackWant(snackWant);
+		// 예약 DB에 데이터 insert
 		dao.insertReservation(reservationDto);
-
+				
 		// waiting DB에 예약 정보를 담는다
 		dao.insertWaiting(resNo);
 		// Participation DB에 넣을 데이터를 담은 map
@@ -324,34 +386,6 @@ public class ReservationServiceImpl implements ReservationService {
 				dao.insertBorrowedEquipments(borrwedEquipmentMap);
 			}
 		}
-		
-		// 상위 결제자와 회의실 관리자()에게 예약 확인 메일 전송
-		/**
-		 * 단기 예약 일 경우 -> 신청자/참석자/상위결재자에게 예약 확인 메일 -> reservation status 1로
-		 * 장기 예약 일 경우&교육실 예약 -> 신청자/참석자에게 예약 확인 메일, 상위결재자에게 예약 승인 메일 -> 승인 시 관리자에게 예약 승인 메일
-		 * 					   -> waiting 테이블의 칼럼 y로 -> 둘 다 y면 status 1로 그리고 예약 신청 완료 메일(신청자/참석자/상위결재자)
-		 */
-		Map<String, Object> mailMap=new HashMap<>();
-		mailMap.put("empNo", empNo);
-		mailMap.put("roomNo", roomNo);
-		String adminEmail=dao.getAdminEmailList(roomNo);
-		String mgrEmail=dao.getMgrEmailList(empNo);
-		
-		List<String> emailList = new ArrayList<>();	// 메일 보내야 할 모든 이메일 목록
-		emailList.add(email);	// 신청자 이메일
-		emailList.addAll(dao.getEmailList(resNo));	// 해당 회의 참석자들의 이메일
-		emailList.add(mgrEmail);	// 신청자의 상위 결재자 이메일
-			
-		String emails = StringUtils.join(emailList, ",");	// 이메일 목록 콤마(,)로 구분
-		String title = "[GS ITM] 회의실 예약 신청 안내"; // 메일 제목
-		String applicant=dao.getEmpName(empNo); // 신청자 이름 
-		String reason="회의실 예약 완료";
-		String term=startDate + " ~ " + endDate;
-		String reservationName = name; // 회의명
-		
-		String url = "http://localhost:8000/reservation/statusCalendar";
-		
-		mailSend(empNo, emails, title, applicant, reason, term, reservationName, "신청", url);
 		
 	}
 
