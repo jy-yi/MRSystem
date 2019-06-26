@@ -153,7 +153,11 @@
 			
 			/* 모달에 선택한 시간에 표시하기*/
 			// 시작시간, 종료시간 선택한 효과
-			$('.can-reserve-time:contains("'+startTime+'")').trigger("click");
+			console.log("startDate:"+startDate);
+			console.log("startTime:"+startTime);
+			console.log("endDate:"+endDate);
+			console.log("endTime:"+endTime);
+			$('.time:contains("'+startTime+'")').trigger("click");
 	
 			endTime_object.attr("id","endTime");
 			// chosenTime 클래스를 추가한다.
