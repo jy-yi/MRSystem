@@ -317,6 +317,26 @@ public class ResevationController {
 	}
 	
 	/**
+	 * 예약 상위결재자 승인
+	 * 
+	 * @param reservationNo	승인할 예약 번호
+	 * @return
+	 */
+	@RequestMapping(value = "/mgrApproval", method = RequestMethod.POST)
+	public String mgrApproval(String reservationNo) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("reservationNo", reservationNo);
+		map.put("mgrApproval", "Y");
+		
+		// TODO : 관리자한테 메일 보내기
+		
+		service.updateAdminApproval(map);
+		
+		return "redirect:/reservation/approvalWaitingList";
+	}
+	
+	/**
 	 * 예약 관리자 승인
 	 *
 	 * @param status
@@ -329,7 +349,7 @@ public class ResevationController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("reservationNo", reservationNo);
 		map.put("status", status);
-		map.put("adminApproval", "N");
+		map.put("adminApproval", "Y");
 		
 		service.updateStatus(map);
 		service.updateAdminApproval(map);
