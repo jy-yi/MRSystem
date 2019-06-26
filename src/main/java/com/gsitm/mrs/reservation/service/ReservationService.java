@@ -6,12 +6,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
 import com.gsitm.mrs.resource.dto.EquipmentDTO;
-import com.gsitm.mrs.resource.dto.RoomDTO;
-import com.gsitm.mrs.user.dto.EmployeeDTO;
 
 /**
  * 예약 관련 인터페이스 정의
@@ -96,6 +93,9 @@ public interface ReservationService {
 
 	/** 관리자 승인 상태 변경 */
 	public void updateAdminApproval(Map<String, Object> map);
+	
+	/** 상위결재자 승인 상태 변경 */
+	public void updateMgrApproval(Map<String, Object> map);
 	
 	/** 반려 사유 추가 */
 	public void insertRefuse (Map<String, Object> map);

@@ -56,6 +56,7 @@ public class MailUtils {
 							"							" + name + " 님이 회의실을 예약했습니다." + 
 							"						</td>" + 
 							"					</tr>";
+				// 반려 or 취소
 				} else {
 					template +=
 							"					<tr>" + 
@@ -70,15 +71,19 @@ public class MailUtils {
 							"					</tr>" + 
 							"				</table>" + 
 							"			</td>" + 
-							"		</tr>" +
-							"		<tr>" + 
-							"			<td style=\"padding: 10px 0 10px 0;\">" + 
-							" 				<a href='" + url + "'>" +
-							"					<img src=\"https://postfiles.pstatic.net/MjAxOTA2MjRfMTM4/MDAxNTYxMzM5MDgyMjc0.L4_LaccbtDCFgoeFKr279OBhMJCxM7j-NiBIeVvMa1gg.s-CfOy1YH_qDUFOqaM_eoLCeFrKlxv-TcTaAeOYZ61cg.PNG.a_spree/check.png?type=w773\" " + 
-							"						 width=\"200\" height=\"60\" style=\"display: block; margin-left: auto; margin-right: auto;\" />" + 
-							" 				</a>" +
-							"			</td>" + 
 							"		</tr>";
+				}
+				
+				if (url != "") {
+					template += 
+							"		<tr>" + 
+									"			<td style=\"padding: 10px 0 10px 0;\">" + 
+									" 				<a href='" + url + "'>" +
+									"					<img src=\"https://postfiles.pstatic.net/MjAxOTA2MjRfMTM4/MDAxNTYxMzM5MDgyMjc0.L4_LaccbtDCFgoeFKr279OBhMJCxM7j-NiBIeVvMa1gg.s-CfOy1YH_qDUFOqaM_eoLCeFrKlxv-TcTaAeOYZ61cg.PNG.a_spree/check.png?type=w773\" " + 
+									"						 width=\"200\" height=\"60\" style=\"display: block; margin-left: auto; margin-right: auto;\" />" + 
+									" 				</a>" +
+									"			</td>" + 
+									"		</tr>";
 				}
 				
 				template +=

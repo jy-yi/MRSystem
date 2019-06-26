@@ -46,9 +46,10 @@ public class HomeInterceptor extends HandlerInterceptorAdapter {
 		if (user != null) {
 			// 로그인 한 유저가 주소창을 통해 직접 "/"로 들어왔을 경우를 대비하여 이전 URL 불러오기
 			Object url = session.getAttribute("prevURL");
+			Object param = session.getAttribute("param");
 			logger.info("이전 URL : " + url);
 
-			response.sendRedirect(url.toString());
+			response.sendRedirect(url.toString() + "?" + param.toString());
 
 			return false;
 		}

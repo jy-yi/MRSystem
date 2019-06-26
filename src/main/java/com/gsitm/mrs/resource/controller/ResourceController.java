@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,9 +50,6 @@ public class ResourceController {
 
 	@Inject
 	private ReservationService reservationService;
-
-	@Resource(name = "uploadPath")
-	private String uploadPath;
 
 	/* ------------- 지사 ------------- */
 
@@ -170,7 +167,7 @@ public class ResourceController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/addRoom", method = RequestMethod.POST)
-	public String addRoom(RoomDTO roomDTO, MultipartFile file, String equipList) throws Exception {
+	public String addRoom(RoomDTO roomDTO, MultipartFile file, String equipList, HttpSession session) throws Exception {
 
 		if (file != null) {
 			logger.info("originalName:" + file.getOriginalFilename());
@@ -178,7 +175,7 @@ public class ResourceController {
 			logger.info("ContentType:" + file.getContentType());
 		}
 
-		String savedName = uploadFile(file.getOriginalFilename(), file.getBytes());
+		String savedName = uploadFile(file.getOriginalFilename(), file.getBytes(), session);
 
 		logger.info("savedName:" + savedName);
 
@@ -208,12 +205,14 @@ public class ResourceController {
 	 * @return
 	 * @throws IOException
 	 */
-	private String uploadFile(String originalName, byte[] fileDate) throws IOException {
+	private String uploadFile(String originalName, byte[] fileDate, HttpSession session) throws IOException {
 
 		UUID uid = UUID.randomUUID();
 
 		String savedName = uid.toString() + "_" + originalName;
-		File target = new File(uploadPath, savedName);
+		String jsyPath = session.getServletContext().getRealPath("/resources/img/room");
+		System.out.println(jsyPath);
+		File target = new File(jsyPath, savedName);
 
 		FileCopyUtils.copy(fileDate, target);  // 데이터가 담긴 바이트 배열을 파일에 기록
 
@@ -230,9 +229,9 @@ public class ResourceController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/editRoom", method = RequestMethod.POST)
-	public String editRoom(RoomDTO roomDTO, MultipartFile img) throws Exception {
+	public String editRoom(RoomDTO roomDTO, MultipartFile img, HttpSession session) throws Exception {
 		
-		String savedName = uploadFile(img.getOriginalFilename(), img.getBytes());
+		String savedName = uploadFile(img.getOriginalFilename(), img.getBytes(), session);
 		roomDTO.setImage(savedName);
 		
 		service.editRoom(roomDTO);

@@ -1,6 +1,5 @@
 package com.gsitm.mrs.reservation.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
-import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
-
-import freemarker.log.Logger;
 
 /**
  * ReservationDAO 인터페이스를 구현하는 클래스
