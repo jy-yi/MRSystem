@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
@@ -51,9 +50,6 @@ public class ResourceController {
 
 	@Inject
 	private ReservationService reservationService;
-
-	@Resource(name = "uploadPath")
-	private String uploadPath;
 
 	/* ------------- 지사 ------------- */
 

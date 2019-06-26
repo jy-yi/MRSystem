@@ -112,7 +112,6 @@ public class ResevationController {
 	@RequestMapping(value = "/cancelReservation", method = RequestMethod.POST)
 	public String cancelReservation(String status, String reservationNo, String empNo, String reason, String name, String term, String reservationName) throws Exception {
 
-		System.out.println(status + " | " + reservationNo + " | " + name + " | " + reason + " | " + term + " | " + reservationName + " | " + empNo);
 		Map<String, Object> map = new HashMap<>();
 		map.put("reservationNo", reservationNo);
 		map.put("status", status);
@@ -331,7 +330,7 @@ public class ResevationController {
 		
 		// TODO : 관리자한테 메일 보내기
 		
-		service.updateAdminApproval(map);
+		service.updateMgrApproval(map);
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}
