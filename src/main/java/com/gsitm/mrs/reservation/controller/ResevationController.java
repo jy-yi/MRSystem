@@ -126,7 +126,6 @@ public class ResevationController {
 	@RequestMapping(value = "/cancelReservation", method = RequestMethod.POST)
 	public String cancelReservation(String status, String reservationNo, String empNo, String reason, String name, String term, String reservationName) throws Exception {
 
-		System.out.println(status + " | " + reservationNo + " | " + name + " | " + reason + " | " + term + " | " + reservationName + " | " + empNo);
 		Map<String, Object> map = new HashMap<>();
 		map.put("reservationNo", reservationNo);
 		map.put("status", status);
@@ -140,7 +139,7 @@ public class ResevationController {
 		String title = "[GS ITM] 회의실 예약 취소 안내";
 		String email = StringUtils.join(emailList, ",");	// 해당 예약에 참여하는 사원의 이메일 목록 콤마(,)로 구분
 		
-		service.mailSend(empNo, email, title, name, reason, term, reservationName, "취소");
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "취소", "");
 
 		return "redirect:/reservation/statusList";
 	}
@@ -207,6 +206,16 @@ public class ResevationController {
 	@RequestMapping(value = "/chooseDate/{roomNo}", method = RequestMethod.GET)
 	public String ChooseDate(@PathVariable int roomNo, Model model, HttpServletRequest request) {
 		logger.info("(사용자) 예약 - 예약 일자 선택");
+		
+		// 뒤로 가기를 통해 이 페이지에 돌아온 경우 미리 선택한 예약 정보를 저장하는 map
+		Map<String, Object> savedRoomInfo=new HashMap<>();
+		if(request.getParameter("startDate")!=null) {
+			savedRoomInfo.put("startDate", request.getParameter("startDate"));
+			savedRoomInfo.put("endDate", request.getParameter("endDate"));
+			savedRoomInfo.put("snackWant", request.getParameter("snackWant"));
+			savedRoomInfo.put("equipments", request.getParameter("equipments"));
+			model.addAttribute("savedRoomInfo", savedRoomInfo);
+		}
 		
 		service.chooseDate(model, roomNo);
 		
@@ -321,6 +330,24 @@ public class ResevationController {
 	}
 	
 	/**
+	 * 예약 상위결재자 승인
+	 * 
+	 * @param reservationNo	승인할 예약 번호
+	 * @return
+	 */
+	@RequestMapping(value = "/mgrApproval", method = RequestMethod.POST)
+	public String mgrApproval(String reservationNo) {
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("reservationNo", reservationNo);
+		map.put("mgrApproval", "Y");
+		
+		service.updateMgrApproval(map);
+		
+		return "redirect:/reservation/approvalWaitingList";
+	}
+	
+	/**
 	 * 예약 관리자 승인
 	 *
 	 * @param status
@@ -333,7 +360,7 @@ public class ResevationController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("reservationNo", reservationNo);
 		map.put("status", status);
-		map.put("adminApproval", "N");
+		map.put("adminApproval", "Y");
 		
 		service.updateStatus(map);
 		service.updateAdminApproval(map);
@@ -364,7 +391,7 @@ public class ResevationController {
 		
 		String title = "[GS ITM] 회의실 예약 반려 안내";
 		
-		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려");
+		service.mailSend(empNo, email, title, name, reason, term, reservationName, "반려", "");
 		
 		return "redirect:/reservation/approvalWaitingList";
 	}

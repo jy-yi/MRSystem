@@ -1,6 +1,5 @@
 package com.gsitm.mrs.reservation.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,10 +9,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.gsitm.mrs.reservation.dto.ReservationDTO;
-import com.gsitm.mrs.resource.dto.RoomDTO;
 import com.gsitm.mrs.user.dto.EmployeeDTO;
-
-import freemarker.log.Logger;
 
 /**
  * ReservationDAO 인터페이스를 구현하는 클래스
@@ -151,6 +147,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public int getReservationNo() {
 		return sqlSession.selectOne(namespace + ".getReservationNo");
 	}
+	
+	/** 예약 번호로 예약 상세 정보 조회 */
+	@Override
+	public Map<String, Object> getReservationInfoByResNo(int reservationNo) {
+		return sqlSession.selectOne(namespace + ".getReservationInfoByResNo", reservationNo);
+	}
 
 	/** 예약정보 DB에 삽입 */
 	@Override
@@ -199,19 +201,27 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public int getNumOfParticipation(Map<String, Object> infoMap) {
 		return sqlSession.selectOne(namespace + ".getNumOfParticipation", infoMap);
 	}
-	
-	/** 관리자와 상위결재자의 메일 조회 */
-	@Override
-	public List<String> getAdminMgrEmailList(Map<String, Object> infoMap) {
-		System.out.println(infoMap);
-		return sqlSession.selectList(namespace + ".getAdminMgrEmailList", infoMap);
-	}
+
+ 	/** 회의실 관리자 메일 조회 */
+ 	public String getAdminEmail(int roomNo){
+		return sqlSession.selectOne(namespace + ".getAdminEmail", roomNo);
+ 	}
+ 	
+ 	/** 예약자의 상위결재자 메일 조회 */
+ 	public String getMgrEmail(String empNo){
+		return sqlSession.selectOne(namespace + ".getMgrEmail", empNo);
+ 	}
 	
 	/** 사원의 이름 조회 */
 	@Override
 	public String getEmpName(String empNo) {
 		return sqlSession.selectOne(namespace + ".getEmpName", empNo);
 	}
+	
+	/** 방 정보 조회 */
+ 	public String getRoomType(int roomNo) {
+ 		return sqlSession.selectOne(namespace + ".getRoomType", roomNo);
+ 	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
@@ -231,6 +241,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public void updateAdminApproval(Map<String, Object> map) {
 		sqlSession.update(namespace + ".updateAdminApproval", map);
 	}
+	
+	/** 상위결재자 승인 상태 변경 */
+	@Override
+	public void updateMgrApproval(Map<String, Object> map) {
+		sqlSession.update(namespace + ".updateMgrApproval", map);
+	};
 	
 	/** 반려 사유 추가 */
 	@Override
@@ -255,4 +271,5 @@ public class ReservationDAOImpl implements ReservationDAO {
 	public List<Map<String, Object>> getReservationCancelList() {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
+
 }

@@ -13,6 +13,51 @@
 
 <title>GS ITM 회의실 예약 시스템</title>
 
+
+<style type="text/css">
+/* 로딩 */
+#Progress_Loading
+{
+   position: fixed;
+    left: 0;
+    top: 0;
+    background: #00000099;
+    width: 100%;
+    height: 100%;
+    z-index: 1001;
+}
+#Progress_Loading > img {
+    position: fixed;
+    left: 45%;
+    top: 40%;
+	width: 200px;
+}
+
+@media (max-width: 768px) {
+	#Progress_Loading > img {
+        left: 37%;
+	    top: 39%;
+	    width: 223px;
+	}
+}
+@media (max-width: 415px) {
+	#Progress_Loading > img {
+        left: 30%;
+	    top: 40%;
+	    width: 168px;
+	}
+}
+
+@media (max-width: 360px) {
+	#Progress_Loading > img {
+        left: 30%;
+	    top: 40%;
+	    width: 140px
+	}
+}
+
+</style>
+
 <!-- 파비콘 설정 -->
 <link rel="shortcut icon" href="/resources/img/calendar.ico">
 
@@ -101,10 +146,27 @@ body, div, h1, h2, h3, h4, h5, h6 {
 			<tiles:insertAttribute name="footer" />
 		</div>
 	</div>
+	
+	<!-- 로딩바 -->
+   <div id="Progress_Loading">
+		<img src="/resources/img/loading.gif"/>
+   </div>
 
 </body>
 
 <!-- Custom scripts for all pages-->
 <script src="/resources/js/sb-admin-2.min.js"></script>
+<!-- 로딩 -->
+<script>
+$(document).ready(function(){
+   $('#Progress_Loading').hide(); //첫 시작시 로딩바를 숨겨준다.
+})
+.ajaxStart(function(){
+   $('#Progress_Loading').show(); //ajax 실행 시 로딩바를 보여준다.
+})
+.ajaxStop(function(){
+   $('#Progress_Loading').hide(); //ajax 종료 시 로딩바를 숨겨준다.
+});
+</script>
 
 </html>

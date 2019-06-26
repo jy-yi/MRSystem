@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailUtils {
 	
-	public String getMailTemplate(String name, String reason, String term, String reservationName, String type) {
+	public String getMailTemplate(String name, String reason, String term, String reservationName, String type, String url) {
 		
 		String template =
 				"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" + 
@@ -47,29 +47,49 @@ public class MailUtils {
 				"					<tr>" + 
 				"						<td> 기간 </td>" + 
 				"						<td> " + term +  "</td>" + 
-				"					</tr>" + 
-				"					<tr>" + 
-				"						<td colspan=\"2\" style=\"padding: 10px 0 10px 0;\">" + 
-				"							" + name + " 님이 신청하신 회의실 예약이 다음과 같은 사유로 " + type + " 되었습니다. " + 
-				"						</td>" + 
-				"					</tr>" + 
-				"					<tr>" + 
-				"						<td colspan=\"2\" style=\"padding: 20px 0 20px 0;\">" + 
-				"							" + reason +  
-				"						</td>" + 
-				"					</tr>" + 
-				"				</table>" + 
-				"			</td>" + 
-				"		</tr>" + 
-				"		<tr>" + 
-				"			<td style=\"padding: 10px 0 10px 0;\">" + 
-				"				<img src=\"https://postfiles.pstatic.net/MjAxOTA2MjRfMTM4/MDAxNTYxMzM5MDgyMjc0.L4_LaccbtDCFgoeFKr279OBhMJCxM7j-NiBIeVvMa1gg.s-CfOy1YH_qDUFOqaM_eoLCeFrKlxv-TcTaAeOYZ61cg.PNG.a_spree/check.png?type=w773\" " + 
-				"					 width=\"200\" height=\"60\" style=\"display: block; margin-left: auto; margin-right: auto;\" />" + 
-				"			</td>" + 
-				"		</tr>" + 
-				"	</table>" + 
-				"</body>" + 
-				"</html>";
+				"					</tr>"; 
+				
+				if (type.equals("신청")) {
+					template += 
+							"					<tr>" + 
+							"						<td colspan=\"2\" style=\"padding: 10px 0 10px 0;\">" + 
+							"							" + name + " 님이 회의실을 예약했습니다." + 
+							"						</td>" + 
+							"					</tr>";
+				// 반려 or 취소
+				} else {
+					template +=
+							"					<tr>" + 
+							"						<td colspan=\"2\" style=\"padding: 10px 0 10px 0;\">" + 
+							"							" + name + " 님이 신청하신 회의실 예약이 다음과 같은 사유로 " + type + " 되었습니다. " + 
+							"						</td>" + 
+							"					</tr>" +	
+							"					<tr>" + 
+							"						<td colspan=\"2\" style=\"padding: 20px 0 20px 0;\">" + 
+							"							" + reason +  
+							"						</td>" + 
+							"					</tr>" + 
+							"				</table>" + 
+							"			</td>" + 
+							"		</tr>";
+				}
+				
+				if (url != "") {
+					template += 
+							"		<tr>" + 
+									"			<td style=\"padding: 10px 0 10px 0;\">" + 
+									" 				<a href='" + url + "'>" +
+									"					<img src=\"https://postfiles.pstatic.net/MjAxOTA2MjRfMTM4/MDAxNTYxMzM5MDgyMjc0.L4_LaccbtDCFgoeFKr279OBhMJCxM7j-NiBIeVvMa1gg.s-CfOy1YH_qDUFOqaM_eoLCeFrKlxv-TcTaAeOYZ61cg.PNG.a_spree/check.png?type=w773\" " + 
+									"						 width=\"200\" height=\"60\" style=\"display: block; margin-left: auto; margin-right: auto;\" />" + 
+									" 				</a>" +
+									"			</td>" + 
+									"		</tr>";
+				}
+				
+				template +=
+					"	</table>" + 
+					"</body>" + 
+					"</html>";
 		
 		return template;
 	}

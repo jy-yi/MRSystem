@@ -104,12 +104,30 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			empNameCookie.setMaxAge(60 * 60);
 			response.addCookie(empNameCookie);
 
-			/* 일반 회원일 경우 */
-			if (session.getAttribute("adminId") == null) 
-				response.sendRedirect("/reservation/statusCalendar");
-			/* 관리자일 경우 */
-			else
-				response.sendRedirect("/reservation/dashboard");
+			Object url = session.getAttribute("prevURL");
+			Object param = session.getAttribute("param");
+			
+			if (url != null) {
+				
+				if (param != null) {
+					logger.info("이전 URL : " + url + " | param : " + param);
+					response.sendRedirect(url.toString() + "?" + param.toString());
+					session.removeAttribute("param");
+				} else {
+					logger.info("이전 URL : " + url);
+					response.sendRedirect(url.toString());
+				}
+				
+				session.removeAttribute("prevURL");
+				
+			} else {
+				/* 일반 회원일 경우 */
+				if (session.getAttribute("adminId") == null) 
+					response.sendRedirect("/reservation/statusCalendar");
+				/* 관리자일 경우 */
+				else
+					response.sendRedirect("/reservation/dashboard");
+			}
 		}
 
 	}

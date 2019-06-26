@@ -29,13 +29,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		
 		if (session.getAttribute("login") == null) {
 			logger.info("현재 유저는 로그인하지 않았습니다.");
+			session.setAttribute("prevURL", request.getRequestURI());
+			session.setAttribute("param", request.getQueryString());
 			response.sendRedirect("/");
 			
 			return false;
 		}
 		
-		// 로그인 한 유저가 "/" (로그인 페이지)으로 강제 이동할 경우를 대비하여 현재 URL 주소 저장
-		session.setAttribute("prevURL", request.getRequestURI());
 		
 		/* 지사 목록 동적 연동을 위해 세션에 저장 */
 		List<WorkplaceDTO> workplaceList = resourceService.getWorkplaceList();

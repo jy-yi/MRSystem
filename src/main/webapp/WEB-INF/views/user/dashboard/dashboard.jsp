@@ -1,22 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<style>
-#calendar {
-	max-width: 1300px;
-	margin: 0 auto;
-	background-color: white;
-}
-.activeBtn{
-	background-color: rgb(54,93,205);
-	color: white;
-}
-.disabledBtn{
-	background-color: #cecece;
-	color: white;
-}
-</style>
+<link href='/resources/css/dashboard.css' rel='stylesheet' />
+
 <!-- Main Content -->
 <div id="content">
 
@@ -29,36 +15,88 @@
 			<!-- Page Heading -->
 			<div class="d-sm-flex align-items-center justify-content-between mb-4">
 				<h1 id="name" class="h5 mb-0 text-gray-800">
-					<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span>
+					<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span> <span id="roomNameTitle"></span>
 				</h1>
 			</div>
 
 			<!-- Content Row -->
 			<div class="row">
-
-				<ul class="nav nav-tabs">
-					<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
-					<c:forEach items="${workplaceList}" var="list" varStatus="status">
-						<li class="nav-item">
-							<a class="nav-link workplace-list ${status.index eq 0 ? 'active':''}"
-								data-toggle="tab" href="#workplace${list.workplaceNo}"
-								value="${list.workplaceNo}">${list.name}
-							</a>
-						</li>
-					</c:forEach>
-				</ul>
-
-				<div class="tab-content">
-					<div id="roomList"></div>
-					<div id="calendar"></div>
+				<div class="panel with-nav-tabs panel-primary">
+					<div class="panel-heading">
+						<ul class="nav nav-tabs">
+							<!-- 지사 목록 DB 연동 (session에 담겨있는 지사 목록) -->
+							<c:forEach items="${workplaceList}" var="list" varStatus="status">
+								<li class="dropdown">
+		                            <a href="#workplace${list.workplaceNo}" class="nav-link workplace-list" data-toggle="dropdown" value="${list.workplaceNo}"> ${list.name} <i class="fas fa-caret-down"></i></a>
+		                            <ul class="dropdown-menu" role="menu" id="roomList${list.workplaceNo}">
+		                            </ul>
+		                        </li>
+							</c:forEach>
+						</ul>
+					</div>
+				
+					<div class="panel-body">
+						<div class="tab-content">
+							<div id="calendar"></div>
+						</div>
+					</div>
 				</div>
 			</div>
-
 		</div>
 		<!-- /.container-fluid -->
 	</div>
 </div>
 <!-- End of Main Content -->
+<script>
+$(function(){
+	var status = getUrlParams();
+	var type = status.type;
+	var resNo = status.resNo;
+	
+	console.log("type : " + type);
+	console.log("resNo : " + resNo);
+	
+	history.replaceState({}, null, location.pathname);	// url에서 파라미터 숨기기
+	
+	if(type == "manager") {
+		swal({
+			title: '해당 예약을 승인처리 하시겠습니까?',
+			text: "ㄴㄴㄴ",
+			type: 'question',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			    confirmButtonText: 'Yes',
+			    cancelButtonText: 'No',
+			}).then( (result) => {
+				if (result.value) {
+	  			$.ajax({
+					url : "/reservation/mgrApproval",
+					type : "POST",
+					data : {
+						reservationNo : resNo
+					}, success : function(data) {
+						swal('Success!', '예약 승인이 완료되었습니다.', 'success'
+				    		).then(function(){
+	  		    		    	location.href="/reservation/approvalWaitingList";
+	  		    		    });
+					}
+				});
+				}
+				  
+			});
+	}
+
+});
+
+function getUrlParams() {
+    var params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, 
+    		function(str, key, value) { params[key] = value; });
+    return params;
+}
+</script>
+
 <script>
 
 		var calendar;
@@ -152,8 +190,6 @@
 			// 대시보드 > XXX (지사 이름 동적 변경)
 			$("#workplaceNameTitle").text($(this).text());
 
-			// TODO : 탭 눌렀을 때 이벤트 다 지워버리고 다시 ajax로 뿌려주셈~ 화이팅!
-			
 			$.ajax({
 				url : "/statistic/getRoomListByWorkplaceNo",
 				data : {
@@ -162,18 +198,11 @@
 				type : "POST",
 				dataType : 'json',
 				success : function(data) {
-					console.log("success");
-					$("#roomList").empty();
+					console.log(data.roomList);
+					$("#roomList"+workplaceNo).empty();
 					$.each(data.roomList, function(index, item){
-						$("#roomList").append('<input type="hidden" name="roomNo" id= "room'+ item.roomNo +  '" value="'+ item.roomNo +  '">');
-						$("#roomList").append('<a href="#" class="btn disabledBtn roomBtn"> '+item.name+' </a>');
-						
-						//$(".roomBtn").on("click").css('color','yellow');
-						//$(".roomBtn").css('color','yellow');
-						
+						$("#roomList"+workplaceNo).append('<li style="text-align: center;"><a href="#" data-toggle="tab" value="'+ item.roomNo +'" class="roomBtn">'+ item.name + '</a></li>');
 					});
-					
-					$('.roomBtn:first').trigger('click');
 				},
 				error : function() {
 					alert("지사별 해당 회의실 조회 에러");
@@ -182,21 +211,16 @@
 			
 		});
 
-		$(document).on("click",".roomBtn",function(){
-			console.log("크릭!");
-			$(".roomBtn").removeClass("activeBtn").addClass("disabledBtn");
-			$(this).removeClass("disabledBtn").addClass("activeBtn");
-		}); 
-		
 		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
 		$(".workplace-list:first").trigger("click");
-		
-		var roomNo;
+		$('.roomBtn:first').trigger('click');
 		
 		/* 회의실 버튼 눌렀을 때 */
 		$(document).on("click", ".roomBtn", function() {
-			roomNo = $(this).prev().val();
-			console.log(roomNo);
+			var roomNo = $(this).attr('value');
+			
+			// 대시보드 > XXX > YYY (회의실 이름 동적 변경)
+			$("#roomNameTitle").text(" > "+$(this).text());
 			
 			$.ajax({
 				url : "/reservation/getRoomDashBoard",

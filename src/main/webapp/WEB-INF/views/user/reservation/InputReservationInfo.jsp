@@ -312,8 +312,6 @@
 				url:"/reservation/getEmployeeListByChosung",
 				data : {"chosung" : chosung},
 				success: function(data){
-					console.log("ajax");
-					console.log(data);
 					var employeeList=data.employeeList;
 					// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
 					$("#search-employee-list > ul").empty();
@@ -339,6 +337,10 @@
 				url:"/reservation/getEmployeeListBySearching",
 				data : {"keyword" : keyword},
 				success: function(data){
+					var employeeList=data.employeeList;
+					// 초성에 해당하는 사원들의 목록을 모달에 뿌려줌
+					$("#search-employee-list > ul").empty();
+					$.each(employeeList, function(index, item){
 					// 해당 사원이 참여자 목록 배열에 없으면 뿌려줌
 					var found=participation.some(function(obj){
 						return obj.employeeNo==item.EMPLOYEENO;
@@ -348,6 +350,7 @@
 							+"<a onclick='addParticipation(\""+item.EMPLOYEENO+"\", \""+item.NAME+"\", \""+item.DEPARTMENTNAME+"\")'>"+item.NAME+"("+item.DEPARTMENTNAME+")</a>"
 							+"</li>");
 					}
+					});
 				},
 				error: function(xhr, status, error) {
 					alert(error);
@@ -430,13 +433,14 @@
 		$("#participationCount").text(participation.length);
 		
 		// 부서 목록 업데이트
-		if(departmentList!=null){
+		/*if(departmentList!=null){
 			// DB에서 다시 departmentList를 가져옴
+			departmentList=[];
 			getDepartmentListFromDb();
-		}
-		
-		departmentList=[];
-		getDepartmentListFromDb();
+		} else{ // 첫 선택*/
+			departmentList=[];
+			getDepartmentListFromDb();
+		//}
 	});
 	
 	
@@ -450,14 +454,15 @@
 		var employeeNoArr=participation.map(function(a){
 			return a.employeeNo;
 		})
-		console.log("mainDept:"+participation);
 		// mainDept배열에서 deptNo 값으로만 배열 생성
 		var mainDeptNoArr=null;
-		if(mainDept!=null){
+		/*if(mainDept!=null){
 			mainDeptNoArr=mainDept.map(function(a){
 				return a.deptNo;
 			});
-		}
+		} else{
+			mainDept=new Array();
+		}*/
 			
 		$.ajax({
 			type:"get",
@@ -508,7 +513,7 @@
 		appendSubDept();
 	}); 
 	
-	// 부서 삭제 이벤트
+	// 주관 부서, 협조 부서 이동 이벤트
 	$(document).on("click",".delete-move-btn",function(){
 		var deptName;
 		var deptNo=$(this).prev().text();
@@ -522,10 +527,10 @@
 		
 		if(isMainDept){ // 주관 부서를 삭제한다면
 			// 주관부서는 무조건 1개 이상이여야 한다.
-			if(mainDept.length==1){
+			/*if(mainDept.length==1){
 				alert("회의실 예약을 위해선 1개 이상의 부서가 주관해야합니다.");
 				return;
-			}
+			}*/
 			// 해당 부서 협조 부서 배열에 push
 			deptName=mainDept[index].name;
 			mainDept.splice(index,1);
@@ -561,17 +566,17 @@
 			/////////////수정 필요!! selectbox값이 change된 경우로!!
 			if($("#dropdownMenuButton").text()!="회의 선택"){
 				// 참여인원과 주관부서를 선택했는지 확인(참여 인원을 선택해야 주관부서가 나오므로 주관부서만 확인)
-				if(mainDept!=null && mainDept.length!=0){
-					// 폼의 모든 요소를 채웠으면 버튼 active
-					$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+				if(mainDept!=null){
+					if(mainDept.length>0){
+						// 폼의 모든 요소를 채웠으면 버튼 active
+						$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+					}
 				}
 			}
 		}else {
 			$("#nextBtn").addClass("btn-disabled").removeClass("btn-active").attr("disabled",true);
 		}
 	};
-	
-	///////// selectbox값이 change 된 경우 checkFormInput() 함수를 호출해야 한다!!
 	
 	// 회의실 예약 내역을 다 입력하면 active로 전환
 	$("#nextBtn").on("click",function(){

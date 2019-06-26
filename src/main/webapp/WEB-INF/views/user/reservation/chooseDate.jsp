@@ -130,6 +130,8 @@
 	var endDateForLongterm; // 종료일자
 	var chosenStartDate=false; // 시작일자를 선택했는지 여부를 확인하기 위한 변수
 	var isLongTermReservation=false; // 장기예약인지 여부
+	// 31일까지 있는 달
+	var fullDaysMonth=[1,3,5,7,8,10,12];
 	
 	/* 이전페이지를 통해 돌아왔다면 데이터 넣기 */
 	// 이전페이지를 통해 돌아왔다면 true
@@ -151,7 +153,11 @@
 			
 			/* 모달에 선택한 시간에 표시하기*/
 			// 시작시간, 종료시간 선택한 효과
-			$('.can-reserve-time:contains("'+startTime+'")').trigger("click");
+			console.log("startDate:"+startDate);
+			console.log("startTime:"+startTime);
+			console.log("endDate:"+endDate);
+			console.log("endTime:"+endTime);
+			$('.time:contains("'+startTime+'")').trigger("click");
 	
 			endTime_object.attr("id","endTime");
 			// chosenTime 클래스를 추가한다.
@@ -460,6 +466,13 @@
 			var tmp_date=new Date(startDateForLongterm.getFullYear(),startDateForLongterm.getMonth(),startDateForLongterm.getDate());
 			tmp_date.setDate(tmp_date.getDate() + 1);
 			while(!(tmp_date.getTime()===endDate.getTime())){
+				// 30일까지 있는 달에 31일 처리
+				
+				if($.inArray(tmp_date.getMonth(), fullDaysMonth) == -1 &&tmp_date.getDate()==31){
+					console.log(tmp_date.getMonth()+"월 "+tmp_date.getDate()+"일");
+					tmp_date.setDate(tmp_date.getDate() + 1);
+					continue;
+				}
 				getReservationsByDate(tmp_date.getFullYear()+"-"+tmp_date.getMonth()+"-"+tmp_date.getDate());
 				// 예약 시작일자~종료일자 사이에 예약 내역이 있는 경우
 				if($('.time').hasClass("cant-reserve-time")){
@@ -684,12 +697,14 @@
 		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 		if(isLongTermReservation){
 			// 장기예약일 경우
+			
 			// 1. 시작일~종료일 chosenDate 표시
 			var start=new Date(startDateForLongterm.getFullYear(),startDateForLongterm.getMonth(),startDateForLongterm.getDate());
 			var endDate=new Date(endDateForLongterm.getFullYear(),endDateForLongterm.getMonth(),endDateForLongterm.getDate());
 			start.setDate(start.getDate()+1);
 			while(true){
 				var tmpDate=start.getFullYear()+"-"+pad(start.getMonth(),2)+"-"+pad(start.getDate(),2);
+				
 				if(start.getTime()===endDate.getTime()){
 					
 					$('.fc-day-top[data-date="'+tmpDate+'"]').css("background-color","rgba(166, 166, 239, 0.5)").append("<p class='end'  style='color: white; font-size: small;'>종료</p>");
