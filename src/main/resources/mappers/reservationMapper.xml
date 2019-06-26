@@ -528,7 +528,7 @@
         FROM employee
         WHERE emp_no=(SELECT mgr_no 
         			  FROM employee 
-        			  WHERE emp_no=#{empNo});
+        			  WHERE emp_no=#{empNo})
 	</select>
 	
 	<!-- 사원의 이름 조회  -->

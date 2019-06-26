@@ -261,6 +261,14 @@ public class ReservationDaoTest {
 //		logger.info(dao.getAdminMgrEmailList(map));
 	}
 	
+	/** 매니저 메일주소 조회 */
+	@Test
+	public void testgetMgrEmail() {
+		String empNo="it1226";
+		
+		logger.info(dao.getMgrEmail(empNo));
+	}
+	
 	/** Waiting DB 데이터 삽입 테스팅  */
 	@Test
 	public void testInsertReservation() {
