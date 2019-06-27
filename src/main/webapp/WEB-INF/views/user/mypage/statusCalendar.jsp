@@ -90,6 +90,8 @@
 
 	<br>
 	
+	<input type="hidden" id="empNo" value="${login.employeeNo }">
+	
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<div class="mb-2">
@@ -104,6 +106,7 @@
 
 		<!-- Content Row -->
 		<div id='calendar'></div>
+		<input type="text">
 	</div>
 
 </div>
@@ -489,9 +492,9 @@ function getUrlParams() {
 	 						console.log(resNo);
 	 						
 	 						swal({
-	 							title: '정말 종료하시겠습니까?',
-	 							text: "대여물품 삭제 및 비용 계산이 됩니다.",
-	 							type: 'warning',
+	 							title: '회의를 종료하시겠습니까?',
+	 							text: "회의실 사용 비용이 청구 됩니다.",
+	 							type: 'info',
 	 							showCancelButton: true,
 	 							confirmButtonColor: '#3085d6',
 	 							cancelButtonColor: '#d33',
@@ -504,7 +507,8 @@ function getUrlParams() {
 			 							type : "POST",
 			 							data : {
 			 								reservationNo : resNo,
-			 								status : 5
+			 								status : 5,
+			 								"empNo" : 'it1226'
 			 							}, success : function(data) {
 			 								
 			 								status = '';

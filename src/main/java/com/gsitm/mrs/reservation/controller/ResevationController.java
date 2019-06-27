@@ -105,12 +105,15 @@ public class ResevationController {
 	}
 	
 	@RequestMapping(value="/updateStart", method = RequestMethod.POST)
-	public String updateStart(String reservationNo, String status) {
+	public String updateStart(String reservationNo, String status, String empNo) {
+		
+		System.err.println("updatesTratr"+ empNo);
 		
 		Map<String, Object> map = new HashMap<>();
 				
 		map.put("reservationNo", reservationNo);
 		map.put("status", status);
+		map.put("empNo", "it1226");
 		
 		service.updateStart(map);
 		
@@ -157,12 +160,6 @@ public class ResevationController {
 	public String dashboard(Model model, String roomNo) {
 		
 		logger.info("(사용자) 대시보드");
-		
-//		roomNo = "1";
-//		
-//		List<Map<String, Object>> roomDashBoard = service.getDashBoard(Integer.parseInt(roomNo));
-//		
-//		model.addAttribute("roomDashBoard", roomDashBoard);
 		
 		return "user/dashboard/dashboard";
 	}
