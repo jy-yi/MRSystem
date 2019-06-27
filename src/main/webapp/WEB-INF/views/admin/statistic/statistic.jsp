@@ -125,6 +125,17 @@
 <script src="/resources/js/demo/chart-bar-demo.js"></script>
 <script src="/resources/js/moment.min.js"></script>
 
+<script>
+	var adminId = "${adminId}";
+	console.log(adminId);
+	if (adminId == "") {
+		swal('접근 제한', '잘못된 접근입니다.', 'error'
+		).then(function(){
+		    	location.href="/user/logout";
+	    });
+	}
+</script>
+
 <script type="text/javascript">
 
 $(function() {
