@@ -34,7 +34,8 @@
         FROM 
             (SELECT count(*) as count
              FROM 	lead_department ld
-             WHERE	ld.dept_no=(SELECT dept_no
+             WHERE	is_main = 'Y'
+             AND	ld.dept_no=(SELECT dept_no
                          	   FROM employee e
                            	   WHERE e.emp_no=#{employeeNo})),
             (SELECT sum(money) as sum
@@ -48,14 +49,17 @@
 	
 	<!-- 소속부서 횟수/비용 날짜 통계 -->
 	<select id="getDepartmentDate" resultType="map">
-		SELECT *              
+                            
+        SELECT *              
         FROM 
-            (SELECT count(*) as count
-             FROM 	lead_department ld, reservation r
-             WHERE 	(start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
-             AND 	ld.dept_no=(SELECT dept_no
-                         	   FROM employee e
-                           	   WHERE e.emp_no=#{employeeNo})),
+            (select count(*)
+                from lead_department ld, reservation r
+                where is_main = 'Y'
+                and (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+                and ld.res_no = r.res_no
+                and dept_no = (SELECT dept_no
+                               FROM     employee 
+                               WHERE    emp_no=#{employeeNo})),
             (SELECT sum(money) as sum
              FROM employee e, participation p, reservation r
              WHERE p.emp_no=e.emp_no
@@ -69,7 +73,7 @@
 	<!-- 사용자 전체 예약 통계 -->
 	<select id="getUserAllList" resultType="map">
 		SELECT distinct *
-        FROM  	(SELECT r.res_no                        AS res_no,
+        FROM  	(select r.res_no                        AS res_no,
 		                r.name							AS reservationName,
 						purpose,
 						rm.name							AS roomName,
@@ -79,20 +83,24 @@
         		FROM    reservation r,
 						lead_department ld,
 						department d,
-						room rm
+						room rm,
+						participation p
 				WHERE	r.res_no = ld.res_no
 						AND rm.room_no = r.room_no
 						AND ld.dept_no = d.dept_no
-						AND	emp_no = #{employeeNo}) data1,
-           		(SELECT	r.res_no						AS res_no,
-                  		LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
-	            FROM	reservation r,
-	                    lead_department ld,
-	                    department d
-	            WHERE	r.res_no = ld.res_no
-	                    AND ld.dept_no = d.dept_no
-	                    AND	emp_no = #{employeeNo}
-	            GROUP BY r.res_no) data2
+						AND p.res_no = r.res_no
+						AND	p.emp_no = #{employeeNo}) data1,
+            			(SELECT	r.res_no						AS res_no,
+                    			LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
+			            FROM	reservation r,
+			                    lead_department ld,
+			                    department d,
+			                    participation p
+			            WHERE	r.res_no = ld.res_no
+			                    AND ld.dept_no = d.dept_no
+			                    AND p.res_no = r.res_no
+			                    AND	p.emp_no = #{employeeNo}
+			            group by r.res_no) data2
         WHERE data1.res_no = data2.res_no
 	</select>
 	
@@ -109,20 +117,25 @@
         		FROM    reservation r,
 						lead_department ld,
 						department d,
-						room rm
+						room rm,
+						participation p
 				WHERE	r.res_no = ld.res_no
 						AND rm.room_no = r.room_no
 						AND ld.dept_no = d.dept_no
 						AND (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
-						AND	emp_no = #{employeeNo}) data1,
+						AND p.res_no = r.res_no
+						AND	p.emp_no = #{employeeNo}) data1,
             			(SELECT	r.res_no						AS res_no,
                     			LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
 			            FROM	reservation r,
 			                    lead_department ld,
-			                    department d
+			                    department d,
+			                    participation p
 			            WHERE	r.res_no = ld.res_no
 			                    AND ld.dept_no = d.dept_no
-			                    AND	emp_no = #{employeeNo}
+			                    AND p.res_no = r.res_no
+								AND	p.emp_no = #{employeeNo}
+			                    AND	p.emp_no = #{employeeNo}
 			            group by r.res_no) data2
         WHERE data1.res_no = data2.res_no
 	</select>

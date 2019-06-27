@@ -12,7 +12,7 @@
 	
 	<!-- 마이페이지 캘린더 예약현황 조회 -->
 	<select id="getReservationInfo" resultType="Map">
-		SELECT res_no                            AS reservationNo, 
+    	SELECT r.res_no                            AS reservationNo, 
 		       e.name                            AS empName,
 		       room_no                           AS roomNo, 
 		       r.NAME 							 AS reservationName,
@@ -22,9 +22,11 @@
 		       snack_want                        AS snackWant, 
 		       status 
 		FROM   reservation r,
-			   employee e
+			   employee e,
+               participation p
 		WHERE  r.emp_no = e.emp_no
-			   AND e.emp_no = #{employeeNo} 
+        AND    p.res_no = r.res_no    
+        AND    p.emp_no = #{employeeNo}
 	</select>
 	
 	<!-- 마이페이지 캘린더 상세 조회 -->
@@ -56,19 +58,23 @@
         		FROM    reservation r,
 						lead_department ld,
 						department d,
-						room rm
+						room rm,
+						participation p
 				WHERE	r.res_no = ld.res_no
 						AND rm.room_no = r.room_no
 						AND ld.dept_no = d.dept_no
-						AND	r.emp_no = #{employeeNo}) data1,
+						AND p.res_no = r.res_no
+						AND	p.emp_no = #{employeeNo}) data1,
             			(SELECT	r.res_no						AS res_no,
                     			LISTAGG(d.name, ',') WITHIN GROUP (ORDER BY d.name) AS departmentName
 			            FROM	reservation r,
 			                    lead_department ld,
-			                    department d
+			                    department d,
+			                    participation p
 			            WHERE	r.res_no = ld.res_no
 			                    AND ld.dept_no = d.dept_no
-			                    AND	r.emp_no = #{employeeNo}
+			                    AND p.res_no = r.res_no
+			                    AND	p.emp_no = #{employeeNo}
 			            group by r.res_no) data2
         WHERE data1.res_no = data2.res_no
 	</select>

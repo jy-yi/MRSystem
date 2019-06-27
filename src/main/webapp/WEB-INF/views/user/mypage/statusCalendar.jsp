@@ -346,7 +346,7 @@ function getUrlParams() {
 			}, success : function(data) {
 				//console.log(data);
 				if(data.one == null) {
-					$("#todayRes").text("[당일 가장 가까운 예약 일정] 현재 가까운 예약 정보가 없습니다.");
+					//$("#todayRes").text("[당일 가장 가까운 예약 일정] 현재 가까운 예약 정보가 없습니다.");
 					return false;					
 				}
 				console.log("-----------가장 최근 1개 정보------------");
