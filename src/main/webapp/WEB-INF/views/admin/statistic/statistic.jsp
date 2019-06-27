@@ -245,9 +245,14 @@ $(function() {
     			table += '<td class="text-primary"> 예약 완료 </td>';
 			else if (item.STATUS == 2)
     			table += '<td class="text-danger"> 예약 반려 </td>';
-			else
-				table += '<td class="text-warning"> 예약 취소 </td>';	
-    		table += '</tr>';
+			else if (item.STATUS == 3)
+				table += '<td class="text-warning"> 예약 취소 </td>';
+			else if (item.STATUS == 4)
+    			table += '<td class="text-success"> 회의 시작 </td>';
+			else if (item.STATUS == 5)
+    			table += '<td class="text-primary"> 회의 종료 </td>';
+			else if (item.STATUS == 6)
+				table += '<td class="text-warning"> 회의 노쇼 </td>';
        });
 		
 		return table;

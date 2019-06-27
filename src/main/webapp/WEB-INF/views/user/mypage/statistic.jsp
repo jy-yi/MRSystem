@@ -177,16 +177,16 @@ $(function() {
 		        type : "POST",
 		        dataType : "json",
 		        success : function(data){
-		        	alert(JSON.stringify(data.getIndividualDate),JSON.stringify(data.getDepartmentDate) );
+		        	//alert(JSON.stringify(data.getIndividualDate),JSON.stringify(data.getDepartmentDate) );
 		        	//console.log(JSON.stringify(data.getIndividualDate.size()) +", " + JSON.stringify(data.getIndividualDate.size()));
 		 			//&& data.getIndividualDate.length == 0 && data.getDepartmentDate.length == 0
 		        	var table = '';
 		        	if (data.userSearchList.length == 0 ) {
 		        		table += '<tr><td colspan="8"> 해당 기간 내 예약이 존재하지 않습니다. </td></tr>';
-		        		$("#countIn").text('');
-		        		$("#sumIn").text('');
-		        		$("#countDe").text('');
-		        		$("#sumDe").text('');
+		        		$("#countIn").text('0');
+		        		$("#sumIn").text('0');
+		        		$("#countDe").text('0');
+		        		$("#sumDe").text('0');
 		        	} else {
 		        		table += makeTable(data.userSearchList);
 		        	}
@@ -227,6 +227,12 @@ $(function() {
     			table += '<td class="text-danger"> 예약 반려 </td>';
 			else if (item.STATUS == 3)
 				table += '<td class="text-warning"> 예약 취소 </td>';
+			else if (item.STATUS == 4)
+    			table += '<td class="text-success"> 회의 시작 </td>';
+			else if (item.STATUS == 5)
+    			table += '<td class="text-primary"> 회의 종료 </td>';
+			else if (item.STATUS == 6)
+				table += '<td class="text-warning"> 회의 노쇼 </td>';
     		table += '</tr>';
        });
 		

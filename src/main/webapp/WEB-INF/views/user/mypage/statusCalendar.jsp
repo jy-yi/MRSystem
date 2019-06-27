@@ -34,10 +34,9 @@
 					<div class="card-body">
 						<div class="row no-gutters align-items-center">
 							<div class="col mr-2">
-								<div class="text-lg font-weight-bold text-info text-uppercase mb-1">
+								<div class="text-lg font-weight-bold text-info text-uppercase mb-1" id="todayRes">
 								
-									[당일 가장 가까운 예약 일정]	
-									<c:forEach items="${latestReservation}" var="list">
+									<%-- <c:forEach items="${latestReservation}" var="list">
 										<c:if test="${list.STATUS == 1 || list.STATUS == 4}">
 											<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
 												<c:choose>
@@ -51,7 +50,7 @@
 												회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
 											</c:if>
 										</c:if>
-									</c:forEach>	
+									</c:forEach>	 --%>
 								</div>
 
 								<!-- 프로그레스 바 -->
@@ -208,6 +207,23 @@
 	var startDate = '';
 	var endDate = '';
 	var status = '';
+	var interval2 = '';
+	
+	<c:forEach items="${latestReservation}" var="list">
+	<c:if test="${list.STATUS == 1 || list.STATUS == 4}">
+		<c:if test="${list.WOWDATE <= 10 && list.WOWDATE > - 10}">
+			<c:choose>
+				<c:when test="${list.WOWDATE >= 0 }">
+					${list.NAME } : ${list.WOWDATE}분 남았습니다. <br>
+				</c:when>
+				<c:otherwise>
+					${list.NAME } : ${list.WOWDATE * -1 }분 지났습니다. <br>
+				</c:otherwise>
+			</c:choose>
+			회의 시작 후 10분 이내에 시작버튼을 누르지 않으면 NO-SHOW 처리되오니 유의하시기 바랍니다.
+		</c:if>
+	</c:if>
+</c:forEach>	
 
 	/* 가장 최근 예약 1개 정보 가져오기 */
 	function getOne(){
@@ -278,8 +294,12 @@
 		    	console.log("--------------------------");
 		    	
 		    	if(result >= 0){
+					/* $("#todayRes")
+					.text("[당일 가장 가까운 예약 일정]  " + resName + " >> "+ result + "분 남았습니다."); */
 		    		console.log(result+"분 남았습니다.");
 		    	} else{
+		    		/* $("#todayRes")
+					.text("[당일 가장 가까운 예약 일정]  " + resName + " >> "+ (result * -1) + "분 지났습니다."); */
 		    		console.log((result * -1)+"분 지났습니다.");
 		    	}
 		    	
@@ -290,6 +310,14 @@
 		    	if (-10 < result && result <= 10) {
 		   	    	var start_end_Btn = document.getElementById("start_end_Btn");
 		   	    	
+		   	    	if(result >= 0) {
+		   	    		$("#todayRes")
+						.text("[당일 가장 가까운 예약 일정]  " + resName + " >> "+ result + "분 남았습니다.");
+		   	    	} else{
+		   	    		$("#todayRes")
+						.text("[당일 가장 가까운 예약 일정]  " + resName + " >> "+ (result * -1) + "분 지났습니다.");
+		   	    	}
+		   	    	
 		   			if (start_end_Btn.style.display == 'none') {
 		   	    		// 시작버튼 활성화
 		   	    		start_end_Btn.style.display = 'block';
@@ -297,6 +325,7 @@
 		   			}
 		   	    }
 				if(result <= -10){
+					
 					console.log("10분 초과 인터벌 클리어");
 			    	clearInterval(interval);
 			    }
