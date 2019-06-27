@@ -296,6 +296,11 @@
 	/******************
 		사원
 	*******************/
+	// 모달 처음 켜질땐 초성 ㄱ 자동 선택
+	$( document ).ready(function() {
+		$("#ganada-list>li:contains('ㄱ')").trigger("click");
+	});
+	
 	// 모달 초성 선택 이벤트
 	$("#ganada-list>li").on("click",function(){
 		chosung=$(this).text();
