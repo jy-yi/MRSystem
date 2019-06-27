@@ -392,7 +392,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 			// 단기 예약일 경우 별도의 승인없이 예약 가능
 			Map<String, Object> statusMap=new HashMap<>();
-			statusMap.put("resNo", resNo);
+			statusMap.put("reservationNo", resNo);
 			statusMap.put("status", 1);
 			dao.updateStatus(statusMap);
 			reservationDto.setStatus(1);
