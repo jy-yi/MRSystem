@@ -71,7 +71,7 @@
 										<th>기간</th>
 										<th>주관부서</th>
 										<th>승인 상태</th>
-										<th>취소</th>
+										<th>회의 진행 상태</th>
 									</tr>
 								</thead>
 
@@ -122,18 +122,33 @@
 													</td>
 													
 													<td>
-														<c:choose>
-															<c:when test="${list.STATUS eq 3}">
-																<span class="text-warning"> 취소 완료 </span>
-															</c:when>
-															<c:otherwise>
-																<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
-																<input type="hidden" value="${list.RES_NO}">
-																<input type="hidden" value="${login.employeeNo}">
-																<input type="hidden" value="${login.name}">
-																<input type="hidden" value="${login.email}">
-															</c:otherwise>
-														</c:choose>
+														<c:if test="${list.STATUS eq 2}">
+															<span class="text-warning"> 반려 완료 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 3}">
+															<span class="text-warning"> 취소 완료 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 4}">
+															<span class="text-warning"> 회의 진행 중 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 5}">
+															<span class="text-warning"> 회의 종료 </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 6}">
+															<span class="text-warning"> No-Show </span>
+														</c:if>
+														
+														<c:if test="${list.STATUS eq 0 || list.STATUS eq 1}">
+															<a href="#" class="btn btn-danger"> <span class="text">취소</span> </a>
+															<input type="hidden" value="${list.RES_NO}">
+															<input type="hidden" value="${login.employeeNo}">
+															<input type="hidden" value="${login.name}">
+															<input type="hidden" value="${login.email}">
+														</c:if>
 													</td>
 												</tr>
 											</c:forEach>

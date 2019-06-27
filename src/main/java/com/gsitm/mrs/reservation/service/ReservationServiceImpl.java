@@ -792,6 +792,8 @@ public class ReservationServiceImpl implements ReservationService {
 		String timeStr = format.format(cal.getTime());
 		System.out.println("------------- "+timeStr+"------------------");
 		
+		// 노쇼 처리할 res_no들을 select
+		
 		int result = dao.updateNoshow(timeStr);
 	}
 	
