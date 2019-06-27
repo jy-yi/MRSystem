@@ -65,6 +65,12 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace +".getLatestReservation", employeeNo);
 	}
 	
+	/** 가장 최근 1개 가져오기 */
+	public Map<String, Object> getOne(String employeeNo) {
+		
+		return sqlSession.selectOne(namespace +".getOne", employeeNo);
+	}
+	
 	/** 대시보드 */
 	@Override
 	public List<Map<String, Object>> getDashBoard(int roomNo) {

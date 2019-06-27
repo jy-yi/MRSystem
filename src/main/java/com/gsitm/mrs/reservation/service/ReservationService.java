@@ -42,6 +42,9 @@ public interface ReservationService {
 	/** 마이페이지 가장 최근 예약 표시 */
 	public List<Map<String, Object>> getLatestReservation(String employeeNo);
 	
+	/** 가장 최근 1개 가져오기 */
+	public Map<String, Object> getOne(String employeeNo);
+	
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int roomNo);
 	

@@ -105,6 +105,25 @@
 		<!-- AND     status = 1 -->
 	</select>
 	
+	<!-- 가장 최근 1개 예약 정보 -->
+	<select id="getOne" resultType="map">
+	    SELECT *
+		FROM(
+			SELECT 	res_no			AS reservationNo,
+					emp_no					AS empNo,
+					room_no,
+					name,
+					purpose,
+					To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
+			       	To_char(end_date, 'YYYY-MM-DD HH24:MI') 	AS endDate,
+					status
+			FROM reservation
+			WHERE emp_no = #{employeeNo}
+			AND (status=1 or status=4)
+			ORDER BY start_date)
+		WHERE rownum=1
+	</select>
+	
 	<!-- 대시보드 -->
 	<select id="getDashBoard" resultType="map">
 		SELECT	r.res_no                        AS resNo,

@@ -69,7 +69,8 @@ public class ResevationController {
 		
 		model.addAttribute("reservationInfo", reservationInfo);
 		model.addAttribute("latestReservation", latestReservation);
-
+		
+		
 		return "user/mypage/statusCalendar";
 	}
 	
@@ -189,6 +190,25 @@ public class ResevationController {
 
 		return "redirect:/reservation/statusCalendar";
 	}
+	
+	@RequestMapping(value="/getOne", method = RequestMethod.POST)
+	public ModelAndView getOne(String employeeNo) {
+		
+		Map<String, Object> one = service.getOne(employeeNo);
+		
+		logger.info(employeeNo);
+		logger.info(one+"");
+		
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("one", one);
+		mav.setViewName("jsonView");
+		
+	
+		
+		return mav;
+	}
+	
 	
 	@RequestMapping(value = "/room", method = RequestMethod.GET)
 	public String room(Model model) {

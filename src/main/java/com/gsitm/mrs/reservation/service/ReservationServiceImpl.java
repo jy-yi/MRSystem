@@ -539,6 +539,11 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getLatestReservation(String employeeNo) {
 		return dao.getLatestReservation(employeeNo);
 	}
+	
+	/** 가장 최근 1개 가져오기 */
+	public Map<String, Object> getOne(String employeeNo){
+		return dao.getOne(employeeNo);
+	}
 
 	/** 대시보드 */
 	public List<Map<String, Object>> getDashBoard(int roomNo) {

@@ -69,6 +69,17 @@ public class ReservationDaoTest {
 	
 	/** 회의실 정보 조회 테스트 */
 	@Test
+	public void TestGetOne() {
+		
+		Map<String, Object> one =dao.getOne("it1226");
+		
+		logger.info(one);
+		
+	}
+	
+	
+	/** 회의실 정보 조회 테스트 */
+	@Test
 	public void TestRoomInfo() {
 		
 		Map<String, Object> room=dao.getRoomInfo(1);
