@@ -89,10 +89,18 @@
 	</div>
 
 	<br>
-
-
+	
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
+		<div class="mb-2">
+			<a href="#" class="btn btn-success btn-circle btn-sm"></a> 승인 대기
+			<a href="#" class="btn btn-primary btn-circle btn-sm"></a> 예약 완료
+			<a href="#" class="btn btn-info btn-circle btn-sm"></a> 진행 중인 회의
+			<a href="#" class="btn btn-secondary btn-circle btn-sm"></a> 사용 완료
+			<a href="#" class="btn btn-warning btn-circle btn-sm"></a> No-Show
+		</div>
+		
+		<br>
 
 		<!-- Content Row -->
 		<div id='calendar'></div>
@@ -245,36 +253,36 @@ function getUrlParams() {
 												backgroundColor: 
 													// 승인 대기
 													<c:if test="${list.STATUS eq 0 }">
-														'skyblue',
+														'#1cc88a',
 													</c:if>
 													<c:if test="${list.STATUS eq 1 }">
-														'pink',
+														'#4e73df',
 													</c:if>
 													<c:if test="${list.STATUS eq 4 }">
-														'red',
+														'#36b9cc',
 													</c:if>
 													<c:if test="${list.STATUS eq 5 }">
-														'blue',
+														'#858796',
 													</c:if>
 													<c:if test="${list.STATUS eq 6 }">
-														'yellow',	
+														'#f6c23e',	
 													</c:if>
 														
 												borderColor: 
 													<c:if test="${list.STATUS eq 0 }">
-														'skyblue'
+														'#1cc88a'
 													</c:if>
 													<c:if test="${list.STATUS eq 1 }">
-														'pink'
+														'#4e73df'
 													</c:if>
 													<c:if test="${list.STATUS eq 4 }">
-														'red'
+														'#36b9cc'
 													</c:if>
 													<c:if test="${list.STATUS eq 5 }">
-														'blue'	
+														'#858796'	
 													</c:if>
 													<c:if test="${list.STATUS eq 6 }">
-														'yellow'	
+														'#f6c23e'	
 													</c:if>
 											},
 											</c:if>
