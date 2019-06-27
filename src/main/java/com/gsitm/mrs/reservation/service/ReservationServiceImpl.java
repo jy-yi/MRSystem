@@ -722,8 +722,8 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 	
 	/** 비용 메일 전송 */
-	public boolean moneyMailSendString(String empNo, String email, String name, String reservationName,
-					String term, String type, String time, int totalSum, List<Object> deptList, List<Map<String,Object>> participationList) {
+	public boolean moneyMailSendString(String empNo, String email, String name, String reservationName, String title,
+					String term, String type, String time, int totalSum, List<Map<String,Object>> deptList, List<Map<String,Object>> participationList) {
 
 		String host = "smtp.naver.com";
 		int port = 587;
@@ -732,7 +732,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 		// String recipient = empNo;
 		//TODO 고치기
-//		String content = mailUitls.getMoneyTemplate(name, password, term, username, time, port, deptList, participationList);
+		String content = mailUitls.getMoneyTemplate(name, password, term, username, time, port, deptList, participationList);
 				
 		// 정보를 담기 위한 객체 생성
 		Properties props = System.getProperties();
@@ -779,9 +779,15 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// 사용시간 정보
 		SimpleDateFormat orginFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		Date start = orginFormat.parse(reservation.getStartDate());
-		Date end = orginFormat.parse(reservation.getEndDate());
-		
+		Date start=null;
+		Date end=null;
+		try {
+			start= orginFormat.parse(reservation.getStartDate());
+			end=orginFormat.parse(reservation.getEndDate());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		 	
 		ReserveTypeVO rtv=calcDate(start, end);
 		double reservationHours=rtv.getReserveHours();
 		
@@ -796,7 +802,7 @@ public class ReservationServiceImpl implements ReservationService {
 		int price = ((int) reservationHours * ROOM_PRICE_PER_HOUR);
 		
 		/////
-		List<Object> deptList=new ArrayList<>(); // 부서이름, 가격
+		List<Map<String, Object>> deptList=new ArrayList<>(); // 부서이름, 가격
 		
 		// 메인 부서와 해당 부서의 참여자 수 
 		List<Map<String, Object>> mainDeptParticipation =dao.getMainDeptParticipationCount(resNo);
@@ -829,14 +835,12 @@ public class ReservationServiceImpl implements ReservationService {
 		String term=reservation.getStartDate()+" ~ "+reservation.getEndDate();
 		String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
 		
-		
+		String title = "[GS ITM] 회의실 비용 처리 안내"; // 메일 제목
 		if(status==STATUS_NO_SHOW) { // 노쇼
-			
-			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), term, "노쇼", time, price, deptList, dao.getParticipationInfo(resNo));
+			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "노쇼", time, price, deptList, dao.getParticipationInfo(resNo));
 		} else if(status==STATUS_END) { // 회의실 사용 종료
-
-			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), term, "완료", time, price, deptList, dao.getParticipationInfo(resNo));
-		};
+			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "완료", time, price, deptList, dao.getParticipationInfo(resNo));
+		}
 		
 	}
 	
