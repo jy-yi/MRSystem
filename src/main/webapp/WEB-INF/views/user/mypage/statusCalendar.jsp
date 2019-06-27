@@ -325,7 +325,7 @@
 		   			}
 		   	    }
 				if(result <= -10){
-					
+					$("#todayRes").text("[당일 가장 가까운 예약 일정] 현재 가까운 예약 정보가 없습니다.");
 					console.log("10분 초과 인터벌 클리어");
 			    	clearInterval(interval);
 			    }
