@@ -398,8 +398,9 @@
 		if(participation.length==0){
 			$("#choose-complete-btn").removeClass("btn-primary").attr("disabled",true);
 			$("#final-participation-list-div").hide();
-		}
-		
+		};
+		// 참여사원 수 업데이트
+		$("#participationCount").text(participation.length);
 	});
 	
 	// 참여 사원 목록을 업데이트하는 함수
