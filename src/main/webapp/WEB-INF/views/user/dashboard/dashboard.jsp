@@ -82,6 +82,61 @@ $(function(){
 	  		    		    });
 					}
 				});
+				} else {
+					swal({
+						title: '정말 반려하시겠습니까?',
+						text: "이후 복구는 불가능합니다.",
+						type: 'warning',
+						showCancelButton: true,
+						confirmButtonColor: '#3085d6',
+						cancelButtonColor: '#d33',
+						    confirmButtonText: 'Yes',
+						    cancelButtonText: 'No',
+						}).then( (result) => {
+							if (result.value) {
+								Swal.mixin({
+									  input: 'text',
+									  confirmButtonText: '확인',
+									  showCancelButton: true
+									}).queue([
+									  {
+									    title: '반려 사유를 작성하세요',
+									    text: '해당 사유는 신청자에게 메일로 전송됩니다.'
+									  },
+									]).then((result) => {
+									  if (result.value) {
+										 
+										  /* 반려 사유 아무것도 작성하지 않았을 경우 */
+										  if ($.trim(result.value[0]) == "") {
+											  return;
+										  } else {
+											  alert(result.value[0]);
+// 								  			$.ajax({
+// 												url : "/reservation/adminRefuse",
+// 												type : "POST",
+// 												data : {
+// 													reservationNo : reservationNo,
+// 													reason : result.value[0],
+// 													status : 2,
+// 													name : empName,
+// 													email : email,
+// 													empNo : empNo,
+// 													term : term,
+// 													reservationName : reservationName
+// 												}, success : function(data) {
+// 													swal('Success!', '반려가 완료되었습니다.', 'success'
+// 										    		).then(function(){
+// 							  		    		    	location.href="/reservation/approvalWaitingList";
+// 							  		    		    });
+// 												}
+// 											});
+										  }
+								  			
+									  }
+									})
+							}
+							  
+						});
 				}
 				  
 			});
