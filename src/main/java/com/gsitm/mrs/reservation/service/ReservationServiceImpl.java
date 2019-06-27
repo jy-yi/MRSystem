@@ -850,7 +850,6 @@ public class ReservationServiceImpl implements ReservationService {
 		// 예약기간
 		String term=start+" ~ "+end;
 		String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
-		System.out.println("dao.getParticipationInfo(resNo):"+dao.getParticipationInfo(resNo));
 		String title = "[GS ITM] 회의실 비용 처리 안내"; // 메일 제목
 		if(status==STATUS_NO_SHOW) { // 노쇼
 			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "노쇼", time, (int)price, deptList, dao.getParticipationInfo(resNo));
