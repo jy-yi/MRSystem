@@ -56,7 +56,7 @@ th {
 							</tr>
 							<tr>
 								<th>예약자</th>
-								<td>${employeeDto.name}</td>
+								<td>${login.name}</td>
 							</tr>
 							<tr>
 								<th>가격</th>
@@ -64,11 +64,11 @@ th {
 							</tr>
 							<tr>
 								<th>연락처</th>
-								<td>${employeeDto.phone}</td>
+								<td>${login.phone}</td>
 							</tr>
 							<tr>
 								<th>이메일</th>
-								<td>${employeeDto.email}</td>
+								<td>${login.email}</td>
 							</tr>
 							<tr>
 								<th>참여 인원</th>
@@ -159,7 +159,7 @@ th {
 	};
 	
 	// 예약에 필요한 정보
-	var empNo=$.cookie('loginCookie');
+	var empNo="${login.employeeNo}";
 	var roomNo="${roomInfo.ROOMNO}";
 	var name="${meetingName}";
 	var email="${employeeDto.email}";

@@ -541,7 +541,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getLatestReservation(String employeeNo) {
 		return dao.getLatestReservation(employeeNo);
 	}
-	
+	 
 	/** 가장 최근 1개 가져오기 */
 	public Map<String, Object> getOne(String employeeNo){
 		return dao.getOne(employeeNo);
@@ -627,8 +627,10 @@ public class ReservationServiceImpl implements ReservationService {
 			List<String> emailList = new ArrayList<>(); // 메일 보내야 할 모든 이메일 목록
 			emailList.add(email); // 신청자 이메일
 			emailList.addAll(dao.getEmailList(reservationNo)); // 해당 회의 참석자들의 이메일
+			String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
 			
-			mailSend(empNo, email, title, name, reason, term, reservationName, "반려", URL+"/reservation/statusList");
+			mailSend(empNo, emails, title, name, reason, term, reservationName, "반려", URL+"/reservation/statusList");
+			
 		}
 		
 		dao.updateMgrApproval(map);
@@ -678,8 +680,8 @@ public class ReservationServiceImpl implements ReservationService {
 		final String password = "dhwlddj23";
 
 		// String recipient = empNo;
-		String content = mailUitls.getMailTemplate(name, reason, term, reservationName, type, url);
-
+		String content = mailUitls.getMailTemplate(name, reservationName, reason, term, type, url);
+				
 		// 정보를 담기 위한 객체 생성
 		Properties props = System.getProperties();
 
