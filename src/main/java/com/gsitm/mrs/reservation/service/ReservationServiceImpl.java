@@ -26,7 +26,6 @@ import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -51,6 +50,8 @@ import com.gsitm.mrs.util.MailUtils;
 @Service
 public class ReservationServiceImpl implements ReservationService {
 	
+	/* 메일 보낼 때 포함할 url */
+	public static final String URL = "http://192.168.9.201:8000";
 
 	@Inject
 	private ReservationDAO dao;
@@ -367,8 +368,13 @@ public class ReservationServiceImpl implements ReservationService {
 		String applicant = dao.getEmpName(empNo); // 신청자 이름
 		String term = startDate + " ~ " + endDate;
 		String reservationName = name; // 회의명
+		
+		EmployeeDTO manager = dao.getMgrInfo(empNo);
+		
 		String reason = "";
-		String mgrEmail = dao.getMgrEmail(empNo);
+		String mgrEmpNo = manager.getEmployeeNo();
+		String mgrName = manager.getName();
+		String mgrEmail = manager.getEmail();
 
 		List<String> emailList = new ArrayList<>(); // 메일 보내야 할 모든 이메일 목록
 		emailList.add(email); // 신청자 이메일
@@ -401,8 +407,7 @@ public class ReservationServiceImpl implements ReservationService {
 			// 상위결재자에게 예약 승인 메일
 			title = "[GS ITM] 회의실 예약 승인 요청"; // 메일 제목
 
-			// TODO : url 정리하기
-			mailSend(empNo, mgrEmail, title, applicant, reason, term, reservationName, "신청", "http://localhost/reservation/dashboard?type=manager&resNo="+resNo);
+			mailSend(empNo, mgrEmail, title, applicant, reason, term, reservationName, "신청", URL + "/reservation/dashboard?type=manager&resNo="+resNo+"&mgrNo="+mgrEmpNo);
 			
 		}
 
@@ -606,7 +611,7 @@ public class ReservationServiceImpl implements ReservationService {
 			String title = "[GS ITM] 회의실 예약 승인 요청";
 			email = dao.getAdminEmail(Integer.parseInt(reservationMap.get("ROOM_NO").toString()));	// 예약된 회의실의 관리자 메일
 			
-			mailSend(empNo, email, title, name, "", term, reservationName, "신청", "http://localhost:8000/reservation/approvalWaitingList");
+			mailSend(empNo, email, title, name, "", term, reservationName, "신청", URL+"/reservation/approvalWaitingList");
 		/* 상위결재자가 예약을 반려했을 경우 */
 		} else {
 			String title = "[GS ITM] 회의실 예약 반려 안내";
@@ -617,7 +622,7 @@ public class ReservationServiceImpl implements ReservationService {
 			emailList.add(email); // 신청자 이메일
 			emailList.addAll(dao.getEmailList(reservationNo)); // 해당 회의 참석자들의 이메일
 			
-			mailSend(empNo, email, title, name, reason, term, reservationName, "반려", "http://localhost/reservation/statusList");
+			mailSend(empNo, email, title, name, reason, term, reservationName, "반려", URL+"/reservation/statusList");
 		}
 		
 		dao.updateMgrApproval(map);

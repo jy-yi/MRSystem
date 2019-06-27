@@ -398,7 +398,9 @@
 		       w.admin_approval 					AS adminApproval, 
 		       r.name           					AS resName, 
 		       r.purpose, 
+               room.room_no,
 		       room.name        					AS roomName, 
+               room.admin_id,
 		       To_char(start_date, 'YYYY-MM-DD HH24:MI') 	AS startDate, 
 		       To_char(end_date, 'YYYY-MM-DD HH24:MI') 		AS endDate, 
 		       e.name           					AS empName, 
@@ -529,9 +531,9 @@
 		      AND a.emp_no=e.emp_no
 	</select>
 	
-	<!-- 상위결재자의 이메일 조회 -->
-	<select id="getMgrEmail" resultType="String">
-		SELECT email
+	<!-- 상위결재자 정보 조회 -->
+	<select id="getMgrEmail" resultType="Employee">
+		SELECT emp_no AS employeeNo, name, email
         FROM employee
         WHERE emp_no=(SELECT mgr_no 
         			  FROM employee 

@@ -45,8 +45,6 @@ public interface ReservationDAO {
 	/** 끝 버튼 처리 - 대여물품 삭제 */
 	public void deleteBorEquip(int reservationNo);
 	
-	
-	
 	/** 회의실 목록 조회 */
 	public List<Map<String, Object>> getRoomList(int workplaceNo);
 	
@@ -110,8 +108,8 @@ public interface ReservationDAO {
  	/** 회의실 관리자 메일 조회 */
  	public String getAdminEmail(int roomNo);
  	
- 	/** 예약자의 상위결재자 메일 조회 */
- 	public String getMgrEmail(String empNo);
+ 	/** 예약자의 상위결재자 정보 조회 */
+ 	public EmployeeDTO getMgrInfo(String empNo);
  	
  	/** 사원의 이름 조회 */
  	public String getEmpName(String empNo);
