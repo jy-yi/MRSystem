@@ -13,6 +13,8 @@
 				<i class="fas fa-user"></i> 지사/회의실 관리 > 지사 관리
 			</h1>
 		</div>
+		
+	</div>
 
 		<!-- Content Row -->
 		<div class="row">
@@ -78,9 +80,6 @@
 			<!-- /.container-fluid -->
 
 		</div>
-
-	</div>
-	<!-- /.container-fluid -->
 
 </div>
 <!-- End of Main Content -->

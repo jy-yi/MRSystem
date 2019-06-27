@@ -45,7 +45,7 @@
 							<div class="col-xs-2 col-sm-2 text-center">
 								<label>지사</label>
 							</div>
-							<div class="col-xs-9 col-sm-9">
+							<div class="col-xs-12 col-sm-9">
 								<button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			                      지사 선택 
 			                    </button>
