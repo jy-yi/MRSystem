@@ -221,7 +221,6 @@
 					var end=new Date(endDateForLongterm.getFullYear(),endDateForLongterm.getMonth(),endDateForLongterm.getDate());
 					start.setDate(start.getDate()+1); 
 					var num=0;
-					console.log("while 들어가기 전");
 					while(num!=5){
 						num++;
 						var tmpDate=start.getFullYear()+"-"+pad(start.getMonth(),2)+"-"+pad(start.getDate(),2);
@@ -487,7 +486,10 @@
 	// 모달-시간 선택
 	$(document).on("click",".can-reserve-time",function(){
 		// 시작시간과 같은 종료시간을 선택한 경우 초기화
+		console.log($(this).text());
+		
 		if(startTime!=null && $(this).text()==startTime){
+			console.log("시작시간과 같은 종료시간을 선택한 경우 초기화");
 			$('.fc-day-top[data-date="'+startDate+'"]').css("background-color","").children(".start").remove();
 			chosenStartDate=false;
 			clickedStartTime=false;
@@ -497,11 +499,14 @@
 			chosenDate=null;
 			endDate=null;
 			startTime=null;
+			
 			// 버튼 초기화
 			$("#choose-complete-btn").show().text("확인").attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
 			$("#choose-anotherDay-btn").show().attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
 			// 선택된 시간 초기화
 			$(".time").removeClass("chosenTime");
+			
+			return;
 		};
 		
 		if(!isLongTermReservation && !chosenStartDate){
