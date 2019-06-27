@@ -152,6 +152,12 @@ th {
 
 <script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
+	//뒤로 가기 버튼 막기
+	history.pushState(null, null, location.href);
+	window.onpopstate = function () {
+	    history.go(1);
+	};
+	
 	// 예약에 필요한 정보
 	var empNo=$.cookie('loginCookie');
 	var roomNo="${roomInfo.ROOMNO}";
