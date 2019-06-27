@@ -138,12 +138,13 @@ $(function(){
 				});
 		}
 	// 같지 않으면 로그아웃 시키기
-	} else {
-		swal('접근 제한', '잘못된 접근입니다.', 'error'
-		).then(function(){
-		    	location.href="/user/logout";
-	    });
-	}
+	} 
+// 	else {
+// 		swal('접근 제한', '잘못된 접근입니다.', 'error'
+// 		).then(function(){
+// 		    	location.href="/user/logout";
+// 	    });
+// 	}
 
 });
 
@@ -241,45 +242,17 @@ function getUrlParams() {
 	$(function() {
 
 		var workplaceNo = "";
-
-		/* 지사 탭 클릭 이벤트 */
-		$(".workplace-list").on("click", function() {
-			workplaceNo = $(this).attr('value');
-
-			// 대시보드 > XXX (지사 이름 동적 변경)
-			$("#workplaceNameTitle").text($(this).text());
-
-			$.ajax({
-				url : "/statistic/getRoomListByWorkplaceNo",
-				data : {
-					"workplaceNo" : workplaceNo
-				},
-				type : "POST",
-				dataType : 'json',
-				success : function(data) {
-					console.log(data.roomList);
-					$("#roomList"+workplaceNo).empty();
-					$.each(data.roomList, function(index, item){
-						$("#roomList"+workplaceNo).append('<li style="text-align: center;"><a href="#" data-toggle="tab" value="'+ item.roomNo +'" class="roomBtn">'+ item.name + '</a></li>');
-					});
-				},
-				error : function() {
-					alert("지사별 해당 회의실 조회 에러");
-				}
-			});
-			
-		});
-
-		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
-		$(".workplace-list:first").trigger("click");
-		$('.roomBtn:first').trigger('click');
 		
 		/* 회의실 버튼 눌렀을 때 */
 		$(document).on("click", ".roomBtn", function() {
 			var roomNo = $(this).attr('value');
 			
 			// 대시보드 > XXX > YYY (회의실 이름 동적 변경)
+			$("#workplaceNameTitle").text($(this).parent().prev().text());
 			$("#roomNameTitle").text(" > "+$(this).text());
+			
+			$('.workplace-list').removeClass('active');
+			$(this).parent().prev().addClass('active');
 			
 			$.ajax({
 				url : "/reservation/getRoomDashBoard",
@@ -289,8 +262,6 @@ function getUrlParams() {
 				type : "POST",
 				dataType : 'json',
 				success : function(data) {
-					console.log(data);
-					
 					calendar.removeAllEvents();
 					
 					$.each(data.roomDashBoard, function(index, item){
@@ -311,8 +282,39 @@ function getUrlParams() {
 			});
 			
 		});
-		
 
+		/* 지사 탭 클릭 이벤트 */
+		$(".workplace-list").each(function(index, item) {
+			workplaceNo = $(item).attr('value');
+
+			// 대시보드 > XXX (지사 이름 동적 변경)
+// 			$("#workplaceNameTitle").text($(item).text());
+
+			$.ajax({
+				url : "/statistic/getRoomListByWorkplaceNo",
+				data : {
+					"workplaceNo" : workplaceNo
+				},
+				type : "POST",
+				dataType : 'json',
+				async : false,
+				success : function(data) {
+					console.log(data.roomList);
+					$("#roomList"+workplaceNo).empty();
+					$.each(data.roomList, function(index, item){
+						$("#roomList"+workplaceNo).append('<li class="roomBtn" value="'+ item.roomNo +'" style="text-align: center;"><a href="#" data-toggle="tab">'+ item.name + '</a></li>');
+					});
+				},
+				error : function() {
+					alert("지사별 해당 회의실 조회 에러");
+				}
+			});
+			
+		});
+
+		/* 페이지 처음 로딩 시 지사 탭 제일 처음 클릭 이벤트 디폴트 처리 */
+ 		$('.roomBtn:first').trigger('click');
+		
 	});
 </script>
 <!-- Modal -->
