@@ -19,8 +19,6 @@
 				</h1>
 			</div>
 			
-			<input type="hidden" id="empNo" value="${login.employeeNo }">
-			
 			<div class="mb-2">
 				<a href="#" class="btn btn-success btn-circle btn-sm"></a> 승인 대기
 				<a href="#" class="btn btn-primary btn-circle btn-sm"></a> 예약 완료

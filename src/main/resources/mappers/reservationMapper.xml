@@ -610,7 +610,9 @@
 	<update id="updateMoney" parameterType="Map">
 		UPDATE participation
 		SET money=#{money}
-		WHERE res_no=#{resNo} AND emp_no=#{empNo}
+		WHERE res_no=1 AND emp_no IN (SELECT e.emp_no
+                                      FROM participation p, employee e
+                                      WHERE p.emp_no=e.emp_no AND e.dept_no=24)
 	</update>
 	
 	<!-- 참여사원 정보 조회  -->

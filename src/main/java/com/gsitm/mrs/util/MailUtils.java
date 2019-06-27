@@ -189,9 +189,9 @@ public class MailUtils {
 				
 						for (int i = 0; i < participationList.size(); i++) {
 							template += "		<tr>" + 
-									"				<td> " + participationList.get(i).get("empName") + " </td>" + 
-									"				<td> " + participationList.get(i).get("deptName") + " </td>" + 
-									"				<td> " + participationList.get(i).get("money") + " </td>" + 
+									"				<td> " + participationList.get(i).get("EMPNAME") + " </td>" + 
+									"				<td> " + participationList.get(i).get("DEPTNAME") + " </td>" + 
+									"				<td> " + participationList.get(i).get("MONEY") + "원 </td>" + 
 									"			</tr>"; 
 						}
 				template +=

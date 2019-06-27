@@ -555,6 +555,17 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 시작 버튼 처리 - 승인상태 변경 */
 	public void updateStart(Map<String, Object> map) {
 		dao.updateStart(map);
+		
+		System.out.println("시작 버튼 처리 >>>>>>>>>>. " + map);
+		
+		int status = Integer.parseInt(map.get("status").toString());
+		int resNo = Integer.parseInt(map.get("reservationNo").toString());
+		String empNo = map.get("empNo").toString();
+		
+		// 비용 부과 및 이메일 전송
+		if (status == 5)
+			payForMettingRoom(status, resNo, empNo);
+		
 	}
 
 	/** 끝 버튼 처리 - 대여물품 삭제 */
@@ -732,7 +743,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 		// String recipient = empNo;
 		//TODO 고치기
-		String content = mailUitls.getMoneyTemplate(name, password, term, username, time, port, deptList, participationList);
+		String content = mailUitls.getMoneyTemplate(username, reservationName, term, type, time, totalSum, deptList, participationList);
 				
 		// 정보를 담기 위한 객체 생성
 		Properties props = System.getProperties();
@@ -793,34 +804,39 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		String time=null;
 		if(reservationHours%1 !=0) { // 30분으로 떨어지는 경우
-			time=reservationHours/1+"시간 "+ reservationHours%1+"분";
+			time=(int)(reservationHours/1)+"시간 30분";
 		} else {
 			time=reservationHours+"시간";
 		}
 		
 		// 회의 전체 금액
-		int price = ((int) reservationHours * ROOM_PRICE_PER_HOUR);
+		double price = reservationHours * ROOM_PRICE_PER_HOUR;
 		
-		/////
 		List<Map<String, Object>> deptList=new ArrayList<>(); // 부서이름, 가격
 		
 		// 메인 부서와 해당 부서의 참여자 수 
-		List<Map<String, Object>> mainDeptParticipation =dao.getMainDeptParticipationCount(resNo);
+		List<Map<String, Object>> mainDeptParticipation=dao.getMainDeptParticipationCount(resNo);
+		System.out.println("mainDeptParticipation:"+mainDeptParticipation);
 		int totalMainDeptNum=mainDeptParticipation.size(); // 전체 주관부서의 수
-		int pricePerMainDept=price/totalMainDeptNum; // 한 부서당 지불해야 하는 금액
+		int pricePerMainDept=(int)(price/totalMainDeptNum); // 한 부서당 지불해야 하는 금액
 		
 		// 부서마다 돈 부과
 		for(Map<String, Object> deptInfo:mainDeptParticipation) {
-			int thisDeptMoney=pricePerMainDept/(int)deptInfo.get("numOfParticipation");
+			int thisDeptMoney=pricePerMainDept/Integer.parseInt(deptInfo.get("NUMOFPARTICIPATION").toString());
+			int deptNo=Integer.parseInt(deptInfo.get("DEPTNO").toString());
 			Map<String, Object> moneyMap=new HashMap<>();
 			moneyMap.put("resNo", resNo);
-			moneyMap.put("empNo", empNo);
-			moneyMap.put("money", thisDeptMoney);
+			moneyMap.put("money", Math.round(thisDeptMoney));
+			moneyMap.put("deptNo", deptNo);
+			
+			// DB에 저장
+			dao.updateMoney(moneyMap);
 			
 			// 부서이름과 가격을 deptList에 삽입해준다
 			Map<String, Object> tmpMap=new HashMap<>();
-			tmpMap.put("money", thisDeptMoney);
-			tmpMap.put("deptName", deptInfo.get("deptName"));
+			tmpMap.put("money", Math.round(thisDeptMoney));
+			tmpMap.put("deptName", deptInfo.get("DEPTNAME"));
+			System.err.println("tmpMap:"+tmpMap);
 			deptList.add(tmpMap);
 		}
 		
@@ -832,14 +848,14 @@ public class ReservationServiceImpl implements ReservationService {
 		emailList.add(dao.getMgrInfo(empNo).getEmail()); // 신청자의 상위 결재자 이메일
 
 		// 예약기간
-		String term=reservation.getStartDate()+" ~ "+reservation.getEndDate();
+		String term=start+" ~ "+end;
 		String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
-		
+		System.out.println("dao.getParticipationInfo(resNo):"+dao.getParticipationInfo(resNo));
 		String title = "[GS ITM] 회의실 비용 처리 안내"; // 메일 제목
 		if(status==STATUS_NO_SHOW) { // 노쇼
-			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "노쇼", time, price, deptList, dao.getParticipationInfo(resNo));
+			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "노쇼", time, (int)price, deptList, dao.getParticipationInfo(resNo));
 		} else if(status==STATUS_END) { // 회의실 사용 종료
-			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "완료", time, price, deptList, dao.getParticipationInfo(resNo));
+			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "완료", time, (int)price, deptList, dao.getParticipationInfo(resNo));
 		}
 		
 	}
