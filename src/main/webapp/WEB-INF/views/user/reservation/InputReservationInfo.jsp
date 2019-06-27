@@ -573,14 +573,16 @@
 				// 참여인원과 주관부서를 선택했는지 확인(참여 인원을 선택해야 주관부서가 나오므로 주관부서만 확인)
 				if(mainDept!=null){
 					if(mainDept.length>0){
+						console.log("메인부서 있다!");
 						// 폼의 모든 요소를 채웠으면 버튼 active
 						$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
+						return;
 					}
 				}
 			}
-		}else {
-			$("#nextBtn").addClass("btn-disabled").removeClass("btn-active").attr("disabled",true);
 		}
+		
+		$("#nextBtn").addClass("btn-disabled").removeClass("btn-active").attr("disabled",true);
 	};
 	
 	// 회의실 예약 내역을 다 입력하면 active로 전환
