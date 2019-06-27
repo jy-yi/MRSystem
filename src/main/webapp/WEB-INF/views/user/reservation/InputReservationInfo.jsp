@@ -8,6 +8,9 @@
 .nav-link {
 	display: inline-block;
 }
+#ganada-list {
+	padding-left: 50%;
+}
 </style>
 
 <!-- Main Content -->
