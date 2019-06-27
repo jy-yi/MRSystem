@@ -572,4 +572,18 @@
 		FROM room
 		WHERE room_no=#{roomNo}
 	</select>
+	
+	<!-- 자동 노쇼 처리 -->
+	<update id="updateNoshow">
+		UPDATE reservation SET status = 6, end_date = start_date+1/24*0.5
+		WHERE TO_CHAR(start_date, 'yyyy-mm-dd hh24:mi') = #{timeStr}
+			AND status = 1
+	</update>
+	
+	<!-- 자동 종료 처리 -->
+	<update id="updateCheckEnd">
+		UPDATE reservation SET status = 5
+		WHERE TO_CHAR(end_date, 'yyyy-mm-dd hh24:mi') &lt;= #{timeStr}
+			AND status = 4
+	</update>
 </mapper>

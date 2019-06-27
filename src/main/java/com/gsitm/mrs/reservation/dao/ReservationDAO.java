@@ -147,4 +147,8 @@ public interface ReservationDAO {
 	/** 예약 취소 목록 조회 */
 	public List<Map<String, Object>> getReservationCancelList();
 
+	public int updateNoshow(String timeStr);
+
+	public int updateCheckEnd(String timeStr);
+
 }

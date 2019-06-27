@@ -278,4 +278,14 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectList(namespace + ".getReservationCancelList");
 	}
 
+	@Override
+	public int updateNoshow(String timeStr) {
+		return sqlSession.update(namespace+".updateNoshow", timeStr);
+	}
+
+	@Override
+	public int updateCheckEnd(String timeStr) {
+		return sqlSession.update(namespace+".updateCheckEnd", timeStr);
+	}
+
 }

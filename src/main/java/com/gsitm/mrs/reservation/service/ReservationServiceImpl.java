@@ -26,6 +26,7 @@ import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -782,5 +783,26 @@ public class ReservationServiceImpl implements ReservationService {
 	return reserveType;
 	}*/
 	
+	@Scheduled(cron="0 10/30 9-18 * * *")
+	public void checkNoShow() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.MINUTE, -10);
+		String timeStr = format.format(cal.getTime());
+		System.out.println("------------- "+timeStr+"------------------");
+		
+		int result = dao.updateNoshow(timeStr);
+	}
 	
+	@Scheduled(cron="0 0/30 9-18 * * *")
+	public void checkEnd() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		String timeStr = format.format(cal.getTime());
+		System.out.println("------------- "+timeStr+"------------------");
+		
+		int result = dao.updateCheckEnd(timeStr);
+	}
 }

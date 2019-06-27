@@ -120,5 +120,8 @@ public interface ReservationService {
 	
 	/** 메일 전송 */
 	public boolean mailSend(String empNo, String email, String title, String name, String reason, String term, String reservationName, String type, String url);
+	
+	public void checkNoShow();
+	public void checkEnd();
 
 }
