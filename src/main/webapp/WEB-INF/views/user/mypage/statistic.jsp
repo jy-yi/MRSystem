@@ -195,6 +195,7 @@ $(function() {
 					$('#sumIn').text(data.getIndividualDate.SUM);
 					$('#countDe').text(data.getDepartmentDate.COUNT);
 					$('#sumDe').text(data.getDepartmentDate.SUM);
+					console.log(data.getDepartmentDate);
 		        },
 		        error : function(){
 		            alert("검색 예약 현황 조회 에러");

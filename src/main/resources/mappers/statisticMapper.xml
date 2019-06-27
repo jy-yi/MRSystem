@@ -52,7 +52,7 @@
                             
         SELECT *              
         FROM 
-            (select count(*)
+            (select count(*) as count
                 from lead_department ld, reservation r
                 where is_main = 'Y'
                 and (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
