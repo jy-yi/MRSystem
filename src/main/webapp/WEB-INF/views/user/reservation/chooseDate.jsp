@@ -314,9 +314,6 @@
 					// 선택된 시간 초기화
 					$(".time").removeClass("chosenTime");
 				}
-				
-				// 시작일자를 재선택 할 수 있도록 변수 초기화
-				//chosenStartDate=false;
 			};
 			
 			if(!clickedPrevBtn && !chosenStartDate){
@@ -365,9 +362,8 @@
 			};
 
 			getReservationsByDate(chosenDate);
+			
 		});
-		
-		
 		
 		// 오늘 날짜를 #chosen-date에 띄어준다.
 		var today=$(".fc-today").data("date").split('-');
@@ -487,9 +483,13 @@
 	// 모달-시간 선택
 	$(document).on("click",".can-reserve-time",function(){
 		// 시작시간과 같은 종료시간을 선택한 경우 초기화
-		console.log($(this).text());
+		var chosenTime=$(this).text();
 		
-		if(startTime!=null && $(this).text()==startTime){
+		console.log("chosenTime:"+chosenTime);
+		console.log(startTime==chosenTime);
+		
+		// 단기 예약 중 같은 시간을 클릭한 경우 초기화
+		if(!isLongTermReservation && clickedStartTime && (startTime==chosenTime)){
 			console.log("시작시간과 같은 종료시간을 선택한 경우 초기화");
 			$('.fc-day-top[data-date="'+startDate+'"]').css("background-color","").children(".start").remove();
 			chosenStartDate=false;
