@@ -101,11 +101,12 @@
 
 <script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
-/**
- 고쳐야 할 점
- 1) 모달을 통해 예약시간을 선택한 후 다른 날짜의 모달을 켜도 예약시간이 남아있다.->다른 날짜를 선택할 경우 모달 초기화할 필요 있음
- 2) 30분만 예약하여 다음페이지로 넘어간 후 다시 이 페이지로 돌아오면 예약시간에 변화가 생김 ex)10:00 선택 후 돌아오면 10:00~10:30으로 처리돼 시간 선택 모달도 달라져 있다.
- */
+	// 뒤로 가기 버튼 막기
+	history.pushState(null, null, location.href);
+    window.onpopstate = function () {
+        history.go(1);
+	};
+
 	// 사용자가 캘린더에서 선택한 날짜
 	var startDate=null;
  	var endDate=null;
@@ -153,10 +154,6 @@
 			
 			/* 모달에 선택한 시간에 표시하기*/
 			// 시작시간, 종료시간 선택한 효과
-			console.log("startDate:"+startDate);
-			console.log("startTime:"+startTime);
-			console.log("endDate:"+endDate);
-			console.log("endTime:"+endTime);
 			$('.time:contains("'+startTime+'")').trigger("click");
 	
 			endTime_object.attr("id","endTime");
@@ -212,6 +209,35 @@
 			$(".fc-past").click(false);
 			$(".fc-sat").click(false).children(".fc-day-number").addClass("fontColor-grey");
 			$(".fc-sun").click(false).children(".fc-day-number").addClass("fontColor-grey");
+
+			// 장기예약일 경우 이미 날짜를 선택했다면 달력에 표시되도록
+			if(isLongTermReservation){
+				// 시작 날짜 표시
+				$('.fc-day-top[data-date="'+startDate+'"]').css("background-color","rgba(166, 166, 239, 0.5)").append("<p class='start' style='color: white; font-size: small;'>시작</p>");
+			
+				if(endDate!=null){
+					startDateForLongterm=new Date(startDate.split("-")[0],startDate.split("-")[1],startDate.split("-")[2],startTime.split(":")[0],startTime.split(":")[1]);
+					endDateForLongterm=new Date(endDate.split("-")[0],endDate.split("-")[1],endDate.split("-")[2],endTime.split(":")[0],endTime.split(":")[1]);
+					var start=new Date(startDateForLongterm.getFullYear(),startDateForLongterm.getMonth(),startDateForLongterm.getDate());
+					var end=new Date(endDateForLongterm.getFullYear(),endDateForLongterm.getMonth(),endDateForLongterm.getDate());
+					start.setDate(start.getDate()+1); 
+					var num=0;
+					while(num!=5){
+						num++;
+						var tmpDate=start.getFullYear()+"-"+pad(start.getMonth(),2)+"-"+pad(start.getDate(),2);
+						if(start.getTime()===end.getTime()){
+							$('.fc-day-top[data-date="'+tmpDate+'"]').css("background-color","rgba(166, 166, 239, 0.5)").append("<p class='end'  style='color: white; font-size: small;'>종료</p>");
+							break;
+						} else{
+							
+							$('.fc-day-top[data-date="'+tmpDate+'"]').css("background-color","rgba(166, 166, 239, 0.5)");
+						}
+						start.setDate(start.getDate()+1);
+					};
+				};
+				var startDateForLongterm; // 시작일자 
+				var endDateForLongterm; // 종료일자
+			};
 		});
 		
 		// 캘린더 상 날짜의 클릭 이벤트(날짜 선택)
@@ -272,7 +298,6 @@
 											 endDateForLongterm.getMonth()==startDateForLongterm.getMonth() &&
 											 endDateForLongterm.getDate()==startDateForLongterm.getDate();
 				if(endDateForLongterm.getTime()<startDateForLongterm.getTime() || isEndDateSameAsStartDate){
-					console.log(isEndDateSameAsStartDate);
 					// 리셋
 					$('.fc-day-top[data-date="'+startDate+'"]').css("background-color","").children(".start").remove();
 					chosenStartDate=false;
@@ -289,9 +314,6 @@
 					// 선택된 시간 초기화
 					$(".time").removeClass("chosenTime");
 				}
-				
-				// 시작일자를 재선택 할 수 있도록 변수 초기화
-				//chosenStartDate=false;
 			};
 			
 			if(!clickedPrevBtn && !chosenStartDate){
@@ -339,11 +361,9 @@
 				};
 			};
 
-			console.log("지금 선택한 chosenDate:"+chosenDate);
 			getReservationsByDate(chosenDate);
+			
 		});
-		
-		
 		
 		// 오늘 날짜를 #chosen-date에 띄어준다.
 		var today=$(".fc-today").data("date").split('-');
@@ -355,7 +375,6 @@
 	function getReservationsByDate(chosenDate){
 		var chosenDateSplit=chosenDate.split("-");
 		var roomNo="${roomInfo.ROOMNO}";
-		console.log("chosenDateSplit:"+chosenDateSplit);
 		$.ajax({
 			type:"get",
 			url:"${pageContext.request.contextPath}/reservation/getReservationsByDate",
@@ -365,8 +384,6 @@
 				// 해당 날짜에 예약내역들이 있는지 확인
 				if(data.reservations.length>0){
 					$.each(data.reservations, function(index, item){
-						console.log(item);
-						console.log(item);
 						var startDateArr=item.STARTDATE.split(" ")[0].split("-");
 						var endDateArr=item.ENDDATE.split(" ")[0].split("-");
 						
@@ -466,7 +483,14 @@
 	// 모달-시간 선택
 	$(document).on("click",".can-reserve-time",function(){
 		// 시작시간과 같은 종료시간을 선택한 경우 초기화
-		if(startTime!=null && $(this).text()==startTime){
+		var chosenTime=$(this).text();
+		
+		console.log("chosenTime:"+chosenTime);
+		console.log(startTime==chosenTime);
+		
+		// 단기 예약 중 같은 시간을 클릭한 경우 초기화
+		if(!isLongTermReservation && clickedStartTime && (startTime==chosenTime)){
+			console.log("시작시간과 같은 종료시간을 선택한 경우 초기화");
 			$('.fc-day-top[data-date="'+startDate+'"]').css("background-color","").children(".start").remove();
 			chosenStartDate=false;
 			clickedStartTime=false;
@@ -476,11 +500,14 @@
 			chosenDate=null;
 			endDate=null;
 			startTime=null;
+			
 			// 버튼 초기화
 			$("#choose-complete-btn").show().text("확인").attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
 			$("#choose-anotherDay-btn").show().attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
 			// 선택된 시간 초기화
 			$(".time").removeClass("chosenTime");
+			
+			return;
 		};
 		
 		if(!isLongTermReservation && !chosenStartDate){
@@ -503,7 +530,6 @@
 				// 30일까지 있는 달에 31일 처리
 				
 				if($.inArray(tmp_date.getMonth(), fullDaysMonth) == -1 &&tmp_date.getDate()==31){
-					console.log(tmp_date.getMonth()+"월 "+tmp_date.getDate()+"일");
 					tmp_date.setDate(tmp_date.getDate() + 1);
 					continue;
 				}
@@ -731,15 +757,14 @@
 		$("#nextBtn").removeClass("btn-disabled").addClass("btn-active").attr("disabled",false);
 		if(isLongTermReservation){
 			// 장기예약일 경우
-			
 			// 1. 시작일~종료일 chosenDate 표시
 			var start=new Date(startDateForLongterm.getFullYear(),startDateForLongterm.getMonth(),startDateForLongterm.getDate());
-			var endDate=new Date(endDateForLongterm.getFullYear(),endDateForLongterm.getMonth(),endDateForLongterm.getDate());
+			var end=new Date(endDateForLongterm.getFullYear(),endDateForLongterm.getMonth(),endDateForLongterm.getDate());
 			start.setDate(start.getDate()+1);
 			while(true){
 				var tmpDate=start.getFullYear()+"-"+pad(start.getMonth(),2)+"-"+pad(start.getDate(),2);
 				
-				if(start.getTime()===endDate.getTime()){
+				if(start.getTime()===end.getTime()){
 					
 					$('.fc-day-top[data-date="'+tmpDate+'"]').css("background-color","rgba(166, 166, 239, 0.5)").append("<p class='end'  style='color: white; font-size: small;'>종료</p>");
 					break;

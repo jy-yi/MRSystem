@@ -8,6 +8,9 @@
 .nav-link {
 	display: inline-block;
 }
+#ganada-list {
+	padding-left: 50%;
+}
 </style>
 
 <!-- Main Content -->
@@ -212,7 +215,12 @@
 
 <script src="/resources/js/jquery_cookie.js" type="text/javascript"></script>
 <script>
-
+	//뒤로 가기 버튼 막기
+	history.pushState(null, null, location.href);
+	window.onpopstate = function () {
+	    history.go(1);
+	};
+	
 	// 회의 참여자 사원번호를 담은 배열
 	var participation=new Array();
 	var chosung;

@@ -26,7 +26,8 @@
 {
 	float: left;
 	height: 300px;
-	width: 100px;
+	width: 100%;
+/* 	100px */
 	overflow-y: scroll;
 }
 
@@ -34,7 +35,8 @@
 {
 	float: left;
 	height: 300px;
-	width: 150px;
+	width: 100%; 
+/* 	150px */
 	overflow-y: scroll;
 }
 
