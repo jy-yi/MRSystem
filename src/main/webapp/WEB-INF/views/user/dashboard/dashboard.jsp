@@ -56,7 +56,9 @@ $(function(){
 	var type = status.type;		// 매니저 권한으로 들어온 건지?
 	var resNo = status.resNo;	// 승인 처리할 예약 번호
 	var mgrNo = status.mgrNo;	// 해당 예약의 신청자의 상위 결재자 사원번호
-
+	
+	console.log(mgrNo);
+	
 	history.replaceState({}, null, location.pathname);	// url에서 파라미터 숨기기
 	
 	// 해당 예약의 상위 결재자와 현재 로그인 아이디가 같으면 승인 & 반려 처리
@@ -138,13 +140,16 @@ $(function(){
 				});
 		}
 	// 같지 않으면 로그아웃 시키기
-	} 
-// 	else {
-// 		swal('접근 제한', '잘못된 접근입니다.', 'error'
-// 		).then(function(){
-// 		    	location.href="/user/logout";
-// 	    });
-// 	}
+	} else {
+		/* 그냥 dashboard 접근 */
+		if (typeof mgrNo == "undefined") {
+		} else {
+			swal('접근 제한', '잘못된 접근입니다.', 'error'
+			).then(function(){
+			    	location.href="/user/logout";
+		    });
+		}
+	}
 
 });
 
@@ -206,15 +211,12 @@ function getUrlParams() {
 									eventClick: function(info) {
 										
 										var reservationNo = info.event.id;
-										console.log(reservationNo);
 										
 										$.ajax({
 									        url : "/reservation/getCalendar",
 									        data : {"reservationNo": reservationNo},
 									        type : "GET",
 									        success : function(data){
-									        	
-									        	console.log(data);
 									        	
 												$("#employeeName").val(data.EMPNAME);
 								        	 	$("#roomName").val(data.ROOMNAME);
@@ -237,7 +239,6 @@ function getUrlParams() {
 					});	
 </script>
 <script type="text/javascript">
-
 
 	$(function() {
 
@@ -287,9 +288,6 @@ function getUrlParams() {
 		$(".workplace-list").each(function(index, item) {
 			workplaceNo = $(item).attr('value');
 
-			// 대시보드 > XXX (지사 이름 동적 변경)
-// 			$("#workplaceNameTitle").text($(item).text());
-
 			$.ajax({
 				url : "/statistic/getRoomListByWorkplaceNo",
 				data : {
@@ -299,7 +297,6 @@ function getUrlParams() {
 				dataType : 'json',
 				async : false,
 				success : function(data) {
-					console.log(data.roomList);
 					$("#roomList"+workplaceNo).empty();
 					$.each(data.roomList, function(index, item){
 						$("#roomList"+workplaceNo).append('<li class="roomBtn" value="'+ item.roomNo +'" style="text-align: center;"><a href="#" data-toggle="tab">'+ item.name + '</a></li>');
