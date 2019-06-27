@@ -49,7 +49,7 @@
 										</c:when>
 										<c:otherwise>
 											<c:forEach items="${waitingList}" var="list" varStatus="status">
-												<c:if test="${adminId eq list.ADMIN_ID }">
+													<c:if test="${adminId eq list.ADMIN_ID }">
 													<tr>
 														<td> ${status.count}</td>
 														<td> ${list.RESNAME} </td>
@@ -97,6 +97,16 @@
 
 </div>
 <!-- End of Main Content -->
+<script>
+	var adminId = "${adminId}";
+	console.log(adminId);
+	if (adminId == "") {
+		swal('접근 제한', '잘못된 접근입니다.', 'error'
+		).then(function(){
+		    	location.href="/user/logout";
+	    });
+	}
+</script>
 
 <script>
 /* 승인 버튼 클릭 */

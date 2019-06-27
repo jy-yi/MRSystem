@@ -761,8 +761,8 @@ public class ReservationServiceImpl implements ReservationService {
 		try {
 			mimeMessage.setFrom(new InternetAddress(username));
 			mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-//			mimeMessage.setSubject(MimeUtility.encodeText(title, "UTF-8", "B"));
-//			mimeMessage.setContent(content, "text/html; charset=utf-8");
+			mimeMessage.setSubject(MimeUtility.encodeText(title, "UTF-8", "B"));
+			mimeMessage.setContent(content, "text/html; charset=utf-8");
 			Transport.send(mimeMessage);
 		} catch (MessagingException e) {
 			e.printStackTrace();
