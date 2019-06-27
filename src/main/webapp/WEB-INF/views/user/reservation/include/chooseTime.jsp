@@ -108,13 +108,11 @@
 		        <div id="pmTimeSchedule">
 		        	<span>오후</span>
 		        	<ul id="pmTimeScheduleList">
-		        		<li><span class="time can-reserve-time">12:00</span></li>
-		        		<li><span class="time can-reserve-time">12:30</span></li>
 		        		<li><span class="time can-reserve-time">13:00</span></li>
 		        		<li><span class="time can-reserve-time">13:30</span></li>
 		        		<li><span class="time can-reserve-time">14:00</span></li>
 		        		<li><span class="time can-reserve-time">14:30</span></li>
-		        		<li><span class="time time can-reserve-time">15:00</span></li>
+		        		<li><span class="time can-reserve-time">15:00</span></li>
 		        		<li><span class="time can-reserve-time">15:30</span></li>
 		        		<li><span class="time can-reserve-time">16:00</span></li>
 		        		<li><span class="time can-reserve-time">16:30</span></li>

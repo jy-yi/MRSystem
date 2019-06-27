@@ -123,7 +123,6 @@
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-md" id="choose-complete-btn" type="button" data-dismiss="modal" disabled="disabled">확인</button>
-				<button class="btn btn-md btn-danger" id="choose-cancel-btn" type="button" data-dismiss="modal">취소</button>
 			</div>
 		</div>
 	</div>

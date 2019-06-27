@@ -242,6 +242,7 @@
 					startDateForLongterm=null; 
 					endDateForLongterm=null;
 					isLongTermReservation=false; // 장기예약인지 여부
+					
 					// 3. 버튼 초기화
 					$("#choose-complete-btn").show().text("확인");
 					$("#choose-anotherDay-btn").show();
@@ -262,25 +263,42 @@
 				$("#choose-complete-btn").text("종료일자 선택(장기예약)").attr("disabled",true).removeClass("active-btn").addClass("disable-btn");	
 				$("#choose-anotherDay-btn").attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
 				// 종료 요일 설정
-				endDay=$(this).data("day");
 				endDate=$(this).data("date");
+				endDay=$(this).data("day");
 				// 시작일자보다 이른 종료날짜를 선택했다면
 				endDateForLongterm=new Date(endDate.split("-")[0],endDate.split("-")[1],endDate.split("-")[2]);
-				if(endDateForLongterm.getTime()<startDateForLongterm.getTime()){
+				// 시작일자와 종료일자 같게 선택했다면 초기화
+				var isEndDateSameAsStartDate=endDateForLongterm.getFullYear()==startDateForLongterm.getFullYear() &&
+											 endDateForLongterm.getMonth()==startDateForLongterm.getMonth() &&
+											 endDateForLongterm.getDate()==startDateForLongterm.getDate();
+				if(endDateForLongterm.getTime()<startDateForLongterm.getTime() || isEndDateSameAsStartDate){
+					console.log(isEndDateSameAsStartDate);
 					// 리셋
 					$('.fc-day-top[data-date="'+startDate+'"]').css("background-color","").children(".start").remove();
 					chosenStartDate=false;
+					clickedStartTime=false;
 					startDateForLongterm=null; 
 					endDateForLongterm=null;
 					isLongTermReservation=false; // 장기예약인지 여부
-					// 3. 버튼 초기화
+					chosenDate=null;
+					endDate=null;
+					startTime=null;
+					// 버튼 초기화
 					$("#choose-complete-btn").show().text("확인").attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
 					$("#choose-anotherDay-btn").show().attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
+					// 선택된 시간 초기화
+					$(".time").removeClass("chosenTime");
+					console.log("chosenDate:",chosenDate);
+					console.log("startDateForLongterm:",startDateForLongterm);
+					console.log("endDateForLongterm:",endDateForLongterm);
+					console.log("chosenStartDate:",chosenStartDate);
+					console.log("isLongTermReservation:",isLongTermReservation);
+					console.log("endDate:",endDate);
 				}
 				
 				// 시작일자를 재선택 할 수 있도록 변수 초기화
 				//chosenStartDate=false;
-			}
+			};
 			
 			if(!clickedPrevBtn && !chosenStartDate){
 				startDate=$(this).data("date");
@@ -326,6 +344,8 @@
 					date.setMinutes(date.getMinutes()+30)
 				};
 			};
+
+			console.log("지금 선택한 chosenDate:"+chosenDate);
 			getReservationsByDate(chosenDate);
 		});
 		
@@ -341,6 +361,7 @@
 	function getReservationsByDate(chosenDate){
 		var chosenDateSplit=chosenDate.split("-");
 		var roomNo="${roomInfo.ROOMNO}";
+		console.log("chosenDateSplit:"+chosenDateSplit);
 		$.ajax({
 			type:"get",
 			url:"${pageContext.request.contextPath}/reservation/getReservationsByDate",
@@ -350,6 +371,7 @@
 				// 해당 날짜에 예약내역들이 있는지 확인
 				if(data.reservations.length>0){
 					$.each(data.reservations, function(index, item){
+						console.log(item);
 						console.log(item);
 						var startDateArr=item.STARTDATE.split(" ")[0].split("-");
 						var endDateArr=item.ENDDATE.split(" ")[0].split("-");

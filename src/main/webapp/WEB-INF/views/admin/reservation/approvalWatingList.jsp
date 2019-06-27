@@ -41,7 +41,7 @@
 										<th>반려</th>
 									</tr>
 								</thead>
-
+								
 								<tbody>
 									<c:choose>
 										<c:when test="${empty waitingList}">
@@ -49,33 +49,35 @@
 										</c:when>
 										<c:otherwise>
 											<c:forEach items="${waitingList}" var="list" varStatus="status">
-												<tr>
-													<td> ${status.count}</td>
-													<td> ${list.RESNAME} </td>
-													<td> ${list.PURPOSE}</td>
-													<td> ${list.ROOMNAME}</td>
-													<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
-													<td> 
-														${list.EMPNAME} 
-														<input type="hidden" value="${list.EMAIL }">
-														<input type="hidden" value="${list.EMPNO }">
-													</td>
-													
-													
-													<c:choose>
-														<c:when test="${list.MANAGERAPPROVAL eq 'W'}">
-															<td> 승인 대기</td>
-															<td> 승인 대기</td>
-															<td> 승인 대기</td>
-														</c:when>	
-														<c:otherwise>
-															<td> ${list.MGRNAME}</td>
-															<td><a href="#" class="btn btn-primary"> <span class="text">승인</span></a></td>
-															<td><a href="#" class="btn btn-danger"> <span class="text">반려</span></a></td>
-															<input type="hidden" id="reservationNo" value="${list.RESERVATIONNO}">
-														</c:otherwise>
-													</c:choose>
-												</tr>
+												<c:if test="${adminId eq list.ADMIN_ID }">
+													<tr>
+														<td> ${status.count}</td>
+														<td> ${list.RESNAME} </td>
+														<td> ${list.PURPOSE}</td>
+														<td> ${list.ROOMNAME}</td>
+														<td> ${list.STARTDATE} - ${list.ENDDATE}</td>
+														<td> 
+															${list.EMPNAME} 
+															<input type="hidden" value="${list.EMAIL }">
+															<input type="hidden" value="${list.EMPNO }">
+														</td>
+														
+														
+														<c:choose>
+															<c:when test="${list.MANAGERAPPROVAL eq 'W'}">
+																<td> 승인 대기</td>
+																<td> 승인 대기</td>
+																<td> 승인 대기</td>
+															</c:when>	
+															<c:otherwise>
+																<td> ${list.MGRNAME}</td>
+																<td><a href="#" class="btn btn-primary"> <span class="text">승인</span></a></td>
+																<td><a href="#" class="btn btn-danger"> <span class="text">반려</span></a></td>
+																<input type="hidden" id="reservationNo" value="${list.RESERVATIONNO}">
+															</c:otherwise>
+														</c:choose>
+													</tr>
+												</c:if>
 											</c:forEach>
 										</c:otherwise>
 									</c:choose>

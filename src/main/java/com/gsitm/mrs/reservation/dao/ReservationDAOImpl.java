@@ -213,8 +213,8 @@ public class ReservationDAOImpl implements ReservationDAO {
 		return sqlSession.selectOne(namespace + ".getAdminEmail", roomNo);
  	}
  	
- 	/** 예약자의 상위결재자 메일 조회 */
- 	public String getMgrEmail(String empNo){
+ 	/** 예약자의 상위결재자 정보 조회 */
+ 	public EmployeeDTO getMgrInfo (String empNo){
 		return sqlSession.selectOne(namespace + ".getMgrEmail", empNo);
  	}
 	

@@ -290,7 +290,7 @@ public class ReservationDaoTest {
 	public void testgetMgrEmail() {
 		String empNo="it1226";
 		
-		logger.info(dao.getMgrEmail(empNo));
+		logger.info(dao.getMgrInfo(empNo));
 	}
 	
 	/** Waiting DB 데이터 삽입 테스팅  */
