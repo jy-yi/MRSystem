@@ -97,7 +97,7 @@ public class MailUtils {
 		return template;
 	}
 	
-	public String getMoneyTemplate (String name, String reservationName, String term, String type, String time, int totalSum, List<Map<String, Integer>> deptList, List<Map<String, Object>> participationList) {
+	public String getMoneyTemplate (String name, String reservationName, String term, String type, String time, int totalSum, List<Map<String, Object>> deptList, List<Map<String, Object>> participationList) {
 		
 		String template = 
 				"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">" + 

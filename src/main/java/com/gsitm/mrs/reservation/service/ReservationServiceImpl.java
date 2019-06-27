@@ -53,7 +53,13 @@ public class ReservationServiceImpl implements ReservationService {
 	
 	/* 메일 보낼 때 포함할 url */
 	public static final String URL = "http://192.168.9.201:8000";
-
+	/* 시간 당 회의실 사용 비용 */
+	public static final int ROOM_PRICE_PER_HOUR = 10000;
+	/* 노쇼 status */
+	public static final int STATUS_NO_SHOW = 6;
+	/* 회의실 사용 종료 status */
+	public static final int STATUS_END = 5;
+	
 	@Inject
 	private ReservationDAO dao;
 
@@ -141,7 +147,6 @@ public class ReservationServiceImpl implements ReservationService {
 	/** 회의실 예약 입력 정보 조회 */
 	@Override
 	public void checkReservationInfo(HttpServletRequest request, Model model) {
-		final int ROOM_PRICE_PER_HOUR = 10000;
 
 		// 사용자 정보
 		String employeeNo = request.getParameter("employeeNo");
@@ -161,10 +166,7 @@ public class ReservationServiceImpl implements ReservationService {
 			SimpleDateFormat orginFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 			Date start = orginFormat.parse(request.getParameter("startDate"));
 			Date end = orginFormat.parse(request.getParameter("endDate"));
-
-			// 시간 구하기
-			diff = (end.getTime() - start.getTime()) / 60000;
-
+			
 			ReserveTypeVO rtv=calcDate(start, end);
 			double reservationHours=rtv.getReserveHours();
 			
@@ -379,7 +381,6 @@ public class ReservationServiceImpl implements ReservationService {
 
 		List<String> emailList = new ArrayList<>(); // 메일 보내야 할 모든 이메일 목록
 		emailList.add(email); // 신청자 이메일
-		System.err.println("resNo:"+resNo);
 		emailList.addAll(dao.getEmailList(resNo)); // 해당 회의 참석자들의 이메일
 		
 		if (isShortTermReservation && !isEduRoom) { // 교육실이 아닌 회의실의 단기 예약
@@ -398,7 +399,6 @@ public class ReservationServiceImpl implements ReservationService {
 			dao.updateStatus(statusMap);
 			reservationDto.setStatus(1);
 		} else { // 장기 예약 or 교육실 예약
-			System.out.println("장기예약");
 			// 신청자&참석자에게 예약 확인 메일 보내기
 			String title = "[GS ITM] 회의실 예약 안내"; // 메일 제목
 
@@ -408,7 +408,7 @@ public class ReservationServiceImpl implements ReservationService {
 			// 상위결재자에게 예약 승인 메일
 			title = "[GS ITM] 회의실 예약 승인 요청"; // 메일 제목
 
-			mailSend(empNo, mgrEmail, title, applicant, reason, term, reservationName, "신청", URL + "/reservation/dashboard?type=manager&resNo="+resNo+"&mgrNo="+mgrEmpNo);
+			mailSend(empNo, mgrEmail, title, applicant, reason, term, reservationName, "신청", URL + "/reservation/statusCalendar?type=manager&resNo="+resNo+"&mgrNo="+mgrEmpNo);
 			
 		}
 
@@ -541,7 +541,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public List<Map<String, Object>> getLatestReservation(String employeeNo) {
 		return dao.getLatestReservation(employeeNo);
 	}
-	
+	 
 	/** 가장 최근 1개 가져오기 */
 	public Map<String, Object> getOne(String employeeNo){
 		return dao.getOne(employeeNo);
@@ -627,8 +627,10 @@ public class ReservationServiceImpl implements ReservationService {
 			List<String> emailList = new ArrayList<>(); // 메일 보내야 할 모든 이메일 목록
 			emailList.add(email); // 신청자 이메일
 			emailList.addAll(dao.getEmailList(reservationNo)); // 해당 회의 참석자들의 이메일
+			String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
 			
-			mailSend(empNo, email, title, name, reason, term, reservationName, "반려", URL+"/reservation/statusList");
+			mailSend(empNo, emails, title, name, reason, term, reservationName, "반려", URL+"/reservation/statusList");
+			
 		}
 		
 		dao.updateMgrApproval(map);
@@ -678,8 +680,60 @@ public class ReservationServiceImpl implements ReservationService {
 		final String password = "dhwlddj23";
 
 		// String recipient = empNo;
-		String content = mailUitls.getMailTemplate(name, reason, term, reservationName, type, url);
+		String content = mailUitls.getMailTemplate(name, reservationName, reason, term, type, url);
+				
+		// 정보를 담기 위한 객체 생성
+		Properties props = System.getProperties();
 
+		// SMTP 서버 정보 설정
+		props.put("mail.smtp.host", host);
+		props.put("mail.smtp.port", port);
+		props.put("mail.transport.protocol", "smtp");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.ssl.trust", host);
+
+		Session session = Session.getDefaultInstance(props, new Authenticator() {
+			String un = username;
+			String pw = password;
+
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new javax.mail.PasswordAuthentication(un, pw);
+			}
+		});
+
+		session.setDebug(true);
+
+		Message mimeMessage = new MimeMessage(session);
+
+		try {
+			mimeMessage.setFrom(new InternetAddress(username));
+			mimeMessage.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+			mimeMessage.setSubject(MimeUtility.encodeText(title, "UTF-8", "B"));
+			mimeMessage.setContent(content, "text/html; charset=utf-8");
+			Transport.send(mimeMessage);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return true;
+	}
+	
+	/** 비용 메일 전송 */
+	public boolean moneyMailSendString(String empNo, String email, String name, String reservationName, String title,
+					String term, String type, String time, int totalSum, List<Map<String,Object>> deptList, List<Map<String,Object>> participationList) {
+
+		String host = "smtp.naver.com";
+		int port = 587;
+		final String username = "a_spree@naver.com";
+		final String password = "dhwlddj23";
+
+		// String recipient = empNo;
+		//TODO 고치기
+		String content = mailUitls.getMoneyTemplate(name, password, term, username, time, port, deptList, participationList);
+				
 		// 정보를 담기 위한 객체 생성
 		Properties props = System.getProperties();
 
@@ -719,69 +773,76 @@ public class ReservationServiceImpl implements ReservationService {
 		return true;
 	}
 
-	/** 예약시간 계산(단위:hour) */
-	/*public ReserveTypeVO calcDate(Date startDate, Date endDate) {
-		ReserveTypeVO reserveType = new ReserveTypeVO();
-	  
-		Calendar calendar = Calendar.getInstance();
+	/* 회의 노쇼이거나 회의실 사용 종료할 경우 비용 부과 */
+	public void payForMettingRoom(int status, int resNo, String empNo) {
+		ReservationDTO reservation=dao.getReservationByResNo(resNo);
 		
-		calendar.setTime(endDate);
-		int endYear = calendar.get(Calendar.YEAR);
-		int endMonth = calendar.get(Calendar.MONTH)+1;
-		int endDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-		int endHour = calendar.get(Calendar.HOUR_OF_DAY);
-		int endMinute = calendar.get(Calendar.MINUTE);
-	  
-		calendar.setTime(startDate);
-		int startYear = calendar.get(Calendar.YEAR);
-		int startMonth = calendar.get(Calendar.MONTH)+1;
-		int startDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-		int startHour = calendar.get(Calendar.HOUR_OF_DAY);
-		int startMinute = calendar.get(Calendar.MINUTE);
-	  
-		double reserveHours = 0.0; // 예약 시간
-	  
-		if(startDayOfMonth==endDayOfMonth && startMonth==endMonth && startYear==endYear) {
-			// 단기 예약
-			reserveType.setLongTerm(false);
-		    reserveHours = (endHour-startHour) + (endMinute-startMinute)/60.0;
-		    if(startHour<12 && endHour>12) reserveHours -= 1;
-		} else {
-			// 장기 예약
-			reserveType.setLongTerm(true);
-			for(Calendar cal = calendar; 
-				cal.get(Calendar.YEAR) <= endYear && cal.get(Calendar.MONTH) <= endMonth && cal.get(Calendar.DAY_OF_MONTH) <= endDayOfMonth;
-				cal.add(Calendar.DAY_OF_MONTH, 1)) {
-			    // 평일만 계산
-				switch (cal.get(Calendar.DAY_OF_WEEK)) {
-					case 2: case 3: case 4: case 5: case 6:{
-					int year = calendar.get(Calendar.YEAR);
-					int month = calendar.get(Calendar.MONTH)+1;
-					int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-					int hour = calendar.get(Calendar.HOUR_OF_DAY);
-					int minute = calendar.get(Calendar.MINUTE);
-		      
-					if(dayOfMonth==startDayOfMonth && month==startMonth && year==startYear) { //첫날 계산
-						reserveHours += (18-hour) + (0-minute)/60.0;
-						if(hour < 12) {
-							reserveHours -= 1;
-						}
-					} else if(dayOfMonth==endDayOfMonth && month==endMonth && year==endYear) { // 마지막날 계산
-						reserveHours += (endHour-9) + (endMinute-0)/60.0;
-						if(endHour > 12) {
-						reserveHours -= 1;
-					}
-					} else { // 중간날 게산
-						reserveHours += 8;
-					}
-					}
-				break;
-			}
-			}
+		// 사용시간 정보
+		SimpleDateFormat orginFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date start=null;
+		Date end=null;
+		try {
+			start= orginFormat.parse(reservation.getStartDate());
+			end=orginFormat.parse(reservation.getEndDate());
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		reserveType.setReserveHours(reserveHours);
-	return reserveType;
-	}*/
+		 	
+		ReserveTypeVO rtv=calcDate(start, end);
+		double reservationHours=rtv.getReserveHours();
+		
+		String time=null;
+		if(reservationHours%1 !=0) { // 30분으로 떨어지는 경우
+			time=reservationHours/1+"시간 "+ reservationHours%1+"분";
+		} else {
+			time=reservationHours+"시간";
+		}
+		
+		// 회의 전체 금액
+		int price = ((int) reservationHours * ROOM_PRICE_PER_HOUR);
+		
+		/////
+		List<Map<String, Object>> deptList=new ArrayList<>(); // 부서이름, 가격
+		
+		// 메인 부서와 해당 부서의 참여자 수 
+		List<Map<String, Object>> mainDeptParticipation =dao.getMainDeptParticipationCount(resNo);
+		int totalMainDeptNum=mainDeptParticipation.size(); // 전체 주관부서의 수
+		int pricePerMainDept=price/totalMainDeptNum; // 한 부서당 지불해야 하는 금액
+		
+		// 부서마다 돈 부과
+		for(Map<String, Object> deptInfo:mainDeptParticipation) {
+			int thisDeptMoney=pricePerMainDept/(int)deptInfo.get("numOfParticipation");
+			Map<String, Object> moneyMap=new HashMap<>();
+			moneyMap.put("resNo", resNo);
+			moneyMap.put("empNo", empNo);
+			moneyMap.put("money", thisDeptMoney);
+			
+			// 부서이름과 가격을 deptList에 삽입해준다
+			Map<String, Object> tmpMap=new HashMap<>();
+			tmpMap.put("money", thisDeptMoney);
+			tmpMap.put("deptName", deptInfo.get("deptName"));
+			deptList.add(tmpMap);
+		}
+		
+		/* 비용처리 메일 전송 */
+		EmployeeDTO applicant=dao.getEmployeeInfo(empNo); // 신청자
+		List<String> emailList = new ArrayList<>(); // 메일 보내야 할 모든 이메일 목록
+		emailList.add(applicant.getEmail()); // 신청자 이메일
+		emailList.addAll(dao.getEmailList(resNo)); // 해당 회의 참석자들의 이메일
+		emailList.add(dao.getMgrInfo(empNo).getEmail()); // 신청자의 상위 결재자 이메일
+
+		// 예약기간
+		String term=reservation.getStartDate()+" ~ "+reservation.getEndDate();
+		String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
+		
+		String title = "[GS ITM] 회의실 비용 처리 안내"; // 메일 제목
+		if(status==STATUS_NO_SHOW) { // 노쇼
+			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "노쇼", time, price, deptList, dao.getParticipationInfo(resNo));
+		} else if(status==STATUS_END) { // 회의실 사용 종료
+			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "완료", time, price, deptList, dao.getParticipationInfo(resNo));
+		}
+		
+	}
 	
 	@Scheduled(cron="0 10/30 9-18 * * *")
 	public void checkNoShow() {

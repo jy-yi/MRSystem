@@ -228,6 +228,26 @@ public class ReservationDAOImpl implements ReservationDAO {
  	public String getRoomType(int roomNo) {
  		return sqlSession.selectOne(namespace + ".getRoomType", roomNo);
  	}
+ 	
+ 	/** 예약 번호로 예약 정보 조회 */
+ 	public ReservationDTO getReservationByResNo(int resNo) {
+ 		return sqlSession.selectOne(namespace + ".getReservationByResNo", resNo);
+ 	 }
+ 	
+ 	/** 주관 부서와 해당 부서의 참여자 수 조회 */
+ 	public List<Map<String, Object>> getMainDeptParticipationCount(int resNo){
+ 		return sqlSession.selectList(namespace + ".getMainDeptParticipationCount", resNo);
+ 	}
+ 	
+ 	/** 회의실 사용 비용 업데이트 */
+ 	public void updateMoney(Map<String, Object> moneyMap) {
+ 		sqlSession.update(namespace + ".updateMoney", moneyMap);
+ 	}
+ 	
+ 	/** 참여사원 정보 조회  */
+ 	public List<Map<String, Object>> getParticipationInfo(int resNo){
+ 		return sqlSession.selectList(namespace + ".getParticipationInfo", resNo);
+ 	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

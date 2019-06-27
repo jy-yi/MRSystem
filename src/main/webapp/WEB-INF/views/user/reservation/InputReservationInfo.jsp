@@ -76,7 +76,7 @@
 							<input type="hidden" name="startDate" value="${reservationInfo.startDate}">
 							<input type="hidden" name="endDate" value="${reservationInfo.endDate}">
 							<input type="hidden" name="equipments" value="">
-							<input type="hidden" name="employeeNo" value=""/>
+							<input type="hidden" name="employeeNo" value="${login.employeeNo}"/>
 							<input type="hidden" name="participation" value="">
 							<input type="hidden" name="mainDept" value="">
 							<input type="hidden" name="subDept" value="">
@@ -87,7 +87,7 @@
 									<label>예약자</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<input type="text" class="form-control" value="${employeeInfo.name }"  disabled="disabled"/>
+									<input type="text" class="form-control" value="${login.name}"  disabled="disabled"/>
 								</div>
 							</div>
 							<div class="row">
@@ -95,7 +95,7 @@
 									<label>연락처</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<input type="text" class="form-control" value="${employeeInfo.phone }"  disabled="disabled"/>
+									<input type="text" class="form-control" value="${login.phone }"  disabled="disabled"/>
 								</div>
 							</div>
 							<div class="row">
@@ -103,7 +103,7 @@
 									<label>이메일</label>
 								</div>
 								<div class="col-xs-9 col-sm-9">
-									<input type="text" class="form-control" value="${employeeInfo.email }"  disabled="disabled"/>
+									<input type="text" class="form-control" value="${login.email }"  disabled="disabled"/>
 								</div>
 							</div>
 							<div class="row">

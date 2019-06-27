@@ -89,10 +89,18 @@
 	</div>
 
 	<br>
-
-
+	
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
+		<div class="mb-2">
+			<a href="#" class="btn btn-success btn-circle btn-sm"></a> 승인 대기
+			<a href="#" class="btn btn-primary btn-circle btn-sm"></a> 예약 완료
+			<a href="#" class="btn btn-info btn-circle btn-sm"></a> 진행 중인 회의
+			<a href="#" class="btn btn-secondary btn-circle btn-sm"></a> 사용 완료
+			<a href="#" class="btn btn-warning btn-circle btn-sm"></a> No-Show
+		</div>
+		
+		<br>
 
 		<!-- Content Row -->
 		<div id='calendar'></div>
@@ -107,6 +115,121 @@
 <jsp:include page="include/infoReservation.jsp" />
 
 </body>
+
+<script>
+/* 상위 결재자 요청 승인 메일 통해서 접속 */
+$(function(){
+	var status = getUrlParams();
+	var type = status.type;		// 매니저 권한으로 들어온 건지?
+	var resNo = status.resNo;	// 승인 처리할 예약 번호
+	var mgrNo = status.mgrNo;	// 해당 예약의 신청자의 상위 결재자 사원번호
+	
+	console.log(mgrNo);
+	
+	history.replaceState({}, null, location.pathname);	// url에서 파라미터 숨기기
+	
+	// 해당 예약의 상위 결재자와 현재 로그인 아이디가 같으면 승인 & 반려 처리
+	if (mgrNo == $("#empNo").val()) {
+		if(type == "manager") {
+			swal({
+				title: '해당 예약을 승인처리 하시겠습니까?',
+				text: "",
+				type: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				    confirmButtonText: 'Yes',
+				    cancelButtonText: 'No',
+				}).then( (result) => {
+					if (result.value) {
+		  			$.ajax({
+						url : "/reservation/mgrApproval",
+						type : "POST",
+						data : {
+							reservationNo : resNo
+						}, success : function(data) {
+							swal('Success!', '예약 승인이 완료되었습니다.', 'success'
+					    		).then(function(){
+		  		    		    	location.href="/reservation/approvalWaitingList";
+		  		    		    });
+						}
+					});
+					} else {
+						swal({
+							title: '정말 반려하시겠습니까?',
+							text: "이후 복구는 불가능합니다.",
+							type: 'warning',
+							showCancelButton: true,
+							confirmButtonColor: '#3085d6',
+							cancelButtonColor: '#d33',
+							    confirmButtonText: 'Yes',
+							    cancelButtonText: 'No',
+							}).then( (result) => {
+								if (result.value) {
+									Swal.mixin({
+										  input: 'text',
+										  confirmButtonText: '확인',
+										  showCancelButton: true
+										}).queue([
+										  {
+										    title: '반려 사유를 작성하세요',
+										    text: '해당 사유는 신청자에게 메일로 전송됩니다.'
+										  },
+										]).then((result) => {
+										  if (result.value) {
+											  /* 반려 사유 아무것도 작성하지 않았을 경우 */
+											  if ($.trim(result.value[0]) == "") {
+												  return;
+											  } else {
+									  			$.ajax({
+													url : "/reservation/mgrRefuse",
+													type : "POST",
+													data : {
+														reservationNo : resNo,
+														reason : result.value[0],
+														status : 2
+													}, success : function(data) {
+														swal('Success!', '반려가 완료되었습니다.', 'success'
+											    		).then(function(){
+								  		    		    	location.href="/reservation/statusCalendar";
+								  		    		    });
+													}
+												});
+											  }
+									  			
+										  }
+										})
+								}
+								  
+							});
+					}
+					  
+				});
+		}
+	// 같지 않으면 로그아웃 시키기
+	} else {
+		/* 그냥 dashboard 접근 */
+		if (typeof mgrNo == "undefined") {
+		} else {
+			swal('접근 제한', '잘못된 접근입니다.', 'error'
+			).then(function(){
+			    	location.href="/user/logout";
+		    });
+		}
+	}
+
+});
+
+/* url에 함께 온 파라미터 정보 */
+function getUrlParams() {
+    var params = {};
+    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, 
+    		function(str, key, value) { params[key] = value; });
+    return params;
+}
+</script>
+
+
 <script>
 	document.addEventListener('DOMContentLoaded',function() {
 					 
@@ -121,49 +244,45 @@
 									eventLimit : true, // allow "more" link when too many events
 									events : [
 										<c:forEach items="${reservationInfo}" var="list" varStatus="status">
-											<c:if test="${list.STATUS ne 3 }">
+											<c:if test="${list.STATUS ne 2 && list.STATUS ne 3 }">
 											{ 
 												id : '${list.RESERVATIONNO}',
 												title : '${list.RESERVATIONNAME}',
 												start : '${list.STARTDATE}',
 												end : '${list.ENDDATE}',
 												backgroundColor: 
+													// 승인 대기
 													<c:if test="${list.STATUS eq 0 }">
-														'skyblue',
+														'#1cc88a',
 													</c:if>
 													<c:if test="${list.STATUS eq 1 }">
-														'pink',
-													</c:if>
-													<c:if test="${list.STATUS eq 2 }">
-														'orange',
+														'#4e73df',
 													</c:if>
 													<c:if test="${list.STATUS eq 4 }">
-														'red',
+														'#36b9cc',
 													</c:if>
 													<c:if test="${list.STATUS eq 5 }">
-														'blue',
+														'#858796',
 													</c:if>
 													<c:if test="${list.STATUS eq 6 }">
-														'yellow',	
+														'#f6c23e',	
 													</c:if>
+														
 												borderColor: 
 													<c:if test="${list.STATUS eq 0 }">
-														'skyblue'
+														'#1cc88a'
 													</c:if>
 													<c:if test="${list.STATUS eq 1 }">
-														'pink'
-													</c:if>
-													<c:if test="${list.STATUS eq 2 }">
-														'orange'
+														'#4e73df'
 													</c:if>
 													<c:if test="${list.STATUS eq 4 }">
-														'red'
+														'#36b9cc'
 													</c:if>
 													<c:if test="${list.STATUS eq 5 }">
-														'blue'	
+														'#858796'	
 													</c:if>
 													<c:if test="${list.STATUS eq 6 }">
-														'yellow'	
+														'#f6c23e'	
 													</c:if>
 											},
 											</c:if>

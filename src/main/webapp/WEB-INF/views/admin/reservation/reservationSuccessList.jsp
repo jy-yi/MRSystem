@@ -89,3 +89,13 @@
 
 </div>
 <!-- End of Main Content -->
+<script>
+	var adminId = "${adminId}";
+	console.log(adminId);
+	if (adminId == "") {
+		swal('접근 제한', '잘못된 접근입니다.', 'error'
+		).then(function(){
+		    	location.href="/user/logout";
+	    });
+	}
+</script>

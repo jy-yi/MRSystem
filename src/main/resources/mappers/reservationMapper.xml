@@ -586,4 +586,39 @@
 		WHERE TO_CHAR(end_date, 'yyyy-mm-dd hh24:mi') &lt;= #{timeStr}
 			AND status = 4
 	</update>
+	
+	<!-- 예약 번호로 예약 정보 조회 -->
+	<select id="getReservationByResNo" resultType="reservation">
+		SELECT *
+        FROM reservation
+        WHERE res_no=#{resNo}
+	</select>
+	
+	<!-- 주관 부서와 해당 부서의 참여자 수 조회 -->
+	<select id="getMainDeptParticipationCount" resultType="Map">
+		SELECT deptNo, deptName, count(*) AS numOfParticipation 
+		FROM( SELECT d.dept_no as deptNo, d.name as deptName
+			  FROM participation p, employee e, department d
+			  WHERE p.emp_no=e.emp_no 
+              AND e.dept_no=d.dept_no
+			  AND res_no=#{resNo} 
+			  AND e.dept_no IN(SELECT dept_no FROM lead_department WHERE res_no=#{resNo}  AND is_main='Y'))
+		GROUP BY deptNo, deptName
+	</select>
+	
+	<!-- 회의실 사용 비용 업데이트 -->
+	<update id="updateMoney" parameterType="Map">
+		UPDATE participation
+		SET money=#{money}
+		WHERE res_no=#{resNo} AND emp_no=#{empNo}
+	</update>
+	
+	<!-- 참여사원 정보 조회  -->
+	<select id="getParticipationInfo" resultType="Map">
+		SELECT e.name as empName, d.name as deptName, money
+        FROM employee e, department d, participation p
+        WHERE p.emp_no=e.emp_no
+        AND e.dept_no=d.dept_no
+        AND res_no=#{resNo}
+	</select>
 </mapper>
