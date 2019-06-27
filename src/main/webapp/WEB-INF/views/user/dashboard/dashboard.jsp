@@ -204,6 +204,15 @@ function getUrlParams() {
 													<c:if test="${list.STATUS eq 2 }">
 														'orange'
 													</c:if>
+													<c:if test="${list.STATUS eq 4 }">
+														'red'
+													</c:if>
+													<c:if test="${list.STATUS eq 5 }">
+														'blue'	
+													</c:if>
+													<c:if test="${list.STATUS eq 6 }">
+														'yellow'	
+													</c:if>
 											},
 											</c:if>
 										</c:forEach>

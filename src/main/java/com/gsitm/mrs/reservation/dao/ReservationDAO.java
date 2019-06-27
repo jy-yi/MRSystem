@@ -120,8 +120,18 @@ public interface ReservationDAO {
  	/** 방 정보 조회 */
  	public Map<String, Object> getRoomInfo(int roomNo);
  	
+ 	/** 예약 번호로 예약 정보 조회 */
+ 	public ReservationDTO getReservationByResNo(int resNo);
  	
-	/* ------------- 관리자 ------------- */
+ 	/** 주관 부서와 해당 부서의 참여자 수 조회 */
+ 	public List<Map<String, Object>> getMainDeptParticipationCount(int resNo);
+	
+ 	/** 회의실 사용 비용 업데이트 */
+ 	public void updateMoney(Map<String, Object> moneyMap);
+ 	
+ 	/** 참여사원 정보 조회  */
+ 	public List<Map<String, Object>> getParticipationInfo(int resNo);
+ 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */
 	public List<Map<String, Object>> getWaitingList();
