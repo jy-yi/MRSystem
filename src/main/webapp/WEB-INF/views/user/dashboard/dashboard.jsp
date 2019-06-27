@@ -74,47 +74,12 @@ document.addEventListener('DOMContentLoaded',function() {
 							eventLimit : true, // allow "more" link when too many events
 							events : [
 								<c:forEach items="${roomDashBoard}" var="list" varStatus="status">
-								console.log(list);
 									<c:if test="${list.STATUS ne 2 && list.STATUS ne 3 }">
 									{ 
-										id : '${list.RESERVATIONNO}',
+										id : '${list.RESNO}',
 										title : '${list.RESERVATIONNAME}',
 										start : '${list.STARTDATE}',
-										end : '${list.ENDDATE}',
-										backgroundColor: 
-											// 승인 대기
-											<c:if test="${list.STATUS eq 0 }">
-												'#1cc88a',
-											</c:if>
-											<c:if test="${list.STATUS eq 1 }">
-												'#4e73df',
-											</c:if>
-											<c:if test="${list.STATUS eq 4 }">
-												'#36b9cc',
-											</c:if>
-											<c:if test="${list.STATUS eq 5 }">
-												'#858796',
-											</c:if>
-											<c:if test="${list.STATUS eq 6 }">
-												'#f6c23e',	
-											</c:if>
-											
-										borderColor: 
-											<c:if test="${list.STATUS eq 0 }">
-												'#1cc88a'
-											</c:if>
-											<c:if test="${list.STATUS eq 1 }">
-												'#4e73df'
-											</c:if>
-											<c:if test="${list.STATUS eq 4 }">
-												'#36b9cc'
-											</c:if>
-											<c:if test="${list.STATUS eq 5 }">
-												'#858796'	
-											</c:if>
-											<c:if test="${list.STATUS eq 6 }">
-												'#f6c23e'	
-											</c:if>
+										end : '${list.ENDDATE}'
 									},
 									</c:if>
 								</c:forEach>
@@ -177,12 +142,26 @@ document.addEventListener('DOMContentLoaded',function() {
 					calendar.removeAllEvents();
 					
 					$.each(data.roomDashBoard, function(index, item){
-						if(item.STATUS!=3) {
+						if(item.STATUS!=2 && item.STATUS!=3) {
+							var color = "";
+							if (item.STATUS == 0) {
+									color = '#1cc88a';
+								} else if (item.STATUS == 1) {
+									color = '#4e73df';
+								} else if (item.STATUS == 4) {
+									color = '#36b9cc';
+								} else if (item.STATUS == 5) {
+									color = '#36b9cc';
+								} else if (item.STATUS == 6) {
+									color = '#f6c23e';
+								}
 							var obj = {
 										id : item.RESNO,
 										title : item.RESERVATIONNAME,
 										start : item.STARTDATE,
-										end : item.ENDDATE
+										end : item.ENDDATE,
+										backgroundColor: color,
+										borderColor: color
 								};
 							calendar.addEvent(obj);
 						}
