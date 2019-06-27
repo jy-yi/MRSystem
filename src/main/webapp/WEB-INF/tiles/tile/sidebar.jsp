@@ -122,9 +122,9 @@ $(function(){
 			
 				<div id="collapseResource" class="collapse" aria-labelledby="collapseResource" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
-						<a class="collapse-item" href="/resource/workplaceList">지사 관리</a> 
-						<a class="collapse-item" href="/resource/roomList"">회의실 관리</a> 
-						<a class="collapse-item" href="/resource/equipmentList">비품 관리</a>
+						<a class="collapse-item low-menu" href="/resource/workplaceList">지사 관리</a> 
+						<a class="collapse-item low-menu" href="/resource/roomList"">회의실 관리</a> 
+						<a class="collapse-item low-menu" href="/resource/equipmentList">비품 관리</a>
 					</div>
 				</div>
 			</li>
