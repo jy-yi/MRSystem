@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded',function() {
 								} else if (item.STATUS == 4) {
 									color = '#36b9cc';
 								} else if (item.STATUS == 5) {
-									color = '#36b9cc';
+									color = '#858796';
 								} else if (item.STATUS == 6) {
 									color = '#f6c23e';
 								}
