@@ -881,6 +881,7 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// 노쇼 처리할 res_no들을 select
 		List<Map<String, Object>> noShowList=dao.getNoshow(timeStr);
+		System.out.println("noShowList:"+noShowList);
 		if(noShowList!=null) {
 			// 해당 예약의 status 변경
 			dao.updateNoshow(timeStr);
