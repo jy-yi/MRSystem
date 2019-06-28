@@ -204,7 +204,8 @@ th {
 				dataType: "text",
 				traditional:true,
 				success: function(data){
-					alert("예약이 완료되었습니다.");
+					swal('예약 완료', '예약 신청이 완료되었습니다.', 'info'
+					);
 				},
 				error: function(xhr, status, error) {
 					alert(error);
@@ -217,11 +218,16 @@ th {
 	
 	// 취소 버튼 클릭 이벤트
 	$("#cancelBtn").on("click", function(){
-		var wantCancel=confirm("정말 예약을 취소하시겠습니까?");
+		/*var wantCancel=confirm("정말 예약을 취소하시겠습니까?");
+		
 		if(wantCancel){
 			// 회의실 목록으로 이동
 			location.href="/reservation/room";
-		}
+		}*/
+		swal('', '예약을 취소하시겠습니까?', 'error'
+		).then(function(){
+		    	location.href="/reservation/room";
+	    });
 	});
 	
 	// 이전페이지로 이동시켜주는 이벤트

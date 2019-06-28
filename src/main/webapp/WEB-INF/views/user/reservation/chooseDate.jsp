@@ -394,6 +394,9 @@
 						var startTimeArr=item.STARTDATE.split(" ")[1].split(":");
 						var endTimeArr=item.ENDDATE.split(" ")[1].split(":");
 						
+						console.log("chosenDate:"+chosenDate);
+						console.log("start:"+start);
+						console.log("end:"+end);
 						if(chosenDate-start==0){
 							if(chosenDate-end==0){
 								// 1. 선택한 날짜==startDate && 선택한 날짜==endDate -> 단기 예약(시작시간~끝시간)
@@ -485,9 +488,6 @@
 		// 시작시간과 같은 종료시간을 선택한 경우 초기화
 		var chosenTime=$(this).text();
 		
-		console.log("chosenTime:"+chosenTime);
-		console.log(startTime==chosenTime);
-		
 		// 단기 예약 중 같은 시간을 클릭한 경우 초기화
 		if(!isLongTermReservation && clickedStartTime && (startTime==chosenTime)){
 			console.log("시작시간과 같은 종료시간을 선택한 경우 초기화");
@@ -535,14 +535,24 @@
 				}
 				getReservationsByDate(tmp_date.getFullYear()+"-"+tmp_date.getMonth()+"-"+tmp_date.getDate());
 				// 예약 시작일자~종료일자 사이에 예약 내역이 있는 경우
+				console.log("예약불가한가"+$('.time').hasClass("cant-reserve-time"));
 				if($('.time').hasClass("cant-reserve-time")){
-					alert("예약 불가!");
-					// 초기화
-					startDateForLongterm=null;
-					clickedStartTime=false;
-					isLongTermReservation=false;
-					$('.time').addClass("can-reserve-time").removeClass("cant-reserve-time").removeClass("chosenTime");
-					return;
+					console.log("예약불가");
+					swal('예약 불가', '해당 일자에 예약된 내역이 있어 예약이 불가합니다.', 'error'
+					).then(function(){
+						// 초기화
+						startDateForLongterm=null;
+						clickedStartTime=false;
+						isLongTermReservation=false;
+						startDate=null;
+						startTime=null;
+						startDateForLongterm=null;
+						endDate=null;
+						endTime=null;
+						endDateForLongterm=null;
+						$('.time').addClass("can-reserve-time").removeClass("cant-reserve-time").removeClass("chosenTime");
+						return;
+				    });
 				}
 				tmp_date.setDate(tmp_date.getDate() + 1);
 			};
@@ -555,7 +565,8 @@
 				
 				// 중간에 이미 예약된 시간이 있다면 예약 불가
 				if($('.time:contains("'+tmp_date.getHours()+":"+tmp_time_bun+'")').hasClass("cant-reserve-time")){
-					alert("예약불가!");
+					swal('예약 불가', '해당 일자에 예약된 내역이 있어 예약이 불가합니다.', 'error'
+					);
 					$('.time').removeClass("chosenTime");
 					clickedStartTime=false;
 					isLongTermReservation=false;
@@ -598,8 +609,24 @@
 			
 			// 중간에 이미 예약된 시간이 있다면 예약 불가
 			if($('.time:contains("'+startOfDate.getHours()+":"+tmp_time_bun+'")').hasClass("cant-reserve-time")){
+				var ment;
 				
-				alert(startOfDate.getHours()+"시 "+startOfDate.getMinutes()+"분에는 예약이 불가합니다.");
+				if(startOfDate.getMinutes()==0){
+					ment=startOfDate.getHours()+'시에는 예약이 불가합니다.';
+				} else{
+					ment=startOfDate.getHours()+'시'+startOfDate.getMinutes()+'분에는 예약이 불가합니다.';
+				}
+				swal('예약 불가', ment, 'error').then(function(){
+					chosenStartDate=false;
+					startDateForLongterm=null; 
+					isLongTermReservation=false; // 장기예약인지 여부
+					
+					// 3. 버튼 초기화
+					$("#choose-complete-btn").show().text("확인").attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
+					$("#choose-anotherDay-btn").show().attr("disabled",true).removeClass("active-btn").addClass("disable-btn");
+					
+			    });
+
 				$('.time').removeClass("chosenTime");
 				clickedStartTime=false;
 				return;

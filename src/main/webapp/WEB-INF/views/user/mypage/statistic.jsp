@@ -83,12 +83,12 @@
 							<thead>
 								<tr>
 									<th>No</th>
-									<th>회의명</th>
-									<th>회의 목적</th>
-									<th>회의실번호</th>
-									<th>기간</th>
+									<th width="13%">회의명</th>
+									<th width="10%">회의 목적</th>
+									<th width="10%">회의실</th>
+									<th width="20%">기간</th>
 									<th>주관부서</th>
-									<th>승인 상태</th>
+									<th width="10%">승인 상태</th>
 								</tr>
 							</thead>
 							
@@ -217,7 +217,7 @@ $(function() {
     		table += '<td> ' + item.RESERVATIONNAME + ' </td>';
     		table += '<td> ' + item.PURPOSE + ' </td>';
     		table += '<td> ' + item.ROOMNAME + ' </td>';
-    		table += '<td> ' + item.STARTDATE + ' - ' + item.ENDDATE + ' </td>';
+    		table += '<td> ' + item.STARTDATE + ' ~ <br> ' + item.ENDDATE + ' </td>';
     		table += '<td> ' + item.DEPARTMENTNAME + ' </td>';
     		
     		if (item.STATUS == 0)

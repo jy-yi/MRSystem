@@ -171,7 +171,7 @@ public class ReservationServiceImpl implements ReservationService {
 			double reservationHours=rtv.getReserveHours();
 			
 			// 30분당 5000천원 적용
-			price = ((int) reservationHours * ROOM_PRICE_PER_HOUR);
+			price = (int)(reservationHours * ROOM_PRICE_PER_HOUR);
 			SimpleDateFormat transFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm");
 			date = transFormat.format(start).toString() + " ~ " + transFormat.format(end).toString();
 		} catch (ParseException e) {

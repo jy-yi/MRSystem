@@ -364,6 +364,9 @@
 							+"</li>");
 					}
 					});
+					
+					// 검색창을 비워줌
+					$("#searchByName").val("");
 				},
 				error: function(xhr, status, error) {
 					alert(error);
@@ -409,6 +412,13 @@
 		};
 		// 참여사원 수 업데이트
 		$("#participationCount").text(participation.length);
+		// 부서 업데이트
+		if(departmentList!=null){
+			departmentList=[];
+			getDepartmentListFromDb();
+			console.log(departmentList);
+		};
+		
 	});
 	
 	// 참여 사원 목록을 업데이트하는 함수
