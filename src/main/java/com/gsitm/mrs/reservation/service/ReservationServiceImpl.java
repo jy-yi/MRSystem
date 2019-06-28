@@ -878,18 +878,20 @@ public class ReservationServiceImpl implements ReservationService {
 		cal.setTime(new Date());
 		cal.add(Calendar.MINUTE, -10);
 		String timeStr = format.format(cal.getTime());
+	
 		
+		System.out.println("timeStr:"+timeStr);
 		// 노쇼 처리할 res_no들을 select
 		List<Map<String, Object>> noShowList=dao.getNoshow(timeStr);
-		System.out.println("noShowList:"+noShowList);
-		if(noShowList!=null) {
-			// 해당 예약의 status 변경
-			dao.updateNoshow(timeStr);
+		if(noShowList.size()>0) {
+			
 			// 비용 부과, 청구 메일 처리
 			System.out.println(noShowList);
 			for(Map<String, Object> noShowReservation:noShowList) {
-				payForMeetingRoom(Integer.parseInt(noShowReservation.get("status").toString()), Integer.parseInt(noShowReservation.get("resNo").toString()), (String)noShowReservation.get("empNo"));
+				payForMeetingRoom(STATUS_NO_SHOW, Integer.parseInt(noShowReservation.get("RESNO").toString()), (String)noShowReservation.get("EMPNO"));
 			}
+			// 해당 예약의 status 변경
+			dao.updateNoshow(timeStr);
 		}
 	}
 	
@@ -903,14 +905,15 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// 노쇼 처리할 res_no들을 select
 		List<Map<String, Object>> endList=dao.getEnd(timeStr);
-		if(endList!=null) {
-			// 해당 예약의 status 변경
-			dao.updateCheckEnd(timeStr);
+		if(endList.size()>0) {
 			// 비용 부과, 청구 메일 처리
 			System.out.println(endList);
 			for(Map<String, Object> endReservation:endList) {
-				payForMeetingRoom(Integer.parseInt(endReservation.get("status").toString()), Integer.parseInt(endReservation.get("resNo").toString()), (String)endReservation.get("empNo"));
+				payForMeetingRoom(STATUS_END, Integer.parseInt(endReservation.get("RESNO").toString()), (String)endReservation.get("EMPNO"));
 			}
+			// 해당 예약의 status 변경
+			dao.updateCheckEnd(timeStr);
+			
 		}
 	}
 }

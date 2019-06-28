@@ -34,8 +34,7 @@
         FROM 
             (SELECT count(*) as count
              FROM 	lead_department ld
-             WHERE	is_main = 'Y'
-             AND	ld.dept_no=(SELECT dept_no
+             WHERE ld.dept_no=(SELECT dept_no
                          	   FROM employee e
                            	   WHERE e.emp_no=#{employeeNo})),
             (SELECT sum(money) as sum
@@ -54,8 +53,7 @@
         FROM 
             (select count(*) as count
                 from lead_department ld, reservation r
-                where is_main = 'Y'
-                and (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
+                where (start_date &gt;= #{startDate} AND end_date &lt;= #{endDate})
                 and ld.res_no = r.res_no
                 and dept_no = (SELECT dept_no
                                FROM     employee 

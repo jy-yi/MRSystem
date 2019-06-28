@@ -153,7 +153,7 @@ $(function(){
 						}, success : function(data) {
 							swal('Success!', '예약 승인이 완료되었습니다.', 'success'
 					    		).then(function(){
-		  		    		    	location.href="/reservation/approvalWaitingList";
+		  		    		    	location.href="/reservation/statusCalendar";
 		  		    		    });
 						}
 					});

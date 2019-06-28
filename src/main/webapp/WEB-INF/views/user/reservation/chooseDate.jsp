@@ -11,7 +11,8 @@
 	<!-- Begin Page Content -->
 	<div class="container-fluid">
 		<!-- Page Heading -->
-		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<div class="d-sm-flex align-i
+		tems-center justify-content-between mb-4">
 			<h1 class="h5 mb-0 text-gray-800"> <i class="fas fa-user"></i> 예약하기 > 예약 일자 선택 </h1>
 		</div>
 		
