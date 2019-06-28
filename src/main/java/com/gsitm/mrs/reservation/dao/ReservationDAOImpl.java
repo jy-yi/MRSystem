@@ -248,6 +248,16 @@ public class ReservationDAOImpl implements ReservationDAO {
  	public List<Map<String, Object>> getParticipationInfo(int resNo){
  		return sqlSession.selectList(namespace + ".getParticipationInfo", resNo);
  	}
+ 	
+ 	/** 자동 노쇼 처리 정보 조회 */
+ 	public List<Map<String, Object>> getNoshow(String timeStr){
+ 		return sqlSession.selectList(namespace + ".getNoshow", timeStr);
+ 	}
+ 	
+ 	/** 자동 종료 처리 정보 조회 */
+ 	public List<Map<String, Object>> getEnd(String timeStr){
+ 		return sqlSession.selectList(namespace + ".getEnd", timeStr);
+ 	}
 	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

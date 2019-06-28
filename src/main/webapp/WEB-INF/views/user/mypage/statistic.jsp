@@ -231,7 +231,7 @@ $(function() {
 			else if (item.STATUS == 4)
     			table += '<td class="text-success"> 회의 시작 </td>';
 			else if (item.STATUS == 5)
-    			table += '<td class="text-primary"> 회의 종료 </td>';
+    			table += '<td class="text-warning"> 회의 종료 </td>';
 			else if (item.STATUS == 6)
 				table += '<td class="text-warning"> 회의 노쇼 </td>';
     		table += '</tr>';

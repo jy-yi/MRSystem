@@ -131,6 +131,13 @@ public interface ReservationDAO {
  	
  	/** 참여사원 정보 조회  */
  	public List<Map<String, Object>> getParticipationInfo(int resNo);
+ 	
+ 	/** 자동 노쇼 처리 정보 조회 */
+ 	public List<Map<String, Object>> getNoshow(String timeStr);
+ 	
+ 	/** 자동 종료 처리 정보 조회 */
+ 	public List<Map<String, Object>> getEnd(String timeStr);
+ 	
  	/* ------------- 관리자 ------------- */
 	
 	/** 승인 대기 목록 조회 */

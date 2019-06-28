@@ -593,6 +593,22 @@
 			AND status = 4
 	</update>
 	
+	<!-- 자동 노쇼 처리 정보 조회 -->
+	<select id="getNoshow" resultType="Map">
+		SELECT status, res_no AS resNo, emp_no AS empNo
+		FROM reservation
+		WHERE TO_CHAR(start_date, 'yyyy-mm-dd hh24:mi') = #{timeStr}
+		      AND status=1
+	</select>
+	
+	<!-- 자동 종료 처리 정보 조회 -->
+	<select id="getEnd" resultType="Map">
+		SELECT status, res_no AS resNo, emp_no AS empNo
+		FROM reservation
+		WHERE TO_CHAR(end_date, 'yyyy-mm-dd hh24:mi') &lt;= #{timeStr}
+			  AND status = 4
+	</select>
+	
 	<!-- 예약 번호로 예약 정보 조회 -->
 	<select id="getReservationByResNo" resultType="reservation">
 		SELECT *
@@ -616,13 +632,29 @@
 	<update id="updateMoney" parameterType="Map">
 		UPDATE participation
 		SET money=#{money}
-		WHERE res_no=1 AND emp_no IN (SELECT e.emp_no
+		WHERE res_no=#{resNo} AND emp_no IN (SELECT e.emp_no
                                       FROM participation p, employee e
-                                      WHERE p.emp_no=e.emp_no AND e.dept_no=24)
+                                      WHERE p.emp_no=e.emp_no AND e.dept_no=#{deptNo})
 	</update>
 	
 	<!-- 참여사원 정보 조회  -->
 	<select id="getParticipationInfo" resultType="Map">
+		SELECT e.name as empName, d.name as deptName, money
+        FROM employee e, department d, participation p
+        WHERE p.emp_no=e.emp_no
+        AND e.dept_no=d.dept_no
+        AND res_no=#{resNo}
+	</select>
+	
+	<!-- 자동 노쇼처리 된 예약 정보 조회  -->
+	<select id="getAutoNoShowInfo" resultType="Map">
+		SELECT e.name as empName, d.name as deptName, money
+        FROM employee e, department d, participation p
+        WHERE 
+	</select>
+	
+	<!-- 자동 종료처리 된 예약 정보 조회  -->
+	<select id="getAutoEndInfo" resultType="Map">
 		SELECT e.name as empName, d.name as deptName, money
         FROM employee e, department d, participation p
         WHERE p.emp_no=e.emp_no

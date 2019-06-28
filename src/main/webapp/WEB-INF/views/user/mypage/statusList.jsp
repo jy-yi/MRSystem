@@ -92,11 +92,11 @@
 													
 													<td>
 														<c:if test="${list.STATUS eq 0 }">
-															<span class="text-success"> 예약 대기 </span>
+															<span class="text-success"> 승인 대기 </span>
 														</c:if>
 													
 														<c:if test="${list.STATUS eq 1 }">
-															<span class="text-primary"> 승인 대기 </span> 
+															<span class="text-primary"> 예약 완료 </span> 
 														</c:if>
 													
 														<c:if test="${list.STATUS eq 2 }">
@@ -112,18 +112,17 @@
 														</c:if>
 														
 														<c:if test="${list.STATUS eq 5 }">
-															 <span class="text-primary"> 회의 종료 </span>
+															 <span class="text-warning"> 회의 종료 </span>
 														</c:if>
 														
 														<c:if test="${list.STATUS eq 6 }">
 															 <span class="text-warning"> 회의 노쇼 </span>
 														</c:if>
-														
 													</td>
 													
 													<td>
 														<c:if test="${list.STATUS eq 2}">
-															<span class="text-warning"> 반려 완료 </span>
+															<span class="text-danger"> 반려 완료 </span>
 														</c:if>
 														
 														<c:if test="${list.STATUS eq 3}">

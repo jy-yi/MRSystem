@@ -564,7 +564,7 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// 비용 부과 및 이메일 전송
 		if (status == 5)
-			payForMettingRoom(status, resNo, empNo);
+			payForMeetingRoom(status, resNo, empNo);
 		
 	}
 
@@ -743,7 +743,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 		// String recipient = empNo;
 		//TODO 고치기
-		String content = mailUitls.getMoneyTemplate(username, reservationName, term, type, time, totalSum, deptList, participationList);
+		String content = mailUitls.getMoneyTemplate(name, reservationName, term, type, time, totalSum, deptList, participationList);
 				
 		// 정보를 담기 위한 객체 생성
 		Properties props = System.getProperties();
@@ -785,7 +785,7 @@ public class ReservationServiceImpl implements ReservationService {
 	}
 
 	/* 회의 노쇼이거나 회의실 사용 종료할 경우 비용 부과 */
-	public void payForMettingRoom(int status, int resNo, String empNo) {
+	public void payForMeetingRoom(int status, int resNo, String empNo) {
 		ReservationDTO reservation=dao.getReservationByResNo(resNo);
 		
 		// 사용시간 정보
@@ -799,14 +799,23 @@ public class ReservationServiceImpl implements ReservationService {
 			e.printStackTrace();
 		}
 		 	
+		SimpleDateFormat transFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm");
+		String term = transFormat.format(start).toString() + " ~ " + transFormat.format(end).toString();
+		
+		System.err.println("term:"+term);
+		
 		ReserveTypeVO rtv=calcDate(start, end);
 		double reservationHours=rtv.getReserveHours();
 		
 		String time=null;
 		if(reservationHours%1 !=0) { // 30분으로 떨어지는 경우
-			time=(int)(reservationHours/1)+"시간 30분";
+			if(reservationHours/1 == 0) {
+				time="30분";
+			} else {
+				time=(int)(reservationHours/1)+"시간 30분";
+			}
 		} else {
-			time=reservationHours+"시간";
+			time=(int)reservationHours+"시간";
 		}
 		
 		// 회의 전체 금액
@@ -816,7 +825,6 @@ public class ReservationServiceImpl implements ReservationService {
 		
 		// 메인 부서와 해당 부서의 참여자 수 
 		List<Map<String, Object>> mainDeptParticipation=dao.getMainDeptParticipationCount(resNo);
-		System.out.println("mainDeptParticipation:"+mainDeptParticipation);
 		int totalMainDeptNum=mainDeptParticipation.size(); // 전체 주관부서의 수
 		int pricePerMainDept=(int)(price/totalMainDeptNum); // 한 부서당 지불해야 하는 금액
 		
@@ -828,7 +836,7 @@ public class ReservationServiceImpl implements ReservationService {
 			moneyMap.put("resNo", resNo);
 			moneyMap.put("money", Math.round(thisDeptMoney));
 			moneyMap.put("deptNo", deptNo);
-			
+			System.out.println("moneyMap : "+moneyMap);
 			// DB에 저장
 			dao.updateMoney(moneyMap);
 			
@@ -836,7 +844,6 @@ public class ReservationServiceImpl implements ReservationService {
 			Map<String, Object> tmpMap=new HashMap<>();
 			tmpMap.put("money", Math.round(thisDeptMoney));
 			tmpMap.put("deptName", deptInfo.get("DEPTNAME"));
-			System.err.println("tmpMap:"+tmpMap);
 			deptList.add(tmpMap);
 		}
 		
@@ -848,17 +855,22 @@ public class ReservationServiceImpl implements ReservationService {
 		emailList.add(dao.getMgrInfo(empNo).getEmail()); // 신청자의 상위 결재자 이메일
 
 		// 예약기간
-		String term=start+" ~ "+end;
+//		String term=start+" ~ "+end;
 		String emails = StringUtils.join(emailList, ","); // 이메일 목록 콤마(,)로 구분
 		String title = "[GS ITM] 회의실 비용 처리 안내"; // 메일 제목
+		String type = "";
+		
 		if(status==STATUS_NO_SHOW) { // 노쇼
-			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "노쇼", time, (int)price, deptList, dao.getParticipationInfo(resNo));
+			type = "노쇼";
 		} else if(status==STATUS_END) { // 회의실 사용 종료
-			moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, "완료", time, (int)price, deptList, dao.getParticipationInfo(resNo));
+			type = "완료";
 		}
+		
+		moneyMailSendString(empNo, emails, applicant.getName(), reservation.getName(), title, term, type, time, (int)price, deptList, dao.getParticipationInfo(resNo));
 		
 	}
 	
+	// 자동 노쇼 처리(회의 start_date+10분 까지 시작 버튼을 누르지 않았을 경우 자동 노쇼 처리)
 	@Scheduled(cron="0 10/30 9-18 * * *")
 	public void checkNoShow() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -866,21 +878,38 @@ public class ReservationServiceImpl implements ReservationService {
 		cal.setTime(new Date());
 		cal.add(Calendar.MINUTE, -10);
 		String timeStr = format.format(cal.getTime());
-		System.out.println("------------- "+timeStr+"------------------");
 		
 		// 노쇼 처리할 res_no들을 select
-		
-		int result = dao.updateNoshow(timeStr);
+		List<Map<String, Object>> noShowList=dao.getNoshow(timeStr);
+		if(noShowList!=null) {
+			// 해당 예약의 status 변경
+			dao.updateNoshow(timeStr);
+			// 비용 부과, 청구 메일 처리
+			System.out.println(noShowList);
+			for(Map<String, Object> noShowReservation:noShowList) {
+				payForMeetingRoom(Integer.parseInt(noShowReservation.get("status").toString()), Integer.parseInt(noShowReservation.get("resNo").toString()), (String)noShowReservation.get("empNo"));
+			}
+		}
 	}
 	
+	// 자동 종료 처리(시작 버튼을 누른 후 end_date까지 종료 버튼을 누르지 않았을 경우 자동 종료 처리)
 	@Scheduled(cron="0 0/30 9-18 * * *")
 	public void checkEnd() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
 		String timeStr = format.format(cal.getTime());
-		System.out.println("------------- "+timeStr+"------------------");
 		
-		int result = dao.updateCheckEnd(timeStr);
+		// 노쇼 처리할 res_no들을 select
+		List<Map<String, Object>> endList=dao.getEnd(timeStr);
+		if(endList!=null) {
+			// 해당 예약의 status 변경
+			dao.updateCheckEnd(timeStr);
+			// 비용 부과, 청구 메일 처리
+			System.out.println(endList);
+			for(Map<String, Object> endReservation:endList) {
+				payForMeetingRoom(Integer.parseInt(endReservation.get("status").toString()), Integer.parseInt(endReservation.get("resNo").toString()), (String)endReservation.get("empNo"));
+			}
+		}
 	}
 }

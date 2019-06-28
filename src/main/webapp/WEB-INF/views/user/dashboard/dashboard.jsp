@@ -18,7 +18,7 @@
 					<i class="fas fa-user"></i> 대시보드 > <span id="workplaceNameTitle"></span> <span id="roomNameTitle"></span>
 				</h1>
 			</div>
-			
+		</div>
 			<div class="mb-2">
 				<a href="#" class="btn btn-success btn-circle btn-sm"></a> 승인 대기
 				<a href="#" class="btn btn-primary btn-circle btn-sm"></a> 예약 완료
@@ -54,7 +54,7 @@
 			</div>
 		</div>
 		<!-- /.container-fluid -->
-	</div>
+	
 </div>
 <!-- End of Main Content -->
 
